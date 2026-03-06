@@ -1,9 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+
+const letterWeights = ref<Record<string, number>>(
+  letters.reduce((acc, letter) => {
+    acc[letter] = 0
+    return acc
+  }, {} as Record<string, number>)
+)
+
+const pickNextLetter = (): string => {
+  const weights = Object.values(letterWeights.value)
+  const maxWeight = Math.max(0, ...weights)
+
+  const priorities = letters.map(letter => {
+    return Math.max(1, maxWeight - (letterWeights.value[letter] || 0) + 1)
+  })
+
+  // Weighted random selection
+  let randomVal = Math.random() * priorities.reduce((sum, p) => sum + p, 0)
+  for (let i = 0; i < letters.length; i++) {
+    randomVal -= priorities[i]!
+    if (randomVal <= 0) return letters[i]!
+  }
+  return letters[0]!
+}
 
 const colors = [
   'bg-[#FFD93D]', // Yellow
@@ -17,12 +41,122 @@ const getLetterColor = (index: number) => colors[index % colors.length]
 
 // Scoring and Challenge State
 const score = ref(0)
+const level = ref(0)
+
+const checkLevelUp = (): boolean => {
+  const minWeight = Math.min(...Object.values(letterWeights.value))
+  let target = 5
+  if (level.value === 1) target = 10
+  if (level.value >= 2) target = 15
+
+  if (minWeight >= target) {
+    level.value++
+    letters.forEach(l => letterWeights.value[l] = 0)
+    return true
+  }
+  return false
+}
 const isChallengeMode = ref(false)
 const targetLetter = ref('')
 const feedback = ref<{ message: string; type: 'success' | 'error' | null }>({ message: '', type: null })
 const wrongLetter = ref('') // Track the last wrong letter for animation
 
+const timeLeft = ref(0)
+const timerInterval = ref<number | null>(null)
+
+const stopTimer = () => {
+  if (timerInterval.value) {
+    window.clearInterval(timerInterval.value)
+    timerInterval.value = null
+  }
+}
+
+const handleTimeout = () => {
+  stopTimer()
+  score.value -= 5
+  if (targetLetter.value) {
+    letterWeights.value[targetLetter.value] = (letterWeights.value[targetLetter.value] || 0) - 0.5
+  }
+  feedback.value = { message: 'Waktu habis! Memuat huruf baru...', type: 'error' }
+  speak('Waktu habis')
+  wrongLetter.value = targetLetter.value
+
+  setTimeout(() => {
+    wrongLetter.value = ''
+    if (isChallengeMode.value) {
+      const nextLetter = pickNextLetter()
+      targetLetter.value = nextLetter
+      feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
+      playLetterSound(targetLetter.value)
+      startTimer()
+    }
+  }, 2000)
+}
+
+const startTimer = () => {
+  stopTimer()
+  if (level.value >= 1) {
+    timeLeft.value = level.value === 1 ? 8 : 3
+    timerInterval.value = window.setInterval(() => {
+      timeLeft.value--
+      if (timeLeft.value <= 0) {
+        handleTimeout()
+      }
+    }, 1000)
+  }
+}
+
+onUnmounted(() => {
+  stopTimer()
+})
+
 const goBack = () => router.push('/')
+
+// State Persistence
+const saveState = async () => {
+  try {
+    await fetch('/api/state', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        score: score.value,
+        level: level.value,
+        weights: letterWeights.value
+      })
+    })
+  } catch (e) {
+    console.error('Failed to save state', e)
+  }
+}
+
+const loadState = async () => {
+  try {
+    const res = await fetch('/api/state')
+    if (res.ok) {
+      const data = await res.json()
+      if (data) {
+        if (typeof data.score === 'number') score.value = data.score
+        if (typeof data.level === 'number') level.value = data.level
+        if (data.weights) {
+          Object.assign(letterWeights.value, data.weights)
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load state', e)
+  }
+}
+
+onMounted(() => {
+  loadState()
+})
+
+watch([score, level, letterWeights], () => {
+  // Save state on any change
+  console.log("save state");
+
+  saveState()
+}, { deep: true })
 
 const playLetterSound = (letter: string) => {
   const audioPath = `/Letter-${letter.toUpperCase()}.webm`
@@ -35,19 +169,21 @@ const playLetterSound = (letter: string) => {
   })
 }
 
-const startChallenge = () => {
+const startChallenge = async () => {
   isChallengeMode.value = true
+  await loadState()
   wrongLetter.value = ''
-  const randomIndex = Math.floor(Math.random() * letters.length)
-  targetLetter.value = letters[randomIndex] ?? ''
+  targetLetter.value = pickNextLetter()
   feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
   playLetterSound(targetLetter.value)
+  startTimer()
 }
 
 const stopChallenge = () => {
   isChallengeMode.value = false
   wrongLetter.value = ''
   feedback.value = { message: '', type: null }
+  stopTimer()
 }
 
 const speak = (text: string) => {
@@ -59,23 +195,37 @@ const speak = (text: string) => {
 const handleLetterClick = (letter: string) => {
   if (isChallengeMode.value) {
     if (letter === targetLetter.value) {
+      stopTimer()
       score.value += 10
-      feedback.value = { message: 'Hebat! Kamu Benar! 🎉', type: 'success' }
+      letterWeights.value[letter] = (letterWeights.value[letter] || 0) + 1
+
+      const leveledUp = checkLevelUp()
+      if (leveledUp) {
+        feedback.value = { message: `Luar Biasa! Naik Level ${level.value}! 🌟`, type: 'success' }
+      } else {
+        feedback.value = { message: 'Hebat! Kamu Benar! 🎉', type: 'success' }
+      }
       wrongLetter.value = ''
 
-      const nextIndex = Math.floor(Math.random() * letters.length)
-      const nextLetter = letters[nextIndex] ?? ''
+      const nextLetter = pickNextLetter()
 
-      speak(`Benar, Sekarang tebak huruf ${nextLetter}`)
+      if (leveledUp) {
+        speak(`Luar biasa, kamu naik level. Sekarang tebak huruf ${nextLetter}`)
+      } else {
+        speak(`Benar, Sekarang tebak huruf ${nextLetter}`)
+      }
 
       setTimeout(() => {
         if (isChallengeMode.value) {
           targetLetter.value = nextLetter
           feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
+          startTimer()
         }
-      }, 2000)
+      }, leveledUp ? 3500 : 2000)
     } else {
-      score.value = Math.max(0, score.value - 5)
+      score.value -= 5
+      letterWeights.value[targetLetter.value] = (letterWeights.value[targetLetter.value] || 0) - 0.5
+      letterWeights.value[letter] = (letterWeights.value[letter] || 0) - 0.5
       feedback.value = { message: 'Coba lagi yuk! Kamu pasti bisa! 💪', type: 'error' }
       wrongLetter.value = letter // Trigger shake on this letter
       speak(`Ini huruf ${letter}, tebak huruf ${targetLetter.value}`)
@@ -100,9 +250,15 @@ const handleLetterClick = (letter: string) => {
       </button>
 
       <div v-if="isChallengeMode" class="flex items-center gap-6">
-        <div class="glass-card px-8 py-2 bg-white flex items-center gap-4">
-          <span class="text-2xl font-black text-gray-500">Skor:</span>
-          <span class="text-4xl font-black text-[#6BCB77]">{{ score }}</span>
+        <div v-if="level >= 1" class="glass-card px-6 py-2 bg-red-100 flex items-center gap-2 border-2 transition-colors" :class="timeLeft <= 3 ? 'border-red-500 animate-pulse bg-red-200' : 'border-red-300'">
+           <span class="text-xl font-bold" :class="timeLeft <= 3 ? 'text-red-700' : 'text-red-600'">⏱️ {{ timeLeft }}s</span>
+        </div>
+        <div class="glass-card px-8 py-1 bg-white flex flex-col items-center">
+          <span class="text-sm font-bold text-gray-400 -mb-1">Level <span class="text-[#4D96FF]">{{ level }}</span></span>
+          <div class="flex items-baseline gap-2">
+            <span class="text-xl font-black text-gray-500">Skor:</span>
+            <span class="text-3xl font-black text-[#6BCB77]">{{ score }}</span>
+          </div>
         </div>
         <button @click="stopChallenge" class="btn-accent px-6 py-2">Berhenti Main</button>
       </div>
@@ -136,7 +292,7 @@ const handleLetterClick = (letter: string) => {
     </div>
 
     <!-- Alphabet Grid -->
-    <div class="flex-1 overflow-hidden relative">
+    <div class="flex-1 overflow-visible relative">
       <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3 h-full pb-8">
         <button
           v-for="(letter, index) in letters"
