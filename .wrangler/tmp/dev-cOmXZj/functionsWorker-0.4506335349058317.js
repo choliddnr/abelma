@@ -6163,18 +6163,23 @@ function drizzle(client, config = {}) {
 }
 __name(drizzle, "drizzle");
 __name2(drizzle, "drizzle");
-var gameState = sqliteTable("GameState", {
-  id: integer("id").primaryKey(),
+var gameState = sqliteTable("BelajarHurufGameState", {
+  user: text("user").primaryKey(),
   score: integer("score").notNull().default(0),
   level: integer("level").notNull().default(0),
   weights: text("weights").notNull().default("{}"),
   updatedAt: text("updated_at").notNull().$defaultFn(() => (/* @__PURE__ */ new Date()).toISOString())
 });
 var onRequestGet = /* @__PURE__ */ __name2(async (context) => {
-  const { env } = context;
+  const { env, request } = context;
   try {
+    const url = new URL(request.url);
+    const user = url.searchParams.get("user");
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Missing user parameter" }), { status: 400 });
+    }
     const db = drizzle(env.abelma);
-    const results = await db.select().from(gameState).where(eq(gameState.id, 1)).limit(1);
+    const results = await db.select().from(gameState).where(eq(gameState.user, user)).limit(1);
     if (!results || results.length === 0) {
       return new Response(JSON.stringify({ score: 0, level: 0, weights: {} }), { status: 200, headers: { "Content-Type": "application/json" } });
     }
@@ -6191,11 +6196,14 @@ var onRequestPost = /* @__PURE__ */ __name2(async (context) => {
   const { request, env } = context;
   try {
     const db = drizzle(env.abelma);
-    const { score, level, weights } = await request.json();
-    const existing = await db.select().from(gameState).where(eq(gameState.id, 1)).limit(1);
+    const { user, score, level, weights } = await request.json();
+    if (!user) {
+      return new Response(JSON.stringify({ error: "Missing user field" }), { status: 400 });
+    }
+    const existing = await db.select().from(gameState).where(eq(gameState.user, user)).limit(1);
     if (existing.length === 0) {
       await db.insert(gameState).values({
-        id: 1,
+        user,
         score,
         level,
         weights: JSON.stringify(weights)
@@ -6206,7 +6214,7 @@ var onRequestPost = /* @__PURE__ */ __name2(async (context) => {
         level,
         weights: JSON.stringify(weights),
         updatedAt: (/* @__PURE__ */ new Date()).toISOString()
-      }).where(eq(gameState.id, 1));
+      }).where(eq(gameState.user, user));
     }
     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { "Content-Type": "application/json" } });
   } catch (e) {

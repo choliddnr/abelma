@@ -1,16 +1,22 @@
-import { drizzle } from 'drizzle-orm/d1';
-import { gameState } from '../../src/db/schema';
+import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
+import { belajarHurufGameState } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
 
 interface Env {
-  abelma: D1Database;
+  abelma: DrizzleD1Database;
 }
 
 export const onRequestGet = async (context: any) => {
-  const { env } = context;
+  const { env, request } = context;
   try {
+    const url = new URL(request.url);
+    const user = url.searchParams.get('user');
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Missing user parameter' }), { status: 400 });
+    }
+
     const db = drizzle(env.abelma);
-    const results = await db.select().from(gameState).where(eq(gameState.id, 1)).limit(1);
+    const results = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
 
     if (!results || results.length === 0) {
       return new Response(JSON.stringify({ score: 0, level: 0, weights: {} }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -29,26 +35,30 @@ export const onRequestPost = async (context: any) => {
   const { request, env } = context;
   try {
     const db = drizzle(env.abelma);
-    const { score, level, weights } = await request.json() as any;
+    const { user, score, level, weights } = await request.json() as any;
 
-    const existing = await db.select().from(gameState).where(eq(gameState.id, 1)).limit(1);
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Missing user field' }), { status: 400 });
+    }
+
+    const existing = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
 
     if (existing.length === 0) {
-      await db.insert(gameState).values({
-        id: 1,
+      await db.insert(belajarHurufGameState).values({
+        user,
         score,
         level,
         weights: JSON.stringify(weights)
       });
     } else {
-      await db.update(gameState)
+      await db.update(belajarHurufGameState)
         .set({
           score,
           level,
           weights: JSON.stringify(weights),
           updatedAt: new Date().toISOString()
         })
-        .where(eq(gameState.id, 1));
+        .where(eq(belajarHurufGameState.user, user));
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -56,3 +66,4 @@ export const onRequestPost = async (context: any) => {
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 }
+

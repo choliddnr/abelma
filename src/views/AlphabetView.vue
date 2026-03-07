@@ -112,6 +112,17 @@ onUnmounted(() => {
 
 const goBack = () => router.push('/')
 
+// User identity (UUID persisted in localStorage)
+const getUserId = (): string => {
+  const key = 'abelma-user-id'
+  let id = localStorage.getItem(key)
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem(key, id)
+  }
+  return id
+}
+
 // State Persistence
 const saveState = async () => {
   try {
@@ -119,6 +130,7 @@ const saveState = async () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        user: getUserId(),
         score: score.value,
         level: level.value,
         weights: letterWeights.value
@@ -131,7 +143,7 @@ const saveState = async () => {
 
 const loadState = async () => {
   try {
-    const res = await fetch('/api/state')
+    const res = await fetch(`/api/state?user=${encodeURIComponent(getUserId())}`)
     if (res.ok) {
       const data = await res.json()
       if (data) {
@@ -152,9 +164,6 @@ onMounted(() => {
 })
 
 watch([score, level, letterWeights], () => {
-  // Save state on any change
-  console.log("save state");
-
   saveState()
 }, { deep: true })
 

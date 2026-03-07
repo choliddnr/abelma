@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-VJvRnH/checked-fetch.js
+// ../.wrangler/tmp/bundle-gaqZP8/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -5825,7 +5825,7 @@ function drizzle(client, config = {}) {
 __name(drizzle, "drizzle");
 
 // ../src/db/schema.ts
-var gameState = sqliteTable("BelajarHurufGameState", {
+var belajarHurufGameState = sqliteTable("BelajarHurufGameState", {
   user: text("user").primaryKey(),
   score: integer("score").notNull().default(0),
   level: integer("level").notNull().default(0),
@@ -5843,7 +5843,7 @@ var onRequestGet = /* @__PURE__ */ __name(async (context) => {
       return new Response(JSON.stringify({ error: "Missing user parameter" }), { status: 400 });
     }
     const db = drizzle(env.abelma);
-    const results = await db.select().from(gameState).where(eq(gameState.user, user)).limit(1);
+    const results = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
     if (!results || results.length === 0) {
       return new Response(JSON.stringify({ score: 0, level: 0, weights: {} }), { status: 200, headers: { "Content-Type": "application/json" } });
     }
@@ -5864,21 +5864,21 @@ var onRequestPost = /* @__PURE__ */ __name(async (context) => {
     if (!user) {
       return new Response(JSON.stringify({ error: "Missing user field" }), { status: 400 });
     }
-    const existing = await db.select().from(gameState).where(eq(gameState.user, user)).limit(1);
+    const existing = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
     if (existing.length === 0) {
-      await db.insert(gameState).values({
+      await db.insert(belajarHurufGameState).values({
         user,
         score,
         level,
         weights: JSON.stringify(weights)
       });
     } else {
-      await db.update(gameState).set({
+      await db.update(belajarHurufGameState).set({
         score,
         level,
         weights: JSON.stringify(weights),
         updatedAt: (/* @__PURE__ */ new Date()).toISOString()
-      }).where(eq(gameState.user, user));
+      }).where(eq(belajarHurufGameState.user, user));
     }
     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { "Content-Type": "application/json" } });
   } catch (e) {
@@ -5886,7 +5886,7 @@ var onRequestPost = /* @__PURE__ */ __name(async (context) => {
   }
 }, "onRequestPost");
 
-// ../.wrangler/tmp/pages-uTD5SI/functionsRoutes-0.2112671958113852.mjs
+// ../.wrangler/tmp/pages-QksZcM/functionsRoutes-0.7351672638234498.mjs
 var routes = [
   {
     routePath: "/api/state",
@@ -5904,7 +5904,7 @@ var routes = [
   }
 ];
 
-// C:/Users/Lenovo/AppData/Local/pnpm-cache/dlx/f985523a518069a092eaa86be319429ccdabcea2b8e73a1216ba0e4abaff905e/19cc11305b5-650c/node_modules/.pnpm/path-to-regexp@6.3.0/node_modules/path-to-regexp/dist.es2015/index.js
+// ../node_modules/.pnpm/path-to-regexp@6.3.0/node_modules/path-to-regexp/dist.es2015/index.js
 function lexer(str) {
   var tokens = [];
   var i = 0;
@@ -6230,7 +6230,7 @@ function pathToRegexp(path, keys, options) {
 }
 __name(pathToRegexp, "pathToRegexp");
 
-// C:/Users/Lenovo/AppData/Local/pnpm-cache/dlx/f985523a518069a092eaa86be319429ccdabcea2b8e73a1216ba0e4abaff905e/19cc11305b5-650c/node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/pages-template-worker.ts
+// ../node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/pages-template-worker.ts
 var escapeRegex = /[.+?^${}()|[\]\\]/g;
 function* executeRequest(request) {
   const requestPath = new URL(request.url).pathname;
@@ -6350,7 +6350,7 @@ var cloneResponse = /* @__PURE__ */ __name((response) => (
   )
 ), "cloneResponse");
 
-// C:/Users/Lenovo/AppData/Local/pnpm-cache/dlx/f985523a518069a092eaa86be319429ccdabcea2b8e73a1216ba0e4abaff905e/19cc11305b5-650c/node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
+// ../node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
 var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
   try {
     return await middlewareCtx.next(request, env);
@@ -6368,7 +6368,7 @@ var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "drainBody");
 var middleware_ensure_req_body_drained_default = drainBody;
 
-// C:/Users/Lenovo/AppData/Local/pnpm-cache/dlx/f985523a518069a092eaa86be319429ccdabcea2b8e73a1216ba0e4abaff905e/19cc11305b5-650c/node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
+// ../node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
 function reduceError(e) {
   return {
     name: e?.name,
@@ -6391,14 +6391,14 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-VJvRnH/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-gaqZP8/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
 ];
 var middleware_insertion_facade_default = pages_template_worker_default;
 
-// C:/Users/Lenovo/AppData/Local/pnpm-cache/dlx/f985523a518069a092eaa86be319429ccdabcea2b8e73a1216ba0e4abaff905e/19cc11305b5-650c/node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/common.ts
+// ../node_modules/.pnpm/wrangler@4.71.0/node_modules/wrangler/templates/middleware/common.ts
 var __facade_middleware__ = [];
 function __facade_register__(...args) {
   __facade_middleware__.push(...args.flat());
@@ -6423,7 +6423,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-VJvRnH/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-gaqZP8/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
@@ -6523,4 +6523,4 @@ export {
   __INTERNAL_WRANGLER_MIDDLEWARE__,
   middleware_loader_entry_default as default
 };
-//# sourceMappingURL=functionsWorker-0.4506335349058317.mjs.map
+//# sourceMappingURL=functionsWorker-0.1949536971689766.mjs.map
