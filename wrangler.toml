@@ -1,5 +1,6 @@
 name = "abelma"
 compatibility_date = "2024-03-01"
+compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "dist"
 
 [[d1_databases]]
@@ -7,3 +8,9 @@ binding = "abelma"
 database_name = "abelma"
 database_id = "19bd7224-986f-441c-8bba-8b898e33b0e4"
 migrations_dir = "drizzle"
+
+[vars]
+GOOGLE_CLIENT_ID = "271550286464-0t3a565j3m6hi1lr9p0hvaeqvu9ouvbv.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+BETTER_AUTH_SECRET = "wv29I5dSRhoZWzFh4A1WCd9bHlmb5Pq0"
+BETTER_AUTH_URL = "http://localhost:5173"

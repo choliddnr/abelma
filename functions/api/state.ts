@@ -5,12 +5,15 @@ import { eq } from 'drizzle-orm';
 interface Env {
   abelma: DrizzleD1Database;
 }
+type Ctx =  {env: Env, request: Request}
 
-export const onRequestGet = async (context: any) => {
+export const onRequestGet = async (context: Ctx) => {
   const { env, request } = context;
   try {
     const url = new URL(request.url);
     const user = url.searchParams.get('user');
+    console.log("user", user);
+
     if (!user) {
       return new Response(JSON.stringify({ error: 'Missing user parameter' }), { status: 400 });
     }
@@ -26,12 +29,12 @@ export const onRequestGet = async (context: any) => {
       level: results[0].level,
       weights: JSON.parse(results[0].weights)
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } catch (e: any) {
+  } catch (e:any) {
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 }
 
-export const onRequestPost = async (context: any) => {
+export const onRequestPost = async (context: Ctx) => {
   const { request, env } = context;
   try {
     const db = drizzle(env.abelma);

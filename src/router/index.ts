@@ -35,6 +35,11 @@ const router = createRouter({
       name: 'word-detail',
       component: () => import('../views/WordDetailView.vue'),
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue'),
+    },
   ],
 })
 
