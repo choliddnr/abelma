@@ -47,6 +47,15 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
+@utility ui-capsule {
+  @apply flex items-center justify-center gap-3 px-6 py-3 rounded-4xl border-b-4 transition-all duration-300;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+@utility ui-capsule-interactive {
+  @apply ui-capsule cursor-pointer active:border-b-0 active:translate-y-1 hover:scale-105;
+}
+
 body {
   margin: 0;
   padding: 0;
