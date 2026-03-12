@@ -11186,7 +11186,7 @@ var init_jwt_claims_set = __esm({
     day = hour * 24;
     week = day * 7;
     year = day * 365.25;
-    REGEX = /^(\+|\-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)(?: (ago|from now))?$/i;
+    REGEX = /^(\+|-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)(?: (ago|from now))?$/i;
     __name(secs, "secs");
     __name(validateInput, "validateInput");
     normalizeTyp = /* @__PURE__ */ __name((value) => {
@@ -15209,9 +15209,9 @@ var init_regexes = __esm({
     uuid4 = /* @__PURE__ */ uuid(4);
     uuid6 = /* @__PURE__ */ uuid(6);
     uuid7 = /* @__PURE__ */ uuid(7);
-    email = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
+    email = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/;
     html5Email = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    rfc5322Email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    rfc5322Email = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     unicodeEmail = /^[^\s@"]{1,64}@[^\s@]{1,255}$/u;
     idnEmail = unicodeEmail;
     browserEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -15866,7 +15866,7 @@ var init_doc = __esm({
         const F = Function;
         const args = this?.args;
         const content = this?.content ?? [``];
-        const lines = [...content.map((x) => `  ${x}`)];
+        const lines = content.map((x) => `  ${x}`);
         return new F(...args, lines.join("\n"));
       }
     };
@@ -24060,7 +24060,7 @@ var init_registries = __esm({
       get(schema2) {
         const p = schema2._zod.parent;
         if (p) {
-          const pm = { ...this.get(p) ?? {} };
+          const pm = { ...this.get(p) };
           delete pm.id;
           const f = { ...pm, ...this._map.get(schema2) };
           return Object.keys(f).length ? f : void 0;
@@ -25598,7 +25598,7 @@ var init_to_json_schema = __esm({
     }, "createToJSONSchemaMethod");
     createStandardJSONSchemaMethod = /* @__PURE__ */ __name((schema2, io, processors = {}) => (params) => {
       const { libraryOptions, target } = params ?? {};
-      const ctx = initializeContext({ ...libraryOptions ?? {}, target, io, processors });
+      const ctx = initializeContext({ ...libraryOptions, target, io, processors });
       process2(schema2, ctx);
       extractDefs(ctx, schema2);
       return finalize(ctx, schema2);
@@ -25679,12 +25679,10 @@ var init_json_schema_processors = __esm({
         if (regexes.length === 1)
           json2.pattern = regexes[0].source;
         else if (regexes.length > 1) {
-          json2.allOf = [
-            ...regexes.map((regex) => ({
+          json2.allOf = regexes.map((regex) => ({
               ...ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0" ? { type: "string" } : {},
               pattern: regex.source
-            }))
-          ];
+            }));
         }
       }
     }, "stringProcessor");
@@ -29318,7 +29316,7 @@ function getFields(options, modelName, mode) {
   const additionalFields = modelName === "user" || modelName === "session" || modelName === "account" ? options[modelName]?.additionalFields : void 0;
   let schema2 = {
     ...coreSchema2,
-    ...additionalFields ?? {}
+    ...additionalFields
   };
   for (const plugin of options.plugins || []) if (plugin.schema && plugin.schema[modelName]) schema2 = {
     ...schema2,
@@ -29766,7 +29764,7 @@ var init_time = __esm({
     WEEK = DAY * 7;
     MONTH = DAY * 30;
     YEAR = DAY * 365.25;
-    REGEX2 = /^(\+|\-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|months?|mo|years?|yrs?|y)(?: (ago|from now))?$/i;
+    REGEX2 = /^(\+|-)? ?(\d+|\d+\.\d+) ?(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|months?|mo|years?|yrs?|y)(?: (ago|from now))?$/i;
     __name(parse3, "parse");
     __name(sec, "sec");
   }
@@ -31261,7 +31259,7 @@ var init_openapi = __esm({
       id="api-reference"
       type="application/json">
     ${JSON.stringify(apiReference)}
-    <\/script>
+    </script>
 	 <script>
       var configuration = {
 	  	favicon: ${config3?.logo ? `data:image/svg+xml;utf8,${encodeURIComponent(config3.logo)}` : void 0} ,
@@ -31273,8 +31271,8 @@ var init_openapi = __esm({
       }
       document.getElementById('api-reference').dataset.configuration =
         JSON.stringify(configuration)
-    <\/script>
-	  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"><\/script>
+    </script>
+	  <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
   </body>
 </html>`, "getHTML");
   }
@@ -31649,7 +31647,7 @@ var init_trusted_origins = __esm({
     init_url();
     matchesOriginPattern = /* @__PURE__ */ __name((url2, pattern, settings) => {
       if (url2.startsWith("/")) {
-        if (settings?.allowRelativePaths) return url2.startsWith("/") && /^\/(?!\/|\\|%2f|%5c)[\w\-.\+/@]*(?:\?[\w\-.\+/=&%@]*)?$/.test(url2);
+        if (settings?.allowRelativePaths) return url2.startsWith("/") && /^\/(?!\/|\\|%2f|%5c)[\w\-.+/@]*(?:\?[\w\-.+/=&%@]*)?$/.test(url2);
         return false;
       }
       if (pattern.includes("*") || pattern.includes("?")) {
@@ -31778,7 +31776,7 @@ async function validateFormCsrf(ctx) {
   const site = headers.get("Sec-Fetch-Site");
   const mode = headers.get("Sec-Fetch-Mode");
   const dest = headers.get("Sec-Fetch-Dest");
-  if (Boolean(site && site.trim() || mode && mode.trim() || dest && dest.trim())) {
+  if (site && site.trim() || mode && mode.trim() || dest && dest.trim()) {
     if (site === "cross-site" && mode === "navigate") {
       ctx.context.logger.error("Blocked cross-site navigation login attempt (CSRF protection)", {
         secFetchSite: site,
@@ -32978,7 +32976,7 @@ var init_internal_adapter = __esm({
               value: email3.toLowerCase(),
               field: "email"
             }],
-            join: { ...options2?.includeAccounts ? { account: true } : {} }
+            join: options2?.includeAccounts ? { account: true } : {}
           });
           if (!result) return null;
           const { account: accounts, ...user2 } = result;
@@ -38248,7 +38246,7 @@ var init_account2 = __esm({
         const resolvedRefreshTokenExpiresAt = tokens.refreshTokenExpiresAt ?? account2.refreshTokenExpiresAt;
         if (account2.id) {
           const updateData = {
-            ...account2 || {},
+            ...account2,
             accessToken: await setTokenUtil(tokens.accessToken, ctx.context),
             refreshToken: resolvedRefreshToken,
             accessTokenExpiresAt: tokens.accessTokenExpiresAt,
@@ -39360,7 +39358,7 @@ ${custom2?.disableBackgroundGrid ? "" : `
       const url2 = new URL(c.request?.url || "");
       const unsanitizedCode = url2.searchParams.get("error") || "UNKNOWN";
       const unsanitizedDescription = url2.searchParams.get("error_description") || null;
-      const safeCode = /^[\'A-Za-z0-9_-]+$/.test(unsanitizedCode || "") ? unsanitizedCode : "UNKNOWN";
+      const safeCode = /^['A-Za-z0-9_-]+$/.test(unsanitizedCode || "") ? unsanitizedCode : "UNKNOWN";
       const safeDescription = unsanitizedDescription ? sanitize(unsanitizedDescription) : null;
       const queryParams = new URLSearchParams();
       queryParams.set("error", safeCode);
@@ -42121,7 +42119,7 @@ var init_factory = __esm({
         } : void 0,
         options: {
           adapterConfig: config3,
-          ...adapterInstance.options ?? {}
+          ...adapterInstance.options
         },
         id: config3.adapterId,
         ...config3.debugLogs?.isRunningAdapterTests ? { adapterTestDebugLogs: {
@@ -47895,7 +47893,7 @@ function cteBuilderFactory(expressionNode) {
 }
 function parseCommonTableExpressionName(name) {
   if (name.includes("(")) {
-    const parts = name.split(/[\(\)]/);
+    const parts = name.split(/[()]/);
     const table = parts[0];
     const columns = parts[1].split(",").map((it) => it.trim());
     return CommonTableExpressionNameNode.create(table, columns);
@@ -59862,7 +59860,7 @@ var init_sqlite_introspector = __esm({
           columnsByTable[row.table].push(row);
         }
         return tablesResult.map(({ name, sql: sql3, type }) => {
-          let autoIncrementCol = sql3?.split(/[\(\),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.trimStart()?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
+          let autoIncrementCol = sql3?.split(/[(),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.trimStart()?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
           const columns = columnsByTable[name] ?? [];
           if (!autoIncrementCol) {
             const pkCols = columns.filter((r) => r.pk > 0);
@@ -61729,7 +61727,7 @@ var init_bun_sqlite_dialect_C8OaCWSL = __esm({
       }
       async #getTableMetadata(table) {
         const db = this.#db;
-        const autoIncrementCol = (await db.selectFrom("sqlite_master").where("name", "=", table).select("sql").$castTo().execute())[0]?.sql?.split(/[\(\),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
+        const autoIncrementCol = (await db.selectFrom("sqlite_master").where("name", "=", table).select("sql").$castTo().execute())[0]?.sql?.split(/[(),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
         return {
           name: table,
           columns: (await db.selectFrom(sql2`pragma_table_info(${table})`.as("table_info")).select([
@@ -61915,7 +61913,7 @@ var init_node_sqlite_dialect = __esm({
       }
       async #getTableMetadata(table) {
         const db = this.#db;
-        const autoIncrementCol = (await db.selectFrom("sqlite_master").where("name", "=", table).select("sql").$castTo().execute())[0]?.sql?.split(/[\(\),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
+        const autoIncrementCol = (await db.selectFrom("sqlite_master").where("name", "=", table).select("sql").$castTo().execute())[0]?.sql?.split(/[(),]/)?.find((it) => it.toLowerCase().includes("autoincrement"))?.split(/\s+/)?.[0]?.replace(/["`]/g, "");
         return {
           name: table,
           columns: (await db.selectFrom(sql2`pragma_table_info(${table})`.as("table_info")).select([

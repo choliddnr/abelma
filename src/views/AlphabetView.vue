@@ -53,6 +53,7 @@ const level = ref(1)
 const streak = ref(0)
 const maxStreak = ref(0)
 const speaking = ref(false)
+const mistakeMadeInCurrentLevel = ref(false)
 
 const router = useRouter()
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
@@ -92,35 +93,31 @@ const targetWeight = computed(() => {
 const progressPercentage = computed(() => {
   const allLetters = [...letters, ...letters.map(l => l.toLowerCase())]
   const currentTotalWeight = allLetters.reduce((sum, l) => sum + Math.max(0, letterWeights.value[l] || 0), 0)
-  const maxTotalWeight = targetWeight.value * allLetters.length
+  const requiredTarget = mistakeMadeInCurrentLevel.value ? targetWeight.value : 1
+  const maxTotalWeight = requiredTarget * allLetters.length
   return Math.min(100, Math.max(0, (currentTotalWeight / maxTotalWeight) * 100))
 })
 
-const pickNextLetter = (lastLetter: string = '', targetWeight: number = 0): string => {
+const pickNextLetter = (lastLetter: string = '', currentTargetWeight: number = 0): string => {
   const allLetters = [...letters, ...letters.map(l => l.toLowerCase())]
-  const weights = Object.values(letterWeights.value)
-  const maxWeight = Math.max(0, ...weights)
 
-  const filteredLetters = allLetters.filter(l => l !== lastLetter && (letterWeights.value[l] || 0) < targetWeight)
+  let candidates = allLetters.filter(l => l !== lastLetter && (letterWeights.value[l] || 0) < currentTargetWeight)
 
-  if (filteredLetters.length === 0) return allLetters[0]!
+  if (candidates.length === 0) return allLetters[0]!
 
-  const priorities = filteredLetters.map(letter => {
-    return Math.max(1, maxWeight - (letterWeights.value[letter] || 0) + 1)
-  })
+  const minCurrentWeight = Math.min(...candidates.map(l => letterWeights.value[l] || 0))
+  const minWeightCandidates = candidates.filter(l => (letterWeights.value[l] || 0) === minCurrentWeight)
 
-  // Weighted random selection
-  let randomVal = Math.random() * priorities.reduce((sum, p) => sum + p, 0)
-  for (let i = 0; i < filteredLetters.length; i++) {
-    randomVal -= priorities[i]!
-    if (randomVal <= 0) {
-      const picked = filteredLetters[i]!
-      // Update the UI state based on the picked letter's case
-      isUpperCase.value = picked === picked.toUpperCase()
-      return picked
-    }
+  if (minWeightCandidates.length > 0) {
+    candidates = minWeightCandidates
   }
-  return filteredLetters[0]!
+
+  const randomIndex = Math.floor(Math.random() * candidates.length)
+  const picked = candidates[randomIndex]!
+
+  // Update the UI state based on the picked letter's case
+  isUpperCase.value = picked === picked.toUpperCase()
+  return picked
 }
 
 
@@ -129,9 +126,12 @@ const checkLevelUp = (): boolean => {
   const allLetters = [...letters, ...letters.map(l => l.toLowerCase())]
   const minWeight = Math.min(...allLetters.map(l => letterWeights.value[l] || 0))
 
-  if (minWeight >= targetWeight.value) {
+  const requiredWeight = mistakeMadeInCurrentLevel.value ? targetWeight.value : 1
+
+  if (minWeight >= requiredWeight) {
     level.value++
     allLetters.forEach(l => letterWeights.value[l] = 0)
+    mistakeMadeInCurrentLevel.value = false
     return true
   }
   return false
@@ -141,6 +141,19 @@ const isUpperCase = ref(true)
 const targetLetter = ref('')
 const feedback = ref<{ message: string; type: 'success' | 'error' | null }>({ message: '', type: null })
 const wrongLetter = ref('') // Track the last wrong letter for animation
+
+// Preloaded audio objects for letters
+const preloadedAudio = new Map<string, HTMLAudioElement>()
+let currentAudio: HTMLAudioElement | null = null
+
+const preloadSounds = () => {
+  letters.forEach(letter => {
+    const audioPath = `/Letter-${letter.toUpperCase()}.webm`
+    const audio = new Audio(audioPath)
+    audio.load()
+    preloadedAudio.set(letter.toUpperCase(), audio)
+  })
+}
 
 // Toast Notification System
 const toasts = ref<Array<{ id: number; message: string; type: 'success' | 'error' | 'info' }>>([])
@@ -169,6 +182,7 @@ const handleTimeout = () => {
   if (targetLetter.value) {
     letterWeights.value[targetLetter.value] = (letterWeights.value[targetLetter.value] || 0) - 0.5
   }
+  mistakeMadeInCurrentLevel.value = true
   feedback.value = { message: 'Waktu habis! Memuat huruf baru...', type: 'error' }
   speak('Waktu habis. Dengarkan suara, lalu pilih huruf yang benar!')
   wrongLetter.value = targetLetter.value
@@ -256,6 +270,13 @@ const loadFromLocal = (): boolean => {
       if (data.weights) {
         Object.assign(letterWeights.value, data.weights)
         initializeWeights() // Ensure any new letters (cases) are added
+
+        const allWeights = Object.values(letterWeights.value)
+        if (allWeights.some(w => w < 0 || w > 1 || w % 1 !== 0)) {
+          mistakeMadeInCurrentLevel.value = true
+        } else {
+          mistakeMadeInCurrentLevel.value = false
+        }
       }
       return true
     } catch (e) {
@@ -277,6 +298,11 @@ const loadFromDB = async (): Promise<boolean> => {
         if (data.weights) {
           Object.assign(letterWeights.value, data.weights)
           initializeWeights() // Ensure any new letters (cases) are added
+
+          const allWeights = Object.values(letterWeights.value)
+          if (allWeights.some(w => w < 0 || w > 1 || w % 1 !== 0)) {
+            mistakeMadeInCurrentLevel.value = true
+          }
         }
         return true
       }
@@ -307,6 +333,7 @@ const loadState = async () => {
 }
 
 onMounted(() => {
+  preloadSounds()
   loadState()
 })
 
@@ -315,23 +342,47 @@ watch([score, level, letterWeights], () => {
 }, { deep: true })
 
 const playLetterSound = (letter: string) => {
+  // Cancel previous speech to prioritize letter sound
+  window.speechSynthesis.cancel()
+
+  // Stop currently playing letter sound if any
+  if (currentAudio) {
+    currentAudio.pause()
+    currentAudio.currentTime = 0
+  }
+
   speaking.value = true
-  const audioPath = `/Letter-${letter.toUpperCase()}.webm`
-  const audio = new Audio(audioPath)
 
-  audio.addEventListener('ended', () => {
-    speaking.value = false
-  })
+  const upperLetter = letter.toUpperCase()
+  const audio = preloadedAudio.get(upperLetter)
 
-  audio.play().catch(() => {
-    console.warn(`Audio for ${letter} not found. Mocking sound...`)
-    const utterance = new SpeechSynthesisUtterance(letter.toLowerCase())
-    utterance.lang = 'id-ID' // Bahasa Indonesia
-    utterance.onend = () => {
+  if (audio) {
+    currentAudio = audio
+    // Reset if already playing (sanity check)
+    audio.pause()
+    audio.currentTime = 0
+
+    audio.onended = () => {
       speaking.value = false
+      if (currentAudio === audio) currentAudio = null
     }
-    window.speechSynthesis.speak(utterance)
-  })
+
+    audio.play().catch((err) => {
+      console.warn(`Failed to play preloaded audio for ${letter}:`, err)
+      fallbackToSpeech(letter)
+    })
+  } else {
+    fallbackToSpeech(letter)
+  }
+}
+
+const fallbackToSpeech = (letter: string) => {
+  const utterance = new SpeechSynthesisUtterance(letter.toLowerCase())
+  utterance.lang = 'id-ID'
+  utterance.onend = () => {
+    speaking.value = false
+  }
+  window.speechSynthesis.speak(utterance)
 }
 
 const startChallenge = async () => {
@@ -372,7 +423,9 @@ const speak = (text: string) => {
 }
 
 const handleLetterClick = (letter: string) => {
-  if (speaking.value) return
+  // In challenge mode, we wait for sounds to finish.
+  // In learning mode, we allow interruption for better responsiveness.
+  if (speaking.value && isChallengeMode.value) return
   if (isChallengeMode.value) {
     if (letter === (isUpperCase.value ? targetLetter.value : targetLetter.value.toUpperCase())) {
       stopTimer()
@@ -423,6 +476,8 @@ const handleLetterClick = (letter: string) => {
       const clickedCased = isUpperCase.value ? letter : letter.toLowerCase()
       letterWeights.value[clickedCased] = (letterWeights.value[clickedCased] || 0) - 0.5
 
+      mistakeMadeInCurrentLevel.value = true
+
       feedback.value = { message: 'Coba lagi yuk! Kamu pasti bisa! 💪', type: 'error' }
       wrongLetter.value = letter // Trigger shake on this letter
       speak(`Ini huruf ${letter}, tebak huruf ${targetLetter.value}`)
@@ -444,7 +499,7 @@ const handleLetterClick = (letter: string) => {
 </script>
 
 <template>
-  <div class="h-[90vh] flex flex-col gap-4">
+  <div class="flex flex-col gap-4">
     <!-- Top Header Navigation -->
     <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2">
       <!-- Left side: Back Button -->
