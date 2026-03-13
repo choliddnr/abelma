@@ -1,112 +1,185 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { wordCategories } from '@/data/words'
+import confetti from 'canvas-confetti'
+import { wordSettings } from '@/utils/wordSettings'
+import { playSyllableAudio, playWordAudio } from '@/utils/audio'
 
 const route = useRoute()
 const router = useRouter()
 
-const wordId = route.params.id as string
+const categoryId = route.params.category as string
+const wordId = route.params.word as string
 
-const words = [
-  { id: 'apel', name: 'Apel', icon: '🍎', syllables: ['A', 'pel'], color: 'bg-[#FF6B6B]' },
-  { id: 'pisang', name: 'Pisang', icon: '🍌', syllables: ['Pi', 'sang'], color: 'bg-[#FFD93D]' },
-  { id: 'jeruk', name: 'Jeruk', icon: '🍊', syllables: ['Je', 'ruk'], color: 'bg-[#FFD93D]' },
-  { id: 'roti', name: 'Roti', icon: '🍞', syllables: ['Ro', 'ti'], color: 'bg-[#A084E8]' },
-  { id: 'susu', name: 'Susu', icon: '🥛', syllables: ['Su', 'su'], color: 'bg-[#4D96FF]' },
-  { id: 'meja', name: 'Meja', icon: '🪑', syllables: ['Me', 'ja'], color: 'bg-[#A084E8]' },
-  { id: 'buku', name: 'Buku', icon: '📚', syllables: ['Bu', 'ku'], color: 'bg-[#6BCB77]' },
-  { id: 'bola', name: 'Bola', icon: '⚽', syllables: ['Bo', 'la'], color: 'bg-[#4D96FF]' },
-  { id: 'makan', name: 'Makan', icon: '😋', syllables: ['Ma', 'kan'], color: 'bg-[#6BCB77]' },
-  { id: 'lari', name: 'Lari', icon: '🏃', syllables: ['La', 'ri'], color: 'bg-[#4D96FF]' },
-  { id: 'tidur', name: 'Tidur', icon: '😴', syllables: ['Ti', 'dur'], color: 'bg-[#A084E8]' },
-  { id: 'sapu', name: 'Sapu', icon: '🧹', syllables: ['Sa', 'pu'], color: 'bg-[#6BCB77]' },
-]
+const wordData = computed(() => {
+  const category = wordCategories.find(c => c.id === categoryId)
+  if (!category) return null
+  return category.words.find(w => w.id === wordId) || null
+})
 
-const currentWord = computed(() => words.find(w => w.id === wordId))
+const goBack = () => router.push('/words/learn')
+const goExercise = () => router.push(`/words/${categoryId}/${wordId}/exercise`)
 
-const speakSyllable = (syllable: string) => {
-  const utterance = new SpeechSynthesisUtterance(syllable.toLowerCase())
-  utterance.lang = 'id-ID'
-  utterance.rate = 0.8
-  window.speechSynthesis.speak(utterance)
+const speaking = ref(false)
+const activeSyllableIndex = ref<number | null>(null)
+let autoPlayTimeout: number | null = null
+
+const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void) => {
+  speaking.value = true
+  await playWordAudio(text, path)
+  speaking.value = false
+  if (onEnd) onEnd()
 }
 
-const speakFullWord = () => {
-  if (!currentWord.value) return
-  const utterance = new SpeechSynthesisUtterance(currentWord.value.name.toLowerCase())
-  utterance.lang = 'id-ID'
-  window.speechSynthesis.speak(utterance)
+const playSyllable = async (syllable: string, index: number) => {
+  if (speaking.value) return
+  activeSyllableIndex.value = index
+  await playSyllableAudio(syllable, `/audio/syllables/${syllable.toLowerCase()}.mp3`)
+  activeSyllableIndex.value = null
 }
 
-const goBack = () => router.push('/1/learn')
-
-const activeSyllable = ref('')
-
-const handleSyllableClick = (s: string) => {
-  activeSyllable.value = s
-  speakSyllable(s)
-  setTimeout(() => {
-    activeSyllable.value = ''
-  }, 300)
+const playFullWord = () => {
+  if (speaking.value || !wordData.value) return
+  fallbackToSpeech(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`)
 }
+
+const playAuto = async () => {
+  if (speaking.value || !wordData.value) return
+
+  const syllables = wordData.value.syllables
+
+  const playNext = (index: number) => {
+    if (index >= syllables.length) {
+      // Finished syllables, play full word and pop confetti
+      activeSyllableIndex.value = null
+      autoPlayTimeout = window.setTimeout(() => {
+        fallbackToSpeech(wordData.value!.word, `/audio/words/${wordData.value?.id}.mp3`, () => {
+          popConfettiCenter()
+        })
+      }, 500)
+      return
+    }
+
+    activeSyllableIndex.value = index
+    fallbackToSpeech(syllables[index] || "", undefined, () => {
+      autoPlayTimeout = window.setTimeout(() => {
+        playNext(index + 1)
+      }, 400) // slight pause between syllables
+    })
+  }
+
+  playNext(0)
+}
+
+const popConfettiCenter = () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#FFD93D', '#6BCB77', '#4D96FF', '#ff9a9a', '#A084E8'],
+    zIndex: 100
+  })
+}
+
+onUnmounted(() => {
+  window.speechSynthesis.cancel()
+  if (autoPlayTimeout) clearTimeout(autoPlayTimeout)
+})
+
+onMounted(() => {
+  if (!wordData.value) {
+    router.replace('/words') // handle invalid route
+  } else {
+    // Optional: Auto-play full word on load
+    // playFullWord()
+  }
+})
+
+// Colors for alternating syllables
+const syllableColors = ['bg-[#FFD93D]', 'bg-[#4D96FF]', 'bg-[#6BCB77]', 'bg-[#ff9a9a]']
+const getSyllableColor = (index: number) => syllableColors[index % syllableColors.length]
 </script>
 
 <template>
-  <div v-if="currentWord" class="h-[90vh] flex flex-col items-center gap-12">
-    <div class="w-full flex justify-start">
-      <button @click="goBack" class="btn-bubble bg-white px-6 py-2 text-xl font-bold border-2">
-        ← Kembali
+  <div v-if="wordData" class="flex flex-col gap-4 min-h-screen bg-slate-50">
+    <!-- Header -->
+    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2">
+      <button @click="goBack"
+        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50 focus:ring-slate-200">
+        <span class="text-xl md:text-2xl">🔙</span>
+        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
+      </button>
+
+      <button @click="goExercise"
+        class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto hover:-translate-y-1 shadow-md">
+        <span class="text-xl md:text-2xl font-black">🧩</span>
+        <span class="font-black text-sm md:text-base hidden sm:inline">Latihan Mengeja</span>
       </button>
     </div>
 
-    <div class="glass-card p-12 w-full max-w-4xl flex flex-col items-center gap-12">
-      <!-- Icon -->
-      <div
-        class="text-[150px] md:text-[200px] w-64 h-64 md:w-80 md:h-80 flex items-center justify-center rounded-full border-8 border-white shadow-xl transition-all duration-500 hover:rotate-6 cursor-pointer"
-        :class="currentWord.color"
-        @click="speakFullWord"
-      >
-        {{ currentWord.icon }}
+    <!-- Main Content -->
+    <div class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-8 md:gap-12 py-8">
+
+      <!-- Top Section: Image & Full Word -->
+      <div class="flex flex-col items-center gap-6 w-full relative">
+        <!-- Giant Emoji -->
+        <button @click="playFullWord"
+          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] border-4 border-slate-100 flex items-center justify-center transition-transform active:scale-95 group">
+          <span
+            class="text-8xl md:text-[140px] drop-shadow-lg select-none group-hover:scale-110 transition-transform duration-300">
+            {{ wordData.emoji }}
+          </span>
+          <!-- Replay Icon Overlay -->
+          <div
+            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-slate-100 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-opacity">
+            🔊
+          </div>
+        </button>
       </div>
 
-      <!-- Word Display -->
-      <div class="flex flex-col items-center gap-8">
-        <h2 class="text-4xl font-bold text-gray-400 tracking-[0.2em] uppercase">
-          {{ currentWord.name.split('').join(' ') }}
-        </h2>
+      <!-- Bottom Section: Syllables -->
+      <div class="w-full flex flex-col items-center gap-6">
 
-        <!-- Syllables -->
-        <div class="flex gap-4">
-          <button
-            v-for="(s, index) in currentWord.syllables"
-            :key="index"
-            @click="handleSyllableClick(s)"
-            class="btn-bubble px-10 py-6 text-5xl md:text-7xl font-black text-white hover:scale-110 active:scale-95 transition-all relative overflow-hidden group"
-            :class="[
-              currentWord.color,
-              activeSyllable === s ? 'ring-8 ring-white' : ''
-            ]"
-          >
-            <!-- Sparkle/Shine effect -->
-            <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 slant"></div>
-            {{ s }}
+        <!-- Controls -->
+        <div class="flex justify-center w-full">
+          <button @click="playAuto" :disabled="speaking"
+            class="ui-capsule-interactive bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 w-auto disabled:opacity-50"
+            title="Baca Otomatis">
+            <span class="text-2xl md:text-3xl">▶️</span>
+            <span class="font-black text-lg md:text-xl">Baca Otomatis</span>
           </button>
         </div>
-      </div>
-    </div>
 
-    <button @click="speakFullWord" class="btn-primary flex items-center gap-4 px-12 py-6 text-3xl">
-      <span>🔊</span> Dengar Kata
-    </button>
-  </div>
-  <div v-else class="text-center py-20">
-    <h1 class="text-4xl font-bold">Kata tidak ditemukan</h1>
-    <button @click="goBack" class="btn-primary mt-8">Kembali</button>
+        <!-- Syllable Boxes -->
+        <div class="flex flex-wrap justify-center gap-4 w-full">
+          <button v-for="(syllable, index) in wordData.syllables" :key="index" @click="playSyllable(syllable, index)"
+            class="relative glass-card px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-200 active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-4 border-white overflow-hidden"
+            :class="[
+              getSyllableColor(index),
+              activeSyllableIndex === index ? 'pop-animation scale-110 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.4)] ring-4 ring-white z-10 brightness-110' : 'hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)]'
+            ]">
+
+            <!-- Glossy Top Highlight -->
+            <div
+              class="absolute top-0 inset-x-0 h-1/3 bg-linear-to-b from-white/60 to-transparent opacity-80 rounded-t-[inherit] pointer-events-none">
+            </div>
+
+            <span
+              class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider"
+              style="font-family: 'Quicksand', sans-serif;">
+              {{ wordSettings.letterCase === 'uppercase' ? syllable.toUpperCase() : syllable.toLowerCase() }}
+            </span>
+
+            <!-- Bottom Depth -->
+            <div
+              class="absolute bottom-0 inset-x-0 h-1/5 bg-linear-to-t from-black/20 to-transparent pointer-events-none rounded-b-[inherit]">
+            </div>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
   </div>
 </template>
-
-<style scoped>
-.slant {
-  transform: skewX(-20deg);
-}
-</style>

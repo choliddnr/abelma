@@ -14,7 +14,7 @@ const menuItems = [
     subtitle: 'Mengeja Benda',
     icon: '🍎',
     colorClass: 'bg-[#6BCB77] text-white',
-    to: '/1/learn'
+    to: '/words'
   },
   {
     title: 'Permainan',

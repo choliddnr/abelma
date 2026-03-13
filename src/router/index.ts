@@ -31,9 +31,39 @@ const router = createRouter({
       component: () => import('../views/GamesView.vue'),
     },
     {
-      path: '/learn/:id',
+      path: '/words',
+      name: 'word-landing',
+      component: () => import('../views/WordLandingView.vue'),
+    },
+    {
+      path: '/words/learn',
+      name: 'word-dashboard',
+      component: () => import('../views/WordDashboardView.vue'),
+    },
+    {
+      path: '/words/quiz',
+      name: 'word-quiz',
+      component: () => import('../views/WordQuizView.vue'),
+    },
+    {
+      path: '/words/settings',
+      name: 'word-settings',
+      component: () => import('../views/WordSettingsView.vue'),
+    },
+    {
+      path: '/words/stickers',
+      name: 'word-stickers',
+      component: () => import('../views/StickerGalleryView.vue'),
+    },
+    {
+      path: '/words/:category/:word',
       name: 'word-detail',
       component: () => import('../views/WordDetailView.vue'),
+    },
+    {
+      path: '/words/:category/:word/exercise',
+      name: 'word-exercise',
+      component: () => import('../views/WordChallengeView.vue'),
     },
     {
       path: '/login',
