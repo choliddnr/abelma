@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
+import confetti from 'canvas-confetti'
 
 const session = authClient.useSession()
 const colors = [
@@ -20,30 +21,30 @@ const getLetterColor = (letter: string) => {
 // Fixed mapping for more accurate Indonesian learning
 const idLetterMap: Record<string, { emoji: string; word: string }> = {
   A: { emoji: '🍎', word: 'Apel' },
-  B: { emoji: '🎈', word: 'Balon' },
+  B: { emoji: '⚽', word: 'Bola' },
   C: { emoji: '🍒', word: 'Ceri' },
-  D: { emoji: '🐕', word: 'Domba' },
-  E: { emoji: '🐘', word: 'Elang' },
-  F: { emoji: '🍄', word: 'Fungi' },
-  G: { emoji: '🦒', word: 'Gajah' },
+  D: { emoji: '🐑', word: 'Domba' },
+  E: { emoji: '🦅', word: 'Elang' },
+  F: { emoji: '📷', word: 'Foto' },
+  G: { emoji: '🐘', word: 'Gajah' },
   H: { emoji: '🚁', word: 'Helikopter' },
   I: { emoji: '🐟', word: 'Ikan' },
   J: { emoji: '🦒', word: 'Jerapah' },
   K: { emoji: '🐈', word: 'Kucing' },
-  L: { emoji: '🦁', word: 'Lumba' },
-  M: { emoji: '🐒', word: 'Monyet' },
+  L: { emoji: '💡', word: 'Lampu' },
+  M: { emoji: '🥭', word: 'Mangga' },
   N: { emoji: '🍍', word: 'Nanas' },
-  O: { emoji: '🐙', word: 'Oktopus' },
-  P: { emoji: '🦅', word: 'Pinguin' },
-  Q: { emoji: '👑', word: 'Ratu' },
+  O: { emoji: '💊', word: 'Obat' },
+  P: { emoji: '🍌', word: 'Pisang' },
+  Q: { emoji: '📖', word: "Qur'an" },
   R: { emoji: '🏠', word: 'Rumah' },
-  S: { emoji: '🐍', word: 'Sapi' },
-  T: { emoji: '🐘', word: 'Tikus' },
-  U: { emoji: '🦒', word: 'Unta' },
-  V: { emoji: '🎻', word: 'Violet' },
-  W: { emoji: '🦒', word: 'Wortel' },
-  X: { emoji: '🎸', word: 'Xilofon' },
-  Y: { emoji: '🐙', word: 'Yoyo' },
+  S: { emoji: '🐄', word: 'Sapi' },
+  T: { emoji: '🎩', word: 'Topi' },
+  U: { emoji: '🐪', word: 'Unta' },
+  V: { emoji: '🏺', word: 'Vas' },
+  W: { emoji: '🥕', word: 'Wortel' },
+  X: { emoji: '🎼', word: 'Xilofon' },
+  Y: { emoji: '🪀', word: 'Yoyo' },
   Z: { emoji: '🦓', word: 'Zebra' },
 }
 
@@ -60,16 +61,78 @@ const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 const challengeLetters = ref([...letters])
 const STORAGE_KEY = 'abelma-belajar-huruf-state'
 
-const shuffleLetters = () => {
-  const array = [...letters]
+const shuffleLetters = (arrayToShuffle: string[]) => {
+  const array = [...arrayToShuffle]
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     const temp = array[i]
     array[i] = array[j]!
     array[j] = temp!
   }
-  challengeLetters.value = array
+  return array
 }
+
+const shuffleChallengeLetters = () => {
+  challengeLetters.value = shuffleLetters(letters)
+}
+
+const isRandomized = ref(false)
+const learningLetters = ref([...letters])
+
+const toggleRandomize = () => {
+  isRandomized.value = !isRandomized.value
+  if (isRandomized.value) {
+    learningLetters.value = shuffleLetters(learningLetters.value)
+  } else {
+    learningLetters.value = [...letters]
+  }
+}
+
+const isAutoPlaying = ref(false)
+const autoPlayIndex = ref(0)
+const autoPlayTimeout = ref<number | null>(null)
+
+const toggleAutoPlay = () => {
+  if (isAutoPlaying.value) {
+    stopAutoPlay()
+  } else {
+    startAutoPlay()
+  }
+}
+
+const startAutoPlay = () => {
+  if (isChallengeMode.value) return
+  isAutoPlaying.value = true
+  autoPlayIndex.value = 0
+  const firstLetter = learningLetters.value[0]
+  if (firstLetter) {
+    handleLetterClick(firstLetter)
+  }
+}
+
+const stopAutoPlay = () => {
+  isAutoPlaying.value = false
+  if (autoPlayTimeout.value) {
+    clearTimeout(autoPlayTimeout.value)
+    autoPlayTimeout.value = null
+  }
+}
+
+watch(speaking, (newVal) => {
+  if (!newVal && isAutoPlaying.value) {
+    autoPlayTimeout.value = window.setTimeout(() => {
+      autoPlayIndex.value++
+      if (autoPlayIndex.value >= learningLetters.value.length) {
+        stopAutoPlay()
+      } else {
+        const nextLetter = learningLetters.value[autoPlayIndex.value]
+        if (nextLetter) {
+          handleLetterClick(nextLetter)
+        }
+      }
+    }, 1000)
+  }
+})
 
 const letterWeights = ref<Record<string, number>>({})
 
@@ -190,7 +253,7 @@ const handleTimeout = () => {
   setTimeout(() => {
     wrongLetter.value = ''
     if (isChallengeMode.value) {
-      if (level.value >= 2) shuffleLetters()
+      if (level.value >= 2) shuffleChallengeLetters()
       const nextLetter = pickNextLetter(targetLetter.value, targetWeight.value)
       targetLetter.value = nextLetter
       feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
@@ -216,7 +279,7 @@ const startTimer = () => {
 
 onUnmounted(() => {
   stopTimer()
-
+  stopAutoPlay()
 })
 
 const goBack = () => router.push('/')
@@ -341,7 +404,7 @@ watch([score, level, letterWeights], () => {
   saveToLocal()
 }, { deep: true })
 
-const playLetterSound = (letter: string) => {
+const playLetterSound = (letter: string, isLearningMode: boolean = false) => {
   // Cancel previous speech to prioritize letter sound
   window.speechSynthesis.cancel()
 
@@ -363,16 +426,28 @@ const playLetterSound = (letter: string) => {
     audio.currentTime = 0
 
     audio.onended = () => {
-      speaking.value = false
-      if (currentAudio === audio) currentAudio = null
+      if (isLearningMode && idLetterMap[upperLetter]) {
+        fallbackToSpeech(idLetterMap[upperLetter].word)
+      } else {
+        speaking.value = false
+        if (currentAudio === audio) currentAudio = null
+      }
     }
 
     audio.play().catch((err) => {
       console.warn(`Failed to play preloaded audio for ${letter}:`, err)
-      fallbackToSpeech(letter)
+      if (isLearningMode && idLetterMap[upperLetter]) {
+        fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`)
+      } else {
+        fallbackToSpeech(letter)
+      }
     })
   } else {
-    fallbackToSpeech(letter)
+    if (isLearningMode && idLetterMap[upperLetter]) {
+      fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`)
+    } else {
+      fallbackToSpeech(letter)
+    }
   }
 }
 
@@ -389,7 +464,7 @@ const startChallenge = async () => {
   isChallengeMode.value = true
   await loadState()
   wrongLetter.value = ''
-  if (level.value >= 2) shuffleLetters()
+  if (level.value >= 2) shuffleChallengeLetters()
   else challengeLetters.value = [...letters]
   targetLetter.value = pickNextLetter(targetLetter.value, targetWeight.value)
   feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
@@ -422,7 +497,54 @@ const speak = (text: string) => {
   window.speechSynthesis.speak(utterance)
 }
 
-const handleLetterClick = (letter: string) => {
+const launchConfetti = () => {
+  const duration = 3000
+  const end = Date.now() + duration
+
+  const frame = () => {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ['#FFD93D', '#6BCB77', '#4D96FF', '#ff9a9a', '#A084E8'],
+      zIndex: 100
+    })
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ['#FFD93D', '#6BCB77', '#4D96FF', '#ff9a9a', '#A084E8'],
+      zIndex: 100
+    })
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame)
+    }
+  }
+  frame()
+}
+
+const popConfetti = (e: Event) => {
+  const target = e.currentTarget as HTMLElement
+  if (!target) return
+  const rect = target.getBoundingClientRect()
+  const x = (rect.left + rect.width / 2) / window.innerWidth
+  const y = (rect.top + rect.height / 2) / window.innerHeight
+  confetti({
+    particleCount: 30,
+    spread: 30,
+    origin: { x, y },
+    colors: ['#FFD93D', '#6BCB77', '#4D96FF', '#ff9a9a', '#A084E8'],
+    ticks: 50,
+    gravity: 0.8,
+    scalar: 0.8,
+    zIndex: 100
+  })
+}
+
+const handleLetterClick = (letter: string, event?: Event) => {
   // In challenge mode, we wait for sounds to finish.
   // In learning mode, we allow interruption for better responsiveness.
   if (speaking.value && isChallengeMode.value) return
@@ -443,6 +565,7 @@ const handleLetterClick = (letter: string) => {
       const leveledUp = checkLevelUp()
       if (leveledUp) {
         feedback.value = { message: `Luar Biasa! Naik Level ${level.value}! 🌟`, type: 'success' }
+        launchConfetti()
       } else {
         feedback.value = { message: streak.value > 2 ? `${streak.value} Beruntun! 🎉` : 'Hebat! Kamu Benar! 🎉', type: 'success' }
       }
@@ -458,7 +581,7 @@ const handleLetterClick = (letter: string) => {
 
       setTimeout(() => {
         if (isChallengeMode.value) {
-          if (level.value >= 2) shuffleLetters()
+          if (level.value >= 2) shuffleChallengeLetters()
           targetLetter.value = nextLetter
           feedback.value = { message: 'Dengarkan suara, lalu pilih huruf yang benar!', type: null }
           startTimer()
@@ -488,7 +611,8 @@ const handleLetterClick = (letter: string) => {
       }, 500)
     }
   } else {
-    playLetterSound(letter)
+    if (event) popConfetti(event)
+    playLetterSound(letter, true)
     // Visual feedback for learning mode
     feedback.value = { message: `${letter} untuk ${idLetterMap[letter]?.word || ''} ${idLetterMap[letter]?.emoji || ''}`, type: null }
     setTimeout(() => {
@@ -522,6 +646,24 @@ const handleLetterClick = (letter: string) => {
           title="Ganti Huruf Besar/Kecil">
           <span class="text-xl md:text-2xl font-black">{{ isUpperCase ? 'abc' : 'ABC' }}</span>
           <span class="font-black text-sm md:text-base hidden sm:inline">{{ isUpperCase ? 'Kecil' : 'Besar' }}</span>
+        </button>
+
+        <!-- Randomize Button (only visible in learning mode) -->
+        <button v-if="!isChallengeMode" @click="toggleRandomize"
+          class="ui-capsule-interactive w-auto border-slate-200 focus:ring-slate-200"
+          :class="isRandomized ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-white text-slate-700'"
+          title="Acak Urutan Huruf">
+          <span class="text-xl md:text-2xl">🎲</span>
+          <span class="font-black text-sm md:text-base hidden sm:inline">{{ isRandomized ? 'Normal' : 'Acak' }}</span>
+        </button>
+
+        <!-- Auto Play Button -->
+        <button v-if="!isChallengeMode" @click="toggleAutoPlay"
+          class="ui-capsule-interactive w-auto border-slate-200 focus:ring-slate-200"
+          :class="isAutoPlaying ? 'bg-indigo-100 text-indigo-700 border-indigo-300' : 'bg-white text-slate-700'"
+          title="Putar Otomatis">
+          <span class="text-xl md:text-2xl">{{ isAutoPlaying ? '⏹️' : '▶️' }}</span>
+          <span class="font-black text-sm md:text-base hidden sm:inline">{{ isAutoPlaying ? 'Berhenti' : 'Otomatis' }}</span>
         </button>
       </div>
     </div>
@@ -640,12 +782,13 @@ const handleLetterClick = (letter: string) => {
     <div class="flex-1 overflow-visible relative px-4 pb-12 w-full max-w-7xl mx-auto custom-scrollbar">
       <div
         class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-9 gap-3 sm:gap-4 lg:gap-5 w-full place-content-start place-items-stretch">
-        <button v-for="letter in (isChallengeMode ? challengeLetters : letters)" :key="letter"
-          @click="handleLetterClick(letter)"
+        <button v-for="(letter, index) in (isChallengeMode ? challengeLetters : learningLetters)" :key="letter"
+          @click="handleLetterClick(letter, $event)"
           class="group relative glass-card flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-[20%] sm:rounded-3xl"
           :class="[
             getLetterColor(letter),
-            wrongLetter === letter ? 'shake-animation bg-red-500 border-4 border-red-800' : 'hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)]'
+            wrongLetter === letter ? 'shake-animation bg-red-500 border-4 border-red-800' : 
+            (isAutoPlaying && index === autoPlayIndex) ? 'scale-110 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.5)] ring-4 ring-white z-20' : 'hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)]'
           ]">
 
           <!-- Glossy Top Highlight -->
@@ -657,7 +800,8 @@ const handleLetterClick = (letter: string) => {
             class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 z-10 w-full h-full transition-transform duration-300"
             :class="!isChallengeMode ? 'group-hover:scale-110' : ''">
             <span
-              class="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none select-none">
+              class="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none select-none"
+              style="font-family: 'Quicksand', sans-serif;">
               {{ isUpperCase ? letter : letter.toLowerCase() }}
             </span>
             <span v-if="!isChallengeMode"
