@@ -1,4 +1,6 @@
 import { reactive, watch } from 'vue'
+import { triggerSync } from './syncService'
+import { profileState } from './profileStore'
 
 export interface Sticker {
   id: string
@@ -16,24 +18,40 @@ export const allAvailableStickers: Sticker[] = [
   { id: 'rainbow_unicorn', emoji: '🦄', name: 'Unicorn Pelangi', requiredScore: 300 },
 ]
 
-const STORAGE_KEY = 'abelma_earned_stickers'
+const STORAGE_KEY = 'abelma_stickers_map'
 
+// Map of profileId -> Array of stickerIds
 const saved = localStorage.getItem(STORAGE_KEY)
-const initialEarned: string[] = saved ? JSON.parse(saved) : []
+const initialStickersMap: Record<string, string[]> = saved ? JSON.parse(saved) : {}
 
-export const earnedStickers = reactive<Set<string>>(new Set(initialEarned))
+export const profileStickersMap = reactive<Record<string, string[]>>(initialStickersMap)
 
-watch(earnedStickers, () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(earnedStickers)))
+watch(profileStickersMap, () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profileStickersMap))
+    triggerSync()
 }, { deep: true })
 
-export const checkAndEarnStickers = (currentScore: number) => {
-    let earnedNew = false
+export const earnedStickers = reactive<Set<string>>(new Set())
+
+// Logic to sync earnedStickers Set with the current profile in the map
+watch(() => profileState.activeProfileId, (profileId) => {
+    const ids = profileStickersMap[profileId] || []
+    earnedStickers.clear()
+    ids.forEach(id => earnedStickers.add(id))
+}, { immediate: true })
+
+// Sync back from Set to Map
+watch(earnedStickers, () => {
+    profileStickersMap[profileState.activeProfileId] = Array.from(earnedStickers)
+}, { deep: true })
+
+export const checkAndEarnStickers = (currentScore: number): Sticker | null => {
+    let earnedSticker: Sticker | null = null
     allAvailableStickers.forEach(sticker => {
         if (currentScore >= sticker.requiredScore && !earnedStickers.has(sticker.id)) {
             earnedStickers.add(sticker.id)
-            earnedNew = true
+            if (!earnedSticker) earnedSticker = sticker
         }
     })
-    return earnedNew
+    return earnedSticker
 }

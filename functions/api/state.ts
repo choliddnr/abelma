@@ -1,11 +1,11 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
-import { belajarHurufGameState } from '../../src/db/schema';
+import { alphabetProgress } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
 
 interface Env {
   abelma: DrizzleD1Database;
 }
-type Ctx =  {env: Env, request: Request}
+type Ctx = { env: Env, request: Request }
 
 export const onRequestGet = async (context: Ctx) => {
   const { env, request } = context;
@@ -19,7 +19,7 @@ export const onRequestGet = async (context: Ctx) => {
     }
 
     const db = drizzle(env.abelma);
-    const results = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
+    const results = await db.select().from(alphabetProgress).where(eq(alphabetProgress.profileId, user)).limit(1);
 
     if (!results || results.length === 0) {
       return new Response(JSON.stringify({ score: 0, level: 0, weights: {} }), { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -29,7 +29,7 @@ export const onRequestGet = async (context: Ctx) => {
       level: results[0].level,
       weights: JSON.parse(results[0].weights)
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } catch (e:any) {
+  } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 }
@@ -38,30 +38,30 @@ export const onRequestPost = async (context: Ctx) => {
   const { request, env } = context;
   try {
     const db = drizzle(env.abelma);
-    const { user, score, level, weights } = await request.json() as any;
+    const { profileId, score, level, weights } = await request.json() as any;
 
-    if (!user) {
+    if (!profileId) {
       return new Response(JSON.stringify({ error: 'Missing user field' }), { status: 400 });
     }
 
-    const existing = await db.select().from(belajarHurufGameState).where(eq(belajarHurufGameState.user, user)).limit(1);
+    const existing = await db.select().from(alphabetProgress).where(eq(alphabetProgress.profileId, profileId)).limit(1);
 
     if (existing.length === 0) {
-      await db.insert(belajarHurufGameState).values({
-        user,
+      await db.insert(alphabetProgress).values({
+        profileId,
         score,
         level,
         weights: JSON.stringify(weights)
       });
     } else {
-      await db.update(belajarHurufGameState)
+      await db.update(alphabetProgress)
         .set({
           score,
           level,
           weights: JSON.stringify(weights),
           updatedAt: new Date().toISOString()
         })
-        .where(eq(belajarHurufGameState.user, user));
+        .where(eq(alphabetProgress.profileId, profileId));
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });

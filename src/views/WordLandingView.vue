@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import MenuCard from '@/components/MenuCard.vue'
+import ProfileSelector from '@/components/ProfileSelector.vue'
+import { getCurrentPoints } from '@/utils/rewardStore'
+import { computed } from 'vue'
 
 const router = useRouter()
+const points = computed(() => getCurrentPoints())
 const goBack = () => router.push('/')
 
 const menuItems = [
@@ -24,7 +28,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-slate-50 relative p-4 md:p-8">
+  <div class="flex flex-col min-h-screen relative p-4 md:p-8">
     
     <!-- Pattern Background -->
     <div class="absolute inset-x-0 top-0 h-96 bg-indigo-50/50 rounded-b-[4rem] md:rounded-b-[8rem] pointer-events-none overflow-hidden">
@@ -32,10 +36,10 @@ const menuItems = [
         <div class="absolute top-12 -right-12 w-48 h-48 bg-emerald-200/40 rounded-full blur-3xl"></div>
     </div>
 
-    <!-- Header -->
-    <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-12">
+    <!-- Header (Animated) -->
+    <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-12 animate-entrance">
       <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm hover:shadow-md transition-all">
+        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
         <span class="text-xl md:text-2xl">🔙</span>
         <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
       </button>
@@ -43,14 +47,16 @@ const menuItems = [
       <div class="flex-1"></div>
 
       <div class="flex gap-2 md:gap-4">
-        <button @click="router.push('/words/stickers')"
-            class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm hover:shadow-md transition-all">
-            <span class="text-xl md:text-2xl">⭐</span>
-            <span class="font-black text-sm md:text-base hidden sm:inline">Koleksi</span>
-        </button>
+        <router-link to="/words/rewards" class="ui-capsule-interactive bg-amber-400 border-amber-500 text-white w-auto px-4 shadow-lg animate-float font-quicksand">
+           🪙 {{ points }} <span class="hidden sm:inline ml-1">Koin</span>
+        </router-link>
+        <router-link to="/words/stickers" class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
+          <span class="text-xl md:text-2xl">🖼️</span>
+          <span class="font-black text-sm md:text-base hidden sm:inline">Koleksi</span>
+        </router-link>
 
         <button @click="router.push('/words/settings')"
-            class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm hover:shadow-md transition-all">
+            class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
             <span class="text-xl md:text-2xl">⚙️</span>
             <span class="font-black text-sm md:text-base hidden sm:inline">Pengaturan</span>
         </button>
@@ -58,8 +64,14 @@ const menuItems = [
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-12 z-10 -mt-12">
-      <div class="text-center space-y-4">
+    <div class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-8 z-10 -mt-8">
+      
+      <!-- Profile Management -->
+      <div class="w-full max-w-md animate-entrance" style="animation-delay: 0.1s;">
+        <ProfileSelector />
+      </div>
+
+      <div class="text-center space-y-4 animate-entrance" style="animation-delay: 0.2s;">
         <h1 class="text-5xl md:text-7xl font-black text-indigo-600 drop-shadow-sm" style="font-family: 'Quicksand', sans-serif;">
           Belajar Kata
         </h1>
@@ -70,10 +82,11 @@ const menuItems = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-3xl">
         <MenuCard
-          v-for="item in menuItems"
+          v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl"
+          class="transform transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl animate-entrance"
+          :style="{ animationDelay: `${0.3 + (index * 0.15)}s` }"
         />
       </div>
     </div>

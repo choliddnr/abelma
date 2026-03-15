@@ -56,6 +56,21 @@ const router = createRouter({
       component: () => import('../views/StickerGalleryView.vue'),
     },
     {
+      path: '/words/rewards',
+      name: 'word-rewards',
+      component: () => import('../views/RewardShopView.vue'),
+    },
+    {
+      path: '/words/settings/rewards',
+      name: 'word-parent-rewards',
+      component: () => import('../views/ParentRewardView.vue')
+    },
+    {
+      path: '/parent',
+      name: 'parent-dashboard',
+      component: () => import('../views/ParentDashboardView.vue')
+    },
+    {
       path: '/words/:category/:word',
       name: 'word-detail',
       component: () => import('../views/WordDetailView.vue'),

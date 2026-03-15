@@ -102,17 +102,17 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
 </script>
 
 <template>
-  <div v-if="wordData" class="flex flex-col gap-4 min-h-screen bg-slate-50">
-    <!-- Header -->
-    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2">
+  <div v-if="wordData" class="flex flex-col gap-4 min-h-screen">
+    <!-- Header (Animated) -->
+    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 animate-entrance">
       <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50 focus:ring-slate-200">
+        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50">
         <span class="text-xl md:text-2xl">🔙</span>
         <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
       </button>
 
       <button @click="goExercise"
-        class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto hover:-translate-y-1 shadow-md">
+        class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-lg shadow-emerald-200">
         <span class="text-xl md:text-2xl font-black">🧩</span>
         <span class="font-black text-sm md:text-base hidden sm:inline">Latihan Mengeja</span>
       </button>
@@ -121,18 +121,18 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
     <!-- Main Content -->
     <div class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-8 md:gap-12 py-8">
 
-      <!-- Top Section: Image & Full Word -->
-      <div class="flex flex-col items-center gap-6 w-full relative">
+      <!-- Top Section: Image & Full Word (Animated) -->
+      <div class="flex flex-col items-center gap-6 w-full relative animate-entrance" style="animation-delay: 0.2s;">
         <!-- Giant Emoji -->
         <button @click="playFullWord"
-          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] border-4 border-slate-100 flex items-center justify-center transition-transform active:scale-95 group">
+          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105">
           <span
-            class="text-8xl md:text-[140px] drop-shadow-lg select-none group-hover:scale-110 transition-transform duration-300">
+            class="text-8xl md:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
             {{ wordData.emoji }}
           </span>
           <!-- Replay Icon Overlay -->
           <div
-            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-slate-100 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-opacity">
+            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
             🔊
           </div>
         </button>
@@ -151,29 +151,30 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
           </button>
         </div>
 
-        <!-- Syllable Boxes -->
+        <!-- Syllable Boxes (Animated Grid) -->
         <div class="flex flex-wrap justify-center gap-4 w-full">
           <button v-for="(syllable, index) in wordData.syllables" :key="index" @click="playSyllable(syllable, index)"
-            class="relative glass-card px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-200 active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-4 border-white overflow-hidden"
+            class="relative glass-card px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-300 active:scale-95 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] border-x-4 border-t-4 border-white overflow-hidden animate-entrance"
             :class="[
               getSyllableColor(index),
-              activeSyllableIndex === index ? 'pop-animation scale-110 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.4)] ring-4 ring-white z-10 brightness-110' : 'hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)]'
-            ]">
+              activeSyllableIndex === index ? 'scale-110 shadow-[0_20px_40px_-5px_rgba(0,0,0,0.4)] ring-6 ring-white z-10 brightness-110' : 'hover:-translate-y-3 hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.3)]'
+            ]"
+            :style="{ animationDelay: `${0.4 + (index * 0.1)}s` }">
 
             <!-- Glossy Top Highlight -->
             <div
-              class="absolute top-0 inset-x-0 h-1/3 bg-linear-to-b from-white/60 to-transparent opacity-80 rounded-t-[inherit] pointer-events-none">
+              class="absolute top-0 inset-x-0 h-1/2 bg-linear-to-b from-white/40 to-transparent opacity-80 rounded-t-[inherit] pointer-events-none">
             </div>
 
             <span
-              class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider"
+              class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_6px_0_rgba(0,0,0,0.15)] tracking-widest relative z-10"
               style="font-family: 'Quicksand', sans-serif;">
               {{ wordSettings.letterCase === 'uppercase' ? syllable.toUpperCase() : syllable.toLowerCase() }}
             </span>
 
-            <!-- Bottom Depth -->
+            <!-- Bottom Depth (3D effect) -->
             <div
-              class="absolute bottom-0 inset-x-0 h-1/5 bg-linear-to-t from-black/20 to-transparent pointer-events-none rounded-b-[inherit]">
+              class="absolute bottom-0 inset-x-0 h-1/5 bg-black/10 pointer-events-none rounded-b-[inherit]">
             </div>
           </button>
         </div>

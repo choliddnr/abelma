@@ -5,6 +5,8 @@ import { wordCategories, type Word } from '@/data/words'
 import confetti from 'canvas-confetti'
 import { wordSettings } from '@/utils/wordSettings'
 import { playWordAudio, playEffectAudio } from '@/utils/audio'
+import { recordMistake } from '@/utils/analyticsStore'
+import { addPoints } from '@/utils/rewardStore'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,6 +74,7 @@ onUnmounted(() => {
 const checkCompletion = () => {
   const currentWord = placedLetters.value.join('')
   if (currentWord === targetWord.value) {
+    addPoints(5) // Bank points for completion
     isComplete.value = true
     playTargetWord()
     popConfetti()
@@ -169,6 +172,9 @@ const onDrop = (e: DragEvent, slotIndex: number) => {
             checkCompletion()
         } else {
             // Wrong placement
+            if (wordData.value) {
+                recordMistake(wordData.value.id)
+            }
             wrongDropIndex.value = slotIndex
             setTimeout(() => {
                 wrongDropIndex.value = null

@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { watch } from 'vue'
 import { authClient } from '@/lib/auth-client'
+import { loadFromCloud } from '@/utils/syncService'
 
 const session = authClient.useSession()
+
+watch(() => session.value.data, (newData) => {
+  if (newData) {
+    loadFromCloud()
+  }
+}, { immediate: true })
 
 const logout = async () => {
   await authClient.signOut()
@@ -38,10 +46,34 @@ const logout = async () => {
 
     <main class="relative z-10 p-4 md:p-8 max-w-7xl mx-auto min-h-[calc(100vh-80px)] flex flex-col">
       <RouterView v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
+        <transition name="page" mode="out-in">
           <component :is="Component" />
         </transition>
       </RouterView>
     </main>
   </div>
 </template>
+
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Global QuickSand font */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+.font-quicksand {
+    font-family: 'Quicksand', sans-serif;
+}
+</style>

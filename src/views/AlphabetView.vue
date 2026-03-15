@@ -3,6 +3,10 @@ import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { authClient } from '@/lib/auth-client'
 import confetti from 'canvas-confetti'
+import { addPoints } from '@/utils/rewardStore'
+import { profileState } from '@/utils/profileStore'
+import { getCurrentAlphabetState } from '@/utils/alphabetStore'
+import { triggerSync } from '@/utils/syncService'
 
 const session = authClient.useSession()
 const colors = [
@@ -48,9 +52,20 @@ const idLetterMap: Record<string, { emoji: string; word: string }> = {
   Z: { emoji: '🦓', word: 'Zebra' },
 }
 
-// Scoring and Challenge State
-const score = ref(0)
-const level = ref(1)
+// Local ref for active state but synced with store
+const alphabetProgress = getCurrentAlphabetState()
+const score = ref(alphabetProgress.score)
+const level = ref(alphabetProgress.level)
+const letterWeights = ref<Record<string, number>>(alphabetProgress.weights)
+
+// Watch for changes to update store and trigger cloud sync
+watch([score, level, letterWeights], () => {
+  alphabetProgress.score = score.value
+  alphabetProgress.level = level.value
+  alphabetProgress.weights = letterWeights.value
+  triggerSync() // Auto-sync to cloud
+}, { deep: true })
+
 const streak = ref(0)
 const maxStreak = ref(0)
 const speaking = ref(false)
@@ -59,7 +74,7 @@ const mistakeMadeInCurrentLevel = ref(false)
 const router = useRouter()
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 const challengeLetters = ref([...letters])
-const STORAGE_KEY = 'abelma-belajar-huruf-state'
+const STORAGE_KEY = computed(() => `abelma-belajar-huruf-state-${profileState.activeProfileId}`)
 
 const shuffleLetters = (arrayToShuffle: string[]) => {
   const array = [...arrayToShuffle]
@@ -134,7 +149,7 @@ watch(speaking, (newVal) => {
   }
 })
 
-const letterWeights = ref<Record<string, number>>({})
+// Weights are now ref linked to alphabetProgress.weights
 
 const initializeWeights = () => {
   const allLetters = [...letters, ...letters.map(l => l.toLowerCase())]
@@ -284,14 +299,9 @@ onUnmounted(() => {
 
 const goBack = () => router.push('/')
 
-// State Persistence Logic
+// State Persistence Logic (Now handled by watch and triggerSync)
 const saveToLocal = () => {
-  const state = {
-    score: score.value,
-    level: level.value,
-    weights: letterWeights.value
-  }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    // No-op, sync handled by store watches
 }
 
 const saveState = async () => {
@@ -324,7 +334,7 @@ const saveState = async () => {
 }
 
 const loadFromLocal = (): boolean => {
-  const saved = localStorage.getItem(STORAGE_KEY)
+  const saved = localStorage.getItem(STORAGE_KEY.value)
   if (saved) {
     try {
       const data = JSON.parse(saved)
@@ -403,6 +413,10 @@ onMounted(() => {
 watch([score, level, letterWeights], () => {
   saveToLocal()
 }, { deep: true })
+
+watch(() => profileState.activeProfileId, () => {
+    loadState()
+})
 
 const playLetterSound = (letter: string, isLearningMode: boolean = false) => {
   // Cancel previous speech to prioritize letter sound
@@ -557,6 +571,7 @@ const handleLetterClick = (letter: string, event?: Event) => {
       const multiplier = Math.min(2, 1 + streak.value * 0.1)
       const points = Math.round(10 * multiplier)
       score.value += points
+      addPoints(points) // Bank points to global economy
 
       // Update the specific case weight
       const caseCorrectLetter = isUpperCase.value ? targetLetter.value : targetLetter.value.toLowerCase()
@@ -671,82 +686,58 @@ const handleLetterClick = (letter: string, event?: Event) => {
     <!-- Mode Specific Dashboard / CTA Area -->
     <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
 
-      <!-- Challenge Dashboard -->
-      <div v-if="isChallengeMode" class="w-full max-w-4xl mx-auto flex flex-col gap-3">
+      <!-- Challenge Dashboard (Premium Refinement) -->
+      <div v-if="isChallengeMode" class="w-full max-w-4xl mx-auto flex flex-col gap-5 animate-entrance">
         <!-- Stats Row -->
-        <div class="flex flex-wrap items-center justify-center gap-2 md:gap-4 w-full">
+        <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4 w-full">
           <!-- Timer -->
           <div v-if="level >= 3"
-            class="ui-capsule bg-rose-50 border-rose-200 w-auto min-w-[80px] md:min-w-[100px] transition-colors duration-300"
-            :class="{ 'animate-pulse bg-rose-100 border-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.5)]': timeLeft <= 3 }">
-            <span class="text-lg md:text-xl">⏱️</span>
-            <span class="text-lg md:text-xl font-black text-rose-600">{{ timeLeft }}s</span>
+            class="ui-capsule bg-rose-50 border-rose-200 w-auto min-w-[90px] md:min-w-[110px] transition-all duration-300"
+            :class="{ 'animate-pulse bg-rose-100 border-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.4)]': timeLeft <= 3 }">
+            <span class="text-xl md:text-2xl animate-bounce">⏱️</span>
+            <span class="text-xl md:text-2xl font-black text-rose-600">{{ timeLeft }}s</span>
+          </div>
+
+          <!-- Target Hero (The "What to find" area) -->
+          <div class="ui-capsule bg-white border-indigo-400 w-auto px-8 py-4 shadow-xl ring-4 ring-indigo-50 animate-pop">
+              <span class="text-xs font-black text-indigo-400 uppercase tracking-widest absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-2 rounded-full border border-indigo-100">Cari Huruf</span>
+              <span class="text-4xl md:text-5xl font-black text-indigo-600 font-quicksand">{{ isUpperCase ? targetLetter : targetLetter.toLowerCase() }}</span>
           </div>
 
           <!-- Streak -->
           <div v-if="streak >= 2"
-            class="ui-capsule bg-orange-50 border-orange-200 animate-bounce w-auto min-w-[70px] md:min-w-[90px]">
+            class="ui-capsule bg-orange-50 border-orange-200 animate-float w-auto min-w-[70px] md:min-w-[90px]">
             <span class="text-lg md:text-xl">🔥</span>
             <span class="text-lg md:text-xl font-black text-orange-600">{{ streak }}</span>
           </div>
 
-          <!-- Level -->
-          <div class="ui-capsule bg-sky-50 border-sky-200 w-auto min-w-[90px] md:min-w-[110px]">
-            <span class="text-lg md:text-xl">📈</span>
-            <div class="flex flex-col items-start leading-none justify-center">
-              <span
-                class="text-[9px] md:text-[10px] font-black text-sky-500 uppercase tracking-widest mb-0.5">Level</span>
-              <span class="text-base md:text-lg font-black text-sky-700 leading-none">{{ level }}</span>
-            </div>
+          <!-- Level/Score Group -->
+          <div class="flex items-center gap-2">
+              <div class="ui-capsule bg-sky-50 border-sky-200 w-auto">
+                <span class="text-lg md:text-xl font-black text-sky-700">Lvl {{ level }}</span>
+              </div>
+              <div class="ui-capsule bg-indigo-50 border-indigo-200 w-auto">
+                <span class="text-lg md:text-xl font-black text-indigo-700">🏆 {{ score }}</span>
+              </div>
           </div>
 
-          <!-- Score -->
-          <div class="ui-capsule bg-indigo-50 border-indigo-200 w-auto min-w-[100px] md:min-w-[120px]">
-            <span class="text-lg md:text-xl">🏆</span>
-            <div class="flex flex-col items-start leading-none justify-center">
-              <span
-                class="text-[9px] md:text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-0.5">Skor</span>
-              <span class="text-base md:text-lg font-black text-indigo-700 leading-none">{{ score }}</span>
-            </div>
-          </div>
-
-          <!-- Actions (Stop & Save) -->
-          <div class="flex items-center gap-2 ml-auto">
-            <button v-if="session.data" @click="saveState"
-              class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-md hover:bg-emerald-400 hover:-translate-y-1">
-              <span class="text-lg md:text-xl">☁️</span>
-              <span class="font-black text-sm md:text-base hidden sm:inline">Simpan</span>
-            </button>
-            <button @click="stopChallenge"
-              class="ui-capsule-interactive bg-rose-500 border-rose-600 text-white w-auto shadow-md hover:bg-rose-400 hover:-translate-y-1">
-              <span class="text-lg md:text-xl">⏹️</span>
-              <span class="font-black text-sm md:text-base hidden sm:inline">Berhenti</span>
-            </button>
-          </div>
+          <!-- Actions -->
+          <button @click="stopChallenge"
+            class="ui-capsule-interactive bg-rose-500 border-rose-600 text-white w-auto shadow-md hover:bg-rose-400">
+            <span class="text-xl">⏹️</span>
+          </button>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="w-full pt-1 pb-2 relative">
-          <div class="flex items-end justify-between mb-1.5 px-1">
-            <span class="text-[10px] md:text-xs font-black text-indigo-400 uppercase tracking-[0.15em]">Progress Level
-              {{ level }}</span>
-            <span class="text-sm md:text-base font-black text-indigo-600 drop-shadow-sm">{{
-              Math.round(progressPercentage) }}%</span>
+        <!-- Progress Bar (Enhanced) -->
+        <div class="w-full pt-2 pb-6 relative">
+          <div class="flex items-end justify-between mb-2 px-2">
+            <span class="text-[10px] md:text-xs font-black text-indigo-400 uppercase tracking-widest">Ayo Semangat!</span>
+            <span class="text-lg font-black text-indigo-600">{{ Math.round(progressPercentage) }}%</span>
           </div>
-          <div
-            class="h-3 md:h-4 bg-indigo-100/80 backdrop-blur-sm rounded-full border border-indigo-200/50 p-[2px] overflow-hidden shadow-inner relative group">
-            <!-- Glossy subtle shine -->
-            <div
-              class="absolute inset-x-0 top-0 h-1/2 bg-linear-to-b from-white/40 to-transparent pointer-events-none z-10 rounded-t-full">
-            </div>
-
-            <div
-              class="h-full bg-linear-to-r from-indigo-400 via-purple-400 to-pink-500 rounded-full transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] relative shadow-[0_0_12px_rgba(168,85,247,0.4)]"
+          <div class="h-5 md:h-6 bg-slate-100/50 backdrop-blur-sm rounded-full border-4 border-white shadow-inner relative group">
+            <div class="h-full bg-linear-to-r from-indigo-400 via-purple-400 to-pink-500 rounded-full transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)] relative shadow-lg"
               :style="{ width: `${progressPercentage}%` }">
-              <!-- Animated pulse tip -->
-              <div
-                class="absolute right-0.5 top-1/2 -translate-y-1/2 w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full blur-[2px] animate-pulse">
-              </div>
+              <div class="absolute inset-0 bg-linear-to-b from-white/30 to-transparent rounded-full"></div>
             </div>
           </div>
         </div>
@@ -784,12 +775,13 @@ const handleLetterClick = (letter: string, event?: Event) => {
         class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-9 gap-3 sm:gap-4 lg:gap-5 w-full place-content-start place-items-stretch">
         <button v-for="(letter, index) in (isChallengeMode ? challengeLetters : learningLetters)" :key="letter"
           @click="handleLetterClick(letter, $event)"
-          class="group relative glass-card flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-[20%] sm:rounded-3xl"
+          class="group relative glass-card flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-[20%] sm:rounded-3xl animate-entrance"
           :class="[
             getLetterColor(letter),
             wrongLetter === letter ? 'shake-animation bg-red-500 border-4 border-red-800' : 
-            (isAutoPlaying && index === autoPlayIndex) ? 'scale-110 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.5)] ring-4 ring-white z-20' : 'hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)]'
-          ]">
+            (isAutoPlaying && index === autoPlayIndex) ? 'scale-110 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.5)] ring-4 ring-white z-20' : 'hover:-translate-y-2 hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.2)] shadow-[0_10px_20px_-5px_rgba(0,0,0,0.1)]'
+          ]"
+          :style="{ animationDelay: `${index * 0.05}s` }">
 
           <!-- Glossy Top Highlight -->
           <div

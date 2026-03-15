@@ -4,8 +4,10 @@ import { useRouter } from 'vue-router'
 import { wordCategories, type Word } from '@/data/words'
 import confetti from 'canvas-confetti'
 import { wordSettings } from '@/utils/wordSettings'
-import { checkAndEarnStickers } from '@/utils/stickerStore'
+import { checkAndEarnStickers, type Sticker } from '@/utils/stickerStore'
 import { playWordAudio, playEffectAudio } from '@/utils/audio'
+import { recordMistake } from '@/utils/analyticsStore'
+import { addPoints } from '@/utils/rewardStore'
 
 const router = useRouter()
 const goBack = () => router.push('/words')
@@ -35,6 +37,10 @@ const wrongDropIndex = ref<number | null>(null)
 const draggedItemIndex = ref<number | null>(null)
 const hoveredSlotIndex = ref<number | null>(null)
 
+// Sticker Reveal State
+const newSticker = ref<Sticker | null>(null)
+const showStickerModal = ref(false)
+
 const currentLevel = computed(() => {
     if (score.value < 50) return 1
     if (score.value < 100) return 2
@@ -63,6 +69,9 @@ const startTimer = () => {
 }
 
 const handleTimeUp = () => {
+    if (currentTarget.value) {
+        recordMistake(currentTarget.value.id)
+    }
     playWordAudio("Waktu habis! Ayo coba yang ini.")
     setTimeout(initQuestion, 1500)
 }
@@ -183,6 +192,7 @@ const onDrop = (slotIndex: number) => {
             handleCorrect()
         }
     } else {
+        recordMistake(currentTarget.value.id)
         wrongDropIndex.value = slotIndex
         playErrorAudio()
         setTimeout(() => {
@@ -203,11 +213,15 @@ const handleCorrect = () => {
     if (timerInterval) clearInterval(timerInterval)
     popConfetti()
     score.value += 10
+    addPoints(10) // Banking points
     
     playEffectAudio('correct')
 
     // Check for stickers
-    if (checkAndEarnStickers(score.value)) {
+    const earned = checkAndEarnStickers(score.value)
+    if (earned) {
+        newSticker.value = earned
+        showStickerModal.value = true
         popStickerCelebration()
     }
     
@@ -233,18 +247,20 @@ const playErrorAudio = () => {
     playEffectAudio('wrong')
 }
 
+const isCorrecting = ref(false) // Added this line
+
 const handleChoice = (word: Word) => {
-    if (!currentTarget.value) return
+    if (!currentTarget.value || isCorrecting.value) return
     
     if (word.id === currentTarget.value.id) {
         handleCorrect()
     } else {
-        // Incorrect
-        wrongChoiceId.value = word.id
+        recordMistake(currentTarget.value.id)
         playErrorAudio()
+        isCorrecting.value = true
         setTimeout(() => {
-            wrongChoiceId.value = null
-        }, 500)
+            isCorrecting.value = false
+        }, 800)
     }
 }
 
@@ -315,38 +331,76 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-slate-50 relative overflow-hidden">
+  <div class="flex flex-col min-h-screen relative overflow-hidden">
       
-    <!-- Win Celebration Overlay -->
-    <div v-if="isWin" class="absolute inset-0 z-50 flex flex-col gap-8 items-center justify-center bg-white/60 backdrop-blur-md transition-all duration-1000">
-        <h1 class="text-7xl md:text-9xl font-black text-amber-500 drop-shadow-[0_10px_0_rgba(245,158,11,0.3)] animate-bounce" style="font-family: 'Quicksand', sans-serif;">
-            LUAR BIASA!
-        </h1>
-        <div class="flex gap-4">
-            <button @click="goBack" class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all">
-                <span class="text-2xl md:text-3xl text-slate-700">🏠</span>
-                <span class="font-black text-lg md:text-xl text-slate-700">Menu</span>
+    <!-- Win Celebration Overlay (Premium Redesign) -->
+    <div v-if="isWin" class="absolute inset-0 z-100 flex flex-col gap-10 items-center justify-center bg-white/60 backdrop-blur-xl animate-in fade-in duration-1000">
+        <div class="relative animate-bounce">
+            <h1 class="text-7xl md:text-9xl font-black text-amber-500 drop-shadow-[0_12px_0_rgba(245,158,11,0.2)] font-quicksand">
+                LUAR BIASA!
+            </h1>
+            <div class="absolute -top-10 -right-10 text-6xl animate-float">🌟</div>
+            <div class="absolute -bottom-10 -left-10 text-6xl animate-float" style="animation-delay: 1s;">✨</div>
+        </div>
+        
+        <div class="bg-linear-to-r from-amber-400 to-orange-500 text-white px-10 py-5 rounded-[2.5rem] font-black text-4xl shadow-2xl border-4 border-white animate-pop">
+            +{{ score }} KOIN! 🪙
+        </div>
+        
+        <div class="flex gap-6 animate-entrance" style="animation-delay: 0.5s;">
+            <button @click="goBack" class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-xl">
+                <span class="text-2xl md:text-3xl">🏠</span>
+                <span class="font-black text-lg md:text-xl">Menu</span>
             </button>
-            <button @click="() => { isWin = false; score = 0; initQuestion() }" class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all">
-                <span class="text-2xl md:text-3xl text-white">🔄</span>
-                <span class="font-black text-lg md:text-xl text-white">Main Lagi</span>
+            <button @click="() => { isWin = false; score = 0; initQuestion() }" class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-xl shadow-emerald-200">
+                <span class="text-2xl md:text-3xl">🔄</span>
+                <span class="font-black text-lg md:text-xl">Main Lagi</span>
             </button>
         </div>
     </div>
 
-    <!-- Header & Score -->
-    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 z-10 w-full max-w-5xl mx-auto">
+    <!-- New Sticker Reveal Modal -->
+    <div v-if="showStickerModal && newSticker" 
+         class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xl animate-in fade-in duration-500">
+        
+        <div class="glass-card bg-white w-full max-w-sm p-8 flex flex-col items-center gap-6 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border-t-8 border-amber-400 animate-in zoom-in-95 duration-500">
+            <div class="absolute -top-12 -left-4 text-6xl animate-bounce">🎈</div>
+            <div class="absolute -top-12 -right-4 text-6xl animate-bounce [animation-delay:0.2s]">🎈</div>
+            
+            <h2 class="text-3xl font-black text-slate-800 text-center font-quicksand">Stiker Baru!</h2>
+            
+            <div class="w-48 h-48 bg-amber-50 rounded-full flex items-center justify-center border-4 border-amber-100 shadow-inner relative group">
+                <div class="absolute inset-0 bg-amber-400/20 rounded-full animate-ping opacity-20"></div>
+                <span class="text-[8rem] drop-shadow-lg transform transition-transform group-hover:scale-110 group-hover:rotate-6">
+                    {{ newSticker.emoji }}
+                </span>
+            </div>
+            
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-indigo-600 font-quicksand">{{ newSticker.name }}</h3>
+                <p class="text-slate-500 font-bold">Keren! Koleksi stikermu bertambah!</p>
+            </div>
+            
+            <button @click="showStickerModal = false" 
+                class="ui-capsule-interactive bg-amber-400 border-amber-500 text-slate-900 w-full text-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+                Lanjut Main! 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Header & Score (Animated) -->
+    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 z-10 w-full max-w-5xl mx-auto animate-entrance">
       <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm hover:shadow-md transition-all">
+        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
         <span class="text-xl md:text-2xl">🔙</span>
         <span class="font-black text-sm md:text-base hidden sm:inline">Menyerah</span>
       </button>
 
       <div class="flex gap-2 md:gap-4">
-        <div class="bg-white text-slate-700 px-4 md:px-6 py-2 rounded-full font-black text-lg md:text-xl border-4 border-slate-100 shadow-sm font-quicksand flex items-center">
+        <div class="ui-capsule bg-white border-slate-100 text-slate-700 w-auto px-4 shadow-sm">
             🚀 Level {{ currentLevel }}
         </div>
-        <div class="bg-indigo-100 text-indigo-700 px-4 md:px-6 py-2 rounded-full font-black text-lg md:text-xl border-4 border-white shadow-sm font-quicksand flex items-center">
+        <div class="ui-capsule bg-indigo-500 border-indigo-600 text-white w-auto px-6 shadow-lg shadow-indigo-100 animate-float">
             ⭐ {{ score }} / {{ maxScore }}
         </div>
       </div>
