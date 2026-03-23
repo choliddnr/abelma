@@ -2,9 +2,8 @@ import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
 import { alphabetProgress } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
 
-interface Env {
-  abelma: DrizzleD1Database;
-}
+import type { Env } from '../../src/types/env';
+
 type Ctx = { env: Env, request: Request }
 
 export const onRequestGet = async (context: Ctx) => {
@@ -29,7 +28,7 @@ export const onRequestGet = async (context: Ctx) => {
       level: results[0].level,
       weights: JSON.parse(results[0].weights)
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } catch (e: any) {
+  } catch (e) {
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 }
@@ -38,7 +37,12 @@ export const onRequestPost = async (context: Ctx) => {
   const { request, env } = context;
   try {
     const db = drizzle(env.abelma);
-    const { profileId, score, level, weights } = await request.json() as any;
+    const { profileId, score, level, weights } = await request.json() as { 
+      profileId: string, 
+      score: number, 
+      level: number, 
+      weights: Record<string, number> 
+    };
 
     if (!profileId) {
       return new Response(JSON.stringify({ error: 'Missing user field' }), { status: 400 });

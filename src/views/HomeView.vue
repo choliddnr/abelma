@@ -29,6 +29,13 @@ const menuItems = [
     icon: '🎮',
     colorClass: 'bg-[#4D96FF] text-white',
     to: '/games'
+  },
+  {
+    title: 'Buku Huruf',
+    subtitle: 'Cerita A–Z',
+    icon: '📖',
+    colorClass: 'bg-[#A084E8] text-white',
+    to: '/storybook'
   }
 ]
 </script>
@@ -80,7 +87,7 @@ const menuItems = [
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+      <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full">
         <MenuCard
           v-for="(item, index) in menuItems"
           :key="item.title"

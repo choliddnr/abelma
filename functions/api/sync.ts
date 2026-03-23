@@ -3,20 +3,15 @@ import { eq, and } from 'drizzle-orm';
 import * as schema from '../../src/db/schema';
 import { getAuth } from '../../src/lib/auth';
 
-interface Env {
-  abelma: D1Database;
-  BETTER_AUTH_SECRET: string;
-  GOOGLE_CLIENT_ID: string;
-  GOOGLE_CLIENT_SECRET: string;
-  BETTER_AUTH_URL?: string;
-}
+import type { Env } from '../../src/types/env';
+import type { CloudProfile } from '../../src/types/sync';
 
 type Ctx = { env: Env, request: Request };
 
 export const onRequestGet = async (context: Ctx) => {
   const { env, request } = context;
   const db = drizzle(env.abelma, { schema });
-  const auth = getAuth(db as any, env);
+  const auth = getAuth(db, env);
   
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) {
@@ -45,7 +40,7 @@ export const onRequestGet = async (context: Ctx) => {
 export const onRequestPost = async (context: Ctx) => {
   const { env, request } = context;
   const db = drizzle(env.abelma, { schema });
-  const auth = getAuth(db as any, env);
+  const auth = getAuth(db, env);
   
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session) {
@@ -53,7 +48,7 @@ export const onRequestPost = async (context: Ctx) => {
   }
 
   const userId = session.user.id;
-  const payload = await request.json() as any[];
+  const payload = await request.json() as CloudProfile[];
 
   // Expected payload: array of profiles with their associated data
   // We'll perform a batch upsert
@@ -157,7 +152,8 @@ export const onRequestPost = async (context: Ctx) => {
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  } catch (e) {
+    const error = e as Error;
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 };

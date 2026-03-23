@@ -81,6 +81,11 @@ const router = createRouter({
       component: () => import('../views/WordChallengeView.vue'),
     },
     {
+      path: '/storybook',
+      name: 'alphabet-storybook',
+      component: () => import('../views/AlphabetStorybookView.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue'),
