@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { wordSettings } from '@/utils/wordSettings'
+import { useSettingsStore } from '@/stores'
 
 const router = useRouter()
+const settingsStore = useSettingsStore()
 const goBack = () => router.push('/words')
 </script>
 
@@ -24,17 +25,17 @@ const goBack = () => router.push('/words')
             </h3>
             <div class="flex gap-4">
                 <button 
-                    @click="wordSettings.letterCase = 'uppercase'"
+                    @click="settingsStore.settings.letterCase = 'uppercase'"
                     class="flex-1 p-6 rounded-3xl border-4 transition-all flex flex-col items-center gap-2"
-                    :class="wordSettings.letterCase === 'uppercase' ? 'bg-indigo-50 border-indigo-500 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
+                    :class="settingsStore.settings.letterCase === 'uppercase' ? 'bg-indigo-50 border-indigo-500 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
                 >
                     <span class="text-4xl font-black font-quicksand text-indigo-600">ABC</span>
                     <span class="font-bold text-slate-600">Huruf Kapital</span>
                 </button>
                 <button 
-                    @click="wordSettings.letterCase = 'lowercase'"
+                    @click="settingsStore.settings.letterCase = 'lowercase'"
                     class="flex-1 p-6 rounded-3xl border-4 transition-all flex flex-col items-center gap-2"
-                    :class="wordSettings.letterCase === 'lowercase' ? 'bg-indigo-50 border-indigo-500 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
+                    :class="settingsStore.settings.letterCase === 'lowercase' ? 'bg-indigo-50 border-indigo-500 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
                 >
                     <span class="text-4xl font-black font-quicksand text-indigo-600">abc</span>
                     <span class="font-bold text-slate-600">Huruf Kecil</span>
@@ -49,23 +50,23 @@ const goBack = () => router.push('/words')
             </h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <button 
-                    @click="wordSettings.timerDuration = 60"
+                    @click="settingsStore.settings.timerDuration = 60"
                     class="p-4 rounded-2xl border-4 transition-all font-bold"
-                    :class="wordSettings.timerDuration === 60 ? 'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
+                    :class="settingsStore.settings.timerDuration === 60 ? 'bg-emerald-50 border-emerald-500 text-emerald-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
                 >
                     Lambat (60s)
                 </button>
                 <button 
-                    @click="wordSettings.timerDuration = 30"
+                    @click="settingsStore.settings.timerDuration = 30"
                     class="p-4 rounded-2xl border-4 transition-all font-bold"
-                    :class="wordSettings.timerDuration === 30 ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
+                    :class="settingsStore.settings.timerDuration === 30 ? 'bg-blue-50 border-blue-500 text-blue-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
                 >
                     Normal (30s)
                 </button>
                 <button 
-                    @click="wordSettings.timerDuration = 0"
+                    @click="settingsStore.settings.timerDuration = 0"
                     class="p-4 rounded-2xl border-4 transition-all font-bold"
-                    :class="wordSettings.timerDuration === 0 ? 'bg-slate-50 border-slate-500 text-slate-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
+                    :class="settingsStore.settings.timerDuration === 0 ? 'bg-slate-50 border-slate-500 text-slate-700 shadow-md' : 'bg-white border-slate-100 opacity-60 hover:opacity-100'"
                 >
                     Tanpa Waktu
                 </button>

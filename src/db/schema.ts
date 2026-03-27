@@ -57,8 +57,19 @@ export const alphabetProgress = sqliteTable('alphabet_progress', {
   score: integer('score').notNull().default(0),
   level: integer('level').notNull().default(1),
   weights: text('weights').notNull().default('{}'),
+  challengeConfig: text('challenge_config').notNull().default('[]'),
   updatedAt: text('updated_at').notNull().$defaultFn(() => new Date().toISOString())
 });
+
+export const storybookProgress = sqliteTable('storybook_progress', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  profileId: text('profile_id').notNull().references(() => profiles.id, { onDelete: 'cascade' }),
+  letter: text('letter').notNull(),
+  isCompleted: integer('is_completed', { mode: 'boolean' }).notNull().default(false),
+  lastRead: text('last_read').notNull().$defaultFn(() => new Date().toISOString())
+}, (table) => [
+  uniqueIndex('storybook_unique_idx').on(table.profileId, table.letter)
+]);
 
 export const userRelations = relations(user, ({ many }) => ({
   profiles: many(profiles)
@@ -75,7 +86,8 @@ export const profileRelations = relations(profiles, ({ one, many }) => ({
   alphabetProgress: one(alphabetProgress, {
     fields: [profiles.id],
     references: [alphabetProgress.profileId]
-  })
+  }),
+  storybookProgress: many(storybookProgress)
 }));
 
 export const rewardRelations = relations(rewards, ({ one }) => ({
@@ -88,6 +100,13 @@ export const rewardRelations = relations(rewards, ({ one }) => ({
 export const analyticsRelations = relations(analytics, ({ one }) => ({
   profile: one(profiles, {
     fields: [analytics.profileId],
+    references: [profiles.id]
+  })
+}));
+
+export const storybookProgressRelations = relations(storybookProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [storybookProgress.profileId],
     references: [profiles.id]
   })
 }));

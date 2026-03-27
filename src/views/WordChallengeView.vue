@@ -3,13 +3,16 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { wordCategories, type Word } from '@/data/words'
 import confetti from 'canvas-confetti'
-import { wordSettings } from '@/utils/wordSettings'
+import { useSettingsStore, useAnalyticsStore, useRewardStore, useProfileStore } from '@/stores'
 import { playWordAudio, playEffectAudio } from '@/utils/audio'
-import { recordMistake } from '@/utils/analyticsStore'
-import { addPoints } from '@/utils/rewardStore'
+import BubbleCard from '@/components/BubbleCard.vue'
 
 const route = useRoute()
 const router = useRouter()
+const settingsStore = useSettingsStore()
+const analyticsStore = useAnalyticsStore()
+const rewardStore = useRewardStore()
+const profileStore = useProfileStore()
 
 const categoryId = route.params.category as string
 const wordId = route.params.word as string
@@ -74,7 +77,7 @@ onUnmounted(() => {
 const checkCompletion = () => {
   const currentWord = placedLetters.value.join('')
   if (currentWord === targetWord.value) {
-    addPoints(5) // Bank points for completion
+    rewardStore.addPoints(5) // Bank points for completion
     isComplete.value = true
     playTargetWord()
     popConfetti()
@@ -172,8 +175,8 @@ const onDrop = (e: DragEvent, slotIndex: number) => {
             checkCompletion()
         } else {
             // Wrong placement
-            if (wordData.value) {
-                recordMistake(wordData.value.id)
+            if (wordData.value && profileStore.activeProfileId) {
+                analyticsStore.recordMistake(profileStore.activeProfileId, 'word', wordData.value.id)
             }
             wrongDropIndex.value = slotIndex
             setTimeout(() => {
@@ -203,7 +206,7 @@ const putBackLetter = (slotIndex: number) => {
     
     <!-- Celebration Overlay -->
     <div v-if="isComplete" class="absolute inset-0 z-50 flex flex-col gap-8 items-center justify-center bg-white/40 backdrop-blur-sm transition-all duration-1000">
-        <h1 class="text-7xl md:text-9xl font-black text-emerald-500 drop-shadow-[0_10px_0_rgba(16,185,129,0.3)] animate-bounce" style="font-family: 'Quicksand', sans-serif;">
+        <h1 class="text-7xl md:text-9xl font-black text-emerald-500 drop-shadow-[0_10px_0_rgba(16,185,129,0.3)] animate-bounce font-quicksand">
             HEBAT!
         </h1>
         <button @click="router.push('/words')" class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all">
@@ -232,9 +235,8 @@ const putBackLetter = (slotIndex: number) => {
     </div>
 
     <!-- Main Game Area -->
-    <div class="flex-1 px-4 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-16 md:gap-24 py-8">
-      
-      <!-- Drop Zones (Target Slots) -->
+    <div class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 max-w-6xl mx-auto w-full p-2 overflow-hidden pt-2">
+      <!-- Target Slots -->
       <div class="flex flex-wrap justify-center gap-3 md:gap-6 w-full">
           <div v-for="(slot, index) in placedLetters" :key="`slot-${index}`"
                @click="placedLetters[index] !== null ? putBackLetter(index) : undefined"
@@ -248,14 +250,13 @@ const putBackLetter = (slotIndex: number) => {
                      ? 'bg-emerald-400 border-white shadow-[0_10px_20px_rgba(52,211,153,0.4)] scale-105 cursor-pointer' 
                      : 'bg-slate-100 border-dashed border-slate-300 shadow-inner',
                    wrongDropIndex === index ? 'shake-animation bg-rose-400 border-rose-500' : '',
-                   hoveredSlotIndex === index && placedLetters[index] === null ? 'ring-4 ring-indigo-300 bg-indigo-50 border-indigo-300 scale-105 shadow-[0_10px_20px_rgba(99,102,241,0.2)]' : ''
+                   hoveredSlotIndex === index && placedLetters[index] === null ? 'ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]' : ''
                ]">
                
               <span v-if="placedLetters[index] !== null" 
-                    class="text-5xl md:text-[5rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none" 
-                    :class="{ 'pop-animation': true }"
-                    style="font-family: 'Quicksand', sans-serif;">
-                  {{ wordSettings.letterCase === 'uppercase' ? placedLetters[index]?.toUpperCase() : placedLetters[index]?.toLowerCase() }}
+                    class="text-5xl md:text-[5rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none font-quicksand" 
+                    :class="{ 'pop-animation': true }">
+                  {{ settingsStore.settings.letterCase === 'uppercase' ? placedLetters[index]?.toUpperCase() : placedLetters[index]?.toLowerCase() }}
               </span>
           </div>
       </div>
@@ -263,31 +264,26 @@ const putBackLetter = (slotIndex: number) => {
       <!-- Draggable Items (Available Letters) -->
       <div class="w-full">
           <!-- Instruction -->
-          <p class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest" style="font-family: 'Quicksand', sans-serif;">
+          <p class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest font-quicksand">
               {{ isComplete ? 'Luar biasa!' : 'Tarik huruf ke dalam kotak kosong' }}
           </p>
 
           <div class="flex flex-wrap justify-center gap-3 md:gap-4 w-full p-4 md:p-8 bg-white/50 backdrop-blur-md rounded-[3rem] border-t-4 border-white shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.1)] min-h-[160px]">
-              <div v-for="(item, index) in availableLetters" :key="item.id"
+              <BubbleCard v-for="(item, index) in availableLetters" :key="item.id"
                       draggable="true"
                       @dragstart="onDragStart($event, index)"
                       @dragend="onDragEnd(index)"
-                      class="relative glass-card w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl flex items-center justify-center transition-all duration-200 active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-4 border-white overflow-hidden bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)]"
+                      class="w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300"
                       :class="[
-                          item.isDragging ? 'opacity-20 scale-95' : 'opacity-100',
+                          item.isDragging ? 'opacity-20 scale-95 rotate-6' : 'opacity-100',
                           isComplete ? 'opacity-0 scale-50 pointer-events-none' : ''
                       ]">
                   
-                  <!-- Glossy Top Highlight -->
-                  <div class="absolute top-0 inset-x-0 h-1/3 bg-linear-to-b from-white/60 to-transparent opacity-80 rounded-t-[inherit] pointer-events-none"></div>
-
-                  <span class="text-4xl md:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none" style="font-family: 'Quicksand', sans-serif;">
-                      {{ wordSettings.letterCase === 'uppercase' ? item.letter.toUpperCase() : item.letter.toLowerCase() }}
+                  <span class="text-4xl md:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none font-quicksand">
+                      {{ settingsStore.settings.letterCase === 'uppercase' ? item.letter.toUpperCase() : item.letter.toLowerCase() }}
                   </span>
                   
-                  <!-- Bottom Depth -->
-                  <div class="absolute bottom-0 inset-x-0 h-1/5 bg-linear-to-t from-black/20 to-transparent pointer-events-none rounded-b-[inherit]"></div>
-              </div>
+              </BubbleCard>
           </div>
       </div>
 

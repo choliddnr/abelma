@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import MenuCard from '@/components/MenuCard.vue'
-import ProfileSelector from '@/components/ProfileSelector.vue'
-import { getCurrentPoints } from '@/utils/rewardStore'
-import { computed } from 'vue'
 
 const router = useRouter()
-const points = computed(() => getCurrentPoints())
-const goBack = () => router.push('/')
+// Reward store/Points handled by GlobalHeader
+
 
 const menuItems = [
   {
@@ -30,26 +27,13 @@ const menuItems = [
 <template>
   <div class="flex flex-col min-h-screen relative p-4 md:p-8">
     
-    <!-- Pattern Background -->
-    <div class="absolute inset-x-0 top-0 h-96 bg-indigo-50/50 rounded-b-[4rem] md:rounded-b-[8rem] pointer-events-none overflow-hidden">
-        <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-200/40 rounded-full blur-3xl"></div>
-        <div class="absolute top-12 -right-12 w-48 h-48 bg-emerald-200/40 rounded-full blur-3xl"></div>
-    </div>
+    <!-- Full-screen Frosted Overlay -->
+    <div class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"></div>
 
-    <!-- Header (Animated) -->
-    <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-12 animate-entrance">
-      <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
-        <span class="text-xl md:text-2xl">🔙</span>
-        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
-      </button>
-
+    <!-- View Actions (Contextual items not in Global Header) -->
+    <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-4 animate-entrance">
       <div class="flex-1"></div>
-
       <div class="flex gap-2 md:gap-4">
-        <router-link to="/words/rewards" class="ui-capsule-interactive bg-amber-400 border-amber-500 text-white w-auto px-4 shadow-lg animate-float font-quicksand">
-           🪙 {{ points }} <span class="hidden sm:inline ml-1">Koin</span>
-        </router-link>
         <router-link to="/words/stickers" class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm">
           <span class="text-xl md:text-2xl">🖼️</span>
           <span class="font-black text-sm md:text-base hidden sm:inline">Koleksi</span>
@@ -64,12 +48,9 @@ const menuItems = [
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-8 z-10 -mt-8">
+    <div class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-6 md:gap-10 z-10 mt-2">
       
-      <!-- Profile Management -->
-      <div class="w-full max-w-md animate-entrance" style="animation-delay: 0.1s;">
-        <ProfileSelector />
-      </div>
+
 
       <div class="text-center space-y-4 animate-entrance" style="animation-delay: 0.2s;">
         <h1 class="text-5xl md:text-7xl font-black text-indigo-600 drop-shadow-sm" style="font-family: 'Quicksand', sans-serif;">

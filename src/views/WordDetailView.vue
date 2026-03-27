@@ -3,11 +3,12 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { wordCategories } from '@/data/words'
 import confetti from 'canvas-confetti'
-import { wordSettings } from '@/utils/wordSettings'
+import { useSettingsStore } from '@/stores'
 import { playSyllableAudio, playWordAudio } from '@/utils/audio'
 
 const route = useRoute()
 const router = useRouter()
+const settingsStore = useSettingsStore()
 
 const categoryId = route.params.category as string
 const wordId = route.params.word as string
@@ -169,7 +170,7 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
             <span
               class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_6px_0_rgba(0,0,0,0.15)] tracking-widest relative z-10"
               style="font-family: 'Quicksand', sans-serif;">
-              {{ wordSettings.letterCase === 'uppercase' ? syllable.toUpperCase() : syllable.toLowerCase() }}
+              {{ settingsStore.settings.letterCase === 'uppercase' ? syllable.toUpperCase() : syllable.toLowerCase() }}
             </span>
 
             <!-- Bottom Depth (3D effect) -->

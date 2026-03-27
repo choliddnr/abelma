@@ -1,99 +1,188 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { profileState, activeProfile, createProfile } from '@/utils/profileStore'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { useProfileStore, useSyncStore } from '@/stores'
 
-const showAddModal = ref(false)
-const newName = ref('')
-const newAvatar = ref('🧒')
-const avatars = ['🧒', '👧', '👶', '🦁', '🐯', '🐼', '🦖', '🦄']
+const profileStore = useProfileStore()
+const syncStore = useSyncStore()
+const showDropdown = ref(false)
 
-const handleAddProfile = () => {
-    if (newName.value.trim()) {
-        createProfile(newName.value.trim(), newAvatar.value)
-        newName.value = ''
-        showAddModal.value = false
+// Parent Gate State
+const showGate = ref(false)
+const pendingProfileId = ref<string | null>(null)
+const num1 = ref(0)
+const num2 = ref(0)
+const userAnswer = ref<string>('')
+const gateError = ref(false)
+const answerInput = ref<HTMLInputElement | null>(null)
+
+const toggleDropdown = (e: Event) => {
+  e.stopPropagation()
+  showDropdown.value = !showDropdown.value
+}
+
+const startSwitch = (id: string) => {
+  if (profileStore.activeProfile && id === profileStore.activeProfile.id) {
+    showDropdown.value = false
+    return
+  }
+
+  showDropdown.value = false
+  pendingProfileId.value = id
+  num1.value = Math.floor(Math.random() * 5) + 2
+  num2.value = Math.floor(Math.random() * 5) + 2
+  userAnswer.value = ''
+  gateError.value = false
+  showGate.value = true
+
+  // Auto focus input
+  nextTick(() => {
+    answerInput.value?.focus()
+  })
+}
+
+const confirmSwitch = () => {
+  const total = num1.value + num2.value
+  const answer = parseInt(userAnswer.value)
+
+  if (answer === total) {
+    if (pendingProfileId.value) {
+      profileStore.selectProfile(pendingProfileId.value)
+      syncStore.triggerSync().catch(console.error)
     }
+    showGate.value = false
+    pendingProfileId.value = null
+    userAnswer.value = ''
+  } else {
+    gateError.value = true
+    userAnswer.value = ''
+    num1.value = Math.floor(Math.random() * 5) + 2
+    num2.value = Math.floor(Math.random() * 5) + 2
+    nextTick(() => {
+      answerInput.value?.focus()
+    })
+  }
 }
 
-const handleSwitch = (id: string) => {
-    profileState.activeProfileId = id
+const cancelGate = () => {
+  showGate.value = false
+  pendingProfileId.value = null
+  userAnswer.value = ''
 }
+
+// Click outside logic
+const dropdownRef = ref<HTMLElement | null>(null)
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
+    showDropdown.value = false
+  }
+}
+
+onMounted(() => document.addEventListener('click', handleClickOutside))
+onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 </script>
 
 <template>
-  <div v-if="activeProfile" class="flex flex-col gap-4 w-full">
-    <!-- Current Profile Header -->
-    <div class="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-2xl border border-white shadow-sm">
-        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-2xl shadow-inner">
-            {{ activeProfile.avatar }}
-        </div>
-        <div class="flex-1">
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Profil Aktif</p>
-            <p class="font-black text-slate-700 font-quicksand">{{ activeProfile.name }}</p>
-        </div>
-        <button @click="showAddModal = true" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-xl hover:bg-slate-200 transition-colors">
-            ➕
+  <div v-if="profileStore.activeProfile" class="relative" ref="dropdownRef">
+    <!-- Active Profile Trigger -->
+    <button @click.stop="toggleDropdown"
+      class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto px-2 md:px-3 h-10 md:h-12 shadow-sm hover:border-indigo-300 transition-all flex items-center gap-1.5 md:gap-2">
+      <span class="text-xl md:text-2xl filter drop-shadow-sm">{{ profileStore.activeProfile.avatar }}</span>
+      <span class="font-black text-xs md:text-sm hidden md:inline truncate max-w-[80px]">{{
+        profileStore.activeProfile.name
+      }}</span>
+      <span class="text-[8px] md:text-[10px] opacity-40 transition-transform duration-300"
+        :class="showDropdown ? 'rotate-180' : ''">▼</span>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div v-if="showDropdown"
+      class="absolute right-0 top-full mt-2 w-48 bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-indigo-50 p-2 z-50 animate-in fade-in zoom-in-95 duration-200">
+      <div class="px-3 py-2 border-b border-slate-50 mb-1 text-center">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ganti Profil</p>
+      </div>
+      <div class="flex flex-col gap-1 max-h-64 overflow-y-auto custom-scrollbar">
+        <button v-for="profile in profileStore.allProfiles" :key="profile.id" @click.stop="startSwitch(profile.id)"
+          class="flex items-center gap-3 p-2 rounded-2xl transition-all w-full text-left"
+          :class="profile.id === profileStore.activeProfile.id ? 'bg-indigo-50/50' : 'hover:bg-slate-50'">
+          <div
+            class="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-xs border border-slate-100 text-2xl">
+            {{ profile.avatar }}
+          </div>
+          <div class="flex-1 overflow-hidden">
+            <p class="font-black text-slate-700 text-xs truncate">{{ profile.name }}</p>
+            <p v-if="profile.id === profileStore.activeProfile.id"
+              class="text-[8px] font-bold text-emerald-500 uppercase tracking-widest">Aktif ✅</p>
+          </div>
         </button>
+      </div>
     </div>
 
-    <!-- Profile Selection Grid (Shortened) -->
-    <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
-        <button v-for="profile in profileState.profiles" :key="profile.id"
-            @click="handleSwitch(profile.id)"
-            class="flex flex-col items-center gap-1 min-w-[70px] transition-all"
-            :class="profile.id === activeProfile.id ? 'scale-110' : 'opacity-40 grayscale hover:opacity-100 hover:grayscale-0'"
-        >
-            <div class="w-14 h-14 rounded-2xl border-2 flex items-center justify-center text-3xl transition-all"
-                :class="profile.id === activeProfile.id ? 'bg-indigo-50 border-indigo-500 shadow-md' : 'bg-white border-slate-200'">
-                {{ profile.avatar }}
-            </div>
-            <span class="text-[10px] font-black text-slate-600 truncate w-full text-center font-quicksand">
-                {{ profile.name }}
-            </span>
-        </button>
-    </div>
+    <!-- Parent Gate Modal (consistent with Dashboard) -->
+    <Teleport to="body">
+      <div v-if="showGate"
+        class="fixed inset-0 z-110 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl animate-in fade-in duration-300">
+        <div
+          class="glass-card bg-white w-full max-w-sm p-10 flex flex-col items-center gap-8 shadow-2xl animate-in zoom-in-95 duration-300 relative overflow-hidden">
+          <div
+            class="w-20 h-20 bg-linear-to-br from-amber-400 to-orange-500 rounded-3xl flex items-center justify-center text-4xl shadow-lg transform -rotate-6">
+            🔒
+          </div>
 
-    <!-- Add Profile Modal -->
-    <div v-if="showAddModal" class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-300">
-        <div class="glass-card bg-white w-full max-w-sm p-8 flex flex-col gap-6 shadow-2xl animate-in zoom-in-95 duration-300">
-            <h3 class="text-2xl font-black text-slate-800 font-quicksand">Tambah Profil Baru</h3>
-            
-            <div class="space-y-2">
-                <label class="font-bold text-slate-500">Nama Anak:</label>
-                <input v-model="newName" type="text" placeholder="Masukkan nama..."
-                    class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-indigo-400 focus:outline-none font-bold text-lg" />
-            </div>
+          <div class="text-center space-y-2">
+            <h3 class="text-2xl font-black text-slate-800 font-quicksand">Konfirmasi Orang Tua</h3>
+            <p class="text-slate-500 font-bold text-sm">Selesaikan tantangan untuk ganti profil:</p>
+          </div>
 
-            <div class="space-y-2">
-                <label class="font-bold text-slate-500">Pilih Avatar:</label>
-                <div class="grid grid-cols-4 gap-2">
-                    <button v-for="a in avatars" :key="a"
-                        @click="newAvatar = a"
-                        class="w-12 h-12 rounded-xl border-2 flex items-center justify-center text-2xl transition-all"
-                        :class="newAvatar === a ? 'bg-indigo-50 border-indigo-500 scale-110 shadow-sm' : 'bg-white border-slate-50 hover:border-slate-200'">
-                        {{ a }}
-                    </button>
-                </div>
-            </div>
+          <div
+            class="text-5xl font-black text-indigo-600 font-quicksand py-6 bg-slate-50 w-full text-center rounded-3xl border-2 border-slate-100 shadow-inner">
+            {{ num1 }} + {{ num2 }}
+          </div>
 
-            <div class="flex gap-4 mt-2">
-                <button @click="showAddModal = false" class="ui-capsule-interactive bg-white border-slate-200 text-slate-600 flex-1">Batal</button>
-                <button @click="handleAddProfile" class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2">Simpan</button>
-            </div>
+          <div class="w-full space-y-3">
+            <input v-model="userAnswer" type="number" ref="answerInput"
+              class="w-full text-center text-4xl font-black p-5 rounded-3xl border-4 border-slate-100 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 focus:outline-none transition-all placeholder:text-slate-200"
+              placeholder="?" @keyup.enter="confirmSwitch" />
+            <p v-if="gateError" class="text-rose-500 font-black text-center animate-bounce text-sm">Coba hitung lagi ya!
+              🧐</p>
+          </div>
+
+          <div class="flex gap-4 w-full">
+            <button @click.stop="cancelGate"
+              class="ui-capsule-interactive bg-white border-slate-200 text-slate-500 flex-1 hover:bg-slate-50">Batal</button>
+            <button @click.stop="confirmSwitch"
+              class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2 shadow-indigo-200">Oke</button>
+          </div>
         </div>
-    </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <style scoped>
 .font-quicksand {
-    font-family: 'Quicksand', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 3rem;
 }
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }
 </style>

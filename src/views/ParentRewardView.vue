@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { getProfileRewards, addCustomReward, deleteReward, fulfillReward } from '@/utils/rewardStore'
-import { activeProfile } from '@/utils/profileStore'
+import { useRewardStore, useProfileStore } from '@/stores'
 
-const router = useRouter()
-const rewards = computed(() => getProfileRewards())
+const rewardStore = useRewardStore()
+const profileStore = useProfileStore()
+const rewards = computed(() => rewardStore.rewards)
 
 const showAddModal = ref(false)
 const newTitle = ref('')
@@ -13,9 +13,9 @@ const newCost = ref(50)
 const newEmoji = ref('🎁')
 const emojis = ['🍦', '🎮', '🧸', '🍭', '🍕', '🎡', '🎞️', '🛹', '👟', '👕', '💰']
 
-const handleAdd = () => {
+const handleAdd = async () => {
     if (newTitle.value.trim() && newCost.value > 0) {
-        addCustomReward(newTitle.value.trim(), newCost.value, newEmoji.value)
+        await rewardStore.addCustomReward(newTitle.value.trim(), newCost.value, newEmoji.value)
         newTitle.value = ''
         newCost.value = 50
         showAddModal.value = false
@@ -32,12 +32,12 @@ const formatDate = (dateStr?: string) => {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col p-4 md:p-8">
-    <div v-if="activeProfile" class="w-full max-w-4xl mx-auto space-y-8">
+    <div v-if="profileStore.activeProfileId" class="w-full max-w-4xl mx-auto space-y-8">
         
         <!-- Header -->
         <div class="flex items-center justify-between border-b border-slate-100 pb-6">
             <h2 class="text-3xl font-black text-slate-800 font-quicksand flex items-center gap-3">
-                <span class="text-4xl">🎁</span> Hadiah {{ activeProfile.name }}
+                <span class="text-4xl">🎁</span> Hadiah {{ profileStore.allProfiles.find(p => p.id === profileStore.activeProfileId)?.name }}
             </h2>
             <button @click="showAddModal = true" class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white w-auto px-6">
                 + Tambah Hadiah
@@ -75,12 +75,12 @@ const formatDate = (dateStr?: string) => {
 
                 <div class="flex gap-2">
                     <button v-if="reward.status === 'claimed'"
-                        @click="fulfillReward(reward.id)"
+                        @click="rewardStore.fulfillReward(reward.id)"
                         class="px-4 py-2 bg-emerald-500 text-white rounded-xl font-black text-sm shadow-md hover:bg-emerald-600 transition-all">
                         Berikan Hadiah! 🎁
                     </button>
                     <button v-if="reward.status !== 'claimed'"
-                        @click="deleteReward(reward.id)"
+                        @click="rewardStore.deleteReward(reward.id)"
                         class="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
                         🗑️
                     </button>
