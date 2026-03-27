@@ -26,6 +26,7 @@ const checkGate = () => {
   if (parseInt(userAnswer.value) === num1.value + num2.value) {
     isGatePassed.value = true
     gateError.value = false
+    profileStore.isHeaderHidden = true
   } else {
     gateError.value = true
     userAnswer.value = ''
@@ -133,6 +134,7 @@ const updateConfigField = async (
 
 
 onUnmounted(async () => {
+  profileStore.isHeaderHidden = false
   syncStore.triggerSync()
   if (!profileStore.activeProfileId) return
   await alphabetStore.updateChallengeConfig(profileStore.activeProfileId, updatedAlphabetChallengeModeConfig.value)
@@ -140,16 +142,13 @@ onUnmounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
-    <!-- Background patterns (keep subtle but non-opaque) -->
-    <div
-      class="absolute inset-x-0 top-0 h-128 bg-indigo-50/10 rounded-b-[4rem] md:rounded-b-[8rem] pointer-events-none">
-    </div>
-
+  <div class="min-h-screen relative flex flex-col items-center">
+    <!-- Full-screen Frosted Overlay (Only after gate passed) -->
+    <div v-if="isGatePassed" class="fixed inset-0 bg-white/20 backdrop-blur-md -z-10 animate-in fade-in duration-700"></div>
 
     <!-- Parent Gate Section (Enhanced Glassmorphism) -->
     <div v-if="!isGatePassed"
-      class="glass-card w-full max-w-md p-10 flex flex-col items-center gap-8 animate-entrance relative z-20">
+      class="glass-card w-full max-w-md p-10 flex flex-col items-center gap-8 animate-entrance relative z-20 mt-24 mb-12">
       <div
         class="w-20 h-20 bg-linear-to-br from-amber-400 to-orange-500 rounded-3xl flex items-center justify-center text-4xl shadow-lg transform -rotate-6">
         🔒
@@ -179,26 +178,32 @@ onUnmounted(async () => {
       </div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div v-else class="glass-card w-full max-w-4xl p-8 flex flex-col gap-8 min-h-[80vh]">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-        <h2 class="text-3xl font-black text-slate-800 font-quicksand flex items-center gap-3">
-          <span class="text-4xl">👨‍👩‍👧</span> Area Orang Tua
-        </h2>
-        <div class="flex gap-2">
+    <!-- Main Dashboard (Full Screen Glassy Style) -->
+    <div v-else class="w-full max-w-7xl mx-auto flex flex-col gap-8 p-6 md:p-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div class="flex items-center justify-between border-b border-slate-200/50 pb-6">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-white/50 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl shadow-sm border border-white">
+            👨‍👩‍👧
+          </div>
+          <div>
+            <h2 class="text-4xl font-black text-slate-800 font-quicksand">Area Orang Tua</h2>
+            <p class="text-slate-500 font-bold">Kelola profil, hadiah, dan tingkat kesulitan.</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
           <button @click="handleManualSync" :disabled="isSyncing"
-            class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto px-4 shadow-sm hover:bg-slate-50 disabled:opacity-50">
-            <span class="text-xl">{{ isSyncing ? '⌛' : '☁️' }}</span>
+            class="ui-capsule-interactive bg-white/80 border-slate-200 text-slate-700 w-auto px-6 shadow-sm hover:bg-white disabled:opacity-50">
+            <span class="text-xl mr-2">{{ isSyncing ? '⌛' : '☁️' }}</span>
             <span class="font-black text-sm md:text-base hidden sm:inline">{{ isSyncing ? 'Menyinkronkan...' :
               'Sinkron Awan' }}</span>
           </button>
           <button @click="goBack"
-            class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto px-6">Selesai</button>
+            class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto px-8 shadow-emerald-200">Selesai</button>
         </div>
       </div>
 
       <!-- Premium Tab Navigation -->
-      <div class="grid grid-cols-4 p-1.5 bg-slate-100/80 backdrop-blur-sm rounded-3xl gap-1.5">
+      <div class="grid grid-cols-4 p-2 bg-white/40 backdrop-blur-md rounded-[2rem] gap-2 border border-white/50 shadow-sm mb-4">
         <button @click="activeTab = 'profiles'"
           class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
           :class="activeTab === 'profiles' ? 'bg-white text-indigo-600 shadow-md scale-[1.02]' : 'text-slate-500 hover:bg-white/40'">
@@ -238,8 +243,8 @@ onUnmounted(async () => {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div v-for="profile in profileStore.allProfiles" :key="profile.id"
-            class="p-6 rounded-3xl border-2 transition-all flex items-center gap-4 bg-white"
-            :class="profileStore.activeProfileId === profile.id ? 'border-indigo-400 ring-2 ring-indigo-50 shadow-md' : 'border-slate-100 opacity-80'">
+            class="p-6 rounded-3xl border-4 transition-all flex items-center gap-4 bg-white/70 backdrop-blur-md shadow-sm"
+            :class="profileStore.activeProfileId === profile.id ? 'border-indigo-400 ring-2 ring-indigo-50/50 shadow-lg scale-[1.01]' : 'border-white/50 hover:border-white opacity-90'">
             <span class="text-4xl">{{ profile.avatar }}</span>
             <div class="flex-1">
               <p class="font-black text-lg text-slate-800">{{ profile.name }}</p>
@@ -254,7 +259,7 @@ onUnmounted(async () => {
 
         <!-- Add Profile Modal Overlay -->
         <div v-if="showAddProfile"
-          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 rounded-4xl backdrop-blur-sm">
           <div class="bg-white w-full max-w-sm p-8 rounded-3xl shadow-2xl space-y-6">
             <h3 class="text-2xl font-black text-slate-800">Profil Baru</h3>
             <div class="space-y-2">
@@ -294,14 +299,14 @@ onUnmounted(async () => {
 
         <div v-if="profileStore.activeProfileId" class="space-y-3">
           <div v-for="reward in rewards" :key="reward.id"
-            class="bg-white p-4 rounded-2xl border flex items-center gap-4 transition-all"
-            :class="reward.status === 'claimed' ? 'border-indigo-300 bg-indigo-50/30' : 'border-slate-100'">
+            class="bg-white/70 backdrop-blur-md p-4 rounded-3xl border-2 flex items-center gap-4 transition-all"
+            :class="reward.status === 'claimed' ? 'border-indigo-300 bg-indigo-50/50' : 'border-white/50'">
             <span class="text-3xl">{{ reward.emoji }}</span>
             <div class="flex-1">
               <p class="font-black text-slate-800">{{ reward.title }}</p>
               <div class="flex gap-3 items-center">
                 <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">🪙 {{ reward.cost
-                  }}</span>
+                }}</span>
                 <span v-if="reward.status === 'claimed'"
                   class="text-[10px] font-black text-indigo-500 uppercase tracking-widest">DIKLAIM: {{
                     formatDate(reward.claimedAt) }}</span>
@@ -416,18 +421,18 @@ onUnmounted(async () => {
           Pilih profil anak terlebih dahulu.
         </div>
 
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-12">
           <div v-for="(cfg, idx) in currentChallengeConfig" :key="idx"
-            class="bg-white rounded-3xl border-2 border-slate-100 p-6 space-y-4 shadow-sm hover:shadow-md transition-shadow">
+            class="bg-white/70 backdrop-blur-md rounded-4xl border-4 border-white/50 p-8 space-y-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <!-- Level Header -->
-            <div class="flex items-center gap-3 pb-2 border-b border-slate-100">
-              <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-black text-white text-sm"
+            <div class="flex items-center gap-4 pb-4 border-b border-slate-200/50">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white text-lg shadow-lg"
                 :class="['bg-sky-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400'][idx] || 'bg-slate-400'">
                 {{ idx + 1 }}
               </div>
               <div>
-                <p class="font-black text-slate-800">Level {{ idx + 1 }}</p>
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">{{ levelLabels[idx] || 'Kustom' }}
+                <p class="font-black text-slate-800 text-xl font-quicksand">Level {{ idx + 1 }}</p>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ levelLabels[idx] || 'Kustom' }}
                 </p>
               </div>
             </div>

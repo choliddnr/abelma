@@ -11,6 +11,8 @@ export const useProfileStore = defineStore('profile', () => {
     return activeProfileId.value ? profiles.value.find(p => p.id === activeProfileId.value) || profiles.value[0] : null
   })
 
+  const isHeaderHidden = ref(false)
+
 
   // Actions
   const selectProfile = (id: string) => {
@@ -117,6 +119,7 @@ export const useProfileStore = defineStore('profile', () => {
     createProfile,
     deleteProfile,
     loadFromCloud,
+    isHeaderHidden,
     reset
   }
 }, {
