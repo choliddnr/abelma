@@ -126,7 +126,7 @@ export const useRewardStore = defineStore('reward', () => {
   const triggerSync = async () => {
     const { useSyncStore } = await import('./syncStore')
     const syncStore = useSyncStore()
-    await syncStore.syncRewards()
+    await syncStore.syncProfile()
   }
 
   // Computed

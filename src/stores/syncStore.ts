@@ -71,6 +71,7 @@ export const useSyncStore = defineStore('sync', () => {
     const rewardStore = useRewardStore()
     const settingsStore = useSettingsStore()
     const analyticsStore = useAnalyticsStore()
+    const stickerStore = useStickerStore()
 
     const profiles = profileStore.profiles
     if (profiles.length === 0) return
@@ -88,6 +89,17 @@ export const useSyncStore = defineStore('sync', () => {
           points: rewardStore.profilePointsMap[id] || 0,
           letterCase: settingsStore.settings.letterCase,
           timerDuration: settingsStore.settings.timerDuration,
+          rewards: (rewardStore.profileRewardsMap[id] || []).map(r => ({
+            id: r.id,
+            title: r.title,
+            cost: r.cost,
+            emoji: r.emoji,
+            status: r.status as 'available' | 'claimed' | 'fulfilled',
+            claimedAt: r.claimedAt
+          })),
+          stickers: (stickerStore.currentProfileStickers[id] || []).map((sid: string) => ({
+            stickerId: sid
+          })),
           analytics: Object.entries(analyticsStore.analyticsMap[id] || {}).map(([tid, data]) => ({
             type: 'word',
             targetId: tid,
