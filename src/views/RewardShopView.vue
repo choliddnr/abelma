@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { getCurrentPoints, getProfileRewards, claimReward, type Reward } from '@/utils/rewardStore'
+import { useRewardStore } from '@/stores'
+import type { Reward } from '@/types/stores'
 import { playEffectAudio } from '@/utils/audio'
 import confetti from 'canvas-confetti'
 
 const router = useRouter()
-const goBack = () => router.push('/words')
+const rewardStore = useRewardStore()
+const goBack = () => router.push('/')
 
-const points = computed(() => getCurrentPoints())
-const rewards = computed(() => getProfileRewards())
+const points = computed(() => rewardStore.currentPoints)
+const rewards = computed(() => rewardStore.rewards)
 
-const handleClaim = (reward: Reward) => {
+const handleClaim = async (reward: Reward) => {
     if (reward.cost <= points.value && reward.status === 'available') {
-        const success = claimReward(reward.id)
+        const success = await rewardStore.claimReward(reward.id)
         if (success) {
             playEffectAudio('sticker')
             confetti({
@@ -86,9 +88,9 @@ const handleClaim = (reward: Reward) => {
                 <button v-if="reward.status === 'available'"
                     @click="handleClaim(reward)"
                     :disabled="points < reward.cost"
-                    class="ui-capsule-interactive w-full text-xl shadow-lg transition-all"
-                    :class="points >= reward.cost ? 'bg-amber-400 border-amber-500 text-white' : 'bg-slate-200 border-slate-300 text-slate-400 cursor-not-allowed'">
-                    Tukar Hadiah 🚀
+                    class="ui-capsule-interactive w-full text-xl shadow-lg transition-all transform hover:scale-105 active:scale-95"
+                    :class="points >= reward.cost ? 'bg-linear-to-r from-amber-400 to-orange-500 border-orange-600 text-white shadow-orange-200' : 'bg-slate-200 border-slate-300 text-slate-400 cursor-not-allowed'">
+                    <span class="drop-shadow-sm">Tukar Hadiah 🚀</span>
                 </button>
                 <div v-else-if="reward.status === 'claimed'" class="py-3 px-6 bg-indigo-100 text-indigo-700 border-2 border-indigo-200 rounded-2xl text-center font-black">
                     TERKLAIM ✅

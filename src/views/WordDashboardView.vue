@@ -2,9 +2,10 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { wordCategories } from '@/data/words'
-import { wordSettings } from '@/utils/wordSettings'
+import { useSettingsStore } from '@/stores'
 
 const router = useRouter()
+const settingsStore = useSettingsStore()
 const activeCategoryId = ref(wordCategories[0]?.id || '')
 
 const activeCategory = computed(() => {
@@ -68,7 +69,7 @@ const navigateToWord = (wordId: string) => {
           <!-- Word Text -->
           <div class="w-full text-center z-10 bg-slate-50/80 backdrop-blur-sm p-2 rounded-2xl border border-slate-100/50 mt-2">
             <span class="text-xl md:text-2xl font-black text-slate-700 tracking-wide" style="font-family: 'Quicksand', sans-serif;">
-              {{ wordSettings.letterCase === 'uppercase' ? word.word : word.word.toLowerCase() }}
+              {{ settingsStore.settings.letterCase === 'uppercase' ? word.word : word.word.toLowerCase() }}
             </span>
           </div>
 

@@ -1,4 +1,4 @@
-import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
+import { drizzle } from 'drizzle-orm/d1';
 import { alphabetProgress } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
 
@@ -29,7 +29,7 @@ export const onRequestGet = async (context: Ctx) => {
       weights: JSON.parse(results[0].weights)
     }), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+    return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 });
   }
 }
 
@@ -69,8 +69,8 @@ export const onRequestPost = async (context: Ctx) => {
     }
 
     return new Response(JSON.stringify({ success: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
+  } catch (e) {
+    return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500 });
   }
 }
 

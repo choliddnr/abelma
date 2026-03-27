@@ -34,13 +34,13 @@ This document outlines the migration plan from the current state management impl
 
 ```
 src/stores/
-├── authStore.ts          # Authentication state
 ├── profileStore.ts       # User profiles (setup store)
 ├── rewardStore.ts        # Rewards & points (setup store)
 ├── stickerStore.ts       # Sticker collection (setup store)
 ├── analyticsStore.ts     # Learning analytics (setup store)
 ├── alphabetStore.ts      # Alphabet progress (setup store)
 ├── settingsStore.ts      # Word settings (setup store)
+├── storybookStore.ts     # Alphabet storybook state (setup store)
 ├── syncStore.ts          # Sync orchestration (setup store)
 └── index.ts              # Store registration
 ```
@@ -409,13 +409,13 @@ persist: {
 - Graceful degradation
 
 ✅ Success Criteria
-[ ] All stores follow setup store pattern
-[ ] Stores are in src/stores/ directory
-[ ] All stores are properly typed
-[ ] Persistence is configured correctly
-[ ] All components use new store pattern
-[ ] Cloud sync works with new stores
-[ ] No regressions in existing features
+[x] All stores follow setup store pattern
+[x] Stores are in src/stores/ directory
+[x] All stores are properly typed
+[x] Persistence is configured correctly
+[x] All components use new store pattern
+[x] Cloud sync works with new stores (Batch multi-profile)
+[x] No regressions in existing features
 [ ] All tests pass
 
 ## 🚀 Rollback Plan

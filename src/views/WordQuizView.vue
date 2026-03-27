@@ -3,13 +3,16 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { wordCategories, type Word } from '@/data/words'
 import confetti from 'canvas-confetti'
-import { wordSettings } from '@/utils/wordSettings'
-import { checkAndEarnStickers, type Sticker } from '@/utils/stickerStore'
+import { useSettingsStore, useStickerStore, useAnalyticsStore, useRewardStore, useProfileStore } from '@/stores'
 import { playWordAudio, playEffectAudio } from '@/utils/audio'
-import { recordMistake } from '@/utils/analyticsStore'
-import { addPoints } from '@/utils/rewardStore'
+import type { Sticker } from '@/types/stores'
 
 const router = useRouter()
+const settingsStore = useSettingsStore()
+const stickerStore = useStickerStore()
+const analyticsStore = useAnalyticsStore()
+const rewardStore = useRewardStore()
+const profileStore = useProfileStore()
 const goBack = () => router.push('/words')
 
 // Flatten all words from all categories into a single pool
@@ -23,7 +26,7 @@ const wrongChoiceId = ref<string | null>(null)
 const score = ref(0)
 const maxScore = 150
 const timeLeft = ref(30)
-const timerMax = computed(() => wordSettings.timerDuration)
+const timerMax = computed(() => settingsStore.settings.timerDuration)
 let timerInterval: number | null = null
 
 // Activity Control
@@ -69,8 +72,8 @@ const startTimer = () => {
 }
 
 const handleTimeUp = () => {
-    if (currentTarget.value) {
-        recordMistake(currentTarget.value.id)
+    if (currentTarget.value && profileStore.activeProfileId) {
+        analyticsStore.recordMistake(profileStore.activeProfileId, 'word', currentTarget.value.id)
     }
     playWordAudio("Waktu habis! Ayo coba yang ini.")
     setTimeout(initQuestion, 1500)
@@ -192,7 +195,9 @@ const onDrop = (slotIndex: number) => {
             handleCorrect()
         }
     } else {
-        recordMistake(currentTarget.value.id)
+        if (profileStore.activeProfileId) {
+            analyticsStore.recordMistake(profileStore.activeProfileId, 'word', currentTarget.value.id)
+        }
         wrongDropIndex.value = slotIndex
         playErrorAudio()
         setTimeout(() => {
@@ -213,12 +218,12 @@ const handleCorrect = () => {
     if (timerInterval) clearInterval(timerInterval)
     popConfetti()
     score.value += 10
-    addPoints(10) // Banking points
+    rewardStore.addPoints(10) // Banking points
     
     playEffectAudio('correct')
 
     // Check for stickers
-    const earned = checkAndEarnStickers(score.value)
+    const earned = stickerStore.checkAndEarnStickers(score.value)
     if (earned) {
         newSticker.value = earned
         showStickerModal.value = true
@@ -255,7 +260,9 @@ const handleChoice = (word: Word) => {
     if (word.id === currentTarget.value.id) {
         handleCorrect()
     } else {
-        recordMistake(currentTarget.value.id)
+        if (profileStore.activeProfileId) {
+            analyticsStore.recordMistake(profileStore.activeProfileId, 'word', currentTarget.value.id)
+        }
         playErrorAudio()
         isCorrecting.value = true
         setTimeout(() => {
@@ -445,7 +452,7 @@ onUnmounted(() => {
                     <span class="text-3xl md:text-5xl font-black drop-shadow-sm tracking-widest z-10" 
                           :class="wrongChoiceId === option.id ? 'text-white' : 'text-slate-700'"
                           style="font-family: 'Quicksand', sans-serif;">
-                        {{ wordSettings.letterCase === 'uppercase' ? option.word : option.word.toLowerCase() }}
+                        {{ settingsStore.settings.letterCase === 'uppercase' ? option.word : option.word.toLowerCase() }}
                     </span>
                 </button>
             </div>
@@ -471,7 +478,7 @@ onUnmounted(() => {
                         <span v-if="placedLetters[idx] !== null" 
                             class="text-3xl md:text-5xl font-black text-white" 
                             style="font-family: 'Quicksand', sans-serif;">
-                            {{ wordSettings.letterCase === 'uppercase' ? placedLetters[idx]?.toUpperCase() : placedLetters[idx]?.toLowerCase() }}
+                            {{ settingsStore.settings.letterCase === 'uppercase' ? placedLetters[idx]?.toUpperCase() : placedLetters[idx]?.toLowerCase() }}
                         </span>
                     </div>
                 </div>
@@ -485,7 +492,7 @@ onUnmounted(() => {
                         class="relative w-12 h-16 md:w-16 md:h-24 rounded-xl md:rounded-2xl flex items-center justify-center transition-all bg-sky-400 border-2 border-white shadow-md cursor-grab active:cursor-grabbing hover:-translate-y-1"
                         :class="item.isDragging ? 'opacity-20 scale-90' : 'opacity-100'">
                         <span class="text-2xl md:text-4xl font-black text-white select-none pointer-events-none" style="font-family: 'Quicksand', sans-serif;">
-                            {{ wordSettings.letterCase === 'uppercase' ? item.letter.toUpperCase() : item.letter.toLowerCase() }}
+                            {{ settingsStore.settings.letterCase === 'uppercase' ? item.letter.toUpperCase() : item.letter.toLowerCase() }}
                         </span>
                     </div>
                 </div>

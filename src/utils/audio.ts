@@ -12,7 +12,7 @@ export const playWordAudio = async (text: string, path?: string) => {
             const audio = new Audio(path)
             await audio.play()
             return // Success
-        } catch (e) {
+        } catch {
             console.warn(`Local audio not found at ${path}, falling back to TTS.`)
         }
     }
@@ -32,7 +32,7 @@ export const playSyllableAudio = async (syllable: string, path?: string) => {
             const audio = new Audio(path)
             await audio.play()
             return
-        } catch (e) {
+        } catch {
             // silent fallback
         }
     }

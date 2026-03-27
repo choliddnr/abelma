@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import confetti from 'canvas-confetti'
 import alphabetData from '../../AlphabetData.json'
 import InteractionZone from '@/components/storybook/InteractionZone.vue'
-import { useStorybookStore } from '@/stores/storybookStore'
+import { useStorybookStore, useSyncStore } from '@/stores'
 
 // ─── Types ───────────────────────────────────────────────────
 interface LetterEntry {
@@ -84,7 +84,7 @@ watch([currentIndex, viewMode], ([newIdx, newMode], [oldIdx, oldMode]) => {
 
 // ─── Challenge callbacks ──────────────────────────────────────
 const onSuccess = () => {
-  challengeDone.value.add(currentIndex.value)
+  store.markCompleted(currentIndex.value)
   setTimeout(() => nextLetter(), 1400)
 }
 
@@ -138,6 +138,11 @@ const storyImageSrc = computed(() => `/${current.value.letter.upper}.webp`)
 
 // Reset error flag whenever the letter changes
 watch(currentIndex, () => { imageError.value = false })
+
+const syncStore = useSyncStore()
+onUnmounted(() => {
+  syncStore.syncAlphabet()
+})
 </script>
 
 <template>

@@ -1,21 +1,23 @@
-export interface CloudSticker {
+export type CloudSticker = {
   stickerId: string;
 }
 
-export interface CloudAnalytics {
+export type CloudAnalytics = {
   type: string;
   targetId: string;
   mistakes: number;
   lastAttempt: string;
 }
 
-export interface CloudAlphabetProgress {
+export type CloudAlphabetProgress = {
   score: number;
   level: number;
   weights: string; // JSON string
+  challengeConfig?: string; // JSON string of AlphabetChallengeModeConfig[]
+  updatedAt: string;
 }
 
-export interface CloudReward {
+export type CloudReward = {
   id: string;
   title: string;
   cost: number;
@@ -24,7 +26,13 @@ export interface CloudReward {
   claimedAt?: string;
 }
 
-export interface CloudProfile {
+export type CloudStorybook = {
+  letter: string;
+  isCompleted: boolean;
+  lastRead: string;
+}
+
+export type CloudProfile = {
   id: string;
   name: string;
   avatar: string;
@@ -35,4 +43,5 @@ export interface CloudProfile {
   stickers: CloudSticker[];
   analytics: CloudAnalytics[];
   alphabetProgress: CloudAlphabetProgress | null;
+  storybookProgress: CloudStorybook[];
 }

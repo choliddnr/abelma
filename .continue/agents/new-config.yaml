@@ -19,5 +19,5 @@ models:
 
 # MCP Servers that Continue can access
 # https://docs.continue.dev/customization/mcp-tools
-mcpServers:
-  - uses: anthropic/memory-mcp
+# mcpServers:
+#   - uses: anthropic/memory-mcp
