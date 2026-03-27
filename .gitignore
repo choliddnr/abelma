@@ -42,3 +42,4 @@ __screenshots__/
 client_secret_*.json
 
 .wrangler/
+.wrangler/*

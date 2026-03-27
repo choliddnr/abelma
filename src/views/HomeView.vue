@@ -39,7 +39,7 @@ const menuItems = [
     icon: '🎁',
     colorClass: 'bg-[#FF8B8B] text-white',
     to: '/words/rewards'
-  }
+  },
 ]
 </script>
 
