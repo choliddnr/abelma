@@ -1,4 +1,4 @@
-export const letters = 'ABCD'.split('') //ABCDEFGHIJKLMNOPQRSTUVWXYZ
+export const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('') //ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 export const colors = [
   'bg-[#FFD93D]', // Yellow

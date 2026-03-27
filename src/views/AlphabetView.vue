@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="alphabet-view-container overflow-x-hidden mt-32">
+  <div class="alphabet-view-container overflow-x-hidden mt-4">
     <transition name="mode-fade" mode="out-in">
       <AlphabetChallengeMode v-if="isChallengeMode" @stop-challenge="isChallengeMode = false" />
       <AlphabetLearningMode v-else @start-challenge="isChallengeMode = true" />

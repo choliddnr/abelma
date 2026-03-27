@@ -44,14 +44,15 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen relative p-4 md:p-8 overflow-hidden">
+  <div class="flex flex-col min-h-screen relative p-4 md:p-8 overflow-hidden -mt-24">
     <!-- Full-screen Frosted Overlay -->
     <div class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"></div>
 
 
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10 mt-4 md:mt-8">
+    <div
+      class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10 mt-4 md:mt-8">
 
       <!-- Main Greeting -->
       <div class="text-center space-y-4">
