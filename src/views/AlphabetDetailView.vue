@@ -48,25 +48,31 @@ const goBack = () => router.push('/alphabet')
     </div>
 
     <div class="glass-card p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12">
-      <div class="text-[200px] md:text-[300px] font-black leading-none text-[#4D96FF] animate-bounce">
+      <div class="text-[200px] md:text-[300px] font-black leading-none text-accent animate-bounce">
         {{ letter }}
       </div>
 
       <div class="flex flex-col items-center gap-6">
-        <div class="text-[120px] md:text-[200px] bg-white rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-[#FFD93D]">
+        <div class="text-[120px] md:text-[200px] bg-white rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-primary">
           {{ item.icon }}
         </div>
         <div class="text-center space-y-2">
           <p class="text-3xl font-bold text-gray-500">untuk...</p>
-          <h2 class="text-6xl md:text-8xl font-black text-[#FF6B6B] tracking-wide">
+          <h2 class="text-6xl md:text-8xl font-black text-danger tracking-wide">
             {{ item.word }}
           </h2>
         </div>
       </div>
     </div>
 
-    <button class="btn-primary flex items-center gap-4 px-12 py-6 text-3xl">
-      <span>🔊</span> Dengar Suara
-    </button>
+    <div class="flex gap-6">
+      <button class="btn-primary flex items-center gap-4 px-12 py-6 text-3xl">
+        <span>🔊</span> Dengar Suara
+      </button>
+      
+      <button @click="router.push(`/alphabet/${letter}/trace`)" class="btn-primary bg-accent hover:bg-[#3b82f6] shadow-[#3b82f6]/50 flex items-center gap-4 px-12 py-6 text-3xl">
+        <span>✍️</span> Latihan Menulis
+      </button>
+    </div>
   </div>
 </template>

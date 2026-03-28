@@ -26,6 +26,11 @@ const router = createRouter({
       component: () => import('../views/AlphabetDetailView.vue'),
     },
     {
+      path: '/alphabet/:id/trace',
+      name: 'alphabet-trace',
+      component: () => import('../views/AlphabetTracingView.vue'),
+    },
+    {
       path: '/games',
       name: 'games',
       component: () => import('../views/GamesView.vue'),
