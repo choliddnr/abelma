@@ -1,13 +1,13 @@
 export type CloudSticker = {
   stickerId: string;
-}
+};
 
 export type CloudAnalytics = {
   type: string;
   targetId: string;
   mistakes: number;
   lastAttempt: string;
-}
+};
 
 export type CloudAlphabetProgress = {
   score: number;
@@ -15,28 +15,28 @@ export type CloudAlphabetProgress = {
   weights: string; // JSON string
   challengeConfig?: string; // JSON string of AlphabetChallengeModeConfig[]
   updatedAt: string;
-}
+};
 
 export type CloudReward = {
   id: string;
   title: string;
   cost: number;
   emoji: string;
-  status: 'available' | 'claimed' | 'fulfilled';
+  status: "available" | "claimed" | "fulfilled";
   claimedAt?: string;
-}
+};
 
 export type CloudStorybook = {
   letter: string;
   isCompleted: boolean;
   lastRead: string;
-}
+};
 
 export type CloudProfile = {
   id: string;
   name: string;
   avatar: string;
-  points: number;
+  coins: number;
   letterCase?: string;
   timerDuration?: number;
   rewards: CloudReward[];
@@ -44,5 +44,4 @@ export type CloudProfile = {
   analytics: CloudAnalytics[];
   alphabetProgress: CloudAlphabetProgress | null;
   storybookProgress: CloudStorybook[];
-}
-
+};
