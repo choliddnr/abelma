@@ -8,12 +8,12 @@ const emit = defineEmits(["stop-challenge"]);
 
 const router = useRouter();
 const { speaking, playLetterSound, speak } = useAlphabetAudio();
-const alphabetStore = useAlphabetStore();
+const { getCurrentAlphabetState } = useAlphabetStore();
 const rewardStore = useRewardStore();
 const syncStore = useSyncStore();
 
 // Game State from Store
-const alphabetProgress = alphabetStore.getCurrentAlphabetState();
+const alphabetProgress = getCurrentAlphabetState();
 const score = ref(alphabetProgress.score);
 const level = ref(alphabetProgress.level);
 const letterWeights = ref<Record<string, number>>(alphabetProgress.weights);
@@ -24,6 +24,7 @@ const challengeConfig = computed(() =>
     ? alphabetProgress.challengeConfig
     : DEFAULT_CHALLENGE_CONFIG,
 );
+
 const currentConfig = computed(() => {
   const index = Math.max(0, level.value - 1);
   return (

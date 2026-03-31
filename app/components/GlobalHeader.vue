@@ -3,11 +3,10 @@ import { authClient } from "@/lib/auth-client";
 
 const router = useRouter();
 const route = useRoute();
-const rewardStore = useRewardStore();
 const syncStore = useSyncStore();
 const session = authClient.useSession();
 
-const coins = computed(() => rewardStore.currentCoins);
+const { currentCoins: coins } = storeToRefs(useRewardStore());
 const isHome = computed(() => route.path === "/");
 
 const logout = async () => {

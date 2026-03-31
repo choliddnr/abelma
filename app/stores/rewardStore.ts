@@ -1,4 +1,4 @@
-import type { Reward, DefaultReward, CloudProfile } from "@/types/stores";
+import type { Reward, CloudProfile } from "@/types/stores";
 
 export const useRewardStore = defineStore(
   "reward",
@@ -59,15 +59,16 @@ export const useRewardStore = defineStore(
       },
     });
 
-    const defaultRewards: DefaultReward[] = [
-      { id: "ice_cream", title: "Es Krim Lezat", cost: 50, emoji: "🍦" },
-      { id: "playtime", title: "Main Game 30 Menit", cost: 100, emoji: "🎮" },
-      { id: "new_toy", title: "Beli Mainan Baru", cost: 500, emoji: "🧸" },
-    ];
+    // const defaultRewards: DefaultReward[] = [
+    //   { id: "ice_cream", title: "Es Krim Lezat", cost: 50, emoji: "🍦" },
+    //   { id: "playtime", title: "Main Game 30 Menit", cost: 100, emoji: "🎮" },
+    //   { id: "new_toy", title: "Beli Mainan Baru", cost: 500, emoji: "🧸" },
+    // ];
 
     // Actions
     const addCoins = async (amount: number) => {
       if (!activeProfileId.value) return;
+
       currentCoins.value += amount;
     };
 
@@ -180,7 +181,6 @@ export const useRewardStore = defineStore(
       profileRewardsMap,
       currentCoins,
       rewards,
-      defaultRewards,
       availableRewards,
       claimedRewards,
       fulfilledRewards,

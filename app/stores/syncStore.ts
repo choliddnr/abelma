@@ -12,6 +12,8 @@ export const useSyncStore = defineStore("sync", () => {
   const lastSync = ref<Date | null>(null);
   const syncError = ref<string | null>(null);
 
+  const { getAlphabetChallangeProgress } = useAlphabetStore();
+
   const triggerSync = async (retryCount = 0): Promise<void> => {
     const profileStore = useProfileStore();
 
@@ -141,7 +143,7 @@ export const useSyncStore = defineStore("sync", () => {
 
   const syncAlphabet = async (retryCount = 0): Promise<void> => {
     const profileStore = useProfileStore();
-    const alphabetStore = useAlphabetStore();
+
     const storybookStore = useStorybookStore();
 
     const profiles = profileStore.profiles;
@@ -167,7 +169,7 @@ export const useSyncStore = defineStore("sync", () => {
         return {
           id: id,
           alphabetProgress: (() => {
-            const state = alphabetStore.getAlphabetState(id);
+            const state = getAlphabetChallangeProgress(id);
             return {
               score: state.score,
               level: state.level,
@@ -225,7 +227,7 @@ export const useSyncStore = defineStore("sync", () => {
     await rewardStore.loadFromCloud(cloudData);
     await stickerStore.loadFromCloud(cloudData);
     await analyticsStore.loadFromCloud(cloudData);
-    await alphabetStore.loadFromCloud(cloudData);
+    // await alphabetStore.loadFromCloud(cloudData);
     await settingsStore.loadFromCloud(cloudData);
     await storybookStore.loadFromCloud(cloudData);
   };

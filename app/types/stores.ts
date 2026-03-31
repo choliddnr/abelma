@@ -73,13 +73,13 @@ export type AlphabetChallengeModeConfig = {
   timer: number; // 0 = off, otherwise seconds
   streak: number; // threshold for bonus reward
   streakReward: number; // koin reward
-};
+}[];
 
-export type AlphabetProgress = {
+export type AlphabetChallengeProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig?: AlphabetChallengeModeConfig[];
+  challengeConfig?: AlphabetChallengeModeConfig;
   updatedAt: string;
 };
 
@@ -110,7 +110,9 @@ export type CloudData = {
   rewards?: Reward[] | Record<string, Reward[]>;
   stickers?: (string | Sticker)[] | Record<string, string[]>;
   analytics?: Analytics[] | Record<string, Record<string, WordAnalytics>>;
-  alphabetProgress?: AlphabetProgress | Record<string, AlphabetProgress>;
+  alphabetProgress?:
+    | AlphabetChallengeProgress
+    | Record<string, AlphabetChallengeProgress>;
   settings?: WordSettings;
 };
 
