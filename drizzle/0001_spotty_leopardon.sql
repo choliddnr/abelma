@@ -1,1 +1,0 @@
-ALTER TABLE `profiles` RENAME COLUMN "points" TO "coins";

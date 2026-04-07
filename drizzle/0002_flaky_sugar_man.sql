@@ -1,1 +1,0 @@
-ALTER TABLE `alphabet_progress` ADD `challenge_config` text DEFAULT '[]' NOT NULL;
