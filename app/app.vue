@@ -1,38 +1,10 @@
 <script setup lang="ts">
-// const { var1 } = storeToRefs(useTestStore());
-// var1.value = "data val 1";
 import { authClient } from "~/utils/auth-client";
 
 const session = authClient.useSession();
-// const { loadFromCloud } = useSyncStore();
-const { profiles, isLoaded } = storeToRefs(useProfileStore());
-
-// Redirect to welcome if no profiles after sync
-const route = useRoute();
-const router = useRouter();
-
-const allReady = computed(() => {
-  // Check if user is logged in, sync is done, and no profiles exist
-  if (!isLoaded.value) return false;
-  if (!session.value?.data) return false;
-  if (profiles.value.length === 0) return false;
-  return true;
-});
-console.log(session.value, !["/login", "/welcome"].includes(route.path));
-
-watch(
-  () => allReady,
-  (isReady) => {
-    if (isReady && !["/login", "/welcome"].includes(route.path)) {
-      router.push("/welcome");
-    }
-  },
-  { once: true },
-);
 </script>
 
 <template>
-  <!-- <pre>{{ profiles }}</pre> -->
   <div
     class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col"
   >
@@ -58,7 +30,7 @@ watch(
         class="w-24 h-24 sm:w-32 sm:h-32 bg-primary rounded-3xl animate-bounce shadow-xl"
       >
         <span class="text-5xl sm:text-6xl font-black text-white drop-shadow-md"
-          >A</span
+          >Ab</span
         >
       </BubbleCard>
       <p class="mt-6 text-2xl font-black text-[#8B7700] animate-pulse">
@@ -70,10 +42,6 @@ watch(
       class="relative z-10 flex-1 w-full overflow-y-auto overflow-x-hidden custom-scrollbar"
     >
       <GlobalHeader />
-      <!-- v-if="
-          !session.isPending &&
-          !['/login', '/welcome'].includes(route.path)
-        " -->
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
     </main>
   </div>

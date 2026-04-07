@@ -102,17 +102,13 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
   <div v-if="wordData" class="flex flex-col gap-4 min-h-screen">
     <!-- Header (Animated) -->
     <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 animate-entrance">
-      <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50">
-        <span class="text-xl md:text-2xl">🔙</span>
+      <UiButton @click="goBack" variant="white" class="w-auto h-auto px-4 py-2" icon="🔙">
         <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
-      </button>
+      </UiButton>
 
-      <button @click="goExercise"
-        class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-lg shadow-emerald-200">
-        <span class="text-xl md:text-2xl font-black">🧩</span>
+      <UiButton @click="goExercise" variant="success" class="w-auto h-auto px-4 py-2 shadow-emerald-200" icon="🧩">
         <span class="font-black text-sm md:text-base hidden sm:inline">Latihan Mengeja</span>
-      </button>
+      </UiButton>
     </div>
 
     <!-- Main Content -->
@@ -121,18 +117,17 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
       <!-- Top Section: Image & Full Word (Animated) -->
       <div class="flex flex-col items-center gap-6 w-full relative animate-entrance" style="animation-delay: 0.2s;">
         <!-- Giant Emoji -->
-        <button @click="playFullWord"
+        <UiButton @click="playFullWord" variant="none"
           class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105">
           <span
             class="text-8xl md:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
             {{ wordData.emoji }}
           </span>
-          <!-- Replay Icon Overlay -->
           <div
             class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
             🔊
           </div>
-        </button>
+        </UiButton>
       </div>
 
       <!-- Bottom Section: Syllables -->
@@ -140,18 +135,16 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
 
         <!-- Controls -->
         <div class="flex justify-center w-full">
-          <button @click="playAuto" :disabled="speaking"
-            class="ui-capsule-interactive bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 w-auto disabled:opacity-50"
-            title="Baca Otomatis">
-            <span class="text-2xl md:text-3xl">▶️</span>
-            <span class="font-black text-lg md:text-xl">Baca Otomatis</span>
-          </button>
+          <UiButton @click="playAuto" :disabled="speaking" variant="soft" class="w-auto px-6" icon="▶️">
+            <span class="font-black text-lg md:text-xl ml-2">Baca Otomatis</span>
+          </UiButton>
         </div>
 
         <!-- Syllable Boxes (Animated Grid) -->
         <div class="flex flex-wrap justify-center gap-4 w-full">
-          <button v-for="(syllable, index) in wordData.syllables" :key="index" @click="playSyllable(syllable, index)"
-            class="relative glass-card px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-300 active:scale-95 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] border-x-4 border-t-4 border-white overflow-hidden animate-entrance"
+          <UiButton v-for="(syllable, index) in wordData.syllables" :key="index" @click="playSyllable(syllable, index)"
+            variant="none"
+            class="relative px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-300 active:scale-95 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] border-x-4 border-t-4 border-white overflow-hidden animate-entrance"
             :class="[
               getSyllableColor(index),
               activeSyllableIndex === index ? 'scale-110 shadow-[0_20px_40px_-5px_rgba(0,0,0,0.4)] ring-6 ring-white z-10 brightness-110' : 'hover:-translate-y-3 hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.3)]'
@@ -173,7 +166,7 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
             <div
               class="absolute bottom-0 inset-x-0 h-1/5 bg-black/10 pointer-events-none rounded-b-[inherit]">
             </div>
-          </button>
+          </UiButton>
         </div>
 
       </div>

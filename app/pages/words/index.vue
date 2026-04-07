@@ -33,25 +33,27 @@ const menuItems = [
     >
       <div class="flex-1"></div>
       <div class="flex gap-2 md:gap-4">
-        <router-link
+        <UiButton
           to="/words/stickers"
-          class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm"
+          variant="white"
+          icon="🖼️"
+          class="w-auto shadow-sm"
         >
-          <span class="text-xl md:text-2xl">🖼️</span>
           <span class="font-black text-sm md:text-base hidden sm:inline"
             >Koleksi</span
           >
-        </router-link>
+        </UiButton>
 
-        <button
+        <UiButton
           @click="router.push('/words/settings')"
-          class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm"
+          variant="white"
+          icon="⚙️"
+          class="w-auto shadow-sm"
         >
-          <span class="text-xl md:text-2xl">⚙️</span>
           <span class="font-black text-sm md:text-base hidden sm:inline"
             >Pengaturan</span
           >
-        </button>
+        </UiButton>
       </div>
     </div>
 

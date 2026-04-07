@@ -35,9 +35,9 @@ const formatDate = (dateStr?: string) => {
             <h2 class="text-3xl font-black text-slate-800 font-quicksand flex items-center gap-3">
                 <span class="text-4xl">🎁</span> Hadiah {{ profileStore.allProfiles.find(p => p.id === profileStore.activeProfileId)?.name }}
             </h2>
-            <button @click="showAddModal = true" class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white w-auto px-6">
-                + Tambah Hadiah
-            </button>
+            <UiButton @click="showAddModal = true" variant="accent" class="w-auto px-6" icon="+">
+                Tambah Hadiah
+            </UiButton>
         </div>
 
         <!-- Reward List -->
@@ -70,16 +70,14 @@ const formatDate = (dateStr?: string) => {
                 </div>
 
                 <div class="flex gap-2">
-                    <button v-if="reward.status === 'claimed'"
+                    <UiButton v-if="reward.status === 'claimed'"
                         @click="rewardStore.fulfillReward(reward.id)"
-                        class="px-4 py-2 bg-emerald-500 text-white rounded-xl font-black text-sm shadow-md hover:bg-emerald-600 transition-all">
-                        Berikan Hadiah! 🎁
-                    </button>
-                    <button v-if="reward.status !== 'claimed'"
+                        variant="success" size="sm" icon="🎁">
+                        Berikan Hadiah!
+                    </UiButton>
+                    <UiButton v-if="reward.status !== 'claimed'"
                         @click="rewardStore.deleteReward(reward.id)"
-                        class="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all">
-                        🗑️
-                    </button>
+                        variant="ghost" class="text-rose-400 hover:text-rose-600 p-2" icon="🗑️" />
                 </div>
             </div>
 
@@ -110,18 +108,19 @@ const formatDate = (dateStr?: string) => {
                 <div class="space-y-2">
                     <label class="font-bold text-slate-500">Ikon:</label>
                     <div class="grid grid-cols-6 gap-2">
-                        <button v-for="e in emojis" :key="e"
+                        <UiButton v-for="e in emojis" :key="e"
                             @click="newEmoji = e"
+                            variant="none"
                             class="w-10 h-10 rounded-xl border-2 flex items-center justify-center text-xl transition-all"
                             :class="newEmoji === e ? 'bg-indigo-50 border-indigo-500 scale-110' : 'bg-white border-slate-50'">
                             {{ e }}
-                        </button>
+                        </UiButton>
                     </div>
                 </div>
 
                 <div class="flex gap-4 mt-2">
-                    <button @click="showAddModal = false" class="ui-capsule-interactive bg-white border-slate-200 text-slate-600 flex-1">Batal</button>
-                    <button @click="handleAdd" class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2">Simpan</button>
+                    <UiButton @click="showAddModal = false" variant="white" class="flex-1">Batal</UiButton>
+                    <UiButton @click="handleAdd" variant="accent" class="flex-2">Simpan</UiButton>
                 </div>
             </div>
         </div>

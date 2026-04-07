@@ -73,8 +73,6 @@ export const profiles = sqliteTable("profiles", {
   name: text("name").notNull(),
   avatar: text("avatar").notNull(),
   coins: integer("coins").notNull().default(0),
-  letterCase: text("letter_case").notNull().default("uppercase"),
-  timerDuration: integer("timer_duration").notNull().default(30),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

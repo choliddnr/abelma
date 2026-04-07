@@ -46,3 +46,18 @@ export type ResRewardPut = Omit<Reward, "status" | "claimedAt">;
 export type ReqRewardDelete = Pick<Reward, "id">;
 
 export type ResRewardDelete = Pick<Reward, "id">;
+
+export type ReqProfilePost = {
+  name: string;
+  avatar: string;
+};
+
+export type ResProfilePost = {
+  id: string;
+  userId: string;
+  name: string;
+  avatar: string;
+  coins: number;
+  createdAt: string;
+  updatedAt: string;
+};

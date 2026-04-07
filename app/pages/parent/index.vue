@@ -6,14 +6,31 @@ const { activeProfileId, profiles } = storeToRefs(useProfileStore());
 const showAddProfile = ref(false);
 const newProfileName = ref("");
 const selectedAvatar = ref("👦");
+const isCreating = ref(false);
+const { addProfile } = useProfileStore();
 
 const handleAddProfile = async () => {
-  // Logic from parent.vue (previously commented out in original)
-  // if (newProfileName.value.trim()) {
-  //   await createProfile(newProfileName.value.trim(), selectedAvatar.value);
-  //   newProfileName.value = "";
-  //   showAddProfile.value = false;
-  // }
+  if (!newProfileName.value.trim()) return;
+
+  isCreating.value = true;
+  try {
+    await $fetch("/api/profile", {
+      method: "POST",
+      body: {
+        name: newProfileName.value.trim(),
+        avatar: selectedAvatar.value,
+      },
+      onResponse: ({ response }) => {
+        if (response.ok) {
+          addProfile(response._data);
+        }
+      },
+    });
+  } catch (e) {
+    console.error("Failed to create initial profile", e);
+  } finally {
+    isCreating.value = false;
+  }
 };
 </script>
 
@@ -23,12 +40,13 @@ const handleAddProfile = async () => {
   >
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Anak</h3>
-      <button
+      <UiButton
         @click="showAddProfile = true"
-        class="text-indigo-600 font-black flex items-center gap-1 hover:underline"
+        variant="ghost"
+        class="text-indigo-600 font-black flex items-center gap-1 hover:underline p-0 h-auto"
       >
         + Tambah Profil Baru
-      </button>
+      </UiButton>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -47,13 +65,14 @@ const handleAddProfile = async () => {
           <p class="font-black text-lg text-slate-800">
             {{ profile.name }}
           </p>
-          <button
+          <UiButton
             v-if="activeProfileId !== profile.id"
             @click="activeProfileId = profile.id"
-            class="text-xs font-bold text-indigo-500 hover:underline"
+            variant="ghost"
+            class="text-xs font-bold text-indigo-500 hover:underline p-0 h-auto"
           >
             Pilih Sekarang
-          </button>
+          </UiButton>
           <span
             v-else
             class="text-xs font-black text-emerald-500 uppercase tracking-widest"
@@ -84,34 +103,33 @@ const handleAddProfile = async () => {
         <div class="space-y-4">
           <label class="font-bold text-slate-500">Pilih Avatar:</label>
           <div class="grid grid-cols-4 gap-2">
-            <button
+            <UiButton
               v-for="a in PROFILE_AVATARS"
               :key="a"
               @click="selectedAvatar = a"
-              class="w-12 h-12 rounded-xl border-2 flex items-center justify-center text-2xl transition-all"
+              variant="none"
+              class="w-12 h-12 rounded-xl border-2 flex items-center justify-center text-2xl transition-all px-0 py-0"
               :class="
                 selectedAvatar === a
-                  ? 'bg-indigo-50 border-indigo-400 scale-110'
+                  ? 'bg-indigo-50 border-indigo-400 scale-110 shadow-sm'
                   : 'bg-white border-slate-50'
               "
             >
               {{ a }}
-            </button>
+            </UiButton>
           </div>
         </div>
         <div class="flex gap-4 pt-4">
-          <button
+          <UiButton
             @click="showAddProfile = false"
-            class="ui-capsule-interactive bg-white border-slate-200 text-slate-600 flex-1"
+            variant="white"
+            class="flex-1"
           >
             Batal
-          </button>
-          <button
-            @click="handleAddProfile"
-            class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2"
-          >
+          </UiButton>
+          <UiButton @click="handleAddProfile" variant="accent" class="flex-2">
             Simpan
-          </button>
+          </UiButton>
         </div>
       </div>
     </div>

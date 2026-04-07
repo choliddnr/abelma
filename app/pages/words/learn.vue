@@ -21,11 +21,13 @@ const navigateToWord = (wordId: string) => {
   <div class="flex flex-col gap-4 min-h-screen bg-slate-50">
     <!-- Header -->
     <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 sticky top-0 bg-slate-50 z-10">
-      <button @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50 focus:ring-slate-200">
-        <span class="text-xl md:text-2xl">🏠</span>
-        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
-      </button>
+      <UiButton @click="goBack"
+        variant="white"
+        icon="🏠"
+        class="w-auto shadow-sm h-auto px-4 py-2"
+      >
+        <span class="font-black text-sm md:text-base hidden sm:inline ml-1">Kembali</span>
+      </UiButton>
       <h1 class="text-2xl md:text-3xl font-black text-indigo-600 drop-shadow-sm" style="font-family: 'Quicksand', sans-serif;">
         Katalog Kata
       </h1>
@@ -35,22 +37,25 @@ const navigateToWord = (wordId: string) => {
     <!-- Category Tabs -->
     <div class="px-4 overflow-x-auto hide-scrollbar">
       <div class="flex gap-2 pb-2 min-w-max">
-        <button v-for="category in wordCategories" :key="category.id"
+        <UiButton v-for="category in wordCategories" :key="category.id"
           @click="activeCategoryId = category.id"
-          class="ui-capsule-interactive transition-all duration-300"
-          :class="activeCategoryId === category.id ? 'bg-indigo-500 border-indigo-600 text-white shadow-md scale-105' : 'bg-white border-slate-200 text-slate-600 hover:bg-indigo-50'">
+          :variant="activeCategoryId === category.id ? 'accent' : 'white'"
+          class="transition-all duration-300"
+          :class="activeCategoryId === category.id ? 'shadow-md scale-105 bg-indigo-500 border-indigo-600 text-white' : ''"
+        >
           <span class="text-xl md:text-2xl">{{ category.emoji }}</span>
           <span class="font-black text-sm md:text-base">{{ category.name }}</span>
-        </button>
+        </UiButton>
       </div>
     </div>
 
     <!-- Word Grid -->
     <div class="flex-1 px-4 pb-12 w-full max-w-6xl mx-auto">
       <div v-if="activeCategory" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <button v-for="word in activeCategory.words" :key="word.id"
+        <UiButton v-for="word in activeCategory.words" :key="word.id"
           @click="navigateToWord(word.id)"
-          class="group relative glass-card flex flex-col items-center justify-between p-4 transition-all duration-300 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-3xl hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] bg-white">
+          variant="none"
+          class="group relative flex flex-col items-center justify-between p-4 transition-all duration-300 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-3xl hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] bg-white">
           
           <!-- Glossy Top Highlight -->
           <div class="absolute top-0 inset-x-0 h-1/3 bg-linear-to-b from-white/60 to-transparent opacity-80 rounded-t-[inherit] pointer-events-none"></div>
@@ -69,7 +74,7 @@ const navigateToWord = (wordId: string) => {
             </span>
           </div>
 
-        </button>
+        </UiButton>
       </div>
     </div>
   </div>

@@ -41,15 +41,16 @@ const handleClaim = async (reward: Reward) => {
     <div
       class="relative z-10 flex items-center justify-between w-full max-w-5xl mx-auto mb-8 animate-entrance"
     >
-      <button
+      <UiButton
         @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm"
+        variant="white"
+        icon="🔙"
+        class="w-auto shadow-sm"
       >
-        <span class="text-xl md:text-2xl">🔙</span>
         <span class="font-black text-sm md:text-base hidden sm:inline"
           >Kembali</span
         >
-      </button>
+      </UiButton>
 
       <h1
         class="text-3xl md:text-5xl font-black text-indigo-600 drop-shadow-sm font-quicksand flex items-center gap-2"
@@ -119,19 +120,17 @@ const handleClaim = async (reward: Reward) => {
           </div>
 
           <!-- Action -->
-          <button
+          <UiButton
             v-if="reward.status === 'available'"
             @click="handleClaim(reward)"
             :disabled="coins < reward.cost"
-            class="ui-capsule-interactive w-full text-xl shadow-lg transition-all transform hover:scale-105 active:scale-95"
-            :class="
-              coins >= reward.cost
-                ? 'bg-linear-to-r from-amber-400 to-orange-500 border-orange-600 text-white shadow-orange-200'
-                : 'bg-slate-200 border-slate-300 text-slate-400 cursor-not-allowed'
-            "
+            variant="primary"
+            class="w-full text-xl shadow-lg transition-all transform hover:scale-105 active:scale-95"
+            icon="🚀"
+            icon-position="right"
           >
-            <span class="drop-shadow-sm">Tukar Hadiah 🚀</span>
-          </button>
+            <span class="drop-shadow-sm uppercase font-black">Tukar Hadiah</span>
+          </UiButton>
           <div
             v-else-if="reward.status === 'claimed'"
             class="py-3 px-6 bg-indigo-100 text-indigo-700 border-2 border-indigo-200 rounded-2xl text-center font-black"

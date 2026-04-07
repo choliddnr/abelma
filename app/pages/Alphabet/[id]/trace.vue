@@ -149,7 +149,7 @@ const retry = () => {
           <span>💰</span> +{{ coinsEarned }} Koin!
         </div>
         <div v-else class="text-xl font-bold text-gray-500 mb-8">
-          Gambar lebih rapi untuk dapat koin!
+          Gambar lebih rapi for dapat koin!
         </div>
 
         <div class="flex gap-4 w-full">

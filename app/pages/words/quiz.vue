@@ -388,14 +388,15 @@ onUnmounted(() => {
       </div>
 
       <div class="flex gap-6 animate-entrance" style="animation-delay: 0.5s">
-        <button
+        <UiButton
           @click="goBack"
-          class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-xl"
+          variant="white"
+          icon="🏠"
+          class="w-auto shadow-xl"
         >
-          <span class="text-2xl md:text-3xl">🏠</span>
-          <span class="font-black text-lg md:text-xl">Menu</span>
-        </button>
-        <button
+          <span class="font-black text-lg md:text-xl ml-2">Menu</span>
+        </UiButton>
+        <UiButton
           @click="
             () => {
               isWin = false;
@@ -403,11 +404,12 @@ onUnmounted(() => {
               initQuestion();
             }
           "
-          class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-xl shadow-emerald-200"
+          variant="success"
+          icon="🔄"
+          class="w-auto shadow-xl shadow-emerald-200"
         >
-          <span class="text-2xl md:text-3xl">🔄</span>
-          <span class="font-black text-lg md:text-xl">Main Lagi</span>
-        </button>
+          <span class="font-black text-lg md:text-xl ml-2">Main Lagi</span>
+        </UiButton>
       </div>
     </div>
 
@@ -454,12 +456,14 @@ onUnmounted(() => {
           </p>
         </div>
 
-        <button
+        <UiButton
           @click="showStickerModal = false"
-          class="ui-capsule-interactive bg-amber-400 border-amber-500 text-slate-900 w-full text-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
+          variant="primary"
+          icon="🚀"
+          class="w-full text-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
         >
-          Lanjut Main! 🚀
-        </button>
+          Lanjut Main!
+        </UiButton>
       </div>
     </div>
 
@@ -467,15 +471,16 @@ onUnmounted(() => {
     <div
       class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 z-10 w-full max-w-5xl mx-auto animate-entrance"
     >
-      <button
+      <UiButton
         @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm"
+        variant="white"
+        icon="🔙"
+        class="w-auto shadow-sm h-auto px-4 py-2"
       >
-        <span class="text-xl md:text-2xl">🔙</span>
         <span class="font-black text-sm md:text-base hidden sm:inline"
           >Menyerah</span
         >
-      </button>
+      </UiButton>
 
       <div class="flex gap-2 md:gap-4">
         <div
@@ -511,7 +516,7 @@ onUnmounted(() => {
         class="flex flex-col items-center gap-8 md:gap-12 w-full"
       >
         <!-- Target Visual -->
-        <button @click="playTargetAudio" class="relative group">
+        <UiButton @click="playTargetAudio" variant="none" class="relative group">
           <div
             class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] border-8 border-white flex items-center justify-center transition-transform active:scale-95 hover:scale-105"
           >
@@ -527,18 +532,19 @@ onUnmounted(() => {
           >
             <span class="text-3xl">🔊</span>
           </div>
-        </button>
+        </UiButton>
 
         <!-- OPTION TYPE: PICK_WORD -->
         <div
           v-if="activityType === 'PICK_WORD'"
           class="flex flex-col md:flex-row gap-4 md:gap-6 w-full justify-center"
         >
-          <button
+          <UiButton
             v-for="option in currentOptions"
             :key="option.id"
             @click="handleChoice(option)"
-            class="relative glass-card flex-1 min-h-20 md:min-h-28 rounded-3xl md:rounded-4xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 border-4 overflow-hidden shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)]"
+            variant="none"
+            class="relative flex-1 min-h-20 md:min-h-28 rounded-3xl md:rounded-4xl flex flex-col items-center justify-center transition-all duration-200 active:scale-95 border-4 overflow-hidden shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)]"
             :class="[
               wrongChoiceId === option.id
                 ? 'shake-animation bg-rose-400 border-rose-500'
@@ -563,7 +569,7 @@ onUnmounted(() => {
                   : option.word.toLowerCase()
               }}
             </span>
-          </button>
+          </UiButton>
         </div>
 
         <!-- OPTION TYPE: SPELL_WORD -->

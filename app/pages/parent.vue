@@ -95,18 +95,20 @@ onUnmounted(async () => {});
       </div>
 
       <div class="flex gap-4 w-full">
-        <button
+        <UiButton
           @click="goBack"
-          class="ui-capsule-interactive bg-white border-slate-200 text-slate-500 flex-1 hover:bg-slate-50"
+          variant="white"
+          class="flex-1"
         >
           Batal
-        </button>
-        <button
+        </UiButton>
+        <UiButton
           @click="checkGate"
-          class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2 shadow-indigo-200"
+          variant="accent"
+          class="flex-2 shadow-indigo-200"
         >
           Masuk
-        </button>
+        </UiButton>
       </div>
     </div>
 
@@ -138,12 +140,13 @@ onUnmounted(async () => {});
               >
                 Halo, {{ session.data?.user?.name }}
               </h2>
-              <button
+              <UiButton
                 @click="logout"
-                class="ml-2 text-[10px] md:text-xs font-black text-rose-500 hover:text-rose-600 bg-rose-50 px-2 py-1 rounded-lg transition-colors uppercase tracking-tight"
+                variant="ghost"
+                class="ml-2 h-auto py-1 px-2 text-rose-500 hover:text-rose-600 bg-rose-50"
               >
-                Keluar
-              </button>
+                <span class="text-[10px] md:text-xs">Keluar</span>
+              </UiButton>
             </div>
             <p class="text-slate-500 font-bold">
               Kelola profil, hadiah, dan tingkat kesulitan.
@@ -151,22 +154,17 @@ onUnmounted(async () => {});
           </div>
         </div>
         <div class="flex gap-3">
-          <button
+          <UiButton
             @click="handleManualSync"
-            :disabled="isSyncing"
-            class="ui-capsule-interactive bg-white/80 border-slate-200 text-slate-700 w-auto px-6 shadow-sm hover:bg-white disabled:opacity-50"
+            :loading="isSyncing"
+            variant="accent"
+            class="w-auto px-6 shadow-sm"
+            :icon="isSyncing ? undefined : '☁️'"
           >
-            <span class="text-xl mr-2">{{ isSyncing ? "⌛" : "☁️" }}</span>
             <span class="font-black text-sm md:text-base hidden sm:inline">{{
-              isSyncing ? "Menyinkronkan..." : "Sinkron Awan"
+              isSyncing ? "Menyimpan..." : "Simpan"
             }}</span>
-          </button>
-          <button
-            @click="goBack"
-            class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto px-8 shadow-emerald-200"
-          >
-            Selesai
-          </button>
+          </UiButton>
         </div>
       </div>
 

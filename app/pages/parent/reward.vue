@@ -60,12 +60,13 @@ const handleDeleteReward = async (id: number) => {
   >
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Hadiah Tugas</h3>
-      <button
+      <UiButton
         @click="showAddReward = true"
-        class="text-indigo-600 font-black flex items-center gap-1 hover:underline"
+        variant="ghost"
+        class="text-indigo-600 font-black flex items-center gap-1 hover:underline p-0 h-auto"
       >
         + Tambah Hadiah Baru
-      </button>
+      </UiButton>
     </div>
 
     <div
@@ -86,13 +87,13 @@ const handleDeleteReward = async (id: number) => {
             : 'border-white/50'
         "
       >
-        <button
+        <UiButton
           v-if="reward.status !== 'claimed'"
           @click="handleDeleteReward(reward.id)"
-          class="absolute top-3 right-3 text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-colors w-10 h-10 flex items-center justify-center text-lg"
-        >
-          🗑️
-        </button>
+          variant="ghost"
+          class="absolute top-3 right-3 text-red-500 hover:text-red-700 hover:bg-red-50 p-0 rounded-full transition-colors w-10 h-10 flex items-center justify-center text-lg"
+          icon="🗑️"
+        />
 
         <div
           class="flex-1 flex flex-col justify-center items-center w-full mt-2"
@@ -110,16 +111,19 @@ const handleDeleteReward = async (id: number) => {
         </div>
 
         <div class="mt-4 w-full shrink-0">
-          <button
+          <UiButton
             v-if="reward.status === 'claimed'"
             @click="fulfillReward(reward.id)"
-            class="w-full py-2.5 bg-emerald-500 text-white rounded-xl text-sm font-black shadow-sm transition-all hover:scale-105 active:scale-95 flex flex-col items-center justify-center leading-tight gap-1"
+            variant="success"
+            class="w-full py-2.5 shadow-sm leading-tight gap-1 h-auto"
           >
-            <span>Berikan! 🎁</span>
-            <span class="text-[10px] font-bold opacity-90">{{
-              formatDate(reward.claimedAt!)
-            }}</span>
-          </button>
+            <div class="flex flex-col items-center">
+              <span>Berikan! 🎁</span>
+              <span class="text-[10px] font-bold opacity-90 capitalize">{{
+                formatDate(reward.claimedAt!)
+              }}</span>
+            </div>
+          </UiButton>
 
           <div
             v-else-if="reward.status === 'fulfilled'"
@@ -152,19 +156,20 @@ const handleDeleteReward = async (id: number) => {
         <div class="space-y-4">
           <label class="font-bold text-slate-500">Ikon:</label>
           <div class="grid grid-cols-6 gap-2">
-            <button
+            <UiButton
               v-for="e in REWARD_EMOJIS"
               :key="e"
               @click="newRewardEmoji = e"
-              class="w-10 h-10 rounded-xl border-2 flex items-center justify-center text-xl transition-all"
+              variant="none"
+              class="w-10 h-10 rounded-xl border-2 flex items-center justify-center text-xl transition-all px-0 py-0"
               :class="
                 newRewardEmoji === e
-                  ? 'bg-indigo-50 border-indigo-400 scale-110'
+                  ? 'bg-indigo-50 border-indigo-400 scale-110 shadow-sm'
                   : 'bg-white border-slate-50'
               "
             >
               {{ e }}
-            </button>
+            </UiButton>
           </div>
         </div>
         <div class="space-y-2">
@@ -176,18 +181,20 @@ const handleDeleteReward = async (id: number) => {
           />
         </div>
         <div class="flex gap-4 pt-4">
-          <button
+          <UiButton
             @click="showAddReward = false"
-            class="ui-capsule-interactive bg-white border-slate-200 text-slate-600 flex-1"
+            variant="white"
+            class="flex-1"
           >
             Batal
-          </button>
-          <button
+          </UiButton>
+          <UiButton
             @click="handleAddReward"
-            class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white flex-2"
+            variant="accent"
+            class="flex-2"
           >
             Simpan
-          </button>
+          </UiButton>
         </div>
       </div>
     </div>

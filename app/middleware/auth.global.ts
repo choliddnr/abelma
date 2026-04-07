@@ -1,6 +1,8 @@
 import { authClient } from "~/utils/auth-client";
 
 export default defineNuxtRouteMiddleware(async (to) => {
+  console.log(["/login", "/welcome"].includes(to.path));
+
   if (to.path === "/login") {
     return;
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOptions({ name: 'AlphabetLearning' })
+defineOptions({ name: 'AlphabetChallenge' })
 
 const { preloadSounds } = useAlphabetAudio()
 
@@ -7,14 +7,14 @@ onMounted(() => {
   preloadSounds()
 })
 
-const startChallenge = () => {
-  navigateTo('/alphabet/challenge')
+const stopChallenge = () => {
+  navigateTo('/alphabet')
 }
 </script>
 
 <template>
   <div class="alphabet-view-container overflow-x-hidden mt-4">
-    <AlphabetLearningMode @start-challenge="startChallenge" />
+    <AlphabetChallengeMode @stop-challenge="stopChallenge" />
   </div>
 </template>
 

@@ -1,4 +1,4 @@
-import type { ReqRewardPost, ResRewardPost, Reward } from "#shared/types/api";
+import type { ReqRewardPost, Reward } from "#shared/types/api";
 import { rewards } from "#server/utils/db/schema";
 
 export default defineEventHandler(async (event) => {

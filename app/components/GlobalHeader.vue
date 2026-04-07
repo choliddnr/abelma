@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { authClient } from "~/utils/auth-client";
-
 const router = useRouter();
 const route = useRoute();
-const session = authClient.useSession();
+
+const showHeader = computed(() => {
+  return !["/login", "/welcome"].includes(route.path);
+});
 
 const { coins } = storeToRefs(useRewardStore());
 const { selectedProfile } = storeToRefs(useProfileStore());
@@ -12,11 +13,12 @@ const isHome = computed(() => route.path === "/");
 
 <template>
   <header
+    v-if="showHeader"
     class="relative z-30 w-full max-w-7xl mx-auto px-4 py-3 md:py-4 flex items-center gap-4 shrink-0 font-quicksand"
   >
     <!-- Left: Branding or Back Button -->
-    <div class="flex items-center gap-4">
-      <div v-if="isHome" class="flex flex-col leading-tight">
+    <div v-if="isHome" class="flex items-center gap-4">
+      <div class="flex flex-col leading-tight">
         <h1
           class="text-2xl md:text-4xl font-black text-indigo-600 font-quicksand drop-shadow-sm"
         >
@@ -28,14 +30,24 @@ const isHome = computed(() => route.path === "/");
           Belajar & Bermain
         </span>
       </div>
-      <button
-        v-else
+    </div>
+    <div v-else class="flex gap-2">
+      <UiButton
         @click="router.back()"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm py-2 px-4"
+        variant="white"
+        icon="🔙"
+        class="w-auto shadow-sm py-2 px-4 h-auto"
       >
-        <span class="text-xl">🔙</span>
         <span class="font-black text-sm hidden sm:inline ml-1">Kembali</span>
-      </button>
+      </UiButton>
+      <UiButton
+        @click="router.push('/')"
+        variant="white"
+        icon="🏠"
+        class="w-auto shadow-sm py-2 px-4 h-auto"
+      >
+        <span class="font-black text-sm hidden sm:inline ml-1">Home</span>
+      </UiButton>
     </div>
 
     <div class="flex-1"></div>
@@ -43,28 +55,30 @@ const isHome = computed(() => route.path === "/");
     <!-- Right: Actions & Auth -->
     <div class="flex items-center gap-2 md:gap-4">
       <!-- coins -->
-      <NuxtLink
+      <UiButton
         to="/words/rewards"
-        class="ui-capsule-interactive bg-amber-400 border-amber-500 text-white w-auto px-4 py-2 shadow-lg hover:rotate-3 font-quicksand animate-float h-10 md:h-12"
+        variant="primary"
+        icon="🪙"
+        class="w-auto px-4 py-2 shadow-lg hover:rotate-3 font-quicksand h-10 md:h-12"
       >
-        <span class="text-lg md:text-xl">🪙</span>
         <span class="font-black text-xs md:text-base ml-1"
           >{{ coins }} <span class="hidden md:inline">Koin</span></span
         >
-      </NuxtLink>
+      </UiButton>
 
       <!-- Parent Lounge (Area Orang Tua) -->
 
       <!-- Parent Lounge -->
-      <button
+      <UiButton
         @click="router.push('/parent')"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto shadow-sm hover:shadow-md h-10 md:h-12 py-2 px-3 md:px-4"
+        variant="white"
+        icon="👨‍👩‍👧"
+        class="w-auto shadow-sm hover:shadow-md h-10 md:h-12 py-2 px-3 md:px-4"
       >
-        <span class="text-xl md:text-2xl">👨‍👩‍👧</span>
         <span class="font-black text-xs md:text-base hidden lg:inline ml-1"
           >Orang Tua</span
         >
-      </button>
+      </UiButton>
 
       <!-- Active Profile (Static) -->
       <div

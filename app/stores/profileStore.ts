@@ -20,11 +20,17 @@ export const useProfileStore = defineStore(
 
     const isLoaded = ref(false);
 
+    const addProfile = (profile: Profile) => {
+      profiles.value.push(profile);
+      activeProfileId.value = profile.id;
+    };
+
     return {
       profiles,
       activeProfileId,
       selectedProfile,
       isLoaded,
+      addProfile,
     };
   },
   {

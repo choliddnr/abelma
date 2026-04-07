@@ -1,23 +1,11 @@
 <script setup lang="ts">
 import { authClient } from "~/utils/auth-client";
-const router = useRouter();
 const session = authClient.useSession();
-
-// Redirect to home if already logged in
-watch(
-  () => session.value.data,
-  (newData) => {
-    if (newData) {
-      router.push("/");
-    }
-  },
-  { immediate: true },
-);
 
 const login = async () => {
   await authClient.signIn.social({
     provider: "google",
-    callbackURL: "/",
+    callbackURL: "/welcome",
   });
 };
 </script>
