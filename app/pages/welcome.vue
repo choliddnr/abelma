@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const profileStore = useProfileStore()
+const { profiles, isLoaded } = storeToRefs(useProfileStore())
+const { createProfile } = useProfileStore()
 const router = useRouter()
 
 const newProfileName = ref('')
@@ -12,7 +13,7 @@ const handleCreateFirstProfile = async () => {
   
   isCreating.value = true
   try {
-    const profile = await profileStore.createProfile(newProfileName.value.trim(), selectedAvatar.value)
+    const profile = await createProfile(newProfileName.value.trim(), selectedAvatar.value)
     if (profile) {
       // Small delay for psychological feedback
       setTimeout(() => {
@@ -28,14 +29,14 @@ const handleCreateFirstProfile = async () => {
 
 // If profiles already exist, don't stay here
 onMounted(() => {
-  if (profileStore.isLoaded && profileStore.profiles.length > 0) {
+  if (isLoaded.value && profiles.value.length > 0) {
     router.push('/')
   }
 })
 
 // Watch isLoaded to push user out if profiles are found after an async sync
-watch(() => profileStore.isLoaded, (loaded) => {
-  if (loaded && profileStore.profiles.length > 0) {
+watch(() => isLoaded.value, (loaded) => {
+  if (loaded && profiles.value.length > 0) {
     router.push('/')
   }
 })

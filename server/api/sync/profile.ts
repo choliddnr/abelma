@@ -33,7 +33,6 @@ export default defineEventHandler(async (event) => {
             coins: p.coins || 0,
             letterCase: p.letterCase || "uppercase",
             timerDuration: p.timerDuration ?? 30,
-            updatedAt: new Date().toISOString(),
           })
           .onConflictDoUpdate({
             target: schema.profiles.id,
@@ -43,7 +42,6 @@ export default defineEventHandler(async (event) => {
               coins: p.coins,
               letterCase: p.letterCase,
               timerDuration: p.timerDuration,
-              updatedAt: new Date().toISOString(),
             },
           });
 
@@ -57,7 +55,6 @@ export default defineEventHandler(async (event) => {
                 type: a.type,
                 targetId: a.targetId,
                 mistakes: a.mistakes,
-                lastAttempt: a.lastAttempt,
               })
               .onConflictDoUpdate({
                 target: [
@@ -67,7 +64,6 @@ export default defineEventHandler(async (event) => {
                 ],
                 set: {
                   mistakes: a.mistakes,
-                  lastAttempt: a.lastAttempt,
                 },
               });
           }

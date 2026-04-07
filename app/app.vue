@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import { authClient } from "@/lib/auth-client";
+// const { var1 } = storeToRefs(useTestStore());
+// var1.value = "data val 1";
+import { authClient } from "~/utils/auth-client";
 
 const session = authClient.useSession();
-const syncStore = useSyncStore();
-const profileStore = useProfileStore();
-
-// Watch for session to load cloud data
-watch(
-  () => session.value.data,
-  (newData) => {
-    if (newData) {
-      syncStore.loadFromCloud();
-    }
-  },
-  { immediate: true },
-);
+// const { loadFromCloud } = useSyncStore();
+const { profiles, isLoaded } = storeToRefs(useProfileStore());
 
 // Redirect to welcome if no profiles after sync
 const route = useRoute();
@@ -22,11 +13,12 @@ const router = useRouter();
 
 const allReady = computed(() => {
   // Check if user is logged in, sync is done, and no profiles exist
-  if (!profileStore.isLoaded) return false;
+  if (!isLoaded.value) return false;
   if (!session.value?.data) return false;
-  if (profileStore.profiles.length === 0) return false;
+  if (profiles.value.length === 0) return false;
   return true;
 });
+console.log(session.value, !["/login", "/welcome"].includes(route.path));
 
 watch(
   () => allReady,
@@ -35,11 +27,12 @@ watch(
       router.push("/welcome");
     }
   },
-  { immediate: true },
+  { once: true },
 );
 </script>
 
 <template>
+  <!-- <pre>{{ profiles }}</pre> -->
   <div
     class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col"
   >
@@ -76,13 +69,11 @@ watch(
     <main
       class="relative z-10 flex-1 w-full overflow-y-auto overflow-x-hidden custom-scrollbar"
     >
-      <GlobalHeader
-        v-if="
+      <GlobalHeader />
+      <!-- v-if="
           !session.isPending &&
-          !profileStore.isHeaderHidden &&
           !['/login', '/welcome'].includes(route.path)
-        "
-      />
+        " -->
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
     </main>
   </div>

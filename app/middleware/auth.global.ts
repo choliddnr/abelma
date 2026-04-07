@@ -1,4 +1,4 @@
-import { authClient } from "~/lib/auth-client";
+import { authClient } from "~/utils/auth-client";
 
 export default defineNuxtRouteMiddleware(async (to) => {
   if (to.path === "/login") {
@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   // Handle Profile Requirement
-  const profileStore = useProfileStore();
+  const { isLoaded, profiles } = storeToRefs(useProfileStore());
 
   // Skip check for login/welcome pages
   if (to.path === "/welcome") {
@@ -24,15 +24,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   // Wait for initial sync if not loaded yet
-  if (!profileStore.isLoaded) {
+  if (!isLoaded.value) {
     // We don't block here, but we will check again in the component onMount
     // or let the next middleware run handle it.
     // However, for a better feel, we can just return and let app.vue handle the loading state
-    console.log("profileStore.isLoaded", profileStore.isLoaded);
     return;
   }
 
-  if (profileStore.allProfiles.length === 0) {
+  if (profiles.value.length === 0) {
     return navigateTo("/welcome");
   }
 

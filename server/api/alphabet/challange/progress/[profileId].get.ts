@@ -1,6 +1,4 @@
-import type { Reward, CloudProfile } from "@/types/stores";
-import type { ReqAlphabetChallangeProgressPut } from "#shared/types/api";
-import { alphabetProgress } from "#server/utils/db/schema";
+import { alphabetChallengeProgress } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
@@ -9,14 +7,14 @@ export default defineEventHandler(async (event) => {
   try {
     const result = await d1
       .select({
-        score: alphabetProgress.score,
-        level: alphabetProgress.level,
-        weights: alphabetProgress.weights,
-        challengeConfig: alphabetProgress.challengeConfig,
-        updatedAt: alphabetProgress.updatedAt,
+        score: alphabetChallengeProgress.score,
+        level: alphabetChallengeProgress.level,
+        weights: alphabetChallengeProgress.weights,
+        challengeConfig: alphabetChallengeProgress.challengeConfig,
+        updatedAt: alphabetChallengeProgress.updatedAt,
       })
-      .from(alphabetProgress)
-      .where(eq(alphabetProgress.profileId, profileId));
+      .from(alphabetChallengeProgress)
+      .where(eq(alphabetChallengeProgress.profileId, profileId));
 
     return result[0];
   } catch (error) {

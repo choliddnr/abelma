@@ -1,28 +1,31 @@
 <script setup lang="ts">
-import { letters, getLetterColor } from "@/constants/alphabet";
-import { DEFAULT_CHALLENGE_CONFIG } from "@/constants/challengeDefaults";
-import { useAlphabetAudio } from "@/composables/useAlphabetAudio";
+import { letters, getLetterColor } from "~/constants/alphabet";
+import { DEFAULT_ALPHABET_CHALLENGE_CONFIG } from "~/constants/alphabet";
+import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
 import confetti from "canvas-confetti";
 
 const emit = defineEmits(["stop-challenge"]);
 
 const router = useRouter();
 const { speaking, playLetterSound, speak } = useAlphabetAudio();
-const { getCurrentAlphabetState } = useAlphabetStore();
-const rewardStore = useRewardStore();
-const syncStore = useSyncStore();
+const { alphabetChallangeProgress: alphabetProgress } =
+  storeToRefs(useAlphabetStore());
+const { coins } = storeToRefs(useRewardStore());
+// const { syncAlphabet } = useSyncStore();
 
 // Game State from Store
-const alphabetProgress = getCurrentAlphabetState();
-const score = ref(alphabetProgress.score);
-const level = ref(alphabetProgress.level);
-const letterWeights = ref<Record<string, number>>(alphabetProgress.weights);
+// const alphabetProgress = getCurrentAlphabetState();
+const score = ref(alphabetProgress.value.score);
+const level = ref(alphabetProgress.value.level);
+const letterWeights = ref<Record<string, number>>(
+  alphabetProgress.value.weights,
+);
 
 const challengeConfig = computed(() =>
-  alphabetProgress.challengeConfig &&
-  alphabetProgress.challengeConfig.length > 0
-    ? alphabetProgress.challengeConfig
-    : DEFAULT_CHALLENGE_CONFIG,
+  alphabetProgress.value.challengeConfig &&
+  alphabetProgress.value.challengeConfig.length > 0
+    ? alphabetProgress.value.challengeConfig
+    : DEFAULT_ALPHABET_CHALLENGE_CONFIG,
 );
 
 const currentConfig = computed(() => {
@@ -30,7 +33,7 @@ const currentConfig = computed(() => {
   return (
     challengeConfig.value[index] ||
     challengeConfig.value[challengeConfig.value.length - 1] ||
-    DEFAULT_CHALLENGE_CONFIG[0]!
+    DEFAULT_ALPHABET_CHALLENGE_CONFIG[0]!
   );
 });
 
@@ -38,9 +41,9 @@ const currentConfig = computed(() => {
 watch(
   [score, level, letterWeights],
   () => {
-    alphabetProgress.score = score.value;
-    alphabetProgress.level = level.value;
-    alphabetProgress.weights = letterWeights.value;
+    alphabetProgress.value.score = score.value;
+    alphabetProgress.value.level = level.value;
+    alphabetProgress.value.weights = letterWeights.value;
   },
   { deep: true },
 );
@@ -225,9 +228,8 @@ const handleLetterClick = async (letter: string) => {
     stopTimer();
     streak.value++;
     const multiplier = Math.min(2, 1 + streak.value * 0.1);
-    const coins = Math.round(10 * multiplier);
-    score.value += coins;
-    rewardStore.addCoins(coins);
+    const earnedCoins = Math.round(10 * multiplier);
+    score.value += earnedCoins;
 
     const caseCorrectLetter = isUpperCase.value
       ? targetLetter.value
@@ -247,9 +249,8 @@ const handleLetterClick = async (letter: string) => {
       streak.value % config.streak === 0
     ) {
       gotReward = true;
-      const reward = config.streakReward;
-      lastEarnedReward.value = reward;
-      rewardStore.addCoins(reward);
+      lastEarnedReward.value = config.streakReward;
+      coins.value += config.streakReward;
     }
 
     if (gotReward) {
@@ -369,7 +370,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (timerInterval.value) clearInterval(timerInterval.value);
-  syncStore.syncAlphabet();
+  // syncAlphabet();
 });
 </script>
 

@@ -12,6 +12,9 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "pinia-plugin-unstorage/nuxt",
   ],
+  // pinia: {
+  //   // storesDirs: ["./stores/**"],
+  // },
   piniaUnstorage: {
     namespace: "abelma:",
   },
@@ -19,7 +22,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ["canvas-confetti"],
+      include: ["canvas-confetti", "better-auth/vue"],
     },
   },
   nitro: {

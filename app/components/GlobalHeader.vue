@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "~/utils/auth-client";
 
 const router = useRouter();
 const route = useRoute();
-const syncStore = useSyncStore();
 const session = authClient.useSession();
 
-const { currentCoins: coins } = storeToRefs(useRewardStore());
+const { coins } = storeToRefs(useRewardStore());
+const { selectedProfile } = storeToRefs(useProfileStore());
 const isHome = computed(() => route.path === "/");
-
-const logout = async () => {
-  await authClient.signOut();
-  await syncStore.clearAllData();
-  router.push("/login");
-};
 </script>
 
 <template>
@@ -49,7 +43,7 @@ const logout = async () => {
     <!-- Right: Actions & Auth -->
     <div class="flex items-center gap-2 md:gap-4">
       <!-- coins -->
-      <router-link
+      <NuxtLink
         to="/words/rewards"
         class="ui-capsule-interactive bg-amber-400 border-amber-500 text-white w-auto px-4 py-2 shadow-lg hover:rotate-3 font-quicksand animate-float h-10 md:h-12"
       >
@@ -57,10 +51,9 @@ const logout = async () => {
         <span class="font-black text-xs md:text-base ml-1"
           >{{ coins }} <span class="hidden md:inline">Koin</span></span
         >
-      </router-link>
+      </NuxtLink>
 
-      <!-- Profile Selector -->
-      <ProfileSelector />
+      <!-- Parent Lounge (Area Orang Tua) -->
 
       <!-- Parent Lounge -->
       <button
@@ -73,9 +66,9 @@ const logout = async () => {
         >
       </button>
 
-      <!-- User Auth -->
+      <!-- Active Profile (Static) -->
       <div
-        v-if="session.data"
+        v-if="selectedProfile"
         class="flex items-center gap-2 md:gap-3 ml-2 border-l pl-4 border-slate-200"
       >
         <div class="text-right hidden sm:block leading-tight">
@@ -83,30 +76,15 @@ const logout = async () => {
           <p
             class="text-xs md:text-sm font-black text-indigo-600 truncate max-w-[80px]"
           >
-            {{ session.data.user.name }}
+            {{ selectedProfile.name }}
           </p>
-          <button
-            @click="logout"
-            class="text-[10px] font-bold text-rose-500 hover:text-rose-600 transition-colors uppercase tracking-tighter"
-          >
-            Keluar
-          </button>
         </div>
-        <img
-          :src="session.data.user.image || ''"
-          :alt="session.data.user.name"
-          class="w-10 h-10 rounded-full border-2 border-indigo-400 shadow-md transform hover:scale-110 transition-transform cursor-pointer"
-          @click="router.push('/profile')"
-        />
+        <div
+          class="w-10 h-10 flex items-center justify-center bg-white rounded-full border-2 border-indigo-400 shadow-md text-2xl"
+        >
+          {{ selectedProfile.avatar }}
+        </div>
       </div>
-
-      <router-link
-        v-else
-        to="/login"
-        class="ui-capsule-interactive bg-indigo-500 border-indigo-600 text-white font-black py-2 px-6 shadow-lg text-sm h-10 md:h-12"
-      >
-        Masuk
-      </router-link>
     </div>
   </header>
 </template>

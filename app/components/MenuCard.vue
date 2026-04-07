@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <RouterLink
+  <NuxtLink
     :to="to"
     class="glass-card p-8 flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:translate-y-[-10px] cursor-pointer group"
   >
@@ -23,6 +23,6 @@ defineProps<{
       <h2 class="text-3xl font-bold text-gray-800">{{ title }}</h2>
       <p class="text-gray-500 font-medium">{{ subtitle }}</p>
     </div>
-  </RouterLink>
+  </NuxtLink>
 </template>
 

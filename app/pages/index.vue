@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // Coins handled by GlobalHeader
 
+const { selectedProfile } = storeToRefs(useProfileStore());
+
 const menuItems = [
   {
     title: "Belajar Huruf",
@@ -58,7 +60,7 @@ const menuItems = [
         <h1
           class="text-6xl md:text-8xl font-black text-indigo-600 drop-shadow-sm font-quicksand"
         >
-          Halo Teman!
+          Halo {{ selectedProfile?.name }}!
         </h1>
         <p class="text-2xl md:text-3xl font-bold text-slate-500 font-quicksand">
           Ayo kita belajar sambil bermain!

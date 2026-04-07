@@ -6,7 +6,7 @@ const router = useRouter();
 const letter = (route.params.id as string) || "A";
 
 const tracingCanvasRef = ref<InstanceType<typeof TracingCanvas> | null>(null);
-const rewardStore = useRewardStore();
+const { addCoins } = useRewardStore();
 const showResult = ref(false);
 const scoreResult = ref({ score: 0, stars: 0, coverage: 0, accuracy: 0 });
 const coinsEarned = ref(0);
@@ -36,16 +36,16 @@ const onSaved = () => {
 
     if (result.stars === 5) {
       coinsEarned.value = 15;
-      rewardStore.addCoins(15);
+      addCoins(15);
     } else if (result.stars === 4) {
       coinsEarned.value = 10;
-      rewardStore.addCoins(10);
+      addCoins(10);
     } else if (result.stars === 3) {
       coinsEarned.value = 5;
-      rewardStore.addCoins(5);
+      addCoins(5);
     } else if (result.stars === 2) {
       coinsEarned.value = 2;
-      rewardStore.addCoins(2);
+      addCoins(2);
     } else {
       coinsEarned.value = 0;
     }

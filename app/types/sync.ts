@@ -42,6 +42,6 @@ export type CloudProfile = {
   rewards: CloudReward[];
   stickers: CloudSticker[];
   analytics: CloudAnalytics[];
-  alphabetProgress: CloudAlphabetProgress | null;
+  alphabetChallengeProgress: CloudAlphabetProgress | null;
   storybookProgress: CloudStorybook[];
 };

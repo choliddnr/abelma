@@ -68,12 +68,14 @@ export type WordAnalytics = {
   lastAttempt: string;
 };
 
-export type AlphabetChallengeModeConfig = {
+export type ChallengeLevelConfig = {
   targetWeight: number;
   timer: number; // 0 = off, otherwise seconds
   streak: number; // threshold for bonus reward
   streakReward: number; // koin reward
-}[];
+};
+
+export type AlphabetChallengeModeConfig = ChallengeLevelConfig[];
 
 export type AlphabetChallengeProgress = {
   score: number;

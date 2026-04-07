@@ -1,10 +1,19 @@
 export type BaseRes = {
   status: boolean;
 };
+
+export type AlphabetChallengeProgress = {
+  score: number;
+  level: number;
+  weights: Record<string, number>;
+  challengeConfig: Record<string, number>;
+  updatedAt: string;
+};
+
 export type ReqAlphabetChallangeProgressPut = {
   profileId: string;
   coins: number;
-  progress: { score: number; level: number; weights: Record<string, number> };
+  progress: AlphabetChallengeProgress;
 };
 
 export type ResAlphabetChallangeProgressGet = {
@@ -13,3 +22,27 @@ export type ResAlphabetChallangeProgressGet = {
   weights: Record<string, number>;
   updatedAt: string;
 };
+
+export type Reward = {
+  id: number;
+  profileId: string;
+  title: string;
+  cost: number;
+  emoji: string;
+  status: "available" | "claimed" | "fulfilled";
+  claimedAt?: string | null;
+};
+
+export type ReqRewardPost = Omit<Reward, "id" | "status" | "claimedAt"> & {
+  profileId: string;
+};
+
+export type ResRewardPost = Omit<Reward, "status" | "claimedAt">;
+
+export type ReqRewardPut = Omit<Reward, "id" | "status" | "claimedAt">;
+
+export type ResRewardPut = Omit<Reward, "status" | "claimedAt">;
+
+export type ReqRewardDelete = Pick<Reward, "id">;
+
+export type ResRewardDelete = Pick<Reward, "id">;

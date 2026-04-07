@@ -1,6 +1,6 @@
-import type { Reward, CloudProfile } from "@/types/stores";
+// import type { Reward, CloudProfile } from "@/types/stores";
 import type { ReqAlphabetChallangeProgressPut } from "#shared/types/api";
-import { alphabetProgress } from "#server/utils/db/schema";
+import { alphabetChallengeProgress } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
@@ -25,14 +25,13 @@ export default defineEventHandler(async (event) => {
       .where(eq(profiles.id, payload.profileId));
 
     await d1
-      .update(alphabetProgress)
+      .update(alphabetChallengeProgress)
       .set({
         score: payload.progress.score,
         level: payload.progress.level,
         weights: JSON.stringify(payload.progress.weights),
-        updatedAt: new Date().toISOString(),
       })
-      .where(eq(alphabetProgress.profileId, payload.profileId));
+      .where(eq(alphabetChallengeProgress.profileId, payload.profileId));
 
     return {
       success: true,

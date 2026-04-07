@@ -1,14 +1,14 @@
-import { eq } from 'drizzle-orm';
-import * as schema from '../../utils/db/schema';
+import { eq } from "drizzle-orm";
+import * as schema from "../../utils/db/schema";
 
 export default defineEventHandler(async (event) => {
   const auth = _auth(event);
   const session = await auth.api.getSession({ headers: event.headers });
-  
+
   if (!session) {
     throw createError({
       statusCode: 401,
-      statusMessage: 'Unauthorized',
+      statusMessage: "Unauthorized",
     });
   }
 
@@ -22,9 +22,9 @@ export default defineEventHandler(async (event) => {
       rewards: true,
       analytics: true,
       stickers: true,
-      alphabetProgress: true,
-      storybookProgress: true
-    }
+      alphabetChallengeProgress: true,
+      storybookProgress: true,
+    },
   });
 
   return userProfiles;
