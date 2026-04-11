@@ -1,41 +1,22 @@
-import { authClient } from "~/utils/auth-client";
-
 export default defineNuxtRouteMiddleware(async (to) => {
-  console.log(["/login", "/welcome"].includes(to.path));
+  const userStore = useUserStore();
+  const { session } = storeToRefs(userStore);
 
-  if (to.path === "/login") {
-    return;
+  // Ensure session is loaded if not already
+  if (!session.value) {
+    await userStore.fetchSession();
   }
 
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: useRequestHeaders(["cookie"]),
-    },
-  });
+  // Define public routes that don't require authentication
+  const publicPages = ["/login", "/signup"];
 
-  if (!session?.data) {
+  // If user is not logged in and trying to access a protected page, redirect to login
+  if (!session.value && !publicPages.includes(to.path)) {
     return navigateTo("/login");
   }
 
-  // Handle Profile Requirement
-  const { isLoaded, profiles } = storeToRefs(useProfileStore());
-
-  // Skip check for login/welcome pages
-  if (to.path === "/welcome") {
-    return;
+  // Optional: If user is logged in and tries to access login/signup, redirect to home
+  if (session.value && publicPages.includes(to.path)) {
+    return navigateTo("/");
   }
-
-  // Wait for initial sync if not loaded yet
-  if (!isLoaded.value) {
-    // We don't block here, but we will check again in the component onMount
-    // or let the next middleware run handle it.
-    // However, for a better feel, we can just return and let app.vue handle the loading state
-    return;
-  }
-
-  if (profiles.value.length === 0) {
-    return navigateTo("/welcome");
-  }
-
-  return;
 });

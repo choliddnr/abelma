@@ -2,17 +2,17 @@
 const { width, height, barHeight } = defineProps({
   width: {
     type: String,
-    default: '100%'
+    default: "100%",
   },
   height: {
     type: String,
-    default: '50px'
+    default: "50px",
   },
   barHeight: {
     type: String,
-    default: '20px'
-  }
-})
+    default: "20px",
+  },
+});
 </script>
 
 <template>
@@ -20,8 +20,6 @@ const { width, height, barHeight } = defineProps({
     <div class="skeleton-bar" :style="{ height: barHeight }"></div>
   </div>
 </template>
-
-
 
 <style scoped>
 .loading-skeleton {
@@ -31,10 +29,7 @@ const { width, height, barHeight } = defineProps({
 }
 
 .skeleton-bar {
-  background: linear-gradient(90deg,
-      #f0f0f0 0%,
-      #e0e0e0 50%,
-      #f0f0f0 100%);
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -49,4 +44,3 @@ const { width, height, barHeight } = defineProps({
   }
 }
 </style>
-

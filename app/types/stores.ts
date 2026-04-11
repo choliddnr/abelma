@@ -18,6 +18,7 @@ export type Profile = {
   id: string;
   name: string;
   avatar: string;
+  coins: number;
 };
 
 // ==================== REWARD TYPES ====================

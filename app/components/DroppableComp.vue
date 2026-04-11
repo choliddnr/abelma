@@ -1,36 +1,39 @@
 <script lang="ts" setup>
-import { useDroppable } from '@vue-dnd-kit/core'
+import { useDroppable } from "@vue-dnd-kit/core";
 
-const emit = defineEmits(['update-letter', 'drag-over'])
-const letter = ref<string | undefined>()
+const emit = defineEmits(["update-letter", "drag-over"]);
+const letter = ref<string | undefined>();
 const props = defineProps<{
-  target: string,
-  resetTrigger?: number // Used to force reset from parent
-}>()
+  target: string;
+  resetTrigger?: number; // Used to force reset from parent
+}>();
 
 const { elementRef, isOvered } = useDroppable({
-  groups: ['items'],
+  groups: ["items"],
   events: {
     onDrop: (store, payload) => {
-      const draggedItem = payload.items[0]
-      const droppedLetter = draggedItem!.data!.letter as string
-      letter.value = droppedLetter
-      emit('update-letter', droppedLetter)
+      const draggedItem = payload.items[0];
+      const droppedLetter = draggedItem!.data!.letter as string;
+      letter.value = droppedLetter;
+      emit("update-letter", droppedLetter);
     },
   },
-})
+});
 
 const clearLetter = () => {
   if (letter.value) {
-    letter.value = undefined
-    emit('update-letter', '')
+    letter.value = undefined;
+    emit("update-letter", "");
   }
-}
+};
 
 // Allow external reset
-watch(() => props.resetTrigger, () => {
-  letter.value = undefined
-})
+watch(
+  () => props.resetTrigger,
+  () => {
+    letter.value = undefined;
+  },
+);
 </script>
 <template>
   <div ref="elementRef" :class="{ over: isOvered }">
@@ -50,7 +53,9 @@ watch(() => props.resetTrigger, () => {
         {{ letter }}
       </span>
       <!-- Delete Hint -->
-      <div class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+      <div
+        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+      >
         ✕
       </div>
     </div>
@@ -62,5 +67,3 @@ watch(() => props.resetTrigger, () => {
   transform: scale(1.05);
 }
 </style>
-
-

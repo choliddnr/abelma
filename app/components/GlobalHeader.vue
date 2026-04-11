@@ -6,8 +6,7 @@ const showHeader = computed(() => {
   return !["/login", "/welcome"].includes(route.path);
 });
 
-const { coins } = storeToRefs(useRewardStore());
-const { selectedProfile } = storeToRefs(useProfileStore());
+const { profile } = storeToRefs(useProfileStore());
 const isHome = computed(() => route.path === "/");
 </script>
 
@@ -56,13 +55,13 @@ const isHome = computed(() => route.path === "/");
     <div class="flex items-center gap-2 md:gap-4">
       <!-- coins -->
       <UiButton
-        to="/words/rewards"
+        to="/rewards"
         variant="primary"
         icon="🪙"
         class="w-auto px-4 py-2 shadow-lg hover:rotate-3 font-quicksand h-10 md:h-12"
       >
         <span class="font-black text-xs md:text-base ml-1"
-          >{{ coins }} <span class="hidden md:inline">Koin</span></span
+          >{{ profile?.coins }} <span class="hidden md:inline">Koin</span></span
         >
       </UiButton>
 
@@ -82,7 +81,7 @@ const isHome = computed(() => route.path === "/");
 
       <!-- Active Profile (Static) -->
       <div
-        v-if="selectedProfile"
+        v-if="profile"
         class="flex items-center gap-2 md:gap-3 ml-2 border-l pl-4 border-slate-200"
       >
         <div class="text-right hidden sm:block leading-tight">
@@ -90,13 +89,13 @@ const isHome = computed(() => route.path === "/");
           <p
             class="text-xs md:text-sm font-black text-indigo-600 truncate max-w-[80px]"
           >
-            {{ selectedProfile.name }}
+            {{ profile?.name }}
           </p>
         </div>
         <div
           class="w-10 h-10 flex items-center justify-center bg-white rounded-full border-2 border-indigo-400 shadow-md text-2xl"
         >
-          {{ selectedProfile.avatar }}
+          {{ profile?.avatar }}
         </div>
       </div>
     </div>

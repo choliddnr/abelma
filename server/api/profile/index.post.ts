@@ -20,9 +20,7 @@ export default defineEventHandler(async (event) => {
   });
 
   // Validate the request body. If validation fails, H3 will automatically throw a 400 error.
-  const body = await readValidatedBody(event, (data) =>
-    profileSchema.parse(data),
-  );
+  const body = await readValidatedBody(event, (data) => profileSchema.parse(data));
 
   // The session is pre-validated by server/middleware/auth.ts
   const userId = event.context.session.user.id;
@@ -36,10 +34,7 @@ export default defineEventHandler(async (event) => {
       // Note: coins, createdAt, and updatedAt are handled by DB defaults/triggers
     };
 
-    const results = await db(event)
-      .insert(schema.profiles)
-      .values(newProfile)
-      .returning();
+    const results = await db(event).insert(schema.profiles).values(newProfile).returning();
 
     if (!results || results.length === 0) {
       throw new Error("No record returned from database");

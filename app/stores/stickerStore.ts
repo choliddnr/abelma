@@ -5,7 +5,7 @@
 //   () => {
 //     // Other Stores
 //     const { activeProfileId: profileId } = storeToRefs(useProfileStore());
-//     const { coins } = storeToRefs(useRewardStore());
+//     const { coins } = storeToRefs(useProfileStore());
 
 //     // State
 //     const earnedStickers = ref<Set<string>>(new Set());

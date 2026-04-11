@@ -1,8 +1,9 @@
-import type { H3Event } from 'h3';
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { db } from './db';
-import * as schema from './db/schema';
+import type { H3Event } from "h3";
+import { betterAuth } from "better-auth";
+import { username } from "better-auth/plugins";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from "./db";
+import * as schema from "./db/schema";
 
 /**
  * Server-side BetterAuth instance.
@@ -14,7 +15,7 @@ export const _auth = (e: H3Event) => {
 
   return betterAuth({
     database: drizzleAdapter(db(e), {
-      provider: 'sqlite',
+      provider: "sqlite",
       schema,
     }),
     advanced: {
@@ -24,15 +25,20 @@ export const _auth = (e: H3Event) => {
     },
     // Secrets pulled from Cloudflare env bindings at runtime with process.env fallbacks via runtimeConfig
     secret: cloudflare?.env?.BETTER_AUTH_SECRET ?? useRuntimeConfig(e).betterAuth.secret,
-    baseURL: cloudflare?.env?.BETTER_AUTH_URL ?? useRuntimeConfig(e).betterAuth.url ?? 'http://localhost:3000',
+    baseURL:
+      cloudflare?.env?.BETTER_AUTH_URL ??
+      useRuntimeConfig(e).betterAuth.url ??
+      "http://localhost:3000",
     emailAndPassword: {
       enabled: true,
     },
     socialProviders: {
       google: {
-        clientId: cloudflare?.env?.GOOGLE_CLIENT_ID ?? useRuntimeConfig(e).google.clientId ?? '',
-        clientSecret: cloudflare?.env?.GOOGLE_CLIENT_SECRET ?? useRuntimeConfig(e).google.clientSecret ?? '',
+        clientId: cloudflare?.env?.GOOGLE_CLIENT_ID ?? useRuntimeConfig(e).google.clientId ?? "",
+        clientSecret:
+          cloudflare?.env?.GOOGLE_CLIENT_SECRET ?? useRuntimeConfig(e).google.clientSecret ?? "",
       },
     },
+    plugins: [username()],
   });
 };

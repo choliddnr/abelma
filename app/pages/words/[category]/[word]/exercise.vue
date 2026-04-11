@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { wordCategories, type Word } from "@/data/words";
+import { wordCategories, type Word } from "~/constants/words";
 import confetti from "canvas-confetti";
 
 const route = useRoute();
@@ -26,24 +26,17 @@ const expectedLetters = computed(() => targetWord.value.split(""));
 // State
 const isComplete = ref(false);
 const placedLetters = ref<(string | null)[]>([]);
-const availableLetters = ref<
-  { id: string; letter: string; isDragging?: boolean }[]
->([]);
+const availableLetters = ref<{ id: string; letter: string; isDragging?: boolean }[]>([]);
 const wrongDropIndex = ref<number | null>(null);
 const autoPlayTimeout = ref<number | null>(null);
 
 const initializeGame = () => {
   if (!targetWord.value) return;
   isComplete.value = false;
-  placedLetters.value = Array.from(
-    { length: targetWord.value.length },
-    () => null,
-  );
+  placedLetters.value = Array.from({ length: targetWord.value.length }, () => null);
 
   // Generate available letters (target + some noise)
-  const letters = targetWord.value
-    .split("")
-    .map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
+  const letters = targetWord.value.split("").map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
   const noiseLetters = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
     .replace(new RegExp(`[${targetWord.value}]`, "g"), "")
     .split("")
@@ -85,7 +78,7 @@ onUnmounted(() => {
 const checkCompletion = () => {
   const currentWord = placedLetters.value.join("");
   if (currentWord === targetWord.value) {
-    rewardStore.addCoins(5); // Bank coins for completion
+    // rewardStore.addCoins(5); // Bank coins for completion
     isComplete.value = true;
     playTargetWord();
     popConfetti();
@@ -184,11 +177,7 @@ const onDrop = (e: DragEvent, slotIndex: number) => {
     } else {
       // Wrong placement
       if (wordData.value && profileStore.activeProfileId) {
-        analyticsStore.recordMistake(
-          profileStore.activeProfileId,
-          "word",
-          wordData.value.id,
-        );
+        analyticsStore.recordMistake(profileStore.activeProfileId, "word", wordData.value.id);
       }
       wrongDropIndex.value = slotIndex;
       setTimeout(() => {
@@ -213,10 +202,7 @@ const putBackLetter = (slotIndex: number) => {
 </script>
 
 <template>
-  <div
-    v-if="wordData"
-    class="flex flex-col min-h-screen bg-slate-50 overflow-hidden relative"
-  >
+  <div v-if="wordData" class="flex flex-col min-h-screen bg-slate-50 overflow-hidden relative">
     <!-- Celebration Overlay -->
     <div
       v-if="isComplete"
@@ -243,18 +229,14 @@ const putBackLetter = (slotIndex: number) => {
         class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50 focus:ring-slate-200"
       >
         <span class="text-xl md:text-2xl">🔙</span>
-        <span class="font-black text-sm md:text-base hidden sm:inline"
-          >Kembali</span
-        >
+        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
       </button>
 
       <!-- Target Display -->
       <div
         class="flex items-center gap-4 bg-white px-6 py-2 rounded-full shadow-sm border border-slate-100"
       >
-        <span class="text-4xl md:text-5xl drop-shadow-sm">{{
-          wordData.emoji
-        }}</span>
+        <span class="text-4xl md:text-5xl drop-shadow-sm">{{ wordData.emoji }}</span>
         <button
           @click="playTargetWord"
           class="ui-capsule-interactive bg-indigo-50 border-indigo-200 text-indigo-700 w-12 h-12 p-0! rounded-full flex items-center justify-center hover:bg-indigo-100"
@@ -276,9 +258,7 @@ const putBackLetter = (slotIndex: number) => {
         <div
           v-for="(slot, index) in placedLetters"
           :key="`slot-${index}`"
-          @click="
-            placedLetters[index] !== null ? putBackLetter(index) : undefined
-          "
+          @click="placedLetters[index] !== null ? putBackLetter(index) : undefined"
           @dragover.prevent
           @dragenter.prevent="onDragEnter(index)"
           @dragleave.prevent="onDragLeave(index)"
@@ -288,9 +268,7 @@ const putBackLetter = (slotIndex: number) => {
             placedLetters[index] !== null
               ? 'bg-emerald-400 border-white shadow-[0_10px_20px_rgba(52,211,153,0.4)] scale-105 cursor-pointer'
               : 'bg-slate-100 border-dashed border-slate-300 shadow-inner',
-            wrongDropIndex === index
-              ? 'shake-animation bg-rose-400 border-rose-500'
-              : '',
+            wrongDropIndex === index ? 'shake-animation bg-rose-400 border-rose-500' : '',
             hoveredSlotIndex === index && placedLetters[index] === null
               ? 'ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]'
               : '',

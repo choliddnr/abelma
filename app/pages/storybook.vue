@@ -7,14 +7,8 @@ import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 // ─── Data ────────────────────────────────────────────────────
 const data = ALPHABET_STORYBOOK as AlphabetStorybook[];
 const router = useRouter();
-const {
-  currentIndex,
-  isSpeaking,
-  challengeDone,
-  showFinish,
-  showChallenge,
-  viewMode,
-} = storeToRefs(useStorybookStore());
+const { currentIndex, isSpeaking, challengeDone, showFinish, showChallenge, viewMode } =
+  storeToRefs(useStorybookStore());
 const { markCompleted, reset: resetStorybook } = useStorybookStore();
 // const { syncAlphabet } = useSyncStore();
 
@@ -60,9 +54,7 @@ const buildPhonicsText = (entry: AlphabetStorybook): string => {
 const speakLetter = () => {
   window.speechSynthesis.cancel();
   isSpeaking.value = true;
-  const utterance = new SpeechSynthesisUtterance(
-    buildPhonicsText(current.value),
-  );
+  const utterance = new SpeechSynthesisUtterance(buildPhonicsText(current.value));
   utterance.lang = "id-ID";
   utterance.rate = 0.85;
   utterance.pitch = 1.1;
@@ -192,9 +184,7 @@ onUnmounted(() => {
     :class="viewMode === 'story' ? current.themeColor : 'bg-slate-50'"
   >
     <!-- ── Top Bar ─────────────────────────────────────────── -->
-    <header
-      class="w-full max-w-5xl mx-auto flex items-center justify-between gap-3 p-4 md:p-6"
-    >
+    <header class="w-full max-w-5xl mx-auto flex items-center justify-between gap-3 p-4 md:p-6">
       <!-- Home/Back button -->
       <button
         v-if="viewMode === 'list'"
@@ -212,10 +202,7 @@ onUnmounted(() => {
       </button>
 
       <!-- Title + progress dots -->
-      <div
-        v-if="viewMode === 'story'"
-        class="flex flex-col items-center gap-1.5 flex-1"
-      >
+      <div v-if="viewMode === 'story'" class="flex flex-col items-center gap-1.5 flex-1">
         <h1
           class="text-xl sm:text-3xl font-black text-white drop-shadow-md uppercase tracking-wide"
           style="font-family: &quot;Baloo Bhaijaan 2&quot;, sans-serif"
@@ -267,9 +254,7 @@ onUnmounted(() => {
             @click="goToLetter(idx)"
             class="relative bg-white rounded-[2rem] p-6 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all border-b-8 group outline-none"
             :class="
-              challengeDone.has(idx)
-                ? 'border-green-400 border-2 border-b-8'
-                : 'border-slate-200'
+              challengeDone.has(idx) ? 'border-green-400 border-2 border-b-8' : 'border-slate-200'
             "
           >
             <div
@@ -282,10 +267,9 @@ onUnmounted(() => {
                 >{{ entry.letter.upper }}{{ entry.letter.lower }}</span
               >
             </div>
-            <span
-              class="text-sm font-bold text-slate-500 text-center leading-tight"
-              >{{ entry.title }}</span
-            >
+            <span class="text-sm font-bold text-slate-500 text-center leading-tight">{{
+              entry.title
+            }}</span>
             <div
               v-if="challengeDone.has(idx)"
               class="absolute -top-3 -right-3 text-3xl drop-shadow-md animate-bounce"
@@ -376,9 +360,7 @@ onUnmounted(() => {
               </div>
 
               <!-- Bottom Area: Floating Card for Text / Challenge -->
-              <div
-                class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full"
-              >
+              <div class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full">
                 <div
                   class="bg-white/75 backdrop-blur-md shadow-2xl rounded-3xl p-6 sm:p-8 w-full max-w-3xl border-4 border-white/50 transition-all duration-300"
                 >
@@ -416,8 +398,7 @@ onUnmounted(() => {
                         >
                           <span>⬅️ Kembali</span>
                         </button>
-                        <span
-                          class="text-sm font-black uppercase tracking-widest text-indigo-500"
+                        <span class="text-sm font-black uppercase tracking-widest text-indigo-500"
                           >🎯 Tantangan</span
                         >
                         <div class="w-16"></div>

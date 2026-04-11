@@ -1,7 +1,7 @@
 {
   "name": "abelma",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -10,7 +10,14 @@
     "postinstall": "nuxt prepare",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply abelma --local",
-    "db:migrate:remote": "wrangler d1 migrations apply abelma --remote"
+    "db:migrate:remote": "wrangler d1 migrations apply abelma --remote",
+    "test:e2e": "playwright test --headed",
+    "test": "vitest",
+    "test:e2e:ui": "playwright test --ui",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@nuxt/fonts": "0.14.0",
@@ -30,7 +37,15 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^4.0.0",
+    "@playwright/test": "^1.59.1",
     "@types/canvas-confetti": "^1.9.0",
-    "drizzle-kit": "^0.31.10"
+    "@vue/test-utils": "^2.4.6",
+    "drizzle-kit": "^0.31.10",
+    "happy-dom": "^20.8.9",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
+    "playwright-core": "^1.59.1",
+    "vitest": "^4.1.3"
   }
 }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { wordCategories, type Word } from "@/data/words";
+import { wordCategories, type Word } from "~/constants/words";
 import confetti from "canvas-confetti";
 import type { Sticker } from "@/types/stores";
 
 const router = useRouter();
 const settingsStore = useSettingsStore();
-const stickerStore = useStickerStore();
+// const stickerStore = useStickerStore();
 const analyticsStore = useAnalyticsStore();
 const rewardStore = useRewardStore();
 const profileStore = useProfileStore();
@@ -31,9 +31,7 @@ const activityType = ref<QuizType>("PICK_WORD");
 
 // Spelling Mode State
 const placedLetters = ref<(string | null)[]>([]);
-const availableLetters = ref<
-  { id: string; letter: string; isDragging?: boolean }[]
->([]);
+const availableLetters = ref<{ id: string; letter: string; isDragging?: boolean }[]>([]);
 const wrongDropIndex = ref<number | null>(null);
 const draggedItemIndex = ref<number | null>(null);
 const hoveredSlotIndex = ref<number | null>(null);
@@ -71,11 +69,7 @@ const startTimer = () => {
 
 const handleTimeUp = () => {
   if (currentTarget.value && profileStore.activeProfileId) {
-    analyticsStore.recordMistake(
-      profileStore.activeProfileId,
-      "word",
-      currentTarget.value.id,
-    );
+    analyticsStore.recordMistake(profileStore.activeProfileId, "word", currentTarget.value.id);
   }
   playWordAudio("Waktu habis! Ayo coba yang ini.");
   setTimeout(initQuestion, 1500);
@@ -117,15 +111,12 @@ const initQuestion = () => {
       // Level 3 logic: Try to find words starting with the same letter
       const firstLetter = target.word.charAt(0).toUpperCase();
       const similarWords = allWords.value.filter(
-        (w) =>
-          w.id !== target.id && w.word.charAt(0).toUpperCase() === firstLetter,
+        (w) => w.id !== target.id && w.word.charAt(0).toUpperCase() === firstLetter,
       );
 
       // Shuffle similar words
       const shuffledSimilar = [...similarWords].sort(() => Math.random() - 0.5);
-      shuffledSimilar
-        .slice(0, neededOptions - 1)
-        .forEach((w) => optionsSet.add(w));
+      shuffledSimilar.slice(0, neededOptions - 1).forEach((w) => optionsSet.add(w));
     }
 
     // Fill remaining slots if any
@@ -143,14 +134,9 @@ const initQuestion = () => {
     currentOptions.value = optionsArray;
   } else {
     // SPELL_WORD Logic
-    placedLetters.value = Array.from(
-      { length: target.word.length },
-      () => null,
-    );
+    placedLetters.value = Array.from({ length: target.word.length }, () => null);
 
-    const letters = target.word
-      .split("")
-      .map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
+    const letters = target.word.split("").map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
     const noiseCount = currentLevel.value >= 3 ? 3 : 1;
     const noiseLetters = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
       .replace(new RegExp(`[${target.word}]`, "g"), "")
@@ -211,11 +197,7 @@ const onDrop = (slotIndex: number) => {
     }
   } else {
     if (profileStore.activeProfileId) {
-      analyticsStore.recordMistake(
-        profileStore.activeProfileId,
-        "word",
-        currentTarget.value.id,
-      );
+      analyticsStore.recordMistake(profileStore.activeProfileId, "word", currentTarget.value.id);
     }
     wrongDropIndex.value = slotIndex;
     playErrorAudio();
@@ -237,17 +219,17 @@ const handleCorrect = () => {
   if (timerInterval) clearInterval(timerInterval);
   popConfetti();
   score.value += 10;
-  rewardStore.addCoins(10); // Banking coins
+  // rewardStore.addCoins(10); // Banking coins
 
   playEffectAudio("correct");
 
-  // Check for stickers
-  const earned = stickerStore.checkAndEarnStickers(score.value);
-  if (earned) {
-    newSticker.value = earned;
-    showStickerModal.value = true;
-    popStickerCelebration();
-  }
+  // Check for stickers (temporarily disabled)
+  // const earned = stickerStore.checkAndEarnStickers(score.value);
+  // if (earned) {
+  //   newSticker.value = earned;
+  //   showStickerModal.value = true;
+  //   popStickerCelebration();
+  // }
 
   if (score.value >= maxScore) {
     setTimeout(triggerWinScreen, 1000);
@@ -280,11 +262,7 @@ const handleChoice = (word: Word) => {
     handleCorrect();
   } else {
     if (profileStore.activeProfileId) {
-      analyticsStore.recordMistake(
-        profileStore.activeProfileId,
-        "word",
-        currentTarget.value.id,
-      );
+      analyticsStore.recordMistake(profileStore.activeProfileId, "word", currentTarget.value.id);
     }
     playErrorAudio();
     isCorrecting.value = true;
@@ -388,12 +366,7 @@ onUnmounted(() => {
       </div>
 
       <div class="flex gap-6 animate-entrance" style="animation-delay: 0.5s">
-        <UiButton
-          @click="goBack"
-          variant="white"
-          icon="🏠"
-          class="w-auto shadow-xl"
-        >
+        <UiButton @click="goBack" variant="white" icon="🏠" class="w-auto shadow-xl">
           <span class="font-black text-lg md:text-xl ml-2">Menu</span>
         </UiButton>
         <UiButton
@@ -422,24 +395,16 @@ onUnmounted(() => {
         class="glass-card bg-white w-full max-w-sm p-8 flex flex-col items-center gap-6 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border-t-8 border-amber-400 animate-in zoom-in-95 duration-500"
       >
         <div class="absolute -top-12 -left-4 text-6xl animate-bounce">🎈</div>
-        <div
-          class="absolute -top-12 -right-4 text-6xl animate-bounce [animation-delay:0.2s]"
-        >
+        <div class="absolute -top-12 -right-4 text-6xl animate-bounce [animation-delay:0.2s]">
           🎈
         </div>
 
-        <h2
-          class="text-3xl font-black text-slate-800 text-center font-quicksand"
-        >
-          Stiker Baru!
-        </h2>
+        <h2 class="text-3xl font-black text-slate-800 text-center font-quicksand">Stiker Baru!</h2>
 
         <div
           class="w-48 h-48 bg-amber-50 rounded-full flex items-center justify-center border-4 border-amber-100 shadow-inner relative group"
         >
-          <div
-            class="absolute inset-0 bg-amber-400/20 rounded-full animate-ping opacity-20"
-          ></div>
+          <div class="absolute inset-0 bg-amber-400/20 rounded-full animate-ping opacity-20"></div>
           <span
             class="text-[8rem] drop-shadow-lg transform transition-transform group-hover:scale-110 group-hover:rotate-6"
           >
@@ -451,9 +416,7 @@ onUnmounted(() => {
           <h3 class="text-2xl font-bold text-indigo-600 font-quicksand">
             {{ newSticker.name }}
           </h3>
-          <p class="text-slate-500 font-bold">
-            Keren! Koleksi stikermu bertambah!
-          </p>
+          <p class="text-slate-500 font-bold">Keren! Koleksi stikermu bertambah!</p>
         </div>
 
         <UiButton
@@ -471,21 +434,12 @@ onUnmounted(() => {
     <div
       class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 z-10 w-full max-w-5xl mx-auto animate-entrance"
     >
-      <UiButton
-        @click="goBack"
-        variant="white"
-        icon="🔙"
-        class="w-auto shadow-sm h-auto px-4 py-2"
-      >
-        <span class="font-black text-sm md:text-base hidden sm:inline"
-          >Menyerah</span
-        >
+      <UiButton @click="goBack" variant="white" icon="🔙" class="w-auto shadow-sm h-auto px-4 py-2">
+        <span class="font-black text-sm md:text-base hidden sm:inline">Menyerah</span>
       </UiButton>
 
       <div class="flex gap-2 md:gap-4">
-        <div
-          class="ui-capsule bg-white border-slate-100 text-slate-700 w-auto px-4 shadow-sm"
-        >
+        <div class="ui-capsule bg-white border-slate-100 text-slate-700 w-auto px-4 shadow-sm">
           🚀 Level {{ currentLevel }}
         </div>
         <div
@@ -511,10 +465,7 @@ onUnmounted(() => {
         ></div>
       </div>
 
-      <div
-        v-if="currentTarget"
-        class="flex flex-col items-center gap-8 md:gap-12 w-full"
-      >
+      <div v-if="currentTarget" class="flex flex-col items-center gap-8 md:gap-12 w-full">
         <!-- Target Visual -->
         <UiButton @click="playTargetAudio" variant="none" class="relative group">
           <div
@@ -558,9 +509,7 @@ onUnmounted(() => {
 
             <span
               class="text-3xl md:text-5xl font-black drop-shadow-sm tracking-widest z-10"
-              :class="
-                wrongChoiceId === option.id ? 'text-white' : 'text-slate-700'
-              "
+              :class="wrongChoiceId === option.id ? 'text-white' : 'text-slate-700'"
               style="font-family: &quot;Quicksand&quot;, sans-serif"
             >
               {{
@@ -573,32 +522,23 @@ onUnmounted(() => {
         </div>
 
         <!-- OPTION TYPE: SPELL_WORD -->
-        <div
-          v-else-if="activityType === 'SPELL_WORD'"
-          class="w-full flex flex-col gap-12"
-        >
+        <div v-else-if="activityType === 'SPELL_WORD'" class="w-full flex flex-col gap-12">
           <!-- Drop Zones -->
           <div class="flex flex-wrap justify-center gap-2 md:gap-4 w-full">
             <div
               v-for="(slot, idx) in placedLetters"
               :key="`slot-${idx}`"
-              @click="
-                placedLetters[idx] !== null ? putBackLetter(idx) : undefined
-              "
+              @click="placedLetters[idx] !== null ? putBackLetter(idx) : undefined"
               @dragover.prevent
               @dragenter.prevent="hoveredSlotIndex = idx"
-              @dragleave.prevent="
-                hoveredSlotIndex === idx ? (hoveredSlotIndex = null) : null
-              "
+              @dragleave.prevent="hoveredSlotIndex === idx ? (hoveredSlotIndex = null) : null"
               @drop.prevent="onDrop(idx)"
               class="relative w-14 h-18 md:w-20 md:h-28 rounded-xl md:rounded-2xl border-2 md:border-4 flex items-center justify-center transition-all duration-300"
               :class="[
                 placedLetters[idx] !== null
                   ? 'bg-emerald-400 border-white shadow-md cursor-pointer'
                   : 'bg-slate-100 border-dashed border-slate-300',
-                wrongDropIndex === idx
-                  ? 'shake-animation bg-rose-400 border-rose-500'
-                  : '',
+                wrongDropIndex === idx ? 'shake-animation bg-rose-400 border-rose-500' : '',
                 hoveredSlotIndex === idx && placedLetters[idx] === null
                   ? 'ring-4 ring-indigo-300 bg-indigo-50 border-indigo-300'
                   : '',

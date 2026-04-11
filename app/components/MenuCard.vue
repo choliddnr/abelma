@@ -1,11 +1,11 @@
 <script setup lang="ts">
 defineProps<{
-  title: string
-  subtitle: string
-  icon: string
-  colorClass: string
-  to: string
-}>()
+  title: string;
+  subtitle: string;
+  icon: string;
+  colorClass: string;
+  to: string;
+}>();
 </script>
 
 <template>
@@ -25,4 +25,3 @@ defineProps<{
     </div>
   </NuxtLink>
 </template>
-

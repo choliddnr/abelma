@@ -1,69 +1,72 @@
 <script setup lang="ts">
 const props = defineProps<{
   word: {
-    id: string
-    name: string
-    icon: string
-    color: string
-  }
-}>()
+    id: string;
+    name: string;
+    icon: string;
+    color: string;
+  };
+}>();
 
-const emit = defineEmits(['back', 'success'])
+const emit = defineEmits(["back", "success"]);
 
-const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
-const feedback = ref<{ message: string; type: 'success' | 'error' | null }>({ message: '', type: null })
-const resetTrigger = ref(0)
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const feedback = ref<{ message: string; type: "success" | "error" | null }>({
+  message: "",
+  type: null,
+});
+const resetTrigger = ref(0);
 
 // Alternative: Let's manage the boxes locally in this view to have full control.
-const boxes = ref(props.word.name.toUpperCase().split(''))
-const currentGuess = ref<string[]>(Array.from({ length: props.word.name.length }, () => ''))
+const boxes = ref(props.word.name.toUpperCase().split(""));
+const currentGuess = ref<string[]>(Array.from({ length: props.word.name.length }, () => ""));
 
 const updateBox = (index: number, letter: string) => {
-  currentGuess.value[index] = letter
-  if (letter !== '') {
-    checkCompletion()
+  currentGuess.value[index] = letter;
+  if (letter !== "") {
+    checkCompletion();
   }
-}
+};
 
 const checkCompletion = () => {
-  if (currentGuess.value.every(l => l !== '')) {
-    validate()
+  if (currentGuess.value.every((l) => l !== "")) {
+    validate();
   }
-}
+};
 
 const validate = () => {
-  const guess = currentGuess.value.join('')
-  const target = props.word.name.toUpperCase()
+  const guess = currentGuess.value.join("");
+  const target = props.word.name.toUpperCase();
 
   if (guess === target) {
-    feedback.value = { message: 'Hebat! Kamu Benar! 🎉', type: 'success' }
-    speak('Hebat! Kamu Benar!')
+    feedback.value = { message: "Hebat! Kamu Benar! 🎉", type: "success" };
+    speak("Hebat! Kamu Benar!");
     setTimeout(() => {
-      emit('success')
-    }, 2000)
+      emit("success");
+    }, 2000);
   } else {
-    feedback.value = { message: 'Belum tepat, coba lagi ya! 💪', type: 'error' }
-    speak('Belum tepat, coba lagi ya!')
+    feedback.value = { message: "Belum tepat, coba lagi ya! 💪", type: "error" };
+    speak("Belum tepat, coba lagi ya!");
 
     // Auto clear after wrong answer
     setTimeout(() => {
-      if (feedback.value.type === 'error') {
-        reset()
+      if (feedback.value.type === "error") {
+        reset();
       }
-    }, 1500)
+    }, 1500);
   }
-}
+};
 
 const speak = (text: string) => {
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = 'id-ID'
-  window.speechSynthesis.speak(utterance)
-}
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "id-ID";
+  window.speechSynthesis.speak(utterance);
+};
 
 const reset = () => {
-  currentGuess.value = Array.from({ length: props.word.name.length }, () => '')
-  feedback.value = { message: '', type: null }
-}
+  currentGuess.value = Array.from({ length: props.word.name.length }, () => "");
+  feedback.value = { message: "", type: null };
+};
 </script>
 
 <template>
@@ -104,12 +107,10 @@ const reset = () => {
 
     <!-- Letter Selection (Drag Source) -->
     <div class="glass-card p-6 w-full">
-      <div class="flex flex-wrap gap-3 justify-center max-h-48 overflow-y-auto custom-scrollbar p-2">
-        <LetterComp
-          v-for="l in letters"
-          :key="l"
-          :letter="l"
-        />
+      <div
+        class="flex flex-wrap gap-3 justify-center max-h-48 overflow-y-auto custom-scrollbar p-2"
+      >
+        <LetterComp v-for="l in letters" :key="l" :letter="l" />
       </div>
     </div>
 
@@ -120,6 +121,4 @@ const reset = () => {
   </div>
 </template>
 
-<style scoped>
-</style>
-
+<style scoped></style>

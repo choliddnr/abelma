@@ -1,11 +1,14 @@
 <script setup lang="ts">
-const profileStore = useProfileStore();
-const { profiles, activeProfileId } = storeToRefs(profileStore);
+const { profiles, isLoaded } = storeToRefs(useProfileStore());
+const { addProfile, fetchProfiles } = useProfileStore();
 
-if (profiles.value.length > 0) {
+if (!isLoaded.value) {
+  await fetchProfiles();
+}
+
+if (isLoaded.value && profiles.value.length > 0) {
   navigateTo("/");
 }
-const { addProfile } = profileStore;
 
 const newProfileName = ref("");
 const selectedAvatar = ref("👦");
@@ -53,6 +56,9 @@ const handleCreateFirstProfile = async () => {
 //     }
 //   },
 // );
+onBeforeMount(() => {
+  console.log("before mounted", isLoaded.value, profiles.value);
+});
 </script>
 
 <template>

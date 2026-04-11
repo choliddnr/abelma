@@ -1,15 +1,15 @@
 <script setup lang="ts">
-defineOptions({ name: 'AlphabetLearning' })
+defineOptions({ name: "AlphabetLearning" });
 
-const { preloadSounds } = useAlphabetAudio()
+const { preloadSounds } = useAlphabetAudio();
 
 onMounted(() => {
-  preloadSounds()
-})
+  preloadSounds();
+});
 
 const startChallenge = () => {
-  navigateTo('/alphabet/challenge')
-}
+  navigateTo("/alphabet/challenge");
+};
 </script>
 
 <template>

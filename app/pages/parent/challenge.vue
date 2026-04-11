@@ -3,8 +3,34 @@ import type { ChallengeLevelConfig } from "@/types/stores";
 
 const { activeProfileId } = storeToRefs(useProfileStore());
 const { alphabetChallangeProgress } = storeToRefs(useAlphabetStore());
+const { saveConfig, fetch } = useAlphabetStore();
+
+callOnce(async () => {
+  await fetch();
+});
 
 const levelLabels = ["Pemula", "Mantap", "Berwaktu", "Sprint"];
+const lastSavedConfig = ref<string>("");
+const isSaving = ref(false);
+
+// Watch for initial load to set baseline
+watch(
+  () => alphabetChallangeProgress.value?.challengeConfig,
+  (newVal) => {
+    if (newVal && !lastSavedConfig.value) {
+      lastSavedConfig.value = JSON.stringify(newVal);
+    }
+  },
+  { immediate: true },
+);
+
+const hasChanges = computed(() => {
+  if (!alphabetChallangeProgress.value?.challengeConfig) return false;
+  return (
+    JSON.stringify(alphabetChallangeProgress.value.challengeConfig) !==
+    lastSavedConfig.value
+  );
+});
 
 const updateConfigField = async (
   levelIndex: number,
@@ -13,7 +39,6 @@ const updateConfigField = async (
 ) => {
   if (!activeProfileId.value) return;
 
-  // Use store method ideally, but for now we're just updating the reactive progress
   const config = alphabetChallangeProgress.value?.challengeConfig;
   if (!config) return;
 
@@ -25,6 +50,31 @@ const updateConfigField = async (
 
   alphabetChallangeProgress.value.challengeConfig = updatedConfig;
 };
+
+const handleSave = async () => {
+  if (
+    !activeProfileId.value ||
+    !alphabetChallangeProgress.value?.challengeConfig
+  )
+    return;
+
+  isSaving.value = true;
+  try {
+    const success = await saveConfig(
+      activeProfileId.value,
+      alphabetChallangeProgress.value.challengeConfig,
+    );
+    if (success) {
+      lastSavedConfig.value = JSON.stringify(
+        alphabetChallangeProgress.value.challengeConfig,
+      );
+    }
+  } catch (e) {
+    console.error("Save error:", e);
+  } finally {
+    isSaving.value = false;
+  }
+};
 </script>
 
 <template>
@@ -33,13 +83,27 @@ const updateConfigField = async (
   >
     <div class="flex items-center justify-between">
       <div>
-        <h3 class="text-xl font-black text-slate-700">
+        <h3 class="text-xl font-black text-slate-800">
           Pengaturan Tantangan Huruf
         </h3>
-        <p class="text-sm font-semibold text-slate-400 mt-1">
+        <p class="text-sm font-semibold text-slate-700 mt-1">
           Sesuaikan level kesulitan untuk kemampuan anak.
         </p>
       </div>
+
+      <UiButton
+        v-if="activeProfileId"
+        :disabled="!hasChanges"
+        :loading="isSaving"
+        @click="handleSave"
+        variant="success"
+        class="shadow-lg shadow-emerald-200"
+      >
+        <span class="flex items-center gap-2 px-2">
+          <span v-if="!isSaving">💾</span>
+          Simpan Pengaturan
+        </span>
+      </UiButton>
     </div>
 
     <div
@@ -60,12 +124,9 @@ const updateConfigField = async (
           <div
             class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white text-lg shadow-lg"
             :class="
-              [
-                'bg-sky-400',
-                'bg-emerald-400',
-                'bg-amber-400',
-                'bg-rose-400',
-              ][idx] || 'bg-slate-400'
+              ['bg-sky-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400'][
+                idx
+              ] || 'bg-slate-400'
             "
           >
             {{ idx + 1 }}
@@ -160,7 +221,9 @@ const updateConfigField = async (
               <label class="text-sm font-black text-slate-600"
                 >Bonus Koin 🪙</label
               >
-              <p class="text-xs text-slate-400"> Hadiah saat beruntun tercapai </p>
+              <p class="text-xs text-slate-400">
+                Hadiah saat beruntun tercapai
+              </p>
             </div>
             <input
               type="number"

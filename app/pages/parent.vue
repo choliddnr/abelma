@@ -1,17 +1,50 @@
 <script setup lang="ts">
 import { authClient } from "~/utils/auth-client";
+const { confirm } = useConfirm();
 
 const route = useRoute();
 const router = useRouter();
-const session = authClient.useSession();
+// const session = authClient.useSession();
+const { user } = storeToRefs(useUserStore());
 
 const isSyncing = ref(false);
 
 const goBack = () => router.push("/");
 
 const logout = async () => {
-  await authClient.signOut();
-  router.push("/login");
+  const confirmed = await confirm({
+    title: "Keluar Akun?",
+    message:
+      "Apakah Anda yakin ingin keluar? Anda harus masuk kembali untuk mengelola hadiah dan anak.",
+    confirmText: "Keluar",
+    cancelText: "Batal",
+    icon: "🚪",
+    variant: "danger",
+  });
+
+  if (confirmed) {
+    // 1. Sign out from Better Auth
+    await authClient.signOut();
+
+    // 2. Reset all Pinia stores to initial state
+    useUserStore().reset();
+    useProfileStore().reset();
+    useAlphabetStore().reset();
+    useAnalyticsStore().reset();
+    useRewardStore().reset();
+    useSettingsStore().reset();
+    useStorybookStore().reset();
+
+    // 3. Clear localStorage for the app namespace (managed by pinia-plugin-unstorage)
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("abelma:")) {
+        localStorage.removeItem(key);
+      }
+    });
+
+    // 4. Redirect to login page
+    router.push("/login");
+  }
 };
 
 // Parent Gate State
@@ -30,15 +63,6 @@ const checkGate = () => {
     userAnswer.value = "";
     num1.value = Math.floor(Math.random() * 5) + 2;
     num2.value = Math.floor(Math.random() * 5) + 2;
-  }
-};
-
-const handleManualSync = async () => {
-  isSyncing.value = true;
-  try {
-    // await triggerSync();
-  } finally {
-    isSyncing.value = false;
   }
 };
 
@@ -95,11 +119,7 @@ onUnmounted(async () => {});
       </div>
 
       <div class="flex gap-4 w-full">
-        <UiButton
-          @click="goBack"
-          variant="white"
-          class="flex-1"
-        >
+        <UiButton @click="goBack" variant="white" class="flex-1">
           Batal
         </UiButton>
         <UiButton
@@ -121,9 +141,9 @@ onUnmounted(async () => {});
         class="flex items-center justify-between border-b border-slate-200/50 pb-6"
       >
         <div class="flex items-center gap-4">
-          <div v-if="session.data?.user?.image" class="relative group">
+          <div v-if="user?.image" class="relative group">
             <img
-              :src="session.data.user.image"
+              :src="user?.image"
               class="w-16 h-16 rounded-2xl border-4 border-white shadow-md object-cover transform -rotate-3 group-hover:rotate-0 transition-transform"
             />
           </div>
@@ -138,7 +158,7 @@ onUnmounted(async () => {});
               <h2
                 class="text-3xl md:text-4xl font-black text-slate-800 font-quicksand"
               >
-                Halo, {{ session.data?.user?.name }}
+                Halo, {{ user?.name }}
               </h2>
               <UiButton
                 @click="logout"
@@ -148,23 +168,10 @@ onUnmounted(async () => {});
                 <span class="text-[10px] md:text-xs">Keluar</span>
               </UiButton>
             </div>
-            <p class="text-slate-500 font-bold">
+            <p class="text-slate-700 font-bold">
               Kelola profil, hadiah, dan tingkat kesulitan.
             </p>
           </div>
-        </div>
-        <div class="flex gap-3">
-          <UiButton
-            @click="handleManualSync"
-            :loading="isSyncing"
-            variant="accent"
-            class="w-auto px-6 shadow-sm"
-            :icon="isSyncing ? undefined : '☁️'"
-          >
-            <span class="font-black text-sm md:text-base hidden sm:inline">{{
-              isSyncing ? "Menyimpan..." : "Simpan"
-            }}</span>
-          </UiButton>
         </div>
       </div>
 
@@ -184,10 +191,10 @@ onUnmounted(async () => {});
           <span>Anak</span>
         </NuxtLink>
         <NuxtLink
-          to="/parent/reward"
+          to="/parent/rewards"
           class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
           :class="
-            route.path === '/parent/reward'
+            route.path === '/parent/rewards'
               ? 'bg-white text-amber-600 shadow-md scale-[1.02]'
               : 'text-slate-500 hover:bg-white/40'
           "

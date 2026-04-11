@@ -105,12 +105,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -190,12 +186,8 @@
           "name": "alphabet_challenge_progress_profile_id_profiles_id_fk",
           "tableFrom": "alphabet_challenge_progress",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -268,11 +260,7 @@
       "indexes": {
         "analytics_unique_idx": {
           "name": "analytics_unique_idx",
-          "columns": [
-            "profile_id",
-            "type",
-            "target_id"
-          ],
+          "columns": ["profile_id", "type", "target_id"],
           "isUnique": true
         }
       },
@@ -281,12 +269,8 @@
           "name": "analytics_profile_id_profiles_id_fk",
           "tableFrom": "analytics",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -371,12 +355,8 @@
           "name": "profiles_user_id_user_id_fk",
           "tableFrom": "profiles",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -459,12 +439,8 @@
           "name": "rewards_profile_id_profiles_id_fk",
           "tableFrom": "rewards",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -536,9 +512,7 @@
       "indexes": {
         "session_token_unique": {
           "name": "session_token_unique",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         }
       },
@@ -547,12 +521,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -613,12 +583,8 @@
           "name": "stickers_profile_id_profiles_id_fk",
           "tableFrom": "stickers",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -684,10 +650,7 @@
       "indexes": {
         "storybook_unique_idx": {
           "name": "storybook_unique_idx",
-          "columns": [
-            "profile_id",
-            "letter"
-          ],
+          "columns": ["profile_id", "letter"],
           "isUnique": true
         }
       },
@@ -696,12 +659,8 @@
           "name": "storybook_progress_profile_id_profiles_id_fk",
           "tableFrom": "storybook_progress",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "profile_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["profile_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -766,9 +725,7 @@
       "indexes": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },

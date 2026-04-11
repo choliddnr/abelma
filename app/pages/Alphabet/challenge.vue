@@ -1,15 +1,31 @@
 <script setup lang="ts">
-defineOptions({ name: 'AlphabetChallenge' })
+defineOptions({ name: "AlphabetChallenge" });
 
-const { preloadSounds } = useAlphabetAudio()
+const { activeProfileId } = storeToRefs(useProfileStore());
+const { alphabetChallangeProgress } = storeToRefs(useAlphabetStore());
+const { profile } = storeToRefs(useProfileStore());
+const { fetch } = useAlphabetStore();
 
+const { preloadSounds } = useAlphabetAudio();
+
+callOnce(
+  async () => await useAsyncData("alphabet-challenge-progress", () => fetch()),
+);
 onMounted(() => {
-  preloadSounds()
-})
+  preloadSounds();
+});
 
-const stopChallenge = () => {
-  navigateTo('/alphabet')
-}
+const stopChallenge = async () => {
+  //save state here
+  await $fetch(`/api/alphabet/challange/${activeProfileId.value}/progress`, {
+    method: "PATCH",
+    body: {
+      coins: profile.value.coins,
+      progress: alphabetChallangeProgress.value,
+    },
+  });
+  navigateTo("/alphabet");
+};
 </script>
 
 <template>

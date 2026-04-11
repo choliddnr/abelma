@@ -1,6 +1,6 @@
-import type { H3Event } from 'h3';
-import { drizzle, type DrizzleD1Database } from 'drizzle-orm/d1';
-import * as schema from '../utils/db/schema';
+import type { H3Event } from "h3";
+import { drizzle, type DrizzleD1Database } from "drizzle-orm/d1";
+import * as schema from "../utils/db/schema";
 
 export const db = (e: H3Event): DB => {
   const { cloudflare } = e.context;
@@ -8,7 +8,7 @@ export const db = (e: H3Event): DB => {
 
   return drizzle(cloudflare.env.abelma, {
     schema,
-    casing: 'snake_case',
+    casing: "snake_case",
   });
 };
 

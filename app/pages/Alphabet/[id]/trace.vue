@@ -159,9 +159,7 @@ const retry = () => {
           >
             Ulangi
           </button>
-          <button @click="goBack" class="flex-1 btn-primary text-xl py-4">
-            Lanjut
-          </button>
+          <button @click="goBack" class="flex-1 btn-primary text-xl py-4">Lanjut</button>
         </div>
       </div>
     </div>
@@ -172,8 +170,7 @@ const retry = () => {
         v-if="showIncompleteToast"
         class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-8 py-4 rounded-full font-bold text-2xl shadow-2xl flex items-center gap-4"
       >
-        <span class="text-3xl">⚠️</span> Sepertinya kamu belum selesai
-        menggambar! Ayo coba lagi! 😊
+        <span class="text-3xl">⚠️</span> Sepertinya kamu belum selesai menggambar! Ayo coba lagi! 😊
       </div>
     </transition>
   </div>

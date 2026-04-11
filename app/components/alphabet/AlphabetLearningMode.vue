@@ -62,9 +62,7 @@ const shuffleLetters = (arrayToShuffle: string[]) => {
 
 const toggleRandomize = () => {
   isRandomized.value = !isRandomized.value;
-  learningLetters.value = isRandomized.value
-    ? shuffleLetters([...letters])
-    : [...letters];
+  learningLetters.value = isRandomized.value ? shuffleLetters([...letters]) : [...letters];
 };
 
 // Auto Play Logic
@@ -225,11 +223,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 animate-entrance">
+  <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
     <!-- Learning Dashboard -->
-    <div
-      class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]"
-    >
+    <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
       <div
         class="flex flex-wrap items-center justify-center gap-3 md:gap-4 bg-white/30 backdrop-blur-lg p-3 md:p-4 rounded-4xl border-4 border-slate-50 shadow-xl"
         style="
@@ -248,9 +244,7 @@ onUnmounted(() => {
               : 'bg-emerald-100 text-emerald-700 border-emerald-300'
           "
         >
-          <span class="text-xl md:text-2xl">{{
-            isStoryMode ? "📖" : "⚡"
-          }}</span>
+          <span class="text-xl md:text-2xl">{{ isStoryMode ? "📖" : "⚡" }}</span>
           <span
             class="font-black text-sm md:text-base hidden sm:inline ml-1 uppercase tracking-wider"
             >{{ isStoryMode ? "Cerita" : "Cepat" }}</span
@@ -264,9 +258,7 @@ onUnmounted(() => {
           @click="isUpperCase = !isUpperCase"
           class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50"
         >
-          <span class="text-xl md:text-2xl font-black">{{
-            isUpperCase ? "abc" : "ABC"
-          }}</span>
+          <span class="text-xl md:text-2xl font-black">{{ isUpperCase ? "abc" : "ABC" }}</span>
           <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
             isUpperCase ? "Kecil" : "Besar"
           }}</span>
@@ -299,9 +291,7 @@ onUnmounted(() => {
               : 'bg-white text-slate-700'
           "
         >
-          <span class="text-xl md:text-2xl">{{
-            isAutoPlaying ? "⏹️" : "▶️"
-          }}</span>
+          <span class="text-xl md:text-2xl">{{ isAutoPlaying ? "⏹️" : "▶️" }}</span>
           <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
             isAutoPlaying ? "Berhenti" : "Otomatis"
           }}</span>
@@ -315,8 +305,7 @@ onUnmounted(() => {
           class="ui-capsule-interactive bg-yellow-400 border-yellow-500 text-yellow-900 py-2 px-6 hover:scale-105 shadow-[0_4px_0_#ca8a04] active:shadow-none active:translate-y-1 transition-all"
         >
           <span class="text-2xl md:text-3xl drop-shadow-sm">🎮</span>
-          <span
-            class="text-lg md:text-xl font-black uppercase tracking-tight ml-2"
+          <span class="text-lg md:text-xl font-black uppercase tracking-tight ml-2"
             >Mulai Tantangan!</span
           >
         </button>
@@ -324,9 +313,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Instructions / Feedback Area -->
-    <div
-      class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4"
-    >
+    <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
       <transition name="fade" mode="out-in">
         <div
           v-if="feedback"
@@ -339,19 +326,13 @@ onUnmounted(() => {
           v-else
           class="text-2xl md:text-3xl lg:text-4xl font-black text-slate-600 drop-shadow-sm"
         >
-          {{
-            isStoryMode
-              ? "Klik huruf untuk mulai cerita!"
-              : "Klik huruf untuk dengar suara!"
-          }}
+          {{ isStoryMode ? "Klik huruf untuk mulai cerita!" : "Klik huruf untuk dengar suara!" }}
         </h1>
       </transition>
     </div>
 
     <!-- Alphabet Grid -->
-    <div
-      class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative"
-    >
+    <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
@@ -373,10 +354,7 @@ onUnmounted(() => {
           :style="{ animationDelay: `${index * 0.05}s` }"
         >
           <div
-            v-if="
-              isStoryMode &&
-              challengeDone.has(data.findIndex((d) => d.id === letter))
-            "
+            v-if="isStoryMode && challengeDone.has(data.findIndex((d) => d.id === letter))"
             class="absolute -top-3 -right-3 text-3xl drop-shadow-md z-10 w-8 h-8 flex items-center justify-center"
           >
             ⭐

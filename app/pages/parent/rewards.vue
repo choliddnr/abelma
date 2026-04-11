@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { confirm } = useConfirm();
 import { REWARD_EMOJIS } from "~/constants/reward";
 
 const showAddReward = ref(false);
@@ -8,11 +9,9 @@ const newRewardEmoji = ref("🎁");
 
 const { activeProfileId } = storeToRefs(useProfileStore());
 const { rewards } = storeToRefs(useRewardStore());
-const { fulfillReward, fetch } = useRewardStore();
+const { fetch } = useRewardStore();
 
-await callOnce(async () => {
-  await fetch();
-});
+callOnce(async () => await useAsyncData("rewards", () => fetch()));
 
 const handleAddReward = async () => {
   if (newRewardTitle.value.trim() && newRewardCost.value > 0) {
@@ -39,7 +38,16 @@ const handleAddReward = async () => {
 };
 
 const handleDeleteReward = async (id: number) => {
-  if (confirm("Apakah Anda yakin ingin menghapus hadiah ini?")) {
+  const confirmed = await confirm({
+    title: "Hapus Hadiah?",
+    message: "Apakah Anda yakin ingin menghapus hadiah ini? Koin anak Anda tidak akan dikembalikan.",
+    confirmText: "Hapus",
+    cancelText: "Batal",
+    icon: "🗑️",
+    variant: "danger",
+  });
+
+  if (confirmed) {
     await $fetch(`/api/reward/${id}`, {
       method: "DELETE",
       onResponse: ({ error }) => {
@@ -51,6 +59,24 @@ const handleDeleteReward = async (id: number) => {
       },
     });
   }
+};
+
+const handleFulfillReward = async (id: number) => {
+  await $fetch(`/api/reward/${id}`, {
+    method: "PATCH",
+    body: {
+      status: "fulfilled",
+    },
+    onResponse: ({ response, error }) => {
+      if (response.ok) {
+        rewards.value = rewards.value.map((r) =>
+          r.id === id ? { ...r, status: "fulfilled" } : r,
+        );
+      } else {
+        console.error(error);
+      }
+    },
+  });
 };
 </script>
 <template>
@@ -113,14 +139,14 @@ const handleDeleteReward = async (id: number) => {
         <div class="mt-4 w-full shrink-0">
           <UiButton
             v-if="reward.status === 'claimed'"
-            @click="fulfillReward(reward.id)"
+            @click="handleFulfillReward(reward.id)"
             variant="success"
             class="w-full py-2.5 shadow-sm leading-tight gap-1 h-auto"
           >
             <div class="flex flex-col items-center">
               <span>Berikan! 🎁</span>
               <span class="text-[10px] font-bold opacity-90 capitalize">{{
-                formatDate(reward.claimedAt!)
+                formatDate(reward.claimedAt!.toString())
               }}</span>
             </div>
           </UiButton>
@@ -188,11 +214,7 @@ const handleDeleteReward = async (id: number) => {
           >
             Batal
           </UiButton>
-          <UiButton
-            @click="handleAddReward"
-            variant="accent"
-            class="flex-2"
-          >
+          <UiButton @click="handleAddReward" variant="accent" class="flex-2">
             Simpan
           </UiButton>
         </div>

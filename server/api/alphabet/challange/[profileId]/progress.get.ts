@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const d1 = db(event);
   const profileId = getRouterParams(event).profileId as string;
   try {
-    const result = await d1
+    const res = await d1
       .select({
         score: alphabetChallengeProgress.score,
         level: alphabetChallengeProgress.level,
@@ -14,9 +14,16 @@ export default defineEventHandler(async (event) => {
         updatedAt: alphabetChallengeProgress.updatedAt,
       })
       .from(alphabetChallengeProgress)
-      .where(eq(alphabetChallengeProgress.profileId, profileId));
+      .where(eq(alphabetChallengeProgress.profileId, profileId))
+      .get();
 
-    return result[0];
+    if (res)
+      return {
+        ...res,
+        weights: JSON.parse(res.weights),
+        challengeConfig: JSON.parse(res.challengeConfig),
+      };
+    return;
   } catch (error) {
     console.error("Error selecting alphabet challange progress:", error);
     return sendError(

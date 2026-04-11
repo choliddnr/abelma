@@ -28,6 +28,7 @@ function calculateLevel(totalPoints: number): number {
     return 4;
   }
 }
+```
 
 # use `zod` and `getValidatedBody()` to validate req body. url: https://v1.h3.dev/utils/request#body-utils
 # save the type at `shared/types/api.d.ts`. it's accessible for all `server/` and `app/` context. always create type for request and response body

@@ -11,7 +11,6 @@ export type AlphabetChallengeProgress = {
 };
 
 export type ReqAlphabetChallangeProgressPut = {
-  profileId: string;
   coins: number;
   progress: AlphabetChallengeProgress;
 };
@@ -30,7 +29,7 @@ export type Reward = {
   cost: number;
   emoji: string;
   status: "available" | "claimed" | "fulfilled";
-  claimedAt?: string | null;
+  claimedAt?: Date | null;
 };
 
 export type ReqRewardPost = Omit<Reward, "id" | "status" | "claimedAt"> & {

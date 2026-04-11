@@ -2,9 +2,9 @@
 const { message } = defineProps({
   message: {
     type: String,
-    default: 'Loading...'
-  }
-})
+    default: "Loading...",
+  },
+});
 </script>
 
 <template>
@@ -13,8 +13,6 @@ const { message } = defineProps({
     <p v-if="message" class="loading-message">{{ message }}</p>
   </div>
 </template>
-
-
 
 <style scoped>
 .loading-spinner-container {
@@ -49,4 +47,3 @@ const { message } = defineProps({
   color: #666;
 }
 </style>
-

@@ -1,7 +1,31 @@
 <script setup lang="ts">
-import { authClient } from "~/utils/auth-client";
+const { session, isLoaded } = storeToRefs(useUserStore());
+isLoaded.value = false;
+callOnce(async () => {
+  const { fetchSession } = useUserStore();
+  await fetchSession();
+});
+if (session.value) {
+  console.log("APP session changed ", session.value);
+  const { fetchProfiles } = useProfileStore();
+  await fetchProfiles();
+}
 
-const session = authClient.useSession();
+// watch(
+//   () => session.value,
+//   async () => {
+
+//     if (!session.value) return;
+//     const { fetchProfiles } = useProfileStore();
+//     await fetchProfiles();
+//   },
+//   {
+//     once: true,
+//   },
+// );
+onMounted(() => {
+  isLoaded.value = true;
+});
 </script>
 
 <template>
@@ -23,7 +47,7 @@ const session = authClient.useSession();
     ></div>
 
     <div
-      v-if="session.isPending"
+      v-if="!isLoaded"
       class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FFF9E3]/80 backdrop-blur-sm"
     >
       <BubbleCard
@@ -43,6 +67,7 @@ const session = authClient.useSession();
     >
       <GlobalHeader />
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
+      <UiConfirmModal />
     </main>
   </div>
 </template>

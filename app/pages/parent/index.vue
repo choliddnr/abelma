@@ -7,7 +7,7 @@ const showAddProfile = ref(false);
 const newProfileName = ref("");
 const selectedAvatar = ref("👦");
 const isCreating = ref(false);
-const { addProfile } = useProfileStore();
+const { addProfile, changeProfile } = useProfileStore();
 
 const handleAddProfile = async () => {
   if (!newProfileName.value.trim()) return;
@@ -67,7 +67,7 @@ const handleAddProfile = async () => {
           </p>
           <UiButton
             v-if="activeProfileId !== profile.id"
-            @click="activeProfileId = profile.id"
+            @click="changeProfile(profile.id)"
             variant="ghost"
             class="text-xs font-bold text-indigo-500 hover:underline p-0 h-auto"
           >

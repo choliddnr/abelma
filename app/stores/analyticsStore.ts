@@ -13,11 +13,7 @@ export const useAnalyticsStore = defineStore(
     const initialize = () => {};
 
     // Actions
-    const recordMistake = async (
-      profileId: string,
-      type: string,
-      targetId: string,
-    ) => {
+    const recordMistake = async (profileId: string, type: string, targetId: string) => {
       if (!analyticsMap.value[profileId]) {
         analyticsMap.value[profileId] = {};
       }
@@ -30,8 +26,7 @@ export const useAnalyticsStore = defineStore(
       }
 
       analyticsMap.value[profileId][targetId].mistakes++;
-      analyticsMap.value[profileId][targetId].lastAttempt =
-        new Date().toISOString();
+      analyticsMap.value[profileId][targetId].lastAttempt = new Date().toISOString();
     };
 
     const getProfileAnalytics = async (

@@ -11,20 +11,20 @@
 defineProps({
   message: {
     type: String,
-    default: 'An unexpected error occurred'
+    default: "An unexpected error occurred",
   },
   hasRetry: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-const emit = defineEmits(['retry'])
+const emit = defineEmits(["retry"]);
 
 const retry = () => {
-  emit('retry')
-  window.location.reload()
-}
+  emit("retry");
+  window.location.reload();
+};
 </script>
 
 <style scoped>

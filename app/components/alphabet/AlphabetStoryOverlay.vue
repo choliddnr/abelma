@@ -158,9 +158,7 @@ defineExpose({
           </div>
 
           <!-- Bottom floating card: Story text or Challenge -->
-          <div
-            class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full"
-          >
+          <div class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full">
             <div
               class="bg-white/75 backdrop-blur-md shadow-2xl rounded-3xl p-6 sm:p-8 w-full max-w-3xl border-4 border-white/50 transition-all duration-300"
             >
@@ -197,8 +195,7 @@ defineExpose({
                     >
                       <span>⬅️ Kembali</span>
                     </button>
-                    <span
-                      class="text-sm font-black uppercase tracking-widest text-indigo-500"
+                    <span class="text-sm font-black uppercase tracking-widest text-indigo-500"
                       >🎯 Tantangan</span
                     >
                     <div class="w-16"></div>
@@ -218,9 +215,7 @@ defineExpose({
           </div>
 
           <!-- Footer nav: Prev / Letter counter / Next -->
-          <footer
-            class="relative z-10 w-full flex gap-4 px-4 sm:px-6 pt-3 pb-4 shrink-0"
-          >
+          <footer class="relative z-10 w-full flex gap-4 px-4 sm:px-6 pt-3 pb-4 shrink-0">
             <button
               @click="emit('prev')"
               class="flex-1 bg-white/30 hover:bg-white/50 text-white py-3 rounded-3xl font-black text-lg transition-all shadow-lg border-b-4 border-black/15 active:border-b-0 active:translate-y-1 flex items-center justify-center gap-2"

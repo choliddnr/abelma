@@ -10,7 +10,7 @@ const router = useRouter();
 const { speaking, playLetterSound, speak } = useAlphabetAudio();
 const { alphabetChallangeProgress: alphabetProgress } =
   storeToRefs(useAlphabetStore());
-const { coins } = storeToRefs(useRewardStore());
+const { changeCoins } = useProfileStore();
 // const { syncAlphabet } = useSyncStore();
 
 // Game State from Store
@@ -37,7 +37,7 @@ const currentConfig = computed(() => {
   );
 });
 
-// Sync with store
+// Sync with store (local -> store)
 watch(
   [score, level, letterWeights],
   () => {
@@ -48,7 +48,26 @@ watch(
   { deep: true },
 );
 
-const showRewardCelebration = ref(false);
+// Sync from store (store -> local) when fetched from server
+watch(
+  () => alphabetProgress.value,
+  (newProgress) => {
+    if (newProgress) {
+      score.value = newProgress.score;
+      level.value = newProgress.level;
+      letterWeights.value = newProgress.weights;
+    }
+  },
+);
+
+const celebrationData = ref({
+  show: false,
+  title: "",
+  message: "",
+  rewardAmount: null as number | null,
+  footerText: "",
+  mainEmoji: "",
+});
 const lastEarnedReward = ref(0);
 
 const streak = ref(0);
@@ -215,7 +234,7 @@ const handleLetterClick = async (letter: string) => {
   if (
     speaking.value ||
     isProcessingClick.value ||
-    showRewardCelebration.value ||
+    celebrationData.value.show ||
     isChallengeCompleted.value
   )
     return;
@@ -229,6 +248,7 @@ const handleLetterClick = async (letter: string) => {
     streak.value++;
     const multiplier = Math.min(2, 1 + streak.value * 0.1);
     const earnedCoins = Math.round(10 * multiplier);
+    changeCoins(earnedCoins);
     score.value += earnedCoins;
 
     const caseCorrectLetter = isUpperCase.value
@@ -250,20 +270,35 @@ const handleLetterClick = async (letter: string) => {
     ) {
       gotReward = true;
       lastEarnedReward.value = config.streakReward;
-      coins.value += config.streakReward;
+      changeCoins(config.streakReward);
     }
 
     if (gotReward) {
-      showRewardCelebration.value = true;
+      celebrationData.value = {
+        show: true,
+        title: "Luar Biasa!",
+        message: "Kamu dapat Bonus Beruntun!",
+        rewardAmount: lastEarnedReward.value,
+        footerText: "Koin Berhasil Ditambah!",
+        mainEmoji: "✨💰✨",
+      };
       speak(`Hebat! Kamu dapat bonus ${lastEarnedReward.value} koin!`);
       await new Promise((resolve) => setTimeout(resolve, 3500));
-      showRewardCelebration.value = false;
+      celebrationData.value.show = false;
     }
 
     if (completed) {
       isChallengeCompleted.value = true;
       speak(`Luar biasa! Kamu telah menyelesaikan semua tantangan!`);
       feedback.value = { message: "Tantangan Selesai! 🎉", type: "success" };
+      celebrationData.value = {
+        show: true,
+        title: "Tantangan Selesai!",
+        message: "Luar Biasa! Kembali ke menu...",
+        rewardAmount: null,
+        footerText: "Semua Level!",
+        mainEmoji: "✨🏆✨",
+      };
       const duration = 5000;
       const end = Date.now() + duration;
       const frame = () => {
@@ -297,6 +332,19 @@ const handleLetterClick = async (letter: string) => {
         message: `Luar Biasa! Naik Level ${level.value}! 🌟`,
         type: "success",
       };
+      if (!gotReward) {
+        celebrationData.value = {
+          show: true,
+          title: "Naik Level!",
+          message: `Kamu Naik Level ${level.value}!`,
+          rewardAmount: null,
+          footerText: "Luar Biasa!",
+          mainEmoji: "✨🌟✨",
+        };
+        setTimeout(() => {
+          celebrationData.value.show = false;
+        }, 3500);
+      }
       launchConfetti();
     } else if (!gotReward) {
       feedback.value = {
@@ -369,19 +417,22 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (timerInterval.value) clearInterval(timerInterval.value);
+  if (timerInterval.value) window.clearInterval(timerInterval.value);
   // syncAlphabet();
+  console.log("stop-challenge", timerInterval.value);
+  emit("stop-challenge");
 });
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 animate-entrance">
+  <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
     <!-- Challenge Dashboard (Single Row) -->
     <div
       class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]"
     >
       <div class="w-full max-w-4xl mx-auto flex flex-col gap-4">
         <div
+          :data-target-letter="targetLetter"
           class="bg-white/30 backdrop-blur-lg p-4 md:p-6 rounded-4xl border-4 border-white/50 shadow-2xl relative overflow-hidden"
         >
           <div
@@ -566,42 +617,14 @@ onUnmounted(() => {
     </div>
 
     <!-- Reward Celebration Pop-up -->
-    <transition name="pop-up">
-      <div
-        v-if="showRewardCelebration"
-        class="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-      >
-        <div
-          class="bg-white rounded-5xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-8 border-yellow-400 max-w-sm w-full text-center relative animate-pop overflow-hidden"
-        >
-          <div
-            class="absolute inset-0 bg-linear-to-b from-yellow-50 to-white -z-10"
-          ></div>
-          <div class="text-7xl md:text-8xl mb-4 animate-bounce">✨💰✨</div>
-          <h2
-            class="text-3xl md:text-4xl font-black text-yellow-600 mb-2 uppercase tracking-tight"
-          >
-            Luar Biasa!
-          </h2>
-          <p class="text-xl md:text-2xl font-bold text-slate-600 mb-6">
-            Kamu dapat Bonus Beruntun!
-          </p>
-          <div
-            class="inline-flex items-center justify-center gap-3 bg-yellow-100 px-8 py-4 rounded-3xl border-4 border-yellow-200 shadow-inner"
-          >
-            <span class="text-4xl md:text-5xl">🪙</span>
-            <span class="text-4xl md:text-5xl font-black text-yellow-700"
-              >+{{ lastEarnedReward }}</span
-            >
-          </div>
-          <div
-            class="mt-8 text-sm font-black text-slate-400 uppercase tracking-widest animate-pulse"
-          >
-            Koin Berhasil Ditambah!
-          </div>
-        </div>
-      </div>
-    </transition>
+    <UiCelebrationModal
+      v-model="celebrationData.show"
+      :title="celebrationData.title"
+      :message="celebrationData.message"
+      :reward-amount="celebrationData.rewardAmount"
+      :footer-text="celebrationData.footerText"
+      :main-emoji="celebrationData.mainEmoji"
+    />
   </div>
 </template>
 
@@ -647,24 +670,6 @@ onUnmounted(() => {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.pop-up-enter-active {
-  animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.pop-up-leave-active {
-  animation: pop-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) reverse;
-}
-
-@keyframes pop-in {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 </style>

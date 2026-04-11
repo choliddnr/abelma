@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Coins handled by GlobalHeader
 
-const { selectedProfile } = storeToRefs(useProfileStore());
+const { profile } = storeToRefs(useProfileStore());
 
 const menuItems = [
   {
@@ -37,7 +37,7 @@ const menuItems = [
     subtitle: "Tukar Koinmu",
     icon: "🎁",
     colorClass: "bg-[#FF8B8B] text-white",
-    to: "/words/rewards",
+    to: "/rewards",
   },
 ];
 </script>
@@ -60,7 +60,7 @@ const menuItems = [
         <h1
           class="text-6xl md:text-8xl font-black text-indigo-600 drop-shadow-sm font-quicksand"
         >
-          Halo {{ selectedProfile?.name }}!
+          Halo {{ profile?.name }}!
         </h1>
         <p class="text-2xl md:text-3xl font-bold text-slate-500 font-quicksand">
           Ayo kita belajar sambil bermain!

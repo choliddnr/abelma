@@ -1,172 +1,147 @@
 import type { Reward } from "#shared/types/api";
 
-export const useRewardStore = defineStore(
-  "reward",
-  () => {
-    // Other Stores
-    const { activeProfileId } = storeToRefs(useProfileStore());
-    // const { syncProfile } = useSyncStore();
+export const useRewardStore = defineStore("reward", () => {
+  // Other Stores
+  // const { activeProfileId } = storeToRefs(useProfileStore());
+  // const { syncProfile } = useSyncStore();
 
-    // State
-    const profileCoinsMap = ref<Record<string, number>>({});
-    const profileRewardsMap = ref<Record<string, Reward[]>>({});
+  // State
+  // const profileCoinsMap = ref<Record<string, number>>({});
+  // const profileRewardsMap = ref<Record<string, Reward[]>>({});
 
-    const coins = computed({
-      get: () => {
-        return activeProfileId.value
-          ? profileCoinsMap.value[activeProfileId.value] || 0
-          : 0;
-      },
-      set: (val) => {
-        if (activeProfileId.value) {
-          profileCoinsMap.value[activeProfileId.value] = val;
-        }
-      },
-    });
+  // const coins = computed({
+  //   get: () => {
+  //     return activeProfileId.value
+  //       ? profileCoinsMap.value[activeProfileId.value] || 0
+  //       : 0;
+  //   },
+  //   set: (val) => {
+  //     if (activeProfileId.value) {
+  //       profileCoinsMap.value[activeProfileId.value] = val;
+  //     }
+  //   },
+  // });
 
-    const rewards = computed({
-      get: () => {
-        if (!activeProfileId.value) return [];
-        if (!profileRewardsMap.value[activeProfileId.value]) {
-          profileRewardsMap.value[activeProfileId.value] = [];
-        }
-        return profileRewardsMap.value[activeProfileId.value]!;
-      },
-      set: (val) => {
-        if (activeProfileId.value) {
-          profileRewardsMap.value[activeProfileId.value] = val;
-        }
-      },
-    });
+  // const rewards = computed({
+  //   get: () => {
+  //     if (!activeProfileId.value) return [];
+  //     if (!profileRewardsMap.value[activeProfileId.value]) {
+  //       profileRewardsMap.value[activeProfileId.value] = [];
+  //     }
+  //     return profileRewardsMap.value[activeProfileId.value]!;
+  //   },
+  //   set: (val) => {
+  //     if (activeProfileId.value) {
+  //       profileRewardsMap.value[activeProfileId.value] = val;
+  //     }
+  //   },
+  // });
 
-    // Actions
-    // const addCoins = async (amount: number) => {
-    //   if (!activeProfileId.value) return;
+  // Actions
+  // const addCoins = async (amount: number) => {
+  //   if (!activeProfileId.value) return;
 
-    //   coins.value += amount;
-    // };
+  //   coins.value += amount;
+  // };
 
-    // const deductCoins = async (amount: number): Promise<boolean> => {
-    //   if (!activeProfileId.value) return false;
-    //   if (coins.value >= amount) {
-    //     coins.value -= amount;
-    //     return true;
-    //   }
-    //   return false;
-    // };
+  // const deductCoins = async (amount: number): Promise<boolean> => {
+  //   if (!activeProfileId.value) return false;
+  //   if (coins.value >= amount) {
+  //     coins.value -= amount;
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
-    const claimReward = async (rewardId: string): Promise<boolean> => {
-      // const reward = rewards.value.find((r) => r.id === rewardId);
-      // if (!reward || reward.status !== "available") {
-      //   return false;
-      // }
+  const rewards = ref<Reward[]>([]);
 
-      // if (coins.value >= reward.cost) {
-      //   coins.value -= reward.cost;
-      //   reward.status = "claimed";
-      //   reward.claimedAt = new Date().toISOString();
-      //   // await triggerSync();
-      // }
-      return true;
-    };
+  // const addCustomReward = async (
+  //   title: string,
+  //   cost: number,
+  //   emoji: string,
+  // ) => {
+  //   if (!activeProfileId.value) return;
+  //   const newReward: Reward = {
+  //     id: `reward-${Date.now()}`,
+  //     title,
+  //     cost,
+  //     emoji,
+  //     status: "available",
+  //   };
+  //   rewards.value.push(newReward);
+  //   await triggerSync();
+  // };
 
-    const fulfillReward = async (rewardId: number) => {
-      // const reward = rewards.value.find((r) => r.id === rewardId);
-      // if (reward) {
-      //   reward.status = "fulfilled";
-      //   // await triggerSync();
-      // }
-    };
+  const deleteReward = async (rewardId: number) => {
+    // const index = rewards.value.findIndex((r) => r.id === rewardId);
+    // if (index !== -1) {
+    //   rewards.value.splice(index, 1);
+    //   // await triggerSync();
+    // }
+  };
 
-    // const addCustomReward = async (
-    //   title: string,
-    //   cost: number,
-    //   emoji: string,
-    // ) => {
-    //   if (!activeProfileId.value) return;
-    //   const newReward: Reward = {
-    //     id: `reward-${Date.now()}`,
-    //     title,
-    //     cost,
-    //     emoji,
-    //     status: "available",
-    //   };
-    //   rewards.value.push(newReward);
-    //   await triggerSync();
-    // };
+  const reset = () => {
+    rewards.value = [];
+  };
 
-    const deleteReward = async (rewardId: number) => {
-      // const index = rewards.value.findIndex((r) => r.id === rewardId);
-      // if (index !== -1) {
-      //   rewards.value.splice(index, 1);
-      //   // await triggerSync();
-      // }
-    };
+  const fetch = async () => {
+    const activeProfileId = useProfileStore().activeProfileId;
+    if (!activeProfileId) return;
 
-    const fetch = async () => {
-      try {
-        await $fetch<Reward[]>("/api/reward/profile/" + activeProfileId.value, {
-          method: "GET",
-          onResponse({ response }) {
-            if (response.ok) {
-              rewards.value = response._data;
-            }
-          },
-        });
-      } catch (error) {
-        console.error("fetch reward failed:", error);
-      }
-    };
+    try {
+      await $fetch<Reward[]>("/api/reward/profile/" + activeProfileId, {
+        method: "GET",
+        onResponse({ response }) {
+          if (response.ok) {
+            rewards.value = response._data;
+          }
+        },
+      });
+    } catch (error) {
+      console.error("fetch reward failed:", error);
+    }
+  };
+  watch(
+    () => useProfileStore().activeProfileId,
+    async (newId) => {
+      if (newId) await fetch();
+    },
+    { immediate: true },
+  );
 
-    // const triggerSync = async () => {
-    //   await syncProfile();
-    // };
+  // const triggerSync = async () => {
+  //   await syncProfile();
+  // };
 
-    // // Computed
-    // const availableRewards = computed(() => {
-    //   return rewards.value.filter((r) => r.status === "available");
-    // });
+  // // Computed
+  // const availableRewards = computed(() => {
+  //   return rewards.value.filter((r) => r.status === "available");
+  // });
 
-    // const claimedRewards = computed(() => {
-    //   return rewards.value.filter((r) => r.status === "claimed");
-    // });
+  // const claimedRewards = computed(() => {
+  //   return rewards.value.filter((r) => r.status === "claimed");
+  // });
 
-    // const fulfilledRewards = computed(() => {
-    //   return rewards.value.filter((r) => r.status === "fulfilled");
-    // });
+  // const fulfilledRewards = computed(() => {
+  //   return rewards.value.filter((r) => r.status === "fulfilled");
+  // });
 
-    // const canAfford = (cost: number): boolean => {
-    //   return coins.value >= cost;
-    // };
+  // const canAfford = (cost: number): boolean => {
+  //   return coins.value >= cost;
+  // };
 
-    // const reset = () => {
-    //   profileCoinsMap.value = {};
-    //   profileRewardsMap.value = {};
-    // };
+  // const reset = () => {
+  //   profileCoinsMap.value = {};
+  //   profileRewardsMap.value = {};
+  // };
 
-    return {
-      profileCoinsMap,
-      profileRewardsMap,
-      coins,
-      rewards,
-      // availableRewards,
-      // claimedRewards,
-      // fulfilledRewards,
-      // canAfford,
-      // addCoins,
-      // deductCoins,
-      claimReward,
-      fulfillReward,
-      // addCustomReward,
-      deleteReward,
-      fetch,
-      // reset,
-    };
-  },
-  {
-    unstorage: {},
-  },
-);
+  return {
+    rewards,
+    deleteReward,
+    reset,
+    fetch,
+  };
+});
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useRewardStore, import.meta.hot));
 }

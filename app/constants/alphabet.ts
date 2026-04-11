@@ -43,10 +43,7 @@ export const idLetterMap: Record<string, { emoji: string; word: string }> = {
   Z: { emoji: "🦓", word: "Zebra" },
 };
 
-import type {
-  AlphabetChallengeModeConfig,
-  AlphabetChallengeProgress,
-} from "@/types/stores";
+import type { AlphabetChallengeModeConfig, AlphabetChallengeProgress } from "@/types/stores";
 
 /**
  * Default challenge progression levels.

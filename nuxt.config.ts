@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@pinia/nuxt",
     "pinia-plugin-unstorage/nuxt",
+    "@nuxt/test-utils/module",
   ],
   // pinia: {
   //   // storesDirs: ["./stores/**"],
@@ -22,7 +23,11 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ["canvas-confetti", "better-auth/vue"],
+      include: [
+        "canvas-confetti",
+        "better-auth/vue",
+        "better-auth/client/plugins",
+      ],
     },
   },
   nitro: {

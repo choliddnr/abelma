@@ -23,25 +23,14 @@ const menuItems = [
 <template>
   <div class="flex flex-col min-h-screen relative p-4 md:p-8">
     <!-- Full-screen Frosted Overlay -->
-    <div
-      class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"
-    ></div>
+    <div class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"></div>
 
     <!-- View Actions (Contextual items not in Global Header) -->
-    <div
-      class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-4 animate-entrance"
-    >
+    <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-4 animate-entrance">
       <div class="flex-1"></div>
       <div class="flex gap-2 md:gap-4">
-        <UiButton
-          to="/words/stickers"
-          variant="white"
-          icon="🖼️"
-          class="w-auto shadow-sm"
-        >
-          <span class="font-black text-sm md:text-base hidden sm:inline"
-            >Koleksi</span
-          >
+        <UiButton to="/words/stickers" variant="white" icon="🖼️" class="w-auto shadow-sm">
+          <span class="font-black text-sm md:text-base hidden sm:inline">Koleksi</span>
         </UiButton>
 
         <UiButton
@@ -50,9 +39,7 @@ const menuItems = [
           icon="⚙️"
           class="w-auto shadow-sm"
         >
-          <span class="font-black text-sm md:text-base hidden sm:inline"
-            >Pengaturan</span
-          >
+          <span class="font-black text-sm md:text-base hidden sm:inline">Pengaturan</span>
         </UiButton>
       </div>
     </div>
@@ -61,10 +48,7 @@ const menuItems = [
     <div
       class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-6 md:gap-10 z-10 mt-2"
     >
-      <div
-        class="text-center space-y-4 animate-entrance"
-        style="animation-delay: 0.2s"
-      >
+      <div class="text-center space-y-4 animate-entrance" style="animation-delay: 0.2s">
         <h1
           class="text-5xl md:text-7xl font-black text-indigo-600 drop-shadow-sm"
           style="font-family: &quot;Quicksand&quot;, sans-serif"
