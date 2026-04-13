@@ -6,23 +6,10 @@ callOnce(async () => {
   await fetchSession();
 });
 if (session.value) {
-  console.log("APP session changed ", session.value);
   const { fetchProfiles } = useProfileStore();
   await fetchProfiles();
 }
 
-// watch(
-//   () => session.value,
-//   async () => {
-
-//     if (!session.value) return;
-//     const { fetchProfiles } = useProfileStore();
-//     await fetchProfiles();
-//   },
-//   {
-//     once: true,
-//   },
-// );
 onMounted(() => {
   isLoaded.value = true;
 });

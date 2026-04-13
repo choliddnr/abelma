@@ -2,24 +2,38 @@ export const ALPHABET_STORYBOOK = [
   {
     id: "A",
     letter: { upper: "A", lower: "a" },
-    title: "Ayam Andi",
-    story:
-      "Ayam Andi sangat lapar pagi ini. Dia menemukan Apel merah yang besar di bawah pohon. Andi memakan apel itu dengan lahap sambil berteriak 'A-A-A!'. Apakah kamu bisa melihat huruf A di dekat Andi?",
+    title: "Apel Andi",
+    story: [
+      "Andi sangat lapar siang ini.",
+      "Dia menemukan Apel merah yang besar di bawah pohon.",
+      "Andi memakan apel itu dengan lahap sambil berteriak Am, Am, Am !.",
+    ],
     themeColor: "bg-red-500",
-    challenge: {
-      instruction: "Cari huruf A besar di antara huruf-huruf ini!",
-      target: "A",
-      options: ["A", "O", "V", "X"],
-    },
+    challenge: [
+      {
+        question: "Apakah kamu bisa melihat huruf A besar di dekat Andi?",
+        target: "A",
+        options: ["A", "O", "V", "X"],
+      },
+      {
+        question: "Apakah kamu bisa melihat huruf a kecil di dekat Andi?",
+        target: "a",
+        options: ["r", "e", "a", "o"],
+      },
+    ],
   },
   {
     id: "B",
     letter: { upper: "B", lower: "b" },
     title: "Beruang Beni",
-    story:
-      "Beruang Beni punya Bola baru yang berwarna biru. Dia bermain bola bersama teman-temannya di taman yang luas. Beni menendang bola itu sangat tinggi sampai ke awan. Bisakah kamu menemukan huruf B pada bola Beni?",
+    story: [
+      "Beruang Beni punya Bola baru yang berwarna biru.",
+      "Dia bermain bola bersama teman-temannya di taman yang luas.",
+      "Beni menendang bola itu sangat tinggi sampai ke awan.",
+    ],
     themeColor: "bg-blue-500",
     challenge: {
+      question: "Bisakah kamu menemukan huruf B dekat bola Beni?",
       instruction: "Mana huruf b kecil yang benar?",
       target: "b",
       options: ["d", "p", "b", "q"],

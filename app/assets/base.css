@@ -8,8 +8,8 @@
   --color-danger: #ff6b6b;
   --color-soft: #f9f9f9;
 
-  --font-main: "Outfit", sans-serif;
-  --font-display: "Baloo Bhaijaan 2", sans-serif;
+  /* --font-main: "Outfit", sans-serif;
+  --font-display: "Baloo Bhaijaan 2", sans-serif; */
   --font-quicksand: "Quicksand", sans-serif;
 }
 
@@ -120,7 +120,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-main);
+  font-family: var(--font-quicksand);
   background: #fff9e3;
   color: #333;
   overflow-x: hidden;
@@ -149,7 +149,7 @@ select,
 h1,
 h2,
 h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-quicksand);
 }
 
 @utility custom-scrollbar {

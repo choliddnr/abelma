@@ -6,7 +6,7 @@ const router = useRouter();
 const letter = (route.params.id as string) || "A";
 
 const tracingCanvasRef = ref<InstanceType<typeof TracingCanvas> | null>(null);
-const { addCoins } = useRewardStore();
+const { changeCoins } = useProfileStore();
 const showResult = ref(false);
 const scoreResult = ref({ score: 0, stars: 0, coverage: 0, accuracy: 0 });
 const coinsEarned = ref(0);
@@ -23,7 +23,7 @@ const clearTracing = () => {
 const onSaved = () => {
   if (tracingCanvasRef.value) {
     const result = tracingCanvasRef.value.calculateScore();
-
+    console.log(result);
     if (result.score === 0) {
       showIncompleteToast.value = true;
       setTimeout(() => {
@@ -36,16 +36,16 @@ const onSaved = () => {
 
     if (result.stars === 5) {
       coinsEarned.value = 15;
-      addCoins(15);
+      changeCoins(15);
     } else if (result.stars === 4) {
       coinsEarned.value = 10;
-      addCoins(10);
+      changeCoins(10);
     } else if (result.stars === 3) {
       coinsEarned.value = 5;
-      addCoins(5);
+      changeCoins(5);
     } else if (result.stars === 2) {
       coinsEarned.value = 2;
-      addCoins(2);
+      changeCoins(2);
     } else {
       coinsEarned.value = 0;
     }
@@ -64,14 +64,7 @@ const retry = () => {
   <div
     class="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-6xl mx-auto px-4 py-8 gap-8"
   >
-    <div class="w-full flex justify-between items-center">
-      <button
-        @click="goBack"
-        class="btn-bubble bg-white px-6 py-3 text-xl font-bold text-gray-700 border-2 shadow-sm focus:outline-none"
-      >
-        ← Kembali
-      </button>
-
+    <div class="w-full flex justify-center items-center">
       <h1
         class="text-4xl font-black text-blue-600 tracking-wide text-center bg-white/80 px-8 py-3 rounded-full shadow-sm"
       >
@@ -159,7 +152,9 @@ const retry = () => {
           >
             Ulangi
           </button>
-          <button @click="goBack" class="flex-1 btn-primary text-xl py-4">Lanjut</button>
+          <button @click="goBack" class="flex-1 btn-primary text-xl py-4">
+            Lanjut
+          </button>
         </div>
       </div>
     </div>
@@ -170,7 +165,8 @@ const retry = () => {
         v-if="showIncompleteToast"
         class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-8 py-4 rounded-full font-bold text-2xl shadow-2xl flex items-center gap-4"
       >
-        <span class="text-3xl">⚠️</span> Sepertinya kamu belum selesai menggambar! Ayo coba lagi! 😊
+        <span class="text-3xl">⚠️</span> Sepertinya kamu belum selesai
+        menggambar! Ayo coba lagi! 😊
       </div>
     </transition>
   </div>

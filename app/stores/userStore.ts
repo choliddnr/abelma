@@ -17,7 +17,6 @@ export const useUserStore = defineStore("user", () => {
         headers: useRequestHeaders(["cookie"]),
       },
     });
-    console.log("data session", data);
 
     session.value = data.data?.session;
     user.value = data.data?.user;

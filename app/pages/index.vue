@@ -18,20 +18,20 @@ const menuItems = [
     colorClass: "bg-[#6BCB77] text-white",
     to: "/words",
   },
-  {
-    title: "Permainan",
-    subtitle: "Tebak Gambar",
-    icon: "🎮",
-    colorClass: "bg-[#4D96FF] text-white",
-    to: "/games",
-  },
-  {
-    title: "Buku Huruf",
-    subtitle: "Cerita A–Z",
-    icon: "📖",
-    colorClass: "bg-[#A084E8] text-white",
-    to: "/storybook",
-  },
+  // {
+  //   title: "Permainan",
+  //   subtitle: "Tebak Gambar",
+  //   icon: "🎮",
+  //   colorClass: "bg-[#4D96FF] text-white",
+  //   to: "/games",
+  // },
+  // {
+  //   title: "Buku Huruf",
+  //   subtitle: "Cerita A–Z",
+  //   icon: "📖",
+  //   colorClass: "bg-[#A084E8] text-white",
+  //   to: "/storybook",
+  // },
   {
     title: "Hadiah",
     subtitle: "Tukar Koinmu",
@@ -67,14 +67,15 @@ const menuItems = [
         </p>
       </div>
 
-      <div
+      <!-- <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 w-full"
-      >
+      > -->
+      <div class="flex flex-wrap justify-center gap-6 md:gap-8 w-full">
         <MenuCard
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance"
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance lg:min-w-[25%] md:min-w-[45%] min-w-[80%]"
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
       </div>

@@ -61,14 +61,16 @@ export function useAlphabetAudio() {
       audio.play().catch((err) => {
         console.warn(`Failed to play preloaded audio for ${letter}:`, err);
         if (isLearningMode && idLetterMap[upperLetter]) {
-          fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`);
+          // fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`);
+          fallbackToSpeech(`Ini huruf ${letter.toLowerCase()}.`);
         } else {
           fallbackToSpeech(letter);
         }
       });
     } else {
       if (isLearningMode && idLetterMap[upperLetter]) {
-        fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`);
+        // fallbackToSpeech(`${letter.toLowerCase()} untuk ${idLetterMap[upperLetter].word}`);
+        fallbackToSpeech(`Ini huruf ${letter.toLowerCase()}.`);
       } else {
         fallbackToSpeech(letter);
       }

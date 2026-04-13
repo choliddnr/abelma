@@ -1,53 +1,20 @@
 <script setup lang="ts">
 import { letters, idLetterMap, getLetterColor } from "~/constants/alphabet";
 import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
-import type { AlphabetStorybook } from "@/types/alphabet";
 import confetti from "canvas-confetti";
-import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
+// import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 
 const emit = defineEmits(["start-challenge"]);
 
 const { speaking, playLetterSound } = useAlphabetAudio();
-const { challengeDone } = storeToRefs(useStorybookStore());
-const { markCompleted } = useStorybookStore();
-
-// --- Interface & Data ---
-const data = ALPHABET_STORYBOOK as AlphabetStorybook[];
-const emojiMap: Record<string, string> = {
-  A: "🍎",
-  B: "⚽",
-  C: "🍒",
-  D: "🐑",
-  E: "🦅",
-  F: "📷",
-  G: "🐘",
-  H: "🚁",
-  I: "🐟",
-  J: "🦒",
-  K: "🐈",
-  L: "💡",
-  M: "🥭",
-  N: "🍍",
-  O: "💊",
-  P: "🍌",
-  Q: "📖",
-  R: "🏠",
-  S: "🐄",
-  T: "🎩",
-  U: "🐪",
-  V: "🏺",
-  W: "🥕",
-  X: "🎼",
-  Y: "🪀",
-  Z: "🦓",
-};
+// const { challengeDone } = storeToRefs(useStorybookStore());
 
 // --- Dashboard State ---
+// const data = ALPHABET_STORYBOOK;
 const isUpperCase = ref(true);
 const isRandomized = ref(false);
 const learningLetters = ref([...letters]);
 const feedback = ref("");
-const isStoryMode = ref(false);
 
 const shuffleLetters = (arrayToShuffle: string[]) => {
   const array = [...arrayToShuffle];
@@ -62,7 +29,9 @@ const shuffleLetters = (arrayToShuffle: string[]) => {
 
 const toggleRandomize = () => {
   isRandomized.value = !isRandomized.value;
-  learningLetters.value = isRandomized.value ? shuffleLetters([...letters]) : [...letters];
+  learningLetters.value = isRandomized.value
+    ? shuffleLetters([...letters])
+    : [...letters];
 };
 
 // Auto Play Logic
@@ -76,7 +45,6 @@ const toggleAutoPlay = () => {
 };
 
 const startAutoPlay = () => {
-  if (isStoryMode.value) isStoryMode.value = false; // Auto play is for fast mode
   isAutoPlaying.value = true;
   autoPlayIndex.value = 0;
   const firstLetter = learningLetters.value[0];
@@ -105,82 +73,6 @@ watch(speaking, (newVal) => {
   }
 });
 
-// --- Story Mode State ---
-const selectedStoryLetter = ref<string | null>(null);
-const currentStory = computed(() => {
-  const letter = selectedStoryLetter.value;
-  if (!letter) return null;
-  return data.find((d) => d.letter.upper === letter.toUpperCase()) || null;
-});
-
-const isSpeakingStory = ref(false);
-
-const buildPhonicsText = (entry: AlphabetStorybook): string => {
-  const u = entry.letter.upper;
-  const l = entry.letter.lower;
-  return `Huruf ${u}. ${u} besar dan ${l} kecil. ${entry.title}. ${entry.story}`;
-};
-
-const speakStory = () => {
-  const story = currentStory.value;
-  if (!story) return;
-  window.speechSynthesis.cancel();
-  isSpeakingStory.value = true;
-  const utterance = new SpeechSynthesisUtterance(buildPhonicsText(story));
-  utterance.lang = "id-ID";
-  utterance.rate = 0.85;
-  utterance.pitch = 1.1;
-  utterance.onend = utterance.onerror = () => {
-    isSpeakingStory.value = false;
-    const index = data.findIndex((d) => d.id === story.id);
-    if (index !== -1) {
-      markCompleted(index);
-    }
-  };
-  window.speechSynthesis.speak(utterance);
-};
-
-watch(selectedStoryLetter, (newVal) => {
-  if (newVal) {
-    speakStory();
-  } else {
-    window.speechSynthesis.cancel();
-    isSpeakingStory.value = false;
-  }
-});
-
-const closeStory = () => {
-  selectedStoryLetter.value = null;
-};
-const nextStoryLetter = () => {
-  if (!currentStory.value) return;
-  const currentIdx = data.findIndex((d) => d.id === currentStory.value!.id);
-  if (currentIdx < data.length - 1) {
-    selectedStoryLetter.value = data[currentIdx + 1]!.letter.upper;
-  } else {
-    closeStory();
-  }
-};
-const prevStoryLetter = () => {
-  if (!currentStory.value) return;
-  const currentIdx = data.findIndex((d) => d.id === currentStory.value!.id);
-  if (currentIdx > 0) {
-    selectedStoryLetter.value = data[currentIdx - 1]!.letter.upper;
-  }
-};
-
-const onChallengeSuccess = () => {
-  const story = currentStory.value;
-  if (!story) return;
-  const idx = data.findIndex((d) => d.id === story.id);
-  if (idx !== -1) markCompleted(idx);
-  setTimeout(() => nextStoryLetter(), 1400);
-};
-
-const onChallengeFail = () => {
-  /* InteractionZone handles visual feedback */
-};
-
 // --- Click Handlers ---
 const popConfetti = (e: Event) => {
   const target = e.currentTarget as HTMLElement;
@@ -200,20 +92,30 @@ const popConfetti = (e: Event) => {
   });
 };
 
+const lastClickedLetter = ref<string | null>(null);
+const lastClickTime = ref<number>(0);
+const router = useRouter();
+
 const handleLetterClick = (letter: string, event?: Event) => {
-  if (isStoryMode.value) {
-    // Story Learning Mode
-    selectedStoryLetter.value = letter;
-  } else {
-    // Fast Learning Mode
-    if (event) popConfetti(event);
-    playLetterSound(letter, true);
-    const detail = idLetterMap[letter];
-    feedback.value = `${letter} untuk ${detail?.word || ""} ${detail?.emoji || ""}`;
-    setTimeout(() => {
-      feedback.value = "";
-    }, 2000);
+  // Handle Double click here
+  const now = Date.now();
+  if (lastClickedLetter.value === letter && now - lastClickTime.value < 400) {
+    lastClickedLetter.value = null;
+    lastClickTime.value = 0;
+    router.push(`/alphabet/${letter}`);
+    return;
   }
+  lastClickedLetter.value = letter;
+  lastClickTime.value = now;
+
+  // Fast Learning Mode
+  if (event) popConfetti(event);
+  playLetterSound(letter, true);
+  const detail = idLetterMap[letter];
+  feedback.value = `${letter} untuk ${detail?.word || ""} ${detail?.emoji || ""}`;
+  setTimeout(() => {
+    feedback.value = "";
+  }, 2000);
 };
 
 onUnmounted(() => {
@@ -225,7 +127,9 @@ onUnmounted(() => {
 <template>
   <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
     <!-- Learning Dashboard -->
-    <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
+    <div
+      class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]"
+    >
       <div
         class="flex flex-wrap items-center justify-center gap-3 md:gap-4 bg-white/30 backdrop-blur-lg p-3 md:p-4 rounded-4xl border-4 border-slate-50 shadow-xl"
         style="
@@ -234,31 +138,14 @@ onUnmounted(() => {
             inset 0 2px 4px 0 rgba(255, 255, 255, 0.5);
         "
       >
-        <!-- FAST VS STORY MODE TOGGLE -->
-        <button
-          @click="isStoryMode = !isStoryMode"
-          class="ui-capsule-interactive w-auto border-2 border-slate-200 transition-all duration-300"
-          :class="
-            isStoryMode
-              ? 'bg-fuchsia-100 text-fuchsia-700 border-fuchsia-300 shadow-inner'
-              : 'bg-emerald-100 text-emerald-700 border-emerald-300'
-          "
-        >
-          <span class="text-xl md:text-2xl">{{ isStoryMode ? "📖" : "⚡" }}</span>
-          <span
-            class="font-black text-sm md:text-base hidden sm:inline ml-1 uppercase tracking-wider"
-            >{{ isStoryMode ? "Cerita" : "Cepat" }}</span
-          >
-        </button>
-
-        <div class="w-px h-8 bg-slate-200 hidden md:block mx-1"></div>
-
         <!-- Case Toggle -->
         <button
           @click="isUpperCase = !isUpperCase"
           class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50"
         >
-          <span class="text-xl md:text-2xl font-black">{{ isUpperCase ? "abc" : "ABC" }}</span>
+          <span class="text-xl md:text-2xl font-black">{{
+            isUpperCase ? "abc" : "ABC"
+          }}</span>
           <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
             isUpperCase ? "Kecil" : "Besar"
           }}</span>
@@ -282,7 +169,6 @@ onUnmounted(() => {
 
         <!-- Auto Play -->
         <button
-          v-if="!isStoryMode"
           @click="toggleAutoPlay"
           class="ui-capsule-interactive w-auto border-slate-200"
           :class="
@@ -291,7 +177,9 @@ onUnmounted(() => {
               : 'bg-white text-slate-700'
           "
         >
-          <span class="text-xl md:text-2xl">{{ isAutoPlaying ? "⏹️" : "▶️" }}</span>
+          <span class="text-xl md:text-2xl">{{
+            isAutoPlaying ? "⏹️" : "▶️"
+          }}</span>
           <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
             isAutoPlaying ? "Berhenti" : "Otomatis"
           }}</span>
@@ -305,7 +193,8 @@ onUnmounted(() => {
           class="ui-capsule-interactive bg-yellow-400 border-yellow-500 text-yellow-900 py-2 px-6 hover:scale-105 shadow-[0_4px_0_#ca8a04] active:shadow-none active:translate-y-1 transition-all"
         >
           <span class="text-2xl md:text-3xl drop-shadow-sm">🎮</span>
-          <span class="text-lg md:text-xl font-black uppercase tracking-tight ml-2"
+          <span
+            class="text-lg md:text-xl font-black uppercase tracking-tight ml-2"
             >Mulai Tantangan!</span
           >
         </button>
@@ -313,7 +202,9 @@ onUnmounted(() => {
     </div>
 
     <!-- Instructions / Feedback Area -->
-    <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
+    <div
+      class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4"
+    >
       <transition name="fade" mode="out-in">
         <div
           v-if="feedback"
@@ -326,13 +217,15 @@ onUnmounted(() => {
           v-else
           class="text-2xl md:text-3xl lg:text-4xl font-black text-slate-600 drop-shadow-sm"
         >
-          {{ isStoryMode ? "Klik huruf untuk mulai cerita!" : "Klik huruf untuk dengar suara!" }}
+          Klik huruf untuk dengar suara!
         </h1>
       </transition>
     </div>
 
     <!-- Alphabet Grid -->
-    <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
+    <div
+      class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative"
+    >
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
@@ -353,12 +246,12 @@ onUnmounted(() => {
           ]"
           :style="{ animationDelay: `${index * 0.05}s` }"
         >
-          <div
-            v-if="isStoryMode && challengeDone.has(data.findIndex((d) => d.id === letter))"
+          <!-- <div
+            v-if="challengeDone.has(data.findIndex((d) => d.id === letter))"
             class="absolute -top-3 -right-3 text-3xl drop-shadow-md z-10 w-8 h-8 flex items-center justify-center"
           >
             ⭐
-          </div>
+          </div> -->
 
           <div
             class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 w-full h-full relative"
@@ -375,20 +268,6 @@ onUnmounted(() => {
         </BubbleCard>
       </div>
     </div>
-
-    <!-- STORY OVERLAY -->
-    <AlphabetStoryOverlay
-      :currentStory="currentStory"
-      :isSpeakingStory="isSpeakingStory"
-      :data="data"
-      :emojiMap="emojiMap"
-      @close="closeStory"
-      @speak="speakStory"
-      @prev="prevStoryLetter"
-      @next="nextStoryLetter"
-      @success="onChallengeSuccess"
-      @fail="onChallengeFail"
-    />
   </div>
 </template>
 

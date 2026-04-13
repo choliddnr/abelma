@@ -18,7 +18,7 @@ const initCanvas = () => {
   canvasRef.value.width = width;
   canvasRef.value.height = height;
 
-  ctx.value = canvasRef.value.getContext("2d");
+  ctx.value = canvasRef.value.getContext("2d", { willReadFrequently: true });
   if (ctx.value) {
     ctx.value.lineCap = "round";
     ctx.value.lineJoin = "round";
@@ -98,7 +98,8 @@ const clearCanvas = () => {
 };
 
 const calculateScore = () => {
-  if (!canvasRef.value || !ctx.value) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+  if (!canvasRef.value || !ctx.value)
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
 
   const width = canvasRef.value.width;
   const height = canvasRef.value.height;
@@ -107,7 +108,7 @@ const calculateScore = () => {
   const targetCanvas = document.createElement("canvas");
   targetCanvas.width = width;
   targetCanvas.height = height;
-  const targetCtx = targetCanvas.getContext("2d");
+  const targetCtx = targetCanvas.getContext("2d", { willReadFrequently: true });
   if (!targetCtx) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
 
   // Font size logic matching SVG
