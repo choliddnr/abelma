@@ -107,8 +107,7 @@ const showCelebration = ref(false);
 
 const readChallengeQuestion = () => {
   if (!activeChallenge.value) return;
-  const text =
-    activeChallenge.value.question || activeChallenge.value.instruction;
+  const text = activeChallenge.value.question;
   if (!text) return;
 
   currentPlayId++;

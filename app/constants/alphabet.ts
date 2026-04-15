@@ -1,4 +1,4 @@
-export const letters = "ABC".split(""); //ABCDEFGHIJKLMNOPQRSTUVWXYZ
+export const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""); //ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
 export const colors = [
   "bg-[#FFD93D]", // Yellow
@@ -43,7 +43,10 @@ export const idLetterMap: Record<string, { emoji: string; word: string }> = {
   Z: { emoji: "🦓", word: "Zebra" },
 };
 
-import type { AlphabetChallengeModeConfig, AlphabetChallengeProgress } from "@/types/stores";
+import type {
+  AlphabetChallengeModeConfig,
+  AlphabetChallengeProgress,
+} from "@/types/stores";
 
 /**
  * Default challenge progression levels.
