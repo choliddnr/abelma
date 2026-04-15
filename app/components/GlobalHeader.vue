@@ -8,94 +8,149 @@ const showHeader = computed(() => {
 
 const { profile } = storeToRefs(useProfileStore());
 const isHome = computed(() => route.path === "/");
+
+const isMenuOpen = ref(false);
 </script>
 
 <template>
   <header
     v-if="showHeader"
-    class="relative z-30 w-full max-w-7xl mx-auto px-4 py-3 md:py-4 flex items-center gap-4 shrink-0 font-quicksand"
+    class="sticky top-0 z-50 w-full backdrop-blur-md border-b border-slate-200 max-w-7xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between font-quicksand"
   >
-    <!-- Left: Branding or Back Button -->
-    <div v-if="isHome" class="flex items-center gap-4">
-      <div class="flex flex-col leading-tight">
-        <h1
-          class="text-2xl md:text-4xl font-black text-indigo-600 font-quicksand drop-shadow-sm"
-        >
-          Abelma
-        </h1>
-        <span
-          class="text-[10px] md:text-sm font-bold text-slate-400 font-quicksand uppercase tracking-widest leading-none"
-        >
-          Belajar & Bermain
-        </span>
-      </div>
-    </div>
-    <div v-else class="flex gap-2">
-      <UiButton
-        @click="router.back()"
-        variant="white"
-        icon="🔙"
-        class="w-auto shadow-sm py-2 px-4 h-auto"
-      >
-        <span class="font-black text-sm hidden sm:inline ml-1">Kembali</span>
-      </UiButton>
-      <UiButton
-        @click="router.push('/')"
-        variant="white"
-        icon="🏠"
-        class="w-auto shadow-sm py-2 px-4 h-auto"
-      >
-        <span class="font-black text-sm hidden sm:inline ml-1">Home</span>
-      </UiButton>
+    <!-- LEFT -->
+    <div class="flex items-center gap-2 sm:gap-4">
+      <!-- Branding -->
+      <template v-if="isHome">
+        <div class="flex flex-col leading-tight">
+          <h1
+            class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600"
+          >
+            Abelma
+          </h1>
+          <span
+            class="text-[8px] sm:text-[10px] md:text-sm font-bold text-slate-400 uppercase"
+          >
+            Belajar & Bermain
+          </span>
+        </div>
+      </template>
+
+      <!-- Back + Home -->
+      <template v-else>
+        <UiButton
+          @click="router.back()"
+          variant="white"
+          icon="🔙"
+          class="px-2 py-2 h-10"
+        />
+        <UiButton
+          @click="router.push('/')"
+          variant="white"
+          icon="🏠"
+          class="px-2 py-2 h-10"
+        />
+      </template>
     </div>
 
-    <div class="flex-1"></div>
-
-    <!-- Right: Actions & Auth -->
-    <div class="flex items-center gap-2 md:gap-4">
-      <!-- coins -->
+    <!-- RIGHT -->
+    <div class="flex items-center gap-2">
+      <!-- Coins (ALWAYS visible) -->
       <UiButton
         to="/rewards"
         variant="primary"
         icon="🪙"
-        class="w-auto px-4 py-2 shadow-lg hover:rotate-3 font-quicksand h-10 md:h-12"
+        class="px-3 py-2 h-10 text-xs sm:text-sm"
       >
-        <span class="font-black text-xs md:text-base ml-1"
-          >{{ profile?.coins }} <span class="hidden md:inline">Koin</span></span
-        >
+        <span class="font-black text-lg">
+          {{ profile?.coins }}
+          <span class="hidden sm:inline">Koin</span>
+        </span>
       </UiButton>
 
-      <!-- Parent Lounge (Area Orang Tua) -->
-
-      <!-- Parent Lounge -->
-      <UiButton
-        @click="router.push('/parent')"
-        variant="white"
-        icon="👨‍👩‍👧"
-        class="w-auto shadow-sm hover:shadow-md h-10 md:h-12 py-2 px-3 md:px-4"
-      >
-        <span class="font-black text-xs md:text-base hidden lg:inline ml-1"
-          >Orang Tua</span
+      <!-- DESKTOP MENU -->
+      <div class="hidden sm:flex items-center gap-3">
+        <!-- Parent -->
+        <UiButton
+          @click="router.push('/parent')"
+          variant="white"
+          icon="👨‍👩‍👧"
+          class="px-3 py-2 h-10"
         >
-      </UiButton>
+          <span class="font-black text-sm ml-1">Orang Tua</span>
+        </UiButton>
 
-      <!-- Active Profile (Static) -->
-      <div
-        v-if="profile"
-        class="flex items-center gap-2 md:gap-3 ml-2 border-l pl-4 border-slate-200"
-      >
-        <div class="text-right hidden sm:block leading-tight">
-          <p class="text-[10px] md:text-xs font-bold text-slate-500">Halo,</p>
-          <p
-            class="text-xs md:text-sm font-black text-indigo-600 truncate max-w-[80px]"
-          >
-            {{ profile?.name }}
-          </p>
-        </div>
+        <!-- Profile -->
         <div
-          class="w-10 h-10 flex items-center justify-center bg-white rounded-full border-2 border-indigo-400 shadow-md text-2xl"
+          v-if="profile"
+          class="flex items-center gap-2 border-l pl-3 border-slate-200"
         >
-          {{ profile?.avatar }}
+          <div class="text-right leading-tight">
+            <p class="text-xs font-bold text-slate-500">Halo,</p>
+            <p
+              class="text-sm font-black text-indigo-600 truncate max-w-[100px]"
+            >
+              {{ profile?.name }}
+            </p>
+          </div>
+
+          <div
+            class="w-10 h-10 flex items-center justify-center bg-white rounded-full border-2 border-indigo-400 shadow-md text-xl"
+          >
+            {{ profile?.avatar }}
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE BURGER -->
+      <div class="relative sm:hidden">
+        <UiButton
+          @click="isMenuOpen = !isMenuOpen"
+          variant="white"
+          icon="☰"
+          class="px-4 py-2 h-10"
+        />
+        <!-- <button
+          @click="isMenuOpen = !isMenuOpen"
+          class="w-9 h-10 flex items-center justify-center rounded-lg bg-white shadow"
+        >
+          ☰
+        </button> -->
+
+        <!-- DROPDOWN -->
+        <div
+          v-if="isMenuOpen"
+          class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg p-2 flex flex-col gap-2"
+        >
+          <!-- Parent -->
+          <button
+            @click="
+              router.push('/parent');
+              isMenuOpen = false;
+            "
+            class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100"
+          >
+            👨‍👩‍👧 <span class="font-bold text-sm">Orang Tua</span>
+          </button>
+
+          <!-- Profile -->
+          <div
+            v-if="profile"
+            class="flex items-center gap-2 px-3 py-2 border-t-2 border-gray-200 pt-2"
+          >
+            <div
+              class="w-8 h-8 flex items-center justify-center bg-white rounded-full border-gray-200 border-2 text-lg"
+            >
+              {{ profile?.avatar }}
+            </div>
+            <div class="leading-tight">
+              <p class="text-xs text-slate-500">Halo,</p>
+              <p
+                class="text-sm font-bold text-indigo-600 truncate max-w-[100px]"
+              >
+                {{ profile?.name }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

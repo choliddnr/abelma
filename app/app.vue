@@ -19,6 +19,8 @@ onMounted(() => {
   <div
     class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col"
   >
+    <!-- Orientation Guard -->
+    <UiOrientationGuard />
     <!-- Background Image -->
     <div
       class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"

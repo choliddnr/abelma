@@ -139,65 +139,50 @@ onUnmounted(() => {
         "
       >
         <!-- Case Toggle -->
-        <button
+        <UiButton
           @click="isUpperCase = !isUpperCase"
-          class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50"
-        >
-          <span class="text-xl md:text-2xl font-black">{{
+          variant="white"
+          icon="Aa"
+          class="px-3 py-2 h-10"
+          ><span class="text-xl md:text-2xl font-black">{{
             isUpperCase ? "abc" : "ABC"
-          }}</span>
-          <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
-            isUpperCase ? "Kecil" : "Besar"
-          }}</span>
-        </button>
+          }}</span></UiButton
+        >
 
         <!-- Randomize -->
-        <button
+        <UiButton
           @click="toggleRandomize"
-          class="ui-capsule-interactive w-auto border-slate-200"
-          :class="
-            isRandomized
-              ? 'bg-amber-100 text-amber-700 border-amber-300'
-              : 'bg-white text-slate-700'
-          "
-        >
-          <span class="text-xl md:text-2xl">🎲</span>
-          <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
+          variant="white"
+          icon="🎲"
+          class="px-3 py-2 h-10"
+          ><span class="text-xl md:text-2xl font-black">{{
             isRandomized ? "Normal" : "Acak"
-          }}</span>
-        </button>
+          }}</span></UiButton
+        >
 
         <!-- Auto Play -->
-        <button
+        <UiButton
           @click="toggleAutoPlay"
-          class="ui-capsule-interactive w-auto border-slate-200"
-          :class="
-            isAutoPlaying
-              ? 'bg-indigo-100 text-indigo-700 border-indigo-300'
-              : 'bg-white text-slate-700'
-          "
+          variant="white"
+          :icon="isAutoPlaying ? '⏹️' : '▶️'"
+          class="px-3 py-2 h-10"
+          ><span class="text-xl md:text-2xl font-black">{{
+            isAutoPlaying ? "Stop" : "Play"
+          }}</span></UiButton
         >
-          <span class="text-xl md:text-2xl">{{
-            isAutoPlaying ? "⏹️" : "▶️"
-          }}</span>
-          <span class="font-black text-sm md:text-base hidden sm:inline ml-1">{{
-            isAutoPlaying ? "Berhenti" : "Otomatis"
-          }}</span>
-        </button>
 
         <div class="w-px h-8 bg-slate-200 hidden md:block mx-1"></div>
 
         <!-- Start Challenge CTA -->
-        <button
+        <UiButton
           @click="emit('start-challenge')"
-          class="ui-capsule-interactive bg-yellow-400 border-yellow-500 text-yellow-900 py-2 px-6 hover:scale-105 shadow-[0_4px_0_#ca8a04] active:shadow-none active:translate-y-1 transition-all"
-        >
-          <span class="text-2xl md:text-3xl drop-shadow-sm">🎮</span>
-          <span
-            class="text-lg md:text-xl font-black uppercase tracking-tight ml-2"
+          variant="primary"
+          icon="🎮"
+          class="px-3 py-2 h-10"
+          ><span class="text-xl md:text-2xl font-black"
             >Mulai Tantangan!</span
-          >
-        </button>
+          ></UiButton
+        >
       </div>
     </div>
 

@@ -70,7 +70,9 @@ const menuItems = [
       <!-- <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 w-full"
       > -->
-      <div class="flex flex-wrap justify-center gap-6 md:gap-8 w-full">
+      <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-center gap-6 md:gap-8 w-full"
+      >
         <MenuCard
           v-for="(item, index) in menuItems"
           :key="item.title"
