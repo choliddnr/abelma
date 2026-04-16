@@ -56,7 +56,7 @@ const menuItems = [
       class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10 mt-4 md:mt-8"
     >
       <!-- Main Greeting -->
-      <div class="text-center space-y-4">
+      <div class="text-center space-y-4 mt-20 lg:-mt-48">
         <h1
           class="text-6xl md:text-8xl font-black text-indigo-600 drop-shadow-sm font-quicksand"
         >
@@ -70,14 +70,12 @@ const menuItems = [
       <!-- <div
         class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 w-full"
       > -->
-      <div
-        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 justify-center gap-6 md:gap-8 w-full"
-      >
+      <div class="flex flex-wrap justify-center gap-4">
         <MenuCard
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance lg:min-w-[25%] md:min-w-[45%] min-w-[80%]"
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-72"
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
       </div>

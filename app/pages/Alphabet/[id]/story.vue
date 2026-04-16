@@ -255,7 +255,7 @@ onUnmounted(() => {
     @click.self="closeStory"
   >
     <div
-      class="relative bg-white rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl flex flex-col border-8 border-white/80 overflow-hidden w-full max-w-4xl h-[93vh] sm:h-[88vh]"
+      class="relative bg-white rounded-[2.5rem] shadow-2xl flex flex-col mt-5 border-8 border-white/80 overflow-hidden w-full max-w-4xl h-screen sm:h-[88vh] mb-5 mx-2 md:mx-0 md:mb-0"
     >
       <!-- Background Image -->
       <template v-if="!imageError">

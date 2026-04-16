@@ -10,6 +10,24 @@ const { profile } = storeToRefs(useProfileStore());
 const isHome = computed(() => route.path === "/");
 
 const isMenuOpen = ref(false);
+
+const isFullscreen = ref(false);
+
+const toggleFullscreen = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("fullscreenchange", () => {
+    isFullscreen.value = !!document.fullscreenElement;
+  });
+});
 </script>
 
 <template>
@@ -66,6 +84,13 @@ const isMenuOpen = ref(false);
           <span class="hidden sm:inline">Koin</span>
         </span>
       </UiButton>
+      <UiButton
+        @click="toggleFullscreen"
+        variant="white"
+        :icon="isFullscreen ? '🔳' : '⛶'"
+        class="px-3 py-2 h-10"
+        title="Layar Penuh"
+      />
 
       <!-- DESKTOP MENU -->
       <div class="hidden sm:flex items-center gap-3">

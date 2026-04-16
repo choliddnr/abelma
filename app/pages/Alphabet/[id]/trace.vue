@@ -14,15 +14,20 @@ const showIncompleteToast = ref(false);
 
 const goBack = () => router.push(`/alphabet/${letter}`);
 
+const isScoring = ref(false);
+
 const clearTracing = () => {
   if (tracingCanvasRef.value) {
     tracingCanvasRef.value.clearCanvas();
   }
 };
 
-const onSaved = () => {
-  if (tracingCanvasRef.value) {
-    const result = tracingCanvasRef.value.calculateScore();
+const onSaved = async () => {
+  if (!tracingCanvasRef.value || isScoring.value) return;
+  isScoring.value = true;
+
+  try {
+    const result = await tracingCanvasRef.value.calculateScore();
     console.log(result);
     if (result.score === 0) {
       showIncompleteToast.value = true;
@@ -51,6 +56,8 @@ const onSaved = () => {
     }
 
     showResult.value = true;
+  } finally {
+    isScoring.value = false;
   }
 };
 
@@ -102,12 +109,12 @@ const retry = () => {
     <!-- Result Modal Overlay -->
     <div
       v-if="showResult"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm"
     >
       <div
-        class="bg-white rounded-[40px] p-8 max-w-lg w-full shadow-2xl border-8 border-blue-400 flex flex-col items-center text-center animate-bounce-in"
+        class="bg-white rounded-[24px] sm:rounded-[40px] p-5 sm:p-8 max-w-lg w-full shadow-2xl border-4 sm:border-8 border-blue-400 flex flex-col items-center text-center animate-bounce-in"
       >
-        <h2 class="text-4xl font-black text-blue-600 mb-6 drop-shadow-sm">
+        <h2 class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm">
           {{
             scoreResult.stars === 5
               ? "Sempurna!"
@@ -121,7 +128,7 @@ const retry = () => {
           }}
         </h2>
 
-        <div class="flex gap-4 text-6xl mb-6">
+        <div class="flex gap-2 sm:gap-4 text-4xl sm:text-6xl mb-3 sm:mb-6">
           <span
             v-for="i in 5"
             :key="i"
@@ -137,22 +144,22 @@ const retry = () => {
 
         <div
           v-if="coinsEarned > 0"
-          class="bg-yellow-100 border-4 border-yellow-400 text-yellow-700 px-6 py-3 rounded-full text-2xl font-bold mb-8 flex items-center gap-2"
+          class="bg-yellow-100 border-2 sm:border-4 border-yellow-400 text-yellow-700 px-4 sm:px-6 py-2 sm:py-3 rounded-full text-lg sm:text-2xl font-bold mb-4 sm:mb-8 flex items-center gap-2"
         >
           <span>💰</span> +{{ coinsEarned }} Koin!
         </div>
-        <div v-else class="text-xl font-bold text-gray-500 mb-8">
+        <div v-else class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8">
           Gambar lebih rapi for dapat koin!
         </div>
 
-        <div class="flex gap-4 w-full">
+        <div class="flex gap-3 sm:gap-4 w-full">
           <button
             @click="retry"
-            class="flex-1 btn-bubble bg-gray-100 text-gray-700 font-bold text-xl py-4 border-4 border-gray-300"
+            class="flex-1 btn-bubble bg-gray-100 text-gray-700 font-bold text-base sm:text-xl py-3 sm:py-4 border-4 border-gray-300"
           >
             Ulangi
           </button>
-          <button @click="goBack" class="flex-1 btn-primary text-xl py-4">
+          <button @click="goBack" class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4">
             Lanjut
           </button>
         </div>

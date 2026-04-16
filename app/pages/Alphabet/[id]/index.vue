@@ -50,25 +50,26 @@ const highlightedWord = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-12">
+  <div class="flex flex-col items-center gap-12 mx-4 lg:mx-0 mb-7">
     <div
-      class="glass-card p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12"
+      class="glass-card flex-wrap p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12 mt-20"
     >
-      <div
-        class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
-        :data-text="letter.toUpperCase()"
-        @click="speak(`Ini huruf ${letter.toUpperCase()} besar`)"
-      >
-        {{ letter.toUpperCase() }}
+      <div class="flex gap-4">
+        <div
+          class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
+          :data-text="letter.toUpperCase()"
+          @click="speak(`Ini huruf ${letter.toUpperCase()} besar`)"
+        >
+          {{ letter.toUpperCase() }}
+        </div>
+        <div
+          class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
+          :data-text="letter.toLowerCase()"
+          @click="speak(`Ini huruf ${letter.toLowerCase()} kecil`)"
+        >
+          {{ letter.toLowerCase() }}
+        </div>
       </div>
-      <div
-        class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
-        :data-text="letter.toLowerCase()"
-        @click="speak(`Ini huruf ${letter.toLowerCase()} kecil`)"
-      >
-        {{ letter.toLowerCase() }}
-      </div>
-
       <div class="flex flex-col items-center gap-6">
         <div
           class="text-[120px] md:text-[200px] bg-white rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-primary cursor-pointer hover:scale-105 active:scale-95 transition-transform"
@@ -92,18 +93,27 @@ const highlightedWord = computed(() => {
         icon="📚"
         variant="secondary"
         @click="router.push(`/alphabet`)"
-      />
+        ><span class="hidden sm:block font-bold text-lg"
+          >Daftar Huruf</span
+        ></UiButton
+      >
       <UiButton
         label="Buka Cerita"
         icon="📖"
         @click="router.push(`/alphabet/${letter}/story`)"
-      />
+        ><span class="hidden sm:block font-bold text-lg"
+          >Buka Cerita</span
+        ></UiButton
+      >
       <UiButton
         label="Latihan Menulis"
         icon="✍️"
         variant="accent"
         @click="router.push(`/alphabet/${letter}/trace`)"
-      />
+        ><span class="hidden sm:block font-bold text-lg"
+          >Latihan Menulis</span
+        ></UiButton
+      >
     </div>
   </div>
 </template>

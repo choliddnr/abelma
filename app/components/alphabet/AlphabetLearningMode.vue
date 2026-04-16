@@ -144,7 +144,7 @@ onUnmounted(() => {
           variant="white"
           icon="Aa"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl font-black">{{
+          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
             isUpperCase ? "abc" : "ABC"
           }}</span></UiButton
         >
@@ -155,7 +155,7 @@ onUnmounted(() => {
           variant="white"
           icon="🎲"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl font-black">{{
+          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
             isRandomized ? "Normal" : "Acak"
           }}</span></UiButton
         >
@@ -166,12 +166,10 @@ onUnmounted(() => {
           variant="white"
           :icon="isAutoPlaying ? '⏹️' : '▶️'"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl font-black">{{
+          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
             isAutoPlaying ? "Stop" : "Play"
           }}</span></UiButton
         >
-
-        <div class="w-px h-8 bg-slate-200 hidden md:block mx-1"></div>
 
         <!-- Start Challenge CTA -->
         <UiButton
@@ -179,7 +177,7 @@ onUnmounted(() => {
           variant="primary"
           icon="🎮"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl font-black"
+          ><span class="text-xl md:text-2xl hidden md:inline font-black"
             >Mulai Tantangan!</span
           ></UiButton
         >
