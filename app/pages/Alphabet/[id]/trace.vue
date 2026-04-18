@@ -69,41 +69,42 @@ const retry = () => {
 
 <template>
   <div
-    class="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-6xl mx-auto px-4 py-8 gap-8"
+    class="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-6xl mx-auto px-4 py-4 sm:py-8 gap-4 sm:gap-8"
   >
     <div class="w-full flex justify-center items-center">
       <h1
-        class="text-4xl font-black text-blue-600 tracking-wide text-center bg-white/80 px-8 py-3 rounded-full shadow-sm"
+        class="text-2xl sm:text-4xl font-black text-blue-600 tracking-wide text-center bg-white/80 px-6 sm:px-8 py-2 sm:py-3 rounded-full shadow-sm"
       >
         Ayo Belajar Menulis Huruf {{ letter.toUpperCase() }}!
       </h1>
 
       <!-- Ghost div for flex alignment -->
-      <div class="w-[120px]"></div>
+      <div class="hidden sm:block w-[120px]"></div>
     </div>
 
     <!-- Canvas Container -->
     <div
-      class="w-full h-full grow relative bg-white/50 backdrop-blur-md rounded-[40px] p-6 shadow-xl border-4 border-white"
+      class="w-full grow relative bg-white/50 backdrop-blur-md rounded-[40px] p-6 shadow-xl border-4 border-white"
     >
       <TracingCanvas ref="tracingCanvasRef" :letter="letter" />
     </div>
 
     <!-- Actions -->
-    <div class="flex gap-6 mt-4">
-      <button
+    <div class="flex gap-4 sm:gap-6 mt-4 mx-4 sm:mx-10">
+      <UiButton
         @click="clearTracing"
-        class="flex items-center gap-2 bg-red-100/80 hover:bg-red-200 text-red-600 px-8 py-4 rounded-full font-bold text-2xl border-4 border-red-300 shadow-lg transition-transform hover:scale-105 active:scale-95"
-      >
-        <span>🔄</span> Ulangi
-      </button>
-
-      <button
+        variant="white"
+        label="Ulangi"
+        icon="🔄"
+        class="h-12 sm:h-14 px-4 sm:px-6 text-sm sm:text-base"
+      />
+      <UiButton
         @click="onSaved"
-        class="flex items-center gap-2 bg-green-400 hover:bg-green-500 text-white px-12 py-4 rounded-full font-black text-2xl border-b-8 border-green-600 shadow-xl transition-transform hover:-translate-y-1 active:translate-y-2"
-      >
-        <span>🌟</span> Selesai!
-      </button>
+        variant="success"
+        label="Selesai!"
+        icon="🌟"
+        class="h-12 sm:h-14 px-4 sm:px-6 text-sm sm:text-base"
+      />
     </div>
 
     <!-- Result Modal Overlay -->
@@ -114,7 +115,9 @@ const retry = () => {
       <div
         class="bg-white rounded-[24px] sm:rounded-[40px] p-5 sm:p-8 max-w-lg w-full shadow-2xl border-4 sm:border-8 border-blue-400 flex flex-col items-center text-center animate-bounce-in"
       >
-        <h2 class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm">
+        <h2
+          class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm"
+        >
           {{
             scoreResult.stars === 5
               ? "Sempurna!"
@@ -148,7 +151,10 @@ const retry = () => {
         >
           <span>💰</span> +{{ coinsEarned }} Koin!
         </div>
-        <div v-else class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8">
+        <div
+          v-else
+          class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8"
+        >
           Gambar lebih rapi for dapat koin!
         </div>
 
@@ -159,7 +165,10 @@ const retry = () => {
           >
             Ulangi
           </button>
-          <button @click="goBack" class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4">
+          <button
+            @click="goBack"
+            class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4"
+          >
             Lanjut
           </button>
         </div>
@@ -170,10 +179,10 @@ const retry = () => {
     <transition name="toast">
       <div
         v-if="showIncompleteToast"
-        class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-8 py-4 rounded-full font-bold text-2xl shadow-2xl flex items-center gap-4"
+        class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-lg sm:text-2xl shadow-2xl flex items-center gap-3 sm:gap-4 w-[90%] sm:w-auto justify-center"
       >
-        <span class="text-3xl">⚠️</span> Sepertinya kamu belum selesai
-        menggambar! Ayo coba lagi! 😊
+        <span class="text-2xl sm:text-3xl">⚠️</span> Sepertinya kamu belum
+        selesai menggambar! Ayo coba lagi! 😊
       </div>
     </transition>
   </div>

@@ -6,7 +6,15 @@ export type AlphabetChallengeProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig: Record<string, number>;
+  challengeConfig: any[];
+  updatedAt: string;
+};
+
+export type WordChallengeProgress = {
+  score: number;
+  level: number;
+  weights: Record<string, number>;
+  challengeConfig: any[];
   updatedAt: string;
 };
 

@@ -7,6 +7,12 @@ export const useSettingsStore = defineStore(
     const settings = ref<WordSettings>({
       timerDuration: 30,
       letterCase: "uppercase",
+      levels: [
+        { timer: 0, coinReward: 5, letterCase: "uppercase", numOptions: 2 },
+        { timer: 30, coinReward: 10, letterCase: "lowercase", numOptions: 3 },
+        { timer: 20, coinReward: 20, letterCase: "mixed", numOptions: 4 },
+        { timer: 10, coinReward: 30, letterCase: "mixed", numOptions: 6 },
+      ],
     });
 
     // Initialize (Handled by persistence)

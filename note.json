@@ -1,9 +1,6 @@
 {
-  "profileId": "profile-1774770003724",
-  "coins": 300,
-  "progress": {
-    "score": 0,
-    "level": 1,
-    "weights": { "a": 0, "b": 0, "B": 0, "c": 0, "A": 0, "C": 0 }
-  }
+  "prompt": "Explain quantum entanglement in one sentence:",
+  "temperature": 0.2,
+  "n_predict": 100,
+  "stream": false
 }

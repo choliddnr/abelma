@@ -9,6 +9,7 @@ const svgRef = ref<SVGSVGElement | null>(null);
 
 const isDrawing = ref(false);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
+const isVertical = ref(false);
 
 // Scale the brush proportionally to the canvas width so it feels natural
 // on both mobile (small) and desktop (large) screens.
@@ -24,6 +25,10 @@ const initCanvas = () => {
 
   const width = containerRef.value.clientWidth;
   const height = containerRef.value.clientHeight;
+
+  // Set vertical mode if height is significantly greater than width (portrait)
+  // or if width is very small (small mobile)
+  isVertical.value = width < 500 && height > width * 1.2;
 
   canvasRef.value.width = width;
   canvasRef.value.height = height;
@@ -146,15 +151,17 @@ const buildTargetCanvas = async (
   svgClone.setAttribute("width", String(width));
   svgClone.setAttribute("height", String(height));
 
-  const textEl = svgClone.querySelector("text");
-  if (!textEl) return null;
+  const textEls = svgClone.querySelectorAll("text");
+  if (textEls.length === 0) return null;
 
-  // Make it solid black fill + thick stroke for a generous hit zone
-  textEl.setAttribute("fill", "black");
-  textEl.setAttribute("stroke", "black");
-  textEl.setAttribute("stroke-width", "50"); // ≈ brush lineWidth
-  textEl.removeAttribute("stroke-dasharray");
-  textEl.removeAttribute("stroke-dashoffset");
+  textEls.forEach((textEl) => {
+    // Make it solid black fill + thick stroke for a generous hit zone
+    textEl.setAttribute("fill", "black");
+    textEl.setAttribute("stroke", "black");
+    textEl.setAttribute("stroke-width", "50"); // ≈ brush lineWidth
+    textEl.removeAttribute("stroke-dasharray");
+    textEl.removeAttribute("stroke-dashoffset");
+  });
 
   const svgString = new XMLSerializer().serializeToString(svgClone);
   const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
@@ -260,23 +267,63 @@ defineExpose({ clearCanvas, calculateScore });
       class="absolute inset-0 w-full h-full pointer-events-none select-none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <text
-        x="50%"
-        y="50%"
-        dominant-baseline="central"
-        text-anchor="middle"
-        font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
-        font-weight="900"
-        font-size="min(45vw, 400px)"
-        fill="transparent"
-        stroke="#333333"
-        stroke-width="5"
-        stroke-dasharray="15,15"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        {{ letter.toUpperCase() }} {{ letter.toLowerCase() }}
-      </text>
+      <template v-if="!isVertical">
+        <text
+          x="50%"
+          y="50%"
+          dominant-baseline="central"
+          text-anchor="middle"
+          font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
+          font-weight="900"
+          font-size="min(45vw, 400px)"
+          fill="transparent"
+          stroke="#333333"
+          stroke-width="5"
+          stroke-dasharray="15,15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          {{ letter.toUpperCase() }} {{ letter.toLowerCase() }}
+        </text>
+      </template>
+      <template v-else>
+        <!-- Uppercase on Top -->
+        <text
+          x="50%"
+          y="30%"
+          dominant-baseline="central"
+          text-anchor="middle"
+          font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
+          font-weight="900"
+          font-size="min(60vw, 220px)"
+          fill="transparent"
+          stroke="#333333"
+          stroke-width="5"
+          stroke-dasharray="15,15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          {{ letter.toUpperCase() }}
+        </text>
+        <!-- Lowercase on Bottom -->
+        <text
+          x="50%"
+          y="70%"
+          dominant-baseline="central"
+          text-anchor="middle"
+          font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
+          font-weight="900"
+          font-size="min(60vw, 220px)"
+          fill="transparent"
+          stroke="#333333"
+          stroke-width="5"
+          stroke-dasharray="15,15"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          {{ letter.toLowerCase() }}
+        </text>
+      </template>
     </svg>
 
     <!-- Drawing Canvas -->

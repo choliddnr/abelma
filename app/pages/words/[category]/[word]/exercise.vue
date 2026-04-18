@@ -7,7 +7,8 @@ const router = useRouter();
 const settingsStore = useSettingsStore();
 const analyticsStore = useAnalyticsStore();
 const rewardStore = useRewardStore();
-const profileStore = useProfileStore();
+const { activeProfileId } = storeToRefs(useProfileStore());
+const { changeCoins } = useProfileStore();
 
 const categoryId = route.params.category as string;
 const wordId = route.params.word as string;
@@ -26,22 +27,37 @@ const expectedLetters = computed(() => targetWord.value.split(""));
 // State
 const isComplete = ref(false);
 const placedLetters = ref<(string | null)[]>([]);
-const availableLetters = ref<{ id: string; letter: string; isDragging?: boolean }[]>([]);
+const availableLetters = ref<
+  { id: string; letter: string; isDragging?: boolean }[]
+>([]);
 const wrongDropIndex = ref<number | null>(null);
 const autoPlayTimeout = ref<number | null>(null);
+const touchPosition = ref({ x: 0, y: 0 });
+const isTouching = ref(false);
 
 const initializeGame = () => {
   if (!targetWord.value) return;
   isComplete.value = false;
-  placedLetters.value = Array.from({ length: targetWord.value.length }, () => null);
+  placedLetters.value = Array.from(
+    { length: targetWord.value.length },
+    () => null,
+  );
 
   // Generate available letters (target + some noise)
-  const letters = targetWord.value.split("").map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
-  const noiseLetters = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
-    .replace(new RegExp(`[${targetWord.value}]`, "g"), "")
+  const letters = targetWord.value
     .split("")
-    .slice(0, 3);
-  const noise = noiseLetters.map((l, i) => ({
+    .map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
+
+  // Fix T2: Use Set to safely filter noise letters without unsafe regex
+  const wordLetterSet = new Set(targetWord.value.toUpperCase().split(""));
+  const noisePool = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
+    .split("")
+    .filter((l) => !wordLetterSet.has(l));
+  for (let i = noisePool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [noisePool[i], noisePool[j]] = [noisePool[j]!, noisePool[i]!];
+  }
+  const noise = noisePool.slice(0, 3).map((l, i) => ({
     id: `noise-${i}-${l}`,
     letter: l,
   }));
@@ -78,7 +94,7 @@ onUnmounted(() => {
 const checkCompletion = () => {
   const currentWord = placedLetters.value.join("");
   if (currentWord === targetWord.value) {
-    // rewardStore.addCoins(5); // Bank coins for completion
+    changeCoins(5);
     isComplete.value = true;
     playTargetWord();
     popConfetti();
@@ -152,42 +168,43 @@ const onDragLeave = (index: number) => {
   }
 };
 
-const onDrop = (e: DragEvent, slotIndex: number) => {
+// Fix T4: Extract core drop logic so touch and drag can share it
+const dropAtSlot = (slotIndex: number) => {
   hoveredSlotIndex.value = null;
-  if (isComplete.value) return;
+  if (isComplete.value || draggedItemIndex.value === null) return;
 
-  // If a letter is already in this slot, remove it back to available
   if (placedLetters.value[slotIndex] !== null) {
     putBackLetter(slotIndex);
   }
 
-  // If dropped item is from available list
-  if (draggedItemIndex.value !== null) {
-    const sourceIndex = draggedItemIndex.value;
-    const letterObj = availableLetters.value[sourceIndex]!;
-    const correctLetter = expectedLetters.value[slotIndex];
+  const sourceIndex = draggedItemIndex.value;
+  const letterObj = availableLetters.value[sourceIndex]!;
+  const correctLetter = expectedLetters.value[slotIndex];
 
-    if (letterObj.letter === correctLetter) {
-      // Correct placement
-      placedLetters.value[slotIndex] = letterObj.letter;
-      // Remove from available
-      availableLetters.value.splice(sourceIndex, 1);
-      draggedItemIndex.value = null;
-      checkCompletion();
-    } else {
-      // Wrong placement
-      if (wordData.value && profileStore.activeProfileId) {
-        analyticsStore.recordMistake(profileStore.activeProfileId, "word", wordData.value.id);
-      }
-      wrongDropIndex.value = slotIndex;
-      setTimeout(() => {
-        wrongDropIndex.value = null;
-      }, 500);
-
-      playEffectAudio("wrong");
-      draggedItemIndex.value = null;
+  if (letterObj.letter === correctLetter) {
+    placedLetters.value[slotIndex] = letterObj.letter;
+    availableLetters.value.splice(sourceIndex, 1);
+    draggedItemIndex.value = null;
+    checkCompletion();
+  } else {
+    if (wordData.value && activeProfileId.value) {
+      analyticsStore.recordMistake(
+        activeProfileId.value,
+        "word",
+        wordData.value.id,
+      );
     }
+    wrongDropIndex.value = slotIndex;
+    setTimeout(() => {
+      wrongDropIndex.value = null;
+    }, 500);
+    playEffectAudio("wrong");
+    draggedItemIndex.value = null;
   }
+};
+
+const onDrop = (e: DragEvent, slotIndex: number) => {
+  dropAtSlot(slotIndex);
 };
 
 // Function to handle moving placed letter back to pool
@@ -199,66 +216,108 @@ const putBackLetter = (slotIndex: number) => {
     placedLetters.value[slotIndex] = null;
   }
 };
+
+// Fix T4: Touch drag support for mobile
+const onTouchStart = (e: TouchEvent, index: number) => {
+  if (isComplete.value) return;
+  draggedItemIndex.value = index;
+  const letterObj = availableLetters.value[index];
+  if (letterObj) letterObj.isDragging = true;
+
+  isTouching.value = true;
+  const touch = e.touches[0];
+  if (touch) {
+    touchPosition.value = { x: touch.clientX, y: touch.clientY };
+  }
+};
+
+const onTouchMove = (e: TouchEvent) => {
+  const touch = e.touches[0];
+  if (!touch) return;
+
+  touchPosition.value = { x: touch.clientX, y: touch.clientY };
+
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  const slotEl = el?.closest("[data-slot-index]");
+  hoveredSlotIndex.value = slotEl
+    ? parseInt(slotEl.getAttribute("data-slot-index")!)
+    : null;
+};
+
+const onTouchEnd = (e: TouchEvent) => {
+  const savedLetterObj =
+    draggedItemIndex.value !== null
+      ? availableLetters.value[draggedItemIndex.value]
+      : null;
+
+  const touch = e.changedTouches[0];
+  if (touch) {
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const slotEl = el?.closest("[data-slot-index]");
+    if (slotEl) {
+      dropAtSlot(parseInt(slotEl.getAttribute("data-slot-index")!));
+    }
+  }
+
+  if (savedLetterObj) savedLetterObj.isDragging = false;
+  if (draggedItemIndex.value !== null) draggedItemIndex.value = null;
+  hoveredSlotIndex.value = null;
+  isTouching.value = false;
+};
 </script>
 
 <template>
-  <div v-if="wordData" class="flex flex-col min-h-screen bg-slate-50 overflow-hidden relative">
-    <!-- Celebration Overlay -->
-    <div
-      v-if="isComplete"
-      class="absolute inset-0 z-50 flex flex-col gap-8 items-center justify-center bg-white/40 backdrop-blur-sm transition-all duration-1000"
-    >
-      <h1
-        class="text-7xl md:text-9xl font-black text-emerald-500 drop-shadow-[0_10px_0_rgba(16,185,129,0.3)] animate-bounce font-quicksand"
-      >
-        HEBAT!
-      </h1>
-      <button
-        @click="router.push('/words')"
-        class="ui-capsule-interactive bg-emerald-500 border-emerald-600 text-white w-auto shadow-xl hover:-translate-y-1 hover:shadow-2xl transition-all"
-      >
-        <span class="text-2xl md:text-3xl text-white">🏠</span>
-        <span class="font-black text-lg md:text-xl text-white">Selesai</span>
-      </button>
-    </div>
-
-    <!-- Header -->
-    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 z-10">
-      <button
-        @click="goBack"
-        class="ui-capsule-interactive bg-white border-slate-200 text-slate-700 w-auto hover:bg-slate-50 focus:ring-slate-200"
-      >
-        <span class="text-xl md:text-2xl">🔙</span>
-        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
-      </button>
-
-      <!-- Target Display -->
-      <div
-        class="flex items-center gap-4 bg-white px-6 py-2 rounded-full shadow-sm border border-slate-100"
-      >
-        <span class="text-4xl md:text-5xl drop-shadow-sm">{{ wordData.emoji }}</span>
-        <button
-          @click="playTargetWord"
-          class="ui-capsule-interactive bg-indigo-50 border-indigo-200 text-indigo-700 w-12 h-12 p-0! rounded-full flex items-center justify-center hover:bg-indigo-100"
-        >
-          <span class="text-2xl">🔊</span>
-        </button>
-      </div>
-
-      <div class="w-[88px] md:w-[115px]"></div>
-      <!-- Spacer -->
-    </div>
+  <div
+    v-if="wordData"
+    class="flex flex-col min-h-screen overflow-hidden relative"
+  >
+    <!-- Celebration Modal -->
+    <UiCelebrationModal
+      v-model="isComplete"
+      title="HEBAT!"
+      message="Kamu berhasil menyusun kata!"
+      :reward-amount="5"
+      :main-emoji="wordData.emoji"
+      footer-text="Klik di mana saja untuk lanjut"
+      @update:model-value="(val) => !val && goBack()"
+    />
 
     <!-- Main Game Area -->
     <div
       class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 max-w-6xl mx-auto w-full p-2 overflow-hidden pt-2"
     >
+      <!-- Top Section: Image & Full Word (Animated) -->
+      <div
+        class="flex flex-col items-center gap-6 w-full relative animate-entrance"
+        style="animation-delay: 0.2s"
+      >
+        <!-- Giant Emoji -->
+        <UiButton
+          @click="playTargetWord"
+          variant="none"
+          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105"
+        >
+          <span
+            class="text-8xl md:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
+          >
+            {{ wordData.emoji }}
+          </span>
+          <div
+            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
+          >
+            🔊
+          </div>
+        </UiButton>
+      </div>
       <!-- Target Slots -->
       <div class="flex flex-wrap justify-center gap-3 md:gap-6 w-full">
         <div
           v-for="(slot, index) in placedLetters"
           :key="`slot-${index}`"
-          @click="placedLetters[index] !== null ? putBackLetter(index) : undefined"
+          :data-slot-index="index"
+          @click="
+            placedLetters[index] !== null ? putBackLetter(index) : undefined
+          "
           @dragover.prevent
           @dragenter.prevent="onDragEnter(index)"
           @dragleave.prevent="onDragLeave(index)"
@@ -268,7 +327,9 @@ const putBackLetter = (slotIndex: number) => {
             placedLetters[index] !== null
               ? 'bg-emerald-400 border-white shadow-[0_10px_20px_rgba(52,211,153,0.4)] scale-105 cursor-pointer'
               : 'bg-slate-100 border-dashed border-slate-300 shadow-inner',
-            wrongDropIndex === index ? 'shake-animation bg-rose-400 border-rose-500' : '',
+            wrongDropIndex === index
+              ? 'shake-animation bg-rose-400 border-rose-500'
+              : '',
             hoveredSlotIndex === index && placedLetters[index] === null
               ? 'ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]'
               : '',
@@ -291,40 +352,76 @@ const putBackLetter = (slotIndex: number) => {
       <!-- Draggable Items (Available Letters) -->
       <div class="w-full">
         <!-- Instruction -->
-        <p
-          class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest font-quicksand"
-        >
-          {{ isComplete ? "Luar biasa!" : "Tarik huruf ke dalam kotak kosong" }}
-        </p>
 
         <div
-          class="flex flex-wrap justify-center gap-3 md:gap-4 w-full p-4 md:p-8 bg-white/50 backdrop-blur-md rounded-[3rem] border-t-4 border-white shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.1)] min-h-[160px]"
+          class="flex flex-col justify-center gap-3 md:gap-4 w-full p-4 md:p-8 bg-white/50 backdrop-blur-md rounded-[3rem] border-t-4 border-white shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.1)] min-h-[160px]"
         >
-          <BubbleCard
-            v-for="(item, index) in availableLetters"
-            :key="item.id"
-            draggable="true"
-            @dragstart="onDragStart($event, index)"
-            @dragend="onDragEnd(index)"
-            class="w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300"
-            :class="[
-              item.isDragging ? 'opacity-20 scale-95 rotate-6' : 'opacity-100',
-              isComplete ? 'opacity-0 scale-50 pointer-events-none' : '',
-            ]"
+          <p
+            class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest font-quicksand"
           >
-            <span
-              class="text-4xl md:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none font-quicksand"
+            {{
+              isComplete ? "Luar biasa!" : "Tarik huruf ke dalam kotak kosong"
+            }}
+          </p>
+          <div class="flex flex-wrap justify-center gap-3 md:gap-4 w-full">
+            <BubbleCard
+              v-for="(item, index) in availableLetters"
+              :key="item.id"
+              draggable="true"
+              @dragstart="onDragStart($event, index)"
+              @dragend="onDragEnd(index)"
+              @touchstart.prevent="onTouchStart($event, index)"
+              @touchmove.prevent="onTouchMove($event)"
+              @touchend.prevent="onTouchEnd($event)"
+              class="w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300 touch-none"
+              :class="[
+                item.isDragging
+                  ? 'opacity-20 scale-95 rotate-6'
+                  : 'opacity-100',
+                isComplete ? 'opacity-0 scale-50 pointer-events-none' : '',
+              ]"
             >
-              {{
-                settingsStore.settings.letterCase === "uppercase"
-                  ? item.letter.toUpperCase()
-                  : item.letter.toLowerCase()
-              }}
-            </span>
-          </BubbleCard>
+              <span
+                class="text-4xl md:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none font-quicksand"
+              >
+                {{
+                  settingsStore.settings.letterCase === "uppercase"
+                    ? item.letter.toUpperCase()
+                    : item.letter.toLowerCase()
+                }}
+              </span>
+            </BubbleCard>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Touch Drag Preview -->
+    <Teleport to="body" v-if="isTouching && draggedItemIndex !== null">
+      <div
+        class="fixed pointer-events-none z-50 transition-transform duration-75"
+        :style="{
+          left: `${touchPosition.x}px`,
+          top: `${touchPosition.y + 50}px`,
+          transform: 'translate(-50%, -120%) scale(1.1)',
+        }"
+      >
+        <BubbleCard
+          v-if="availableLetters[draggedItemIndex]"
+          class="w-16 h-20 rounded-2xl bg-sky-400/70 shadow-[0_20px_40px_rgba(0,0,0,0.4)] border-2 border-white/50 flex items-center justify-center"
+        >
+          <span
+            class="text-5xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] font-quicksand"
+          >
+            {{
+              settingsStore.settings.letterCase === "uppercase"
+                ? availableLetters[draggedItemIndex]?.letter.toUpperCase()
+                : availableLetters[draggedItemIndex]?.letter.toLowerCase()
+            }}
+          </span>
+        </BubbleCard>
+      </div>
+    </Teleport>
   </div>
 </template>
 

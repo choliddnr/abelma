@@ -18,22 +18,14 @@ const navigateToWord = (wordId: string) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 min-h-screen bg-slate-50">
+  <div class="flex flex-col gap-4 min-h-screen">
     <!-- Header -->
-    <div
-      class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 sticky top-0 bg-slate-50 z-10"
-    >
-      <UiButton @click="goBack" variant="white" icon="🏠" class="w-auto shadow-sm h-auto px-4 py-2">
-        <span class="font-black text-sm md:text-base hidden sm:inline ml-1">Kembali</span>
-      </UiButton>
+    <div class="flex items-center justify-center shrink-0 px-4 pt-4 pb-2 z-10">
       <h1
         class="text-2xl md:text-3xl font-black text-indigo-600 drop-shadow-sm"
-        style="font-family: &quot;Quicksand&quot;, sans-serif"
       >
         Katalog Kata
       </h1>
-      <div class="w-[88px] md:w-[115px]"></div>
-      <!-- Spacer for centering -->
     </div>
 
     <!-- Category Tabs -->
@@ -52,7 +44,9 @@ const navigateToWord = (wordId: string) => {
           "
         >
           <span class="text-xl md:text-2xl">{{ category.emoji }}</span>
-          <span class="font-black text-sm md:text-base">{{ category.name }}</span>
+          <span class="font-black text-sm md:text-base">{{
+            category.name
+          }}</span>
         </UiButton>
       </div>
     </div>
@@ -79,7 +73,9 @@ const navigateToWord = (wordId: string) => {
           <div
             class="flex-1 flex items-center justify-center w-full z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
           >
-            <span class="text-6xl md:text-7xl lg:text-8xl drop-shadow-md select-none">
+            <span
+              class="text-6xl md:text-7xl lg:text-8xl drop-shadow-md select-none"
+            >
               {{ word.emoji }}
             </span>
           </div>
@@ -90,7 +86,6 @@ const navigateToWord = (wordId: string) => {
           >
             <span
               class="text-xl md:text-2xl font-black text-slate-700 tracking-wide"
-              style="font-family: &quot;Quicksand&quot;, sans-serif"
             >
               {{
                 settingsStore.settings.letterCase === "uppercase"

@@ -3,45 +3,74 @@
  * It looks for files in /public/audio/... and falls back to window.speechSynthesis
  */
 
-export const playWordAudio = async (text: string, path?: string) => {
-  window.speechSynthesis.cancel();
+export const playWordAudio = (text: string, path?: string) => {
+  return new Promise<void>((resolve) => {
+    window.speechSynthesis.cancel();
 
-  // 1. Try playing local file if path is provided
-  if (path) {
-    try {
+    const onEnd = () => {
+      resolve();
+    };
+
+    // 1. Try playing local file if path is provided
+    if (path) {
       const audio = new Audio(path);
-      await audio.play();
-      return; // Success
-    } catch {
-      console.warn(`Local audio not found at ${path}, falling back to TTS.`);
-    }
-  }
+      let fallbackTriggered = false;
+      
+      const triggerFallback = () => {
+        if (fallbackTriggered) return;
+        fallbackTriggered = true;
+        console.warn(`Local audio not found at ${path}, falling back to TTS.`);
+        playTTS(text, 0.9, onEnd);
+      };
 
-  // 2. Fallback to Web Speech API
+      audio.onended = onEnd;
+      audio.onerror = triggerFallback;
+      audio.play().catch(triggerFallback);
+      return;
+    }
+
+    playTTS(text, 0.9, onEnd);
+  });
+};
+
+export const playSyllableAudio = (syllable: string, path?: string) => {
+  return new Promise<void>((resolve) => {
+    window.speechSynthesis.cancel();
+
+    const onEnd = () => {
+      resolve();
+    };
+
+    if (path) {
+      const audio = new Audio(path);
+      let fallbackTriggered = false;
+
+      const triggerFallback = () => {
+        if (fallbackTriggered) return;
+        fallbackTriggered = true;
+        playTTS(syllable, 0.8, onEnd);
+      };
+
+      audio.onended = onEnd;
+      audio.onerror = triggerFallback;
+      audio.play().catch(triggerFallback);
+      return;
+    }
+
+    playTTS(syllable, 0.8, onEnd);
+  });
+};
+
+const playTTS = (text: string, rate: number, onEnd: () => void) => {
   const utterance = new SpeechSynthesisUtterance(text.toLowerCase());
   utterance.lang = "id-ID";
-  utterance.rate = 0.9; // Slightly slower for children
+  utterance.rate = rate;
+  utterance.onend = onEnd;
+  utterance.onerror = onEnd; // resolve even on error
   window.speechSynthesis.speak(utterance);
 };
 
-export const playSyllableAudio = async (syllable: string, path?: string) => {
-  window.speechSynthesis.cancel();
 
-  if (path) {
-    try {
-      const audio = new Audio(path);
-      await audio.play();
-      return;
-    } catch {
-      // silent fallback
-    }
-  }
-
-  const utterance = new SpeechSynthesisUtterance(syllable.toLowerCase());
-  utterance.lang = "id-ID";
-  utterance.rate = 0.8; // Even slower for syllables
-  window.speechSynthesis.speak(utterance);
-};
 
 export const playEffectAudio = (type: "correct" | "wrong" | "sticker") => {
   // These could be actual .mp3 files later

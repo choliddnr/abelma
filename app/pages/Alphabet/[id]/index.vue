@@ -52,7 +52,7 @@ const highlightedWord = computed(() => {
 <template>
   <div class="flex flex-col items-center gap-12 mx-4 lg:mx-0 mb-7">
     <div
-      class="glass-card flex-wrap p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12 mt-20"
+      class="glass-card flex-wrap p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12 mt-5"
     >
       <div class="flex gap-4">
         <div

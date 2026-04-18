@@ -15,14 +15,17 @@ const wordData = computed(() => {
   return category.words.find((w) => w.id === wordId) || null;
 });
 
-const goBack = () => router.push("/words/learn");
 const goExercise = () => router.push(`/words/${categoryId}/${wordId}/exercise`);
 
 const speaking = ref(false);
 const activeSyllableIndex = ref<number | null>(null);
 let autoPlayTimeout: number | null = null;
 
-const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void) => {
+const fallbackToSpeech = async (
+  text: string,
+  path?: string,
+  onEnd?: () => void,
+) => {
   speaking.value = true;
   await playWordAudio(text, path);
   speaking.value = false;
@@ -32,41 +35,62 @@ const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void)
 const playSyllable = async (syllable: string, index: number) => {
   if (speaking.value) return;
   activeSyllableIndex.value = index;
-  await playSyllableAudio(syllable, `/audio/syllables/${syllable.toLowerCase()}.mp3`);
+  await playSyllableAudio(
+    syllable,
+    `/audio/syllables/${syllable.toLowerCase()}.mp3`,
+  );
   activeSyllableIndex.value = null;
 };
 
 const playFullWord = () => {
   if (speaking.value || !wordData.value) return;
-  fallbackToSpeech(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`);
+  fallbackToSpeech(
+    wordData.value.word,
+    `/audio/words/${wordData.value.id}.mp3`,
+  );
 };
 
 const playAuto = async () => {
   if (speaking.value || !wordData.value) return;
 
+  speaking.value = true;
   const syllables = wordData.value.syllables;
 
-  const playNext = (index: number) => {
-    if (index >= syllables.length) {
-      // Finished syllables, play full word and pop confetti
-      activeSyllableIndex.value = null;
-      autoPlayTimeout = window.setTimeout(() => {
-        fallbackToSpeech(wordData.value!.word, `/audio/words/${wordData.value?.id}.mp3`, () => {
-          popConfettiCenter();
+  try {
+    // Initial delay for clarity
+    await new Promise((resolve) => {
+      autoPlayTimeout = window.setTimeout(resolve, 300);
+    });
+
+    for (let i = 0; i < syllables.length; i++) {
+      activeSyllableIndex.value = i;
+      await playSyllableAudio(
+        syllables[i]!,
+        `/audio/syllables/${syllables[i]!.toLowerCase()}.mp3`,
+      );
+
+      if (i < syllables.length - 1) {
+        await new Promise((resolve) => {
+          autoPlayTimeout = window.setTimeout(resolve, 600);
         });
-      }, 500);
-      return;
+      }
     }
 
-    activeSyllableIndex.value = index;
-    fallbackToSpeech(syllables[index] || "", undefined, () => {
-      autoPlayTimeout = window.setTimeout(() => {
-        playNext(index + 1);
-      }, 400); // slight pause between syllables
+    activeSyllableIndex.value = null;
+    await new Promise((resolve) => {
+      autoPlayTimeout = window.setTimeout(resolve, 800);
     });
-  };
 
-  playNext(0);
+    await playWordAudio(
+      wordData.value.word,
+      `/audio/words/${wordData.value.id}.mp3`,
+    );
+    popConfettiCenter();
+  } finally {
+    speaking.value = false;
+    activeSyllableIndex.value = null;
+    autoPlayTimeout = null;
+  }
 };
 
 const popConfettiCenter = () => {
@@ -94,28 +118,18 @@ onMounted(() => {
 });
 
 // Colors for alternating syllables
-const syllableColors = ["bg-[#FFD93D]", "bg-[#4D96FF]", "bg-[#6BCB77]", "bg-[#ff9a9a]"];
-const getSyllableColor = (index: number) => syllableColors[index % syllableColors.length];
+const syllableColors = [
+  "bg-[#FFD93D]",
+  "bg-[#4D96FF]",
+  "bg-[#6BCB77]",
+  "bg-[#ff9a9a]",
+];
+const getSyllableColor = (index: number) =>
+  syllableColors[index % syllableColors.length];
 </script>
 
 <template>
   <div v-if="wordData" class="flex flex-col gap-4 min-h-screen">
-    <!-- Header (Animated) -->
-    <div class="flex items-center justify-between shrink-0 px-4 pt-4 pb-2 animate-entrance">
-      <UiButton @click="goBack" variant="white" class="w-auto h-auto px-4 py-2" icon="🔙">
-        <span class="font-black text-sm md:text-base hidden sm:inline">Kembali</span>
-      </UiButton>
-
-      <UiButton
-        @click="goExercise"
-        variant="success"
-        class="w-auto h-auto px-4 py-2 shadow-emerald-200"
-        icon="🧩"
-      >
-        <span class="font-black text-sm md:text-base hidden sm:inline">Latihan Mengeja</span>
-      </UiButton>
-    </div>
-
     <!-- Main Content -->
     <div
       class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-8 md:gap-12 py-8"
@@ -147,15 +161,33 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
       <!-- Bottom Section: Syllables -->
       <div class="w-full flex flex-col items-center gap-6">
         <!-- Controls -->
-        <div class="flex justify-center w-full">
+        <div class="flex justify-center w-full gap-2">
+          <UiButton
+            @click="navigateTo(`/words/learn`)"
+            variant="secondary"
+            class="w-auto px-6 h-12"
+            icon="📖"
+          >
+            <span class="text-lg font-semibold hidden sm:inline"
+              >Daftar Kata</span
+            >
+          </UiButton>
           <UiButton
             @click="playAuto"
             :disabled="speaking"
-            variant="soft"
-            class="w-auto px-6"
+            variant="white"
+            class="w-auto px-6 h-12"
             icon="▶️"
           >
-            <span class="font-black text-lg md:text-xl ml-2">Baca Otomatis</span>
+            <span class="text-lg font-semibold hidden sm:inline">Ucapkan</span>
+          </UiButton>
+          <UiButton
+            @click="goExercise"
+            variant="accent"
+            class="w-auto px-6 h-12"
+            icon="🧩"
+          >
+            <span class="text-lg font-semibold hidden sm:inline">Latihan</span>
           </UiButton>
         </div>
 
@@ -182,7 +214,6 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
 
             <span
               class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_6px_0_rgba(0,0,0,0.15)] tracking-widest relative z-10"
-              style="font-family: &quot;Quicksand&quot;, sans-serif"
             >
               {{
                 settingsStore.settings.letterCase === "uppercase"

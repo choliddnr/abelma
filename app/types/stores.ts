@@ -88,11 +88,27 @@ export type AlphabetChallengeProgress = {
 
 // ==================== SETTINGS TYPES ====================
 
-export type LetterCase = "uppercase" | "lowercase";
+export type LetterCase = "uppercase" | "lowercase" | "mixed";
+
+export type WordLevelConfig = {
+  timer: number; // 0 for off, otherwise seconds
+  coinReward: number;
+  letterCase: LetterCase;
+  numOptions: number; // Number of options in PICK_WORD mode
+};
 
 export type WordSettings = {
-  timerDuration: number; // 0 for off, otherwise seconds
-  letterCase: LetterCase;
+  levels: WordLevelConfig[];
+  timerDuration: number; // Legacy/Default
+  letterCase: LetterCase; // Legacy/Default
+};
+
+export type WordChallengeProgress = {
+  score: number;
+  level: number;
+  weights: Record<string, number>;
+  challengeConfig: WordLevelConfig[];
+  updatedAt: string;
 };
 
 // ==================== SYNC TYPES ====================
@@ -116,6 +132,9 @@ export type CloudData = {
   alphabetProgress?:
     | AlphabetChallengeProgress
     | Record<string, AlphabetChallengeProgress>;
+  wordProgress?:
+    | WordChallengeProgress
+    | Record<string, WordChallengeProgress>;
   settings?: WordSettings;
 };
 

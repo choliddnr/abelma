@@ -294,7 +294,7 @@ onUnmounted(() => {
       <!-- Top-left: Large Letter (bounce) -->
       <div
         v-if="!showChallenge"
-        class="absolute top-6 left-6 md:left-8 flex items-end gap-2 drop-shadow-xl z-10 pointer-events-none"
+        class="absolute top-6 left-6 md:left-8 items-end gap-2 drop-shadow-xl z-10 pointer-events-none hidden sm:flex"
       >
         <span
           class="font-black leading-none select-none text-white drop-shadow-lg text-8xl animate-bounce"

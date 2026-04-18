@@ -57,6 +57,7 @@ onMounted(() => {
       <GlobalHeader />
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
       <UiConfirmModal />
+      <UiNotificationToast />
     </main>
   </div>
 </template>

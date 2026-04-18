@@ -4,76 +4,30 @@ import type { ChallengeLevelConfig } from "@/types/stores";
 const { activeProfileId } = storeToRefs(useProfileStore());
 const { alphabetChallangeProgress } = storeToRefs(useAlphabetStore());
 const { saveConfig, fetch } = useAlphabetStore();
+const settingsStore = useSettingsStore();
+const { settings: wordSettings } = storeToRefs(settingsStore);
+
+const { wordChallengeProgress } = storeToRefs(useWordStore());
+const { fetch: fetchWordProgress } = useWordStore();
 
 callOnce(async () => {
-  await fetch();
+  await Promise.all([fetch(), fetchWordProgress()]);
 });
 
 const levelLabels = ["Pemula", "Mantap", "Berwaktu", "Sprint"];
-const lastSavedConfig = ref<string>("");
-const isSaving = ref(false);
 
-// Watch for initial load to set baseline
-watch(
-  () => alphabetChallangeProgress.value?.challengeConfig,
-  (newVal) => {
-    if (newVal && !lastSavedConfig.value) {
-      lastSavedConfig.value = JSON.stringify(newVal);
-    }
-  },
-  { immediate: true },
-);
+// Modal state
+const isAlphabetModalOpen = ref(false);
+const isWordModalOpen = ref(false);
 
-const hasChanges = computed(() => {
-  if (!alphabetChallangeProgress.value?.challengeConfig) return false;
-  return (
-    JSON.stringify(alphabetChallangeProgress.value.challengeConfig) !==
-    lastSavedConfig.value
-  );
-});
-
-const updateConfigField = async (
-  levelIndex: number,
-  field: keyof ChallengeLevelConfig,
-  value: number,
-) => {
-  if (!activeProfileId.value) return;
-
-  const config = alphabetChallangeProgress.value?.challengeConfig;
-  if (!config) return;
-
-  const updatedConfig = [...config];
-  updatedConfig[levelIndex] = {
-    ...updatedConfig[levelIndex],
-    [field]: Math.max(0, Number(value)),
-  } as ChallengeLevelConfig;
-
-  alphabetChallangeProgress.value.challengeConfig = updatedConfig;
+const openAlphabetModal = () => {
+  isWordModalOpen.value = false;
+  isAlphabetModalOpen.value = true;
 };
 
-const handleSave = async () => {
-  if (
-    !activeProfileId.value ||
-    !alphabetChallangeProgress.value?.challengeConfig
-  )
-    return;
-
-  isSaving.value = true;
-  try {
-    const success = await saveConfig(
-      activeProfileId.value,
-      alphabetChallangeProgress.value.challengeConfig,
-    );
-    if (success) {
-      lastSavedConfig.value = JSON.stringify(
-        alphabetChallangeProgress.value.challengeConfig,
-      );
-    }
-  } catch (e) {
-    console.error("Save error:", e);
-  } finally {
-    isSaving.value = false;
-  }
+const openWordModal = () => {
+  isAlphabetModalOpen.value = false;
+  isWordModalOpen.value = true;
 };
 </script>
 
@@ -83,27 +37,11 @@ const handleSave = async () => {
   >
     <div class="flex items-center justify-between">
       <div>
-        <h3 class="text-xl font-black text-slate-800">
-          Pengaturan Tantangan Huruf
-        </h3>
+        <h3 class="text-xl font-black text-slate-800">Pengaturan Belajar</h3>
         <p class="text-sm font-semibold text-slate-700 mt-1">
-          Sesuaikan level kesulitan untuk kemampuan anak.
+          Pilih kategori yang ingin disesuaikan.
         </p>
       </div>
-
-      <UiButton
-        v-if="activeProfileId"
-        :disabled="!hasChanges"
-        :loading="isSaving"
-        @click="handleSave"
-        variant="success"
-        class="shadow-lg shadow-emerald-200"
-      >
-        <span class="flex items-center gap-2 px-2">
-          <span v-if="!isSaving">💾</span>
-          Simpan Pengaturan
-        </span>
-      </UiButton>
     </div>
 
     <div
@@ -113,141 +51,97 @@ const handleSave = async () => {
       Pilih profil anak terlebih dahulu.
     </div>
 
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-12">
-      <div
-        v-for="(cfg, idx) in alphabetChallangeProgress?.challengeConfig || []"
-        :key="idx"
-        class="bg-white/70 backdrop-blur-md rounded-4xl border-4 border-white/50 p-8 space-y-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-12">
+      <!-- Card: Alphabet Settings -->
+      <button
+        @click="openAlphabetModal"
+        class="group relative bg-white/70 backdrop-blur-md rounded-[2.5rem] border-4 border-white p-8 text-left transition-all hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
       >
-        <!-- Level Header -->
-        <div class="flex items-center gap-4 pb-4 border-b border-slate-200/50">
+        <div
+          class="absolute -top-10 -right-10 w-40 h-40 bg-sky-100 rounded-full blur-3xl group-hover:bg-sky-200 transition-colors"
+        ></div>
+        <div class="relative z-10 flex flex-col gap-6">
           <div
-            class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-white text-lg shadow-lg"
-            :class="
-              ['bg-sky-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400'][
-                idx
-              ] || 'bg-slate-400'
-            "
+            class="w-16 h-16 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-sky-200 group-hover:scale-110 transition-transform"
           >
-            {{ idx + 1 }}
+            🔤
           </div>
           <div>
-            <p class="font-black text-slate-800 text-xl font-quicksand">
-              Level {{ idx + 1 }}
-            </p>
-            <p
-              class="text-xs font-bold text-slate-400 uppercase tracking-widest"
-            >
-              {{ levelLabels[idx] || "Kustom" }}
+            <h4 class="text-2xl font-black text-slate-800 font-quicksand">
+              Tantangan Huruf
+            </h4>
+            <p class="text-slate-500 font-bold mt-1">
+              Atur target bobot, timer, dan hadiah koin untuk setiap level.
             </p>
           </div>
-        </div>
-
-        <!-- Fields -->
-        <div class="space-y-3">
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <label class="text-sm font-black text-slate-600"
-                >Target Bobot</label
-              >
-              <p class="text-xs text-slate-400">
-                Berapa kali benar sebelum naik level
-              </p>
-            </div>
-            <input
-              type="number"
-              min="1"
-              max="10"
-              :value="cfg.targetWeight"
-              @change="
-                updateConfigField(
-                  idx,
-                  'targetWeight',
-                  ($event.target as HTMLInputElement).valueAsNumber,
-                )
-              "
-              class="w-20 text-center text-lg font-black p-2 rounded-2xl border-2 border-slate-100 focus:border-violet-400 focus:outline-none"
-            />
-          </div>
-
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <label class="text-sm font-black text-slate-600"
-                >Timer (detik)</label
-              >
-              <p class="text-xs text-slate-400">0 = tidak ada batas waktu</p>
-            </div>
-            <input
-              type="number"
-              min="0"
-              max="60"
-              :value="cfg.timer"
-              @change="
-                updateConfigField(
-                  idx,
-                  'timer',
-                  ($event.target as HTMLInputElement).valueAsNumber,
-                )
-              "
-              class="w-20 text-center text-lg font-black p-2 rounded-2xl border-2 border-slate-100 focus:border-violet-400 focus:outline-none"
-            />
-          </div>
-
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <label class="text-sm font-black text-slate-600"
-                >Target Beruntun 🔥</label
-              >
-              <p class="text-xs text-slate-400">0 = tidak ada bonus</p>
-            </div>
-            <input
-              type="number"
-              min="0"
-              max="20"
-              :value="cfg.streak"
-              @change="
-                updateConfigField(
-                  idx,
-                  'streak',
-                  ($event.target as HTMLInputElement).valueAsNumber,
-                )
-              "
-              class="w-20 text-center text-lg font-black p-2 rounded-2xl border-2 border-slate-100 focus:border-violet-400 focus:outline-none"
-            />
-          </div>
-
-          <div class="flex items-center justify-between gap-4">
-            <div>
-              <label class="text-sm font-black text-slate-600"
-                >Bonus Koin 🪙</label
-              >
-              <p class="text-xs text-slate-400">
-                Hadiah saat beruntun tercapai
-              </p>
-            </div>
-            <input
-              type="number"
-              min="0"
-              max="500"
-              :value="cfg.streakReward"
-              @change="
-                updateConfigField(
-                  idx,
-                  'streakReward',
-                  ($event.target as HTMLInputElement).valueAsNumber,
-                )
-              "
-              class="w-20 text-center text-lg font-black p-2 rounded-2xl border-2 border-slate-100 focus:border-violet-400 focus:outline-none"
-            />
+          <div class="flex items-center gap-2 text-sky-600 font-black">
+            <span>Buka Pengaturan</span>
+            <span class="group-hover:translate-x-1 transition-transform">➜</span>
           </div>
         </div>
-      </div>
+      </button>
+
+      <!-- Card: Word Settings -->
+      <button
+        @click="openWordModal"
+        class="group relative bg-white/70 backdrop-blur-md rounded-[2.5rem] border-4 border-white p-8 text-left transition-all hover:shadow-2xl hover:-translate-y-2 overflow-hidden"
+      >
+        <div
+          class="absolute -top-10 -right-10 w-40 h-40 bg-violet-100 rounded-full blur-3xl group-hover:bg-violet-200 transition-colors"
+        ></div>
+        <div class="relative z-10 flex flex-col gap-6">
+          <div
+            class="w-16 h-16 rounded-2xl bg-violet-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-violet-200 group-hover:scale-110 transition-transform"
+          >
+            📖
+          </div>
+          <div>
+            <h4 class="text-2xl font-black text-slate-800 font-quicksand">
+              Belajar Kata
+            </h4>
+            <p class="text-slate-500 font-bold mt-1">
+              Sesuaikan gaya tulisan (KAPITAL/kecil) dan batas waktu kuis.
+            </p>
+          </div>
+          <div class="flex items-center gap-2 text-violet-600 font-black">
+            <span>Buka Pengaturan</span>
+            <span class="group-hover:translate-x-1 transition-transform">➜</span>
+          </div>
+        </div>
+      </button>
     </div>
+
+    <!-- Modals -->
+    <ParentAlphabetSettingsModal
+      :is-open="isAlphabetModalOpen"
+      @close="isAlphabetModalOpen = false"
+      @switch-to-word="openWordModal"
+    />
+
+    <ParentWordSettingsModal
+      :is-open="isWordModalOpen"
+      @close="isWordModalOpen = false"
+      @switch-to-alphabet="openAlphabetModal"
+    />
   </div>
 </template>
 
 <style scoped>
 .font-quicksand {
   font-family: "Quicksand", sans-serif;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }
 </style>
