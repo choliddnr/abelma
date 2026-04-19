@@ -195,8 +195,8 @@ const buildTargetCanvas = async (
 
     // For debugging/hit-testing, we draw the shape solid
     // Note: using 5px stroke to match the visible outline requested by user
-    tCtx.strokeStyle = "rgba(200, 200, 200, .5)";
-    tCtx.fillStyle = "rgba(200, 200, 200, .5)";
+    tCtx.strokeStyle = "rgba(200, 200, 200, .1)";
+    tCtx.fillStyle = "rgba(200, 200, 200, .1)";
     tCtx.lineWidth = 5;
     tCtx.lineCap = "round";
     tCtx.lineJoin = "round";
