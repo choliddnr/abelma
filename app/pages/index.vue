@@ -50,7 +50,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="flex flex-col h-auto relative p-4 md:p-8 overflow-hidden -mt-24">
+  <div class="flex flex-col relative p-4 md:p-8 mt-0 lg:mt-50">
     <!-- Full-screen Frosted Overlay -->
     <div
       class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"
@@ -80,7 +80,7 @@ const menuItems = [
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-72"
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-64"
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
       </div>

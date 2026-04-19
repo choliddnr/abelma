@@ -20,7 +20,7 @@ defineProps<{
       {{ icon }}
     </div>
     <div class="text-center">
-      <h2 class="text-3xl font-bold text-gray-800">{{ title }}</h2>
+      <h2 class="text-2xl font-bold text-gray-800">{{ title }}</h2>
       <p class="text-gray-500 font-medium">{{ subtitle }}</p>
     </div>
   </NuxtLink>
