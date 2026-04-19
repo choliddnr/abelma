@@ -20,12 +20,20 @@ const getBrushSize = (canvasWidth: number): number => {
   return 40; // desktop
 };
 
+watch(
+  () => containerRef,
+  () => {
+    console.log(containerRef.value!.clientWidth);
+  },
+);
+
 const initCanvas = () => {
   if (!canvasRef.value || !containerRef.value) return;
 
   const width = containerRef.value.clientWidth;
   const height = containerRef.value.clientHeight;
 
+  console.log(width, height);
   // Set vertical mode if height is significantly greater than width (portrait)
   // or if width is very small (small mobile)
   isVertical.value = width < 500 && height > width * 1.2;
@@ -187,16 +195,15 @@ const buildTargetCanvas = async (
 
     // For debugging/hit-testing, we draw the shape solid
     // Note: using 5px stroke to match the visible outline requested by user
-    tCtx.strokeStyle = "rgba(200, 200, 200, .1)";
-    tCtx.fillStyle = "rgba(200, 200, 200, .1)";
+    tCtx.strokeStyle = "rgba(200, 200, 200, .5)";
+    tCtx.fillStyle = "rgba(200, 200, 200, .5)";
     tCtx.lineWidth = 5;
     tCtx.lineCap = "round";
     tCtx.lineJoin = "round";
 
     // if() isVertical ? 18 : 22;
-
-    tCtx.strokeText(text, x, y + (isVertical.value ? 18 : 22));
-    tCtx.fillText(text, x, y + (isVertical.value ? 18 : 22));
+    tCtx.strokeText(text, x, y + (width < 500 ? 18 : width < 900 ? 24 : 30));
+    tCtx.fillText(text, x, y + (width < 500 ? 18 : width < 900 ? 24 : 30));
   });
 
   // DEBUG: Append targetCanvas to the container so you can see it
