@@ -10,14 +10,14 @@ export const useStorybookStore = defineStore(
     const currentIndex = ref(0);
     const isSpeaking = ref(false);
     const showFinish = ref(false);
-    const showChallenge = ref(false);
+    const showQuiz = ref(false);
     const viewMode = ref<"list" | "story">("list");
 
     // Progress map by profile ID: Record<profileId, Array of completed indices>
     const profileProgressMap = ref<Record<string, number[]>>({});
 
     // Computed Set for compatibility with existing view logic
-    const challengeDone = computed(() => {
+    const quizDone = computed(() => {
       const id = activeProfileId.value;
       if (!id) return new Set<number>();
       if (!profileProgressMap.value[id]) {
@@ -43,7 +43,7 @@ export const useStorybookStore = defineStore(
       currentIndex.value = 0;
       isSpeaking.value = false;
       showFinish.value = false;
-      showChallenge.value = false;
+      showQuiz.value = false;
       viewMode.value = "list";
       profileProgressMap.value = {};
     }
@@ -79,9 +79,9 @@ export const useStorybookStore = defineStore(
     return {
       currentIndex,
       isSpeaking,
-      challengeDone,
+      quizDone,
       showFinish,
-      showChallenge,
+      showQuiz,
       viewMode,
       profileProgressMap,
       reset,

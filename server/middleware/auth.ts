@@ -1,6 +1,12 @@
 export default defineEventHandler(async (e) => {
   const url = getRequestURL(e);
-  const protectedPrefixes = ["/api/alphabet", "/api/profile", "/api/reward", "/api/sync"];
+  const protectedPrefixes = [
+    "/api/alphabet",
+    "/api/profile",
+    "/api/reward",
+    "/api/sync",
+    "/api/words",
+  ];
 
   if (protectedPrefixes.some((p) => url.pathname.startsWith(p))) {
     const session = await _auth(e).api.getSession({

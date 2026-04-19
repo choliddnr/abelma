@@ -11,15 +11,9 @@ watch(isOpen, (val) => {
 
 <template>
   <Transition name="modal">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-    >
+    <div v-if="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
       <!-- Backdrop -->
-      <div
-        class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
-        @click="onCancel"
-      ></div>
+      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" @click="onCancel"></div>
 
       <!-- Modal Card -->
       <div
@@ -53,18 +47,10 @@ watch(isOpen, (val) => {
           </p>
 
           <div class="flex gap-4 w-full">
-            <UiButton
-              variant="white"
-              class="flex-1"
-              @click="onCancel"
-            >
+            <UiButton variant="white" class="flex-1" @click="onCancel">
               {{ options.cancelText }}
             </UiButton>
-            <UiButton
-              :variant="options.variant || 'accent'"
-              class="flex-1"
-              @click="onConfirm"
-            >
+            <UiButton :variant="options.variant || 'accent'" class="flex-1" @click="onConfirm">
               {{ options.confirmText }}
             </UiButton>
           </div>

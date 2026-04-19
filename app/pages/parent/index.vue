@@ -35,9 +35,7 @@ const handleAddProfile = async () => {
 </script>
 
 <template>
-  <div
-    class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300"
-  >
+  <div class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300">
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Anak</h3>
       <UiButton
@@ -73,9 +71,7 @@ const handleAddProfile = async () => {
           >
             Pilih Sekarang
           </UiButton>
-          <span
-            v-else
-            class="text-xs font-black text-emerald-500 uppercase tracking-widest"
+          <span v-else class="text-xs font-black text-emerald-500 uppercase tracking-widest"
             >Sedang Aktif ✅</span
           >
         </div>
@@ -87,9 +83,7 @@ const handleAddProfile = async () => {
       v-if="showAddProfile"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 rounded-4xl backdrop-blur-sm"
     >
-      <div
-        class="bg-white w-full max-w-sm p-8 rounded-3xl shadow-2xl space-y-6"
-      >
+      <div class="bg-white w-full max-w-sm p-8 rounded-3xl shadow-2xl space-y-6">
         <h3 class="text-2xl font-black text-slate-800">Profil Baru</h3>
         <div class="space-y-2">
           <label class="font-bold text-slate-500">Nama Panggilan:</label>
@@ -120,16 +114,10 @@ const handleAddProfile = async () => {
           </div>
         </div>
         <div class="flex gap-4 pt-4">
-          <UiButton
-            @click="showAddProfile = false"
-            variant="white"
-            class="flex-1"
-          >
+          <UiButton @click="showAddProfile = false" variant="white" class="flex-1">
             Batal
           </UiButton>
-          <UiButton @click="handleAddProfile" variant="accent" class="flex-2">
-            Simpan
-          </UiButton>
+          <UiButton @click="handleAddProfile" variant="accent" class="flex-2"> Simpan </UiButton>
         </div>
       </div>
     </div>

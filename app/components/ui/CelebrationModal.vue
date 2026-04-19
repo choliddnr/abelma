@@ -25,9 +25,7 @@ const close = () => emit("update:modelValue", false);
         class="bg-white rounded-5xl p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-8 border-yellow-400 max-w-sm w-full text-center relative animate-pop overflow-hidden"
         @click.stop
       >
-        <div
-          class="absolute inset-0 bg-linear-to-b from-yellow-50 to-white -z-10"
-        ></div>
+        <div class="absolute inset-0 bg-linear-to-b from-yellow-50 to-white -z-10"></div>
         <div class="text-7xl md:text-8xl mb-4 animate-bounce">
           {{ mainEmoji ?? (rewardAmount ? "✨💰✨" : "✨🎉✨") }}
         </div>
@@ -39,10 +37,7 @@ const close = () => emit("update:modelValue", false);
           {{ title }}
         </h2>
 
-        <p
-          v-if="message"
-          class="text-xl md:text-2xl font-bold text-slate-600 mb-6"
-        >
+        <p v-if="message" class="text-xl md:text-2xl font-bold text-slate-600 mb-6">
           {{ message }}
         </p>
 
@@ -52,9 +47,7 @@ const close = () => emit("update:modelValue", false);
             class="inline-flex items-center justify-center gap-3 bg-yellow-100 px-8 py-4 rounded-[1.5rem] border-4 border-yellow-200 shadow-inner"
           >
             <span class="text-4xl md:text-5xl">{{ rewardIcon ?? "🪙" }}</span>
-            <span class="text-4xl md:text-5xl font-black text-yellow-700"
-              >+{{ rewardAmount }}</span
-            >
+            <span class="text-4xl md:text-5xl font-black text-yellow-700">+{{ rewardAmount }}</span>
           </div>
         </slot>
 

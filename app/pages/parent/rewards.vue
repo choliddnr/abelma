@@ -40,7 +40,8 @@ const handleAddReward = async () => {
 const handleDeleteReward = async (id: number) => {
   const confirmed = await confirm({
     title: "Hapus Hadiah?",
-    message: "Apakah Anda yakin ingin menghapus hadiah ini? Koin anak Anda tidak akan dikembalikan.",
+    message:
+      "Apakah Anda yakin ingin menghapus hadiah ini? Koin anak Anda tidak akan dikembalikan.",
     confirmText: "Hapus",
     cancelText: "Batal",
     icon: "🗑️",
@@ -69,9 +70,7 @@ const handleFulfillReward = async (id: number) => {
     },
     onResponse: ({ response, error }) => {
       if (response.ok) {
-        rewards.value = rewards.value.map((r) =>
-          r.id === id ? { ...r, status: "fulfilled" } : r,
-        );
+        rewards.value = rewards.value.map((r) => (r.id === id ? { ...r, status: "fulfilled" } : r));
       } else {
         console.error(error);
       }
@@ -81,9 +80,7 @@ const handleFulfillReward = async (id: number) => {
 </script>
 <template>
   <!-- Tab Content: Rewards -->
-  <div
-    class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300"
-  >
+  <div class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300">
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Hadiah Tugas</h3>
       <UiButton
@@ -95,10 +92,7 @@ const handleFulfillReward = async (id: number) => {
       </UiButton>
     </div>
 
-    <div
-      v-if="activeProfileId"
-      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-    >
+    <div v-if="activeProfileId" class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <div v-if="rewards.length === 0" class="col-span-full text-center py-8">
         <p class="text-slate-500 font-semibold">Belum ada hadiah</p>
       </div>
@@ -108,9 +102,7 @@ const handleFulfillReward = async (id: number) => {
         :key="reward.id"
         class="bg-white/70 backdrop-blur-md p-5 rounded-3xl border-2 flex flex-col items-center justify-between transition-all hover:-translate-y-1 hover:shadow-lg aspect-square relative text-center"
         :class="
-          reward.status === 'claimed'
-            ? 'border-indigo-300 bg-indigo-50/50'
-            : 'border-white/50'
+          reward.status === 'claimed' ? 'border-indigo-300 bg-indigo-50/50' : 'border-white/50'
         "
       >
         <UiButton
@@ -121,13 +113,9 @@ const handleFulfillReward = async (id: number) => {
           icon="🗑️"
         />
 
-        <div
-          class="flex-1 flex flex-col justify-center items-center w-full mt-2"
-        >
+        <div class="flex-1 flex flex-col justify-center items-center w-full mt-2">
           <span class="text-7xl drop-shadow-md mb-4">{{ reward.emoji }}</span>
-          <p
-            class="font-black text-slate-800 line-clamp-2 text-lg leading-tight px-2"
-          >
+          <p class="font-black text-slate-800 line-clamp-2 text-lg leading-tight px-2">
             {{ reward.title }}
           </p>
           <span
@@ -166,9 +154,7 @@ const handleFulfillReward = async (id: number) => {
       v-if="showAddReward"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
     >
-      <div
-        class="bg-white w-full max-w-sm p-8 rounded-3xl shadow-2xl space-y-6"
-      >
+      <div class="bg-white w-full max-w-sm p-8 rounded-3xl shadow-2xl space-y-6">
         <h3 class="text-2xl font-black text-slate-800">Hadiah Baru</h3>
         <div class="space-y-2">
           <label class="font-bold text-slate-500">Nama Hadiah:</label>
@@ -207,16 +193,8 @@ const handleFulfillReward = async (id: number) => {
           />
         </div>
         <div class="flex gap-4 pt-4">
-          <UiButton
-            @click="showAddReward = false"
-            variant="white"
-            class="flex-1"
-          >
-            Batal
-          </UiButton>
-          <UiButton @click="handleAddReward" variant="accent" class="flex-2">
-            Simpan
-          </UiButton>
+          <UiButton @click="showAddReward = false" variant="white" class="flex-1"> Batal </UiButton>
+          <UiButton @click="handleAddReward" variant="accent" class="flex-2"> Simpan </UiButton>
         </div>
       </div>
     </div>

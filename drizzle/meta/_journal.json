@@ -40,8 +40,15 @@
     {
       "idx": 5,
       "version": "6",
-      "when": 1776507937908,
-      "tag": "0005_empty_reptil",
+      "when": 1776524701263,
+      "tag": "0005_dusty_magneto",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1776567809451,
+      "tag": "0006_quick_sunspot",
       "breakpoints": true
     }
   ]

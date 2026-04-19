@@ -44,7 +44,7 @@ const emojiMap: Record<string, string> = {
 };
 
 const imageError = ref(false);
-const showChallenge = ref(false);
+const showQuiz = ref(false);
 const storyText = ref<string>("");
 
 const storybook = computed(() => {
@@ -91,23 +91,23 @@ const buildPhonicsText = (entry: AlphabetStorybook): string => {
   return `Huruf ${u}. ${u} besar dan ${l} kecil. ${entry.title}. ${entry.story}`;
 };
 
-const currentChallengeList = computed(() => {
-  if (!storybook.value?.challenge) return [];
-  return Array.isArray(storybook.value.challenge)
-    ? storybook.value.challenge
-    : [storybook.value.challenge];
+const currentQuizList = computed(() => {
+  if (!storybook.value?.quiz) return [];
+  return Array.isArray(storybook.value.quiz)
+    ? storybook.value.quiz
+    : [storybook.value.quiz];
 });
 
-const currentChallengeIndex = ref(0);
-const activeChallenge = computed(
-  () => currentChallengeList.value[currentChallengeIndex.value] || null,
+const currentQuizIndex = ref(0);
+const activeQuiz = computed(
+  () => currentQuizList.value[currentQuizIndex.value] || null,
 );
 
 const showCelebration = ref(false);
 
-const readChallengeQuestion = () => {
-  if (!activeChallenge.value) return;
-  const text = activeChallenge.value.question;
+const readQuizQuestion = () => {
+  if (!activeQuiz.value) return;
+  const text = activeQuiz.value.question;
   if (!text) return;
 
   currentPlayId++;
@@ -124,9 +124,9 @@ const readChallengeQuestion = () => {
   window.speechSynthesis.speak(utterance);
 };
 
-const startChallenge = () => {
-  showChallenge.value = true;
-  readChallengeQuestion();
+const startQuiz = () => {
+  showQuiz.value = true;
+  readQuizQuestion();
 };
 
 let currentPlayId = 0;
@@ -146,8 +146,8 @@ const speakStory = () => {
 
     if (s >= story.length) {
       isSpeakingStory.value = false;
-      if (!showChallenge.value && currentChallengeList.value.length > 0) {
-        setTimeout(() => startChallenge(), 800);
+      if (!showQuiz.value && currentQuizList.value.length > 0) {
+        setTimeout(() => startQuiz(), 800);
       }
       return;
     }
@@ -197,17 +197,17 @@ const prevStoryLetter = () => {
   }
 };
 
-const onChallengeSuccess = async () => {
+const onQuizSuccess = async () => {
   showCelebration.value = true;
 
   changeCoins(10);
 
-  if (currentChallengeIndex.value < currentChallengeList.value.length - 1) {
+  if (currentQuizIndex.value < currentQuizList.value.length - 1) {
     // Has more questions
     setTimeout(() => {
       showCelebration.value = false;
-      currentChallengeIndex.value++;
-      setTimeout(() => readChallengeQuestion(), 300);
+      currentQuizIndex.value++;
+      setTimeout(() => readQuizQuestion(), 300);
     }, 2000);
   } else {
     // All questions finished
@@ -234,7 +234,7 @@ const onChallengeSuccess = async () => {
   }
 };
 
-const onChallengeFail = () => {
+const onQuizFail = () => {
   // Add logic later if needed (FloatingInteractionZone already shakes and randomizes)
 };
 
@@ -249,11 +249,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    v-if="storybook"
-    class="flex sm:items-center justify-center sm:p-6"
-    @click.self="closeStory"
-  >
+  <div v-if="storybook" class="flex sm:items-center justify-center sm:p-6" @click.self="closeStory">
     <div
       class="relative bg-white rounded-[2.5rem] shadow-2xl flex flex-col mt-5 border-8 border-white/80 overflow-hidden w-full max-w-4xl h-screen sm:h-[88vh] mb-5 mx-2 md:mx-0 md:mb-0"
     >
@@ -270,9 +266,7 @@ onUnmounted(() => {
       </template>
 
       <template v-else>
-        <div
-          class="absolute inset-0 bg-slate-50 flex items-center justify-center overflow-hidden"
-        >
+        <div class="absolute inset-0 bg-slate-50 flex items-center justify-center overflow-hidden">
           <span
             class="text-[15rem] select-none opacity-[0.15]"
             style="animation: letter-bounce 3s ease-in-out infinite"
@@ -283,17 +277,17 @@ onUnmounted(() => {
       </template>
 
       <FloatingInteractionZone
-        v-if="showChallenge && activeChallenge"
-        :key="'challenge-' + currentChallengeIndex"
-        :target="activeChallenge.target"
-        :options="activeChallenge.options"
-        @success="onChallengeSuccess"
-        @fail="onChallengeFail"
+        v-if="showQuiz && activeQuiz"
+        :key="'quiz-' + currentQuizIndex"
+        :target="activeQuiz.target"
+        :options="activeQuiz.options"
+        @success="onQuizSuccess"
+        @fail="onQuizFail"
       />
 
       <!-- Top-left: Large Letter (bounce) -->
       <div
-        v-if="!showChallenge"
+        v-if="!showQuiz"
         class="absolute top-6 left-6 md:left-8 items-end gap-2 drop-shadow-xl z-10 pointer-events-none hidden sm:flex"
       >
         <span
@@ -312,14 +306,14 @@ onUnmounted(() => {
         <UiButton
           variant="primary"
           icon="🎯"
-          v-if="!showChallenge && currentChallengeList.length > 0"
-          @click="startChallenge"
+          v-if="!showQuiz && currentQuizList.length > 0"
+          @click="startQuiz"
           class="px-4"
         />
         <UiButton
           label="🔊"
           variant="white"
-          @click="showChallenge ? readChallengeQuestion() : speakStory()"
+          @click="showQuiz ? readQuizQuestion() : speakStory()"
           class="py-4 px-5"
           :class="{ 'animate-pulse': isSpeakingStory }"
         />
@@ -330,12 +324,10 @@ onUnmounted(() => {
         />
       </div>
 
-      <!-- Bottom floating card: Story text or Challenge -->
+      <!-- Bottom floating card: Story text or Quiz -->
 
-      <div
-        class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full"
-      >
-        <template v-if="!showChallenge">
+      <div class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full">
+        <template v-if="!showQuiz">
           <div class="space-y-4 text-center bg-black/50 rounded-2xl max-w-2xl">
             <span class="text-xl md:text-2xl lg:text-3xl text-white font-bold"
               >📖 {{ storybook.title }}</span
@@ -346,14 +338,14 @@ onUnmounted(() => {
             />
           </div>
         </template>
-        <!-- <template v-else-if="activeChallenge">
+        <!-- <template v-else-if="activeQuiz">
           <div
             class="text-center bg-black/60 rounded-3xl p-4 sm:p-6 shadow-xl backdrop-blur-sm pointer-events-none w-full max-w-2xl"
           >
             <p
               class="text-xl md:text-2xl lg:text-3xl font-black text-white px-2"
             >
-              {{ activeChallenge.question || activeChallenge.instruction }}
+              {{ activeQuiz.question || activeQuiz.instruction }}
             </p>
           </div>
         </template> -->
@@ -363,14 +355,12 @@ onUnmounted(() => {
       v-model="showCelebration"
       title="Hebat Sekali!"
       :message="
-        currentChallengeIndex < currentChallengeList.length - 1
+        currentQuizIndex < currentQuizList.length - 1
           ? 'Kamu berhasil! Mari lanjut ke pertanyaan berikutnya!'
           : 'Kerja bagus! Kamu sudah menyelesaikan semua pertanyaan!'
       "
       :footer-text="
-        currentChallengeIndex < currentChallengeList.length - 1
-          ? 'Lanjut...'
-          : 'Selesai'
+        currentQuizIndex < currentQuizList.length - 1 ? 'Lanjut...' : 'Selesai'
       "
     />
   </div>

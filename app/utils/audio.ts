@@ -15,7 +15,7 @@ export const playWordAudio = (text: string, path?: string) => {
     if (path) {
       const audio = new Audio(path);
       let fallbackTriggered = false;
-      
+
       const triggerFallback = () => {
         if (fallbackTriggered) return;
         fallbackTriggered = true;
@@ -69,8 +69,6 @@ const playTTS = (text: string, rate: number, onEnd: () => void) => {
   utterance.onerror = onEnd; // resolve even on error
   window.speechSynthesis.speak(utterance);
 };
-
-
 
 export const playEffectAudio = (type: "correct" | "wrong" | "sticker") => {
   // These could be actual .mp3 files later

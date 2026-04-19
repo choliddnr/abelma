@@ -13,7 +13,7 @@ export type CloudAlphabetProgress = {
   score: number;
   level: number;
   weights: string; // JSON string
-  challengeConfig?: string; // JSON string of AlphabetChallengeModeConfig[]
+  quizConfig?: string; // JSON string of AlphabetQuizModeConfig[]
   updatedAt: string;
 };
 
@@ -42,6 +42,6 @@ export type CloudProfile = {
   rewards: CloudReward[];
   stickers: CloudSticker[];
   analytics: CloudAnalytics[];
-  alphabetChallengeProgress: CloudAlphabetProgress | null;
+  alphabetQuizProgress: CloudAlphabetProgress | null;
   storybookProgress: CloudStorybook[];
 };

@@ -11,7 +11,7 @@ export type User = {
   name: string;
   avatar: string;
   email?: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 export type Profile = {
@@ -29,7 +29,7 @@ export type Reward = {
   cost: number;
   emoji: string;
   status: "available" | "claimed" | "fulfilled";
-  claimedAt?: string;
+  claimedAt?: Date;
 };
 
 export type DefaultReward = {
@@ -61,29 +61,29 @@ export type Analytics = {
   type: "letter" | "word";
   targetId: string;
   mistakes: number;
-  lastAttempt: string;
+  lastAttempt: Date;
 };
 
 export type WordAnalytics = {
   mistakes: number;
-  lastAttempt: string;
+  lastAttempt: Date;
 };
 
-export type ChallengeLevelConfig = {
+export type QuizLevelConfig = {
   targetWeight: number;
   timer: number; // 0 = off, otherwise seconds
   streak: number; // threshold for bonus reward
   streakReward: number; // koin reward
 };
 
-export type AlphabetChallengeModeConfig = ChallengeLevelConfig[];
+export type AlphabetQuizModeConfig = QuizLevelConfig[];
 
-export type AlphabetChallengeProgress = {
+export type AlphabetQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig?: AlphabetChallengeModeConfig;
-  updatedAt: string;
+  quizConfig?: AlphabetQuizModeConfig;
+  updatedAt: Date;
 };
 
 // ==================== SETTINGS TYPES ====================
@@ -103,12 +103,12 @@ export type WordSettings = {
   letterCase: LetterCase; // Legacy/Default
 };
 
-export type WordChallengeProgress = {
+export type WordQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig: WordLevelConfig[];
-  updatedAt: string;
+  quizConfig: WordLevelConfig[];
+  updatedAt: Date;
 };
 
 // ==================== SYNC TYPES ====================
@@ -129,12 +129,8 @@ export type CloudData = {
   rewards?: Reward[] | Record<string, Reward[]>;
   stickers?: (string | Sticker)[] | Record<string, string[]>;
   analytics?: Analytics[] | Record<string, Record<string, WordAnalytics>>;
-  alphabetProgress?:
-    | AlphabetChallengeProgress
-    | Record<string, AlphabetChallengeProgress>;
-  wordProgress?:
-    | WordChallengeProgress
-    | Record<string, WordChallengeProgress>;
+  alphabetProgress?: AlphabetQuizProgress | Record<string, AlphabetQuizProgress>;
+  wordProgress?: WordQuizProgress | Record<string, WordQuizProgress>;
   settings?: WordSettings;
 };
 

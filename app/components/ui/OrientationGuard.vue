@@ -13,11 +13,7 @@ const checkOrientation = () => {
 };
 
 const tryLockOrientation = async () => {
-  if (
-    typeof screen !== "undefined" &&
-    screen.orientation &&
-    screen.orientation.lock
-  ) {
+  if (typeof screen !== "undefined" && screen.orientation && screen.orientation.lock) {
     try {
       // @ts-ignore - lock might not be in the type defs for all versions
       await screen.orientation.lock("landscape");
@@ -50,7 +46,7 @@ onUnmounted(() => {
     >
       <div
         class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-20 pointer-events-none"
-        style="background-image: url('/bg1.webp')"
+        style="background-image: url(&quot;/bg1.webp&quot;)"
       ></div>
 
       <div class="relative z-10 flex flex-col items-center">
@@ -63,9 +59,7 @@ onUnmounted(() => {
               <div
                 class="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1 bg-[#8B7700]/10 rounded-full"
               ></div>
-              <div
-                class="w-12 h-12 rounded-full bg-primary/30 animate-pulse"
-              ></div>
+              <div class="w-12 h-12 rounded-full bg-primary/30 animate-pulse"></div>
               <div
                 class="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[#8B7700]/10"
               ></div>
@@ -110,21 +104,19 @@ onUnmounted(() => {
           </svg>
         </div>
 
-        <h1 class="text-4xl font-black text-[#8B7700] mb-4 drop-shadow-sm">
-          Putar Layar Kamu!
-        </h1>
+        <h1 class="text-4xl font-black text-[#8B7700] mb-4 drop-shadow-sm">Putar Layar Kamu!</h1>
         <p class="text-2xl font-bold text-[#A69200] max-w-sm leading-relaxed">
-          Abelma paling asik dimainkan dalam posisi <span class="text-primary-dark">Landscape</span> (miring).
+          Abelma paling asik dimainkan dalam posisi
+          <span class="text-primary-dark">Landscape</span> (miring).
         </p>
 
-        <button
-          @click="tryLockOrientation"
-          class="mt-12 group relative"
-        >
-          <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:blur-2xl transition-all"></div>
+        <button @click="tryLockOrientation" class="mt-12 group relative">
+          <div
+            class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:blur-2xl transition-all"
+          ></div>
           <div class="btn-primary relative z-10 flex items-center gap-3">
-             <span class="text-2xl">🔄</span>
-             Ok, Mengerti!
+            <span class="text-2xl">🔄</span>
+            Ok, Mengerti!
           </div>
         </button>
       </div>
@@ -182,6 +174,6 @@ onUnmounted(() => {
 }
 
 .text-primary-dark {
-    color: #8B7700;
+  color: #8b7700;
 }
 </style>

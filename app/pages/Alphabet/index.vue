@@ -7,14 +7,14 @@ onMounted(() => {
   preloadSounds();
 });
 
-const startChallenge = () => {
-  navigateTo("/alphabet/challenge");
+const startQuiz = () => {
+  navigateTo("/alphabet/quiz");
 };
 </script>
 
 <template>
   <div class="alphabet-view-container overflow-x-hidden mt-4">
-    <AlphabetLearningMode @start-challenge="startChallenge" />
+    <AlphabetLearningMode @start-quiz="startQuiz" />
   </div>
 </template>
 

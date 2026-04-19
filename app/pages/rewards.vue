@@ -50,7 +50,7 @@ const handleClaim = async (reward: Reward) => {
               message: `Kamu berhasil menukar ${reward.title}!`,
               rewardAmount: null,
               footerText: "Tunggu Ayah/Bunda ya...",
-              mainEmoji: reward.emoji || "🎁"
+              mainEmoji: reward.emoji || "🎁",
             };
             setTimeout(() => {
               celebrationData.value.show = false;
@@ -67,7 +67,7 @@ const handleClaim = async (reward: Reward) => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col p-4 md:p-8 relative overflow-hidden">
+  <div class="h-auto flex flex-col p-4 md:p-8 relative overflow-hidden">
     <!-- Background Decoration -->
     <div
       class="absolute -top-10 -right-10 w-64 h-64 bg-amber-200/30 rounded-full blur-3xl"
@@ -207,9 +207,11 @@ const handleClaim = async (reward: Reward) => {
               >
                 Toko hadiahnya masih kosong
               </h2>
-              <p class="text-slate-600 font-bold text-base sm:text-lg leading-relaxed">
-                Belum ada hadiah yang disiapkan Ayah/Bunda. Tenang — koinmu tetap aman. Yuk
-                lanjut belajar, nanti cek lagi!
+              <p
+                class="text-slate-600 font-bold text-base sm:text-lg leading-relaxed"
+              >
+                Belum ada hadiah yang disiapkan Ayah/Bunda. Tenang — koinmu
+                tetap aman. Yuk lanjut belajar, nanti cek lagi!
               </p>
             </div>
 
@@ -243,8 +245,8 @@ const handleClaim = async (reward: Reward) => {
       v-else
       class="mt-8 text-center text-slate-500 font-bold font-quicksand text-sm sm:text-base max-w-md mx-auto leading-relaxed px-2"
     >
-      Begitu Ayah/Bunda menambah hadiah baru, kamu bisa langsung menukarnya dengan
-      koin. ✨
+      Begitu Ayah/Bunda menambah hadiah baru, kamu bisa langsung menukarnya
+      dengan koin. ✨
     </div>
 
     <!-- Reward Celebration Pop-up -->

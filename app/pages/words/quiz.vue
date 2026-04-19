@@ -5,7 +5,7 @@ import type { Sticker } from "@/types/stores";
 
 const router = useRouter();
 const wordStore = useWordStore();
-const { wordChallengeProgress } = storeToRefs(wordStore);
+const { wordQuizProgress } = storeToRefs(wordStore);
 const { activeProfileId } = storeToRefs(useProfileStore());
 const { changeCoins } = useProfileStore();
 const goBack = () => router.push("/words");
@@ -29,11 +29,8 @@ const currentLevel = computed(() => {
 });
 
 const currentLevelConfig = computed(() => {
-  const levels = wordChallengeProgress.value.challengeConfig || [];
-  const idx = Math.min(
-    currentLevel.value - 1,
-    Math.max(0, levels.length - 1),
-  );
+  const levels = wordQuizProgress.value.quizConfig || [];
+  const idx = Math.min(currentLevel.value - 1, Math.max(0, levels.length - 1));
   return (
     levels[idx] || {
       timer: 30,
@@ -45,7 +42,7 @@ const currentLevelConfig = computed(() => {
 });
 
 const timerMax = computed(() => currentLevelConfig.value.timer);
-let timerInterval: number | null = null;
+let timerInterval: any = null;
 
 const progressPercentage = computed(() => (score.value / maxScore) * 100);
 
@@ -297,9 +294,6 @@ const playTargetAudio = () => {
     activityType.value === "PICK_WORD"
       ? "Cari tulisan " + currentTarget.value.word.toLowerCase()
       : "Eja kata" + currentTarget.value.word.toLowerCase();
-  if (currentLevel.value >= 2) {
-    textToSpeak = "Mana tulisan yang cocok?";
-  }
 
   playWordAudio(textToSpeak, `/audio/words/${currentTarget.value.id}.mp3`);
 };
@@ -453,8 +447,8 @@ const syncProgressToDb = async () => {
 onMounted(async () => {
   await wordStore.fetch();
   // Initialize local score from database if available
-  if (wordChallengeProgress.value.score) {
-    score.value = wordChallengeProgress.value.score;
+  if (wordQuizProgress.value.score) {
+    score.value = wordQuizProgress.value.score;
   }
   initQuestion();
 });
@@ -465,8 +459,9 @@ onUnmounted(async () => {
   await syncProgressToDb();
 });
 
-onBeforeRouteLeave(async () => {
-  await syncProgressToDb();
+onScopeDispose(() => {
+  if (timerInterval) clearInterval(timerInterval);
+  window.speechSynthesis.cancel();
 });
 </script>
 
@@ -502,7 +497,7 @@ onBeforeRouteLeave(async () => {
       </div>
     </UiCelebrationModal>
 
-    <!-- Challenge Dashboard (Premium Header) -->
+    <!-- Quiz Dashboard (Premium Header) -->
     <div
       class="shrink-0 px-4 pt-4 flex flex-col items-center justify-center min-h-[80px] z-20"
     >
@@ -692,7 +687,9 @@ onBeforeRouteLeave(async () => {
                         .split("")
                         .map((l, idx) =>
                           // Use a semi-stable randomization based on word and index to avoid flickering
-                          (option.word.charCodeAt(idx) + option.id.length) % 2 === 0
+                          (option.word.charCodeAt(idx) + option.id.length) %
+                            2 ===
+                          0
                             ? l.toUpperCase()
                             : l.toLowerCase(),
                         )

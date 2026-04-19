@@ -1,4 +1,4 @@
-import { alphabetChallengeProgress } from "#server/utils/db/schema";
+import { alphabetQuizProgress } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
@@ -8,12 +8,12 @@ export default defineEventHandler(async (event) => {
 
   try {
     return await d1
-      .update(alphabetChallengeProgress)
+      .update(alphabetQuizProgress)
       .set({
-        challengeConfig: JSON.stringify(payload.challengeConfig),
+        quizConfig: JSON.stringify(payload.quizConfig),
         updatedAt: new Date(),
       })
-      .where(eq(alphabetChallengeProgress.profileId, profileId))
+      .where(eq(alphabetQuizProgress.profileId, profileId))
       .returning()
       .get();
   } catch (error) {

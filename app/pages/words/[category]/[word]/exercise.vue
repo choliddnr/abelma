@@ -27,9 +27,7 @@ const expectedLetters = computed(() => targetWord.value.split(""));
 // State
 const isComplete = ref(false);
 const placedLetters = ref<(string | null)[]>([]);
-const availableLetters = ref<
-  { id: string; letter: string; isDragging?: boolean }[]
->([]);
+const availableLetters = ref<{ id: string; letter: string; isDragging?: boolean }[]>([]);
 const wrongDropIndex = ref<number | null>(null);
 const autoPlayTimeout = ref<number | null>(null);
 const touchPosition = ref({ x: 0, y: 0 });
@@ -38,21 +36,14 @@ const isTouching = ref(false);
 const initializeGame = () => {
   if (!targetWord.value) return;
   isComplete.value = false;
-  placedLetters.value = Array.from(
-    { length: targetWord.value.length },
-    () => null,
-  );
+  placedLetters.value = Array.from({ length: targetWord.value.length }, () => null);
 
   // Generate available letters (target + some noise)
-  const letters = targetWord.value
-    .split("")
-    .map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
+  const letters = targetWord.value.split("").map((l, i) => ({ id: `target-${i}-${l}`, letter: l }));
 
   // Fix T2: Use Set to safely filter noise letters without unsafe regex
   const wordLetterSet = new Set(targetWord.value.toUpperCase().split(""));
-  const noisePool = "ABCDEFGHJKLMNOPQRSTUVWXYZ"
-    .split("")
-    .filter((l) => !wordLetterSet.has(l));
+  const noisePool = "ABCDEFGHJKLMNOPQRSTUVWXYZ".split("").filter((l) => !wordLetterSet.has(l));
   for (let i = noisePool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [noisePool[i], noisePool[j]] = [noisePool[j]!, noisePool[i]!];
@@ -188,11 +179,7 @@ const dropAtSlot = (slotIndex: number) => {
     checkCompletion();
   } else {
     if (wordData.value && activeProfileId.value) {
-      analyticsStore.recordMistake(
-        activeProfileId.value,
-        "word",
-        wordData.value.id,
-      );
+      analyticsStore.recordMistake(activeProfileId.value, "word", wordData.value.id);
     }
     wrongDropIndex.value = slotIndex;
     setTimeout(() => {
@@ -239,16 +226,12 @@ const onTouchMove = (e: TouchEvent) => {
 
   const el = document.elementFromPoint(touch.clientX, touch.clientY);
   const slotEl = el?.closest("[data-slot-index]");
-  hoveredSlotIndex.value = slotEl
-    ? parseInt(slotEl.getAttribute("data-slot-index")!)
-    : null;
+  hoveredSlotIndex.value = slotEl ? parseInt(slotEl.getAttribute("data-slot-index")!) : null;
 };
 
 const onTouchEnd = (e: TouchEvent) => {
   const savedLetterObj =
-    draggedItemIndex.value !== null
-      ? availableLetters.value[draggedItemIndex.value]
-      : null;
+    draggedItemIndex.value !== null ? availableLetters.value[draggedItemIndex.value] : null;
 
   const touch = e.changedTouches[0];
   if (touch) {
@@ -267,10 +250,7 @@ const onTouchEnd = (e: TouchEvent) => {
 </script>
 
 <template>
-  <div
-    v-if="wordData"
-    class="flex flex-col min-h-screen overflow-hidden relative"
-  >
+  <div v-if="wordData" class="flex flex-col min-h-screen overflow-hidden relative">
     <!-- Celebration Modal -->
     <UiCelebrationModal
       v-model="isComplete"
@@ -315,9 +295,7 @@ const onTouchEnd = (e: TouchEvent) => {
           v-for="(slot, index) in placedLetters"
           :key="`slot-${index}`"
           :data-slot-index="index"
-          @click="
-            placedLetters[index] !== null ? putBackLetter(index) : undefined
-          "
+          @click="placedLetters[index] !== null ? putBackLetter(index) : undefined"
           @dragover.prevent
           @dragenter.prevent="onDragEnter(index)"
           @dragleave.prevent="onDragLeave(index)"
@@ -327,9 +305,7 @@ const onTouchEnd = (e: TouchEvent) => {
             placedLetters[index] !== null
               ? 'bg-emerald-400 border-white shadow-[0_10px_20px_rgba(52,211,153,0.4)] scale-105 cursor-pointer'
               : 'bg-slate-100 border-dashed border-slate-300 shadow-inner',
-            wrongDropIndex === index
-              ? 'shake-animation bg-rose-400 border-rose-500'
-              : '',
+            wrongDropIndex === index ? 'shake-animation bg-rose-400 border-rose-500' : '',
             hoveredSlotIndex === index && placedLetters[index] === null
               ? 'ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]'
               : '',
@@ -359,9 +335,7 @@ const onTouchEnd = (e: TouchEvent) => {
           <p
             class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest font-quicksand"
           >
-            {{
-              isComplete ? "Luar biasa!" : "Tarik huruf ke dalam kotak kosong"
-            }}
+            {{ isComplete ? "Luar biasa!" : "Tarik huruf ke dalam kotak kosong" }}
           </p>
           <div class="flex flex-wrap justify-center gap-3 md:gap-4 w-full">
             <BubbleCard
@@ -375,9 +349,7 @@ const onTouchEnd = (e: TouchEvent) => {
               @touchend.prevent="onTouchEnd($event)"
               class="w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300 touch-none"
               :class="[
-                item.isDragging
-                  ? 'opacity-20 scale-95 rotate-6'
-                  : 'opacity-100',
+                item.isDragging ? 'opacity-20 scale-95 rotate-6' : 'opacity-100',
                 isComplete ? 'opacity-0 scale-50 pointer-events-none' : '',
               ]"
             >

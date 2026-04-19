@@ -79,40 +79,24 @@ const highlightedWord = computed(() => {
         </div>
         <div class="text-center space-y-2">
           <p class="text-3xl font-bold text-gray-500">untuk...</p>
-          <h2
-            class="text-6xl md:text-8xl font-black tracking-wide"
-            v-html="highlightedWord"
-          ></h2>
+          <h2 class="text-6xl md:text-8xl font-black tracking-wide" v-html="highlightedWord"></h2>
         </div>
       </div>
     </div>
 
     <div class="flex gap-6">
-      <UiButton
-        label="Daftar Huruf"
-        icon="📚"
-        variant="secondary"
-        @click="router.push(`/alphabet`)"
-        ><span class="hidden sm:block font-bold text-lg"
-          >Daftar Huruf</span
-        ></UiButton
+      <UiButton label="Daftar Huruf" icon="📚" variant="secondary" @click="router.push(`/alphabet`)"
+        ><span class="hidden sm:block font-bold text-lg">Daftar Huruf</span></UiButton
       >
-      <UiButton
-        label="Buka Cerita"
-        icon="📖"
-        @click="router.push(`/alphabet/${letter}/story`)"
-        ><span class="hidden sm:block font-bold text-lg"
-          >Buka Cerita</span
-        ></UiButton
+      <UiButton label="Buka Cerita" icon="📖" @click="router.push(`/alphabet/${letter}/story`)"
+        ><span class="hidden sm:block font-bold text-lg">Buka Cerita</span></UiButton
       >
       <UiButton
         label="Latihan Menulis"
         icon="✍️"
         variant="accent"
         @click="router.push(`/alphabet/${letter}/trace`)"
-        ><span class="hidden sm:block font-bold text-lg"
-          >Latihan Menulis</span
-        ></UiButton
+        ><span class="hidden sm:block font-bold text-lg">Latihan Menulis</span></UiButton
       >
     </div>
   </div>

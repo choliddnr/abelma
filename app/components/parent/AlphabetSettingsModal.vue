@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ChallengeLevelConfig } from "@/types/stores";
+import type { QuizLevelConfig } from "@/types/stores";
 
 const props = defineProps<{
   isOpen: boolean;
@@ -10,7 +10,7 @@ const emit = defineEmits<{
   (e: "switchToWord"): void;
 }>();
 
-const { alphabetChallangeProgress } = storeToRefs(useAlphabetStore());
+const { alphabetQuizProgress } = storeToRefs(useAlphabetStore());
 const { saveConfig } = useAlphabetStore();
 const { activeProfileId } = storeToRefs(useProfileStore());
 
@@ -20,7 +20,7 @@ const isSaving = ref(false);
 
 // Watch for initial load to set baseline
 watch(
-  () => alphabetChallangeProgress.value?.challengeConfig,
+  () => alphabetQuizProgress.value?.quizConfig,
   (newVal) => {
     if (newVal && !lastSavedConfig.value) {
       lastSavedConfig.value = JSON.stringify(newVal);
@@ -31,26 +31,22 @@ watch(
 
 const hasChanges = computed(() => {
   return (
-    alphabetChallangeProgress.value?.challengeConfig &&
-    JSON.stringify(alphabetChallangeProgress.value.challengeConfig) !==
-      lastSavedConfig.value
+    alphabetQuizProgress.value?.quizConfig &&
+    JSON.stringify(alphabetQuizProgress.value.quizConfig) !== lastSavedConfig.value
   );
 });
 
 const handleSave = async () => {
-  if (!activeProfileId.value || !alphabetChallangeProgress.value?.challengeConfig)
-    return;
+  if (!activeProfileId.value || !alphabetQuizProgress.value?.quizConfig) return;
 
   isSaving.value = true;
   try {
     const success = await saveConfig(
       activeProfileId.value,
-      alphabetChallangeProgress.value.challengeConfig,
+      alphabetQuizProgress.value.quizConfig,
     );
     if (success) {
-      lastSavedConfig.value = JSON.stringify(
-        alphabetChallangeProgress.value.challengeConfig,
-      );
+      lastSavedConfig.value = JSON.stringify(alphabetQuizProgress.value.quizConfig);
     }
   } catch (e) {
     console.error("Save error:", e);
@@ -61,21 +57,21 @@ const handleSave = async () => {
 
 const updateConfigField = (
   levelIndex: number,
-  field: keyof ChallengeLevelConfig,
+  field: keyof QuizLevelConfig,
   value: number,
 ) => {
   if (!activeProfileId.value) return;
 
-  const config = alphabetChallangeProgress.value?.challengeConfig;
+  const config = alphabetQuizProgress.value?.quizConfig;
   if (!config) return;
 
   const updatedConfig = [...config];
   updatedConfig[levelIndex] = {
     ...updatedConfig[levelIndex],
     [field]: Math.max(0, Number(value)),
-  } as ChallengeLevelConfig;
+  } as QuizLevelConfig;
 
-  alphabetChallangeProgress.value.challengeConfig = updatedConfig;
+  alphabetQuizProgress.value.quizConfig = updatedConfig;
 };
 
 // Prevent scrolling when modal is open
@@ -91,15 +87,9 @@ watch(
 
 <template>
   <Transition name="modal">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-    >
+    <div v-if="isOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
       <!-- Backdrop -->
-      <div
-        class="absolute inset-0 bg-slate-900/40 backdrop-blur-md"
-        @click="emit('close')"
-      ></div>
+      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" @click="emit('close')"></div>
 
       <!-- Modal Container -->
       <div
@@ -137,8 +127,7 @@ watch(
         <div class="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div
-              v-for="(cfg, idx) in alphabetChallangeProgress?.challengeConfig ||
-              []"
+              v-for="(cfg, idx) in alphabetQuizProgress?.quizConfig || []"
               :key="idx"
               class="bg-white rounded-4xl border-2 border-slate-100 p-6 space-y-6 shadow-sm"
             >
@@ -147,20 +136,15 @@ watch(
                 <div
                   class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white shadow-lg"
                   :class="
-                    ['bg-sky-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400'][
-                      idx
-                    ] || 'bg-slate-400'
+                    ['bg-sky-400', 'bg-emerald-400', 'bg-amber-400', 'bg-rose-400'][idx] ||
+                    'bg-slate-400'
                   "
                 >
                   {{ idx + 1 }}
                 </div>
                 <div>
-                  <p class="font-black text-slate-800 font-quicksand">
-                    Level {{ idx + 1 }}
-                  </p>
-                  <p
-                    class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
-                  >
+                  <p class="font-black text-slate-800 font-quicksand">Level {{ idx + 1 }}</p>
+                  <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                     {{ levelLabels[idx] || "Kustom" }}
                   </p>
                 </div>
@@ -170,12 +154,8 @@ watch(
               <div class="space-y-3">
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <label class="text-xs font-black text-slate-600"
-                      >Target Bobot</label
-                    >
-                    <p class="text-[10px] text-slate-400 italic">
-                      Benar untuk naik level
-                    </p>
+                    <label class="text-xs font-black text-slate-600">Target Bobot</label>
+                    <p class="text-[10px] text-slate-400 italic">Benar untuk naik level</p>
                   </div>
                   <input
                     type="number"
@@ -195,12 +175,8 @@ watch(
 
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <label class="text-xs font-black text-slate-600"
-                      >Timer (detik)</label
-                    >
-                    <p class="text-[10px] text-slate-400 italic">
-                      0 = tanpa batas
-                    </p>
+                    <label class="text-xs font-black text-slate-600">Timer (detik)</label>
+                    <p class="text-[10px] text-slate-400 italic">0 = tanpa batas</p>
                   </div>
                   <input
                     type="number"
@@ -220,12 +196,8 @@ watch(
 
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <label class="text-xs font-black text-slate-600"
-                      >Streak 🔥</label
-                    >
-                    <p class="text-[10px] text-slate-400 italic">
-                      Target beruntun
-                    </p>
+                    <label class="text-xs font-black text-slate-600">Streak 🔥</label>
+                    <p class="text-[10px] text-slate-400 italic">Target beruntun</p>
                   </div>
                   <input
                     type="number"
@@ -245,12 +217,8 @@ watch(
 
                 <div class="flex items-center justify-between gap-4">
                   <div>
-                    <label class="text-xs font-black text-slate-600"
-                      >Koin 🪙</label
-                    >
-                    <p class="text-[10px] text-slate-400 italic">
-                      Bonus hadiah
-                    </p>
+                    <label class="text-xs font-black text-slate-600">Koin 🪙</label>
+                    <p class="text-[10px] text-slate-400 italic">Bonus hadiah</p>
                   </div>
                   <input
                     type="number"

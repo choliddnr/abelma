@@ -34,34 +34,22 @@ setup("e2e", async ({ page }) => {
       const letterToClick = letterButtons.nth(randomIndex);
 
       // Log for clarity
-      const letterText = await letterToClick
-        .locator("span")
-        .first()
-        .innerText();
+      const letterText = await letterToClick.locator("span").first().innerText();
       console.log(`Step 2.${i + 1}: Clicking letter ${letterText}`);
 
       await letterToClick.click();
       // Wait for the sound to start and then finish
-      await expect(page.locator("[data-speaking]")).toHaveAttribute(
-        "data-speaking",
-        "true",
-      );
-      await expect(page.locator("[data-speaking]")).toHaveAttribute(
-        "data-speaking",
-        "false",
-      );
+      await expect(page.locator("[data-speaking]")).toHaveAttribute("data-speaking", "true");
+      await expect(page.locator("[data-speaking]")).toHaveAttribute("data-speaking", "false");
 
       // wait for some UI feedback instead (example)
       await expect(letterToClick).toBeVisible(); // or animation/active state if available
     }
 
     // Then click 'mulai tantangan'.
-    const startChallengeButton = page.getByText("Mulai Tantangan!");
-    await expect(startChallengeButton).toBeVisible();
-    await Promise.all([
-      page.waitForURL(/\/alphabet\/challenge$/),
-      startChallengeButton.click(),
-    ]);
+    const startQuizButton = page.getByText("Mulai Tantangan!");
+    await expect(startQuizButton).toBeVisible();
+    await Promise.all([page.waitForURL(/\/alphabet\/quiz$/), startQuizButton.click()]);
 
     await expect(page.locator("text=🏆")).toBeVisible();
 
@@ -70,20 +58,16 @@ setup("e2e", async ({ page }) => {
 
     // Get initial score
     const scoreLocator = page.locator("text=🏆");
-    const initialScoreText = (await scoreLocator.innerText()).replace(
-      /[^\d]/g,
-      "",
-    );
+    const initialScoreText = (await scoreLocator.innerText()).replace(/[^\d]/g, "");
     const initialScore = parseInt(initialScoreText) || 0;
     console.log(`Initial score: ${initialScore}`);
 
     // Find the target letter from the data-attribute (added for testability)
-    const challengeContainer = page.locator("[data-target-letter]");
-    await expect(challengeContainer).toBeVisible();
+    const quizContainer = page.locator("[data-target-letter]");
+    await expect(quizContainer).toBeVisible();
 
-    const targetLetter =
-      await challengeContainer.getAttribute("data-target-letter");
-    console.log(`Challenge target letter: ${targetLetter}`);
+    const targetLetter = await quizContainer.getAttribute("data-target-letter");
+    console.log(`Quiz target letter: ${targetLetter}`);
 
     if (targetLetter) {
       // Click the button that matches the target letter
@@ -102,10 +86,7 @@ setup("e2e", async ({ page }) => {
       await expect(scoreLocator).not.toHaveText(initialScore.toString());
 
       // Verify the score increases
-      const finalScoreText = (await scoreLocator.innerText()).replace(
-        /[^\d]/g,
-        "",
-      );
+      const finalScoreText = (await scoreLocator.innerText()).replace(/[^\d]/g, "");
       const finalScore = parseInt(finalScoreText) || 0;
       console.log(`Final score: ${finalScore}`);
 
@@ -128,21 +109,16 @@ setup("e2e", async ({ page }) => {
       const koinText = await koinAfterReload.innerText();
       console.log(`Koin value after reload: ${koinText}`);
       // Extract number from "X Koin" or just check if it's there
-      expect(parseInt(koinText.replace(/[^\d]/g, ""))).toBeGreaterThanOrEqual(
-        0,
-      );
+      expect(parseInt(koinText.replace(/[^\d]/g, ""))).toBeGreaterThanOrEqual(0);
 
       // 7. Click "mulai tantangan" again
-      const restartChallengeButton = page.getByText("Mulai Tantangan!");
-      await restartChallengeButton.click();
-      await expect(page).toHaveURL(/\/alphabet\/challenge$/);
+      const restartQuizButton = page.getByText("Mulai Tantangan!");
+      await restartQuizButton.click();
+      await expect(page).toHaveURL(/\/alphabet\/quiz$/);
 
       // 8. Make sure the score value is preserved
       const scoreAfterReload = page.locator("text=🏆");
-      const scoreValueText = (await scoreAfterReload.innerText()).replace(
-        /[^\d]/g,
-        "",
-      );
+      const scoreValueText = (await scoreAfterReload.innerText()).replace(/[^\d]/g, "");
       const scoreValue = parseInt(scoreValueText) || 0;
       console.log(`Score value after reload: ${scoreValue}`);
 
@@ -172,7 +148,7 @@ setup("Alphabet learning controls functionality", async ({ page }) => {
     await expect(caseToggleButton).toContainText("Kecil");
     // Verify uppercase 'A' is visible since default is uppercase
     await expect(page.locator(".grid button").first()).toContainText("A");
-    
+
     await caseToggleButton.click();
     await expect(caseToggleButton).toContainText("Besar");
     // Verify lowercase 'a' is visible
@@ -183,7 +159,7 @@ setup("Alphabet learning controls functionality", async ({ page }) => {
     await expect(randomizeButton).toContainText("Acak");
     await randomizeButton.click();
     await expect(randomizeButton).toContainText("Normal");
-    
+
     await randomizeButton.click();
     await expect(randomizeButton).toContainText("Acak");
 
@@ -192,10 +168,10 @@ setup("Alphabet learning controls functionality", async ({ page }) => {
     await expect(autoPlayButton).toContainText("Otomatis");
     await autoPlayButton.click();
     await expect(autoPlayButton).toContainText("Berhenti");
-    
+
     // Auto-play should trigger speaking
     await expect(page.locator("[data-speaking]")).toHaveAttribute("data-speaking", "true");
-    
+
     // Stop auto-play
     await autoPlayButton.click();
     await expect(autoPlayButton).toContainText("Otomatis");

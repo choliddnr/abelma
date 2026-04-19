@@ -2,28 +2,28 @@ export type BaseRes = {
   status: boolean;
 };
 
-export type AlphabetChallengeProgress = {
+export type AlphabetQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig: any[];
-  updatedAt: string;
+  quizConfig: any[];
+  updatedAt: Date;
 };
 
-export type WordChallengeProgress = {
+export type WordQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  challengeConfig: any[];
-  updatedAt: string;
+  quizConfig: any[];
+  updatedAt: Date;
 };
 
-export type ReqAlphabetChallangeProgressPut = {
+export type ReqAlphabetQuizProgressPut = {
   coins: number;
-  progress: AlphabetChallengeProgress;
+  progress: AlphabetQuizProgress;
 };
 
-export type ResAlphabetChallangeProgressGet = {
+export type ResAlphabetQuizProgressGet = {
   score: number;
   level: number;
   weights: Record<string, number>;
@@ -65,6 +65,6 @@ export type ResProfilePost = {
   name: string;
   avatar: string;
   coins: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -18,7 +18,7 @@ const navigateToWord = (wordId: string) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 min-h-screen">
+  <div class="flex flex-col gap-4 h-auto">
     <!-- Header -->
     <div class="flex items-center justify-center shrink-0 px-4 pt-4 pb-2 z-10">
       <h1

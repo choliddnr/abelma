@@ -41,11 +41,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const profile = results[0];
-    return {
-      ...profile,
-      createdAt: profile!.createdAt.toISOString(),
-      updatedAt: profile!.updatedAt.toISOString(),
-    } as ResProfilePost;
+    return profile as ResProfilePost;
   } catch (e) {
     // Standardized error response according to project rules
     return sendError(

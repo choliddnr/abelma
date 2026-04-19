@@ -1,4 +1,4 @@
-import { wordChallengeProgress } from "#server/utils/db/schema";
+import { wordQuizProgress } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
@@ -7,31 +7,31 @@ export default defineEventHandler(async (event) => {
   try {
     const res = await d1
       .select({
-        score: wordChallengeProgress.score,
-        level: wordChallengeProgress.level,
-        weights: wordChallengeProgress.weights,
-        challengeConfig: wordChallengeProgress.challengeConfig,
-        updatedAt: wordChallengeProgress.updatedAt,
+        score: wordQuizProgress.score,
+        level: wordQuizProgress.level,
+        weights: wordQuizProgress.weights,
+        quizConfig: wordQuizProgress.quizConfig,
+        updatedAt: wordQuizProgress.updatedAt,
       })
-      .from(wordChallengeProgress)
-      .where(eq(wordChallengeProgress.profileId, profileId))
+      .from(wordQuizProgress)
+      .where(eq(wordQuizProgress.profileId, profileId))
       .get();
 
     if (res)
       return {
         ...res,
         weights: JSON.parse(res.weights),
-        challengeConfig: JSON.parse(res.challengeConfig),
+        quizConfig: JSON.parse(res.quizConfig),
       };
 
     const res2 = await d1
-      .insert(wordChallengeProgress)
+      .insert(wordQuizProgress)
       .values({
         profileId: profileId,
         score: 0,
         level: 1,
         weights: JSON.stringify({}),
-        challengeConfig: JSON.stringify([]),
+        quizConfig: JSON.stringify([]),
       })
       .returning()
       .get();
@@ -39,10 +39,10 @@ export default defineEventHandler(async (event) => {
     return {
       ...res2,
       weights: JSON.parse(res2.weights),
-      challengeConfig: JSON.parse(res2.challengeConfig),
+      quizConfig: JSON.parse(res2.quizConfig),
     };
   } catch (error) {
-    console.error("Error selecting word challenge progress:", error);
+    console.error("Error selecting word quiz progress:", error);
     throw createError({
       statusCode: 500,
       statusMessage: "Internal Server Error",

@@ -4,5 +4,5 @@ export type AlphabetStorybook = {
   title: string;
   story: string[];
   themeColor: string;
-  challenge: { question: string; target: string; options: string[] }[];
+  quiz: { question: string; target: string; options: string[] }[];
 };

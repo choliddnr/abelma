@@ -49,7 +49,7 @@ Many stores contain large blocks of commented-out code.
 ### ⚠️ Refactoring & Cleanliness
 
 - **Inconsistent Action Implementation**: Some actions are functional, others are just placeholders returning `true` or doing nothing (e.g., `rewardStore.ts`'s `claimReward` simply returns `true`).
-- **`alphabetStore.ts`**: The `alphabetChallangeProgress` computed property currently just returns a default constant, bypassing the actual logic that was commented out.
+- **`alphabetStore.ts`**: The `alphabetQuizProgress` computed property currently just returns a default constant, bypassing the actual logic that was commented out.
 
 ---
 

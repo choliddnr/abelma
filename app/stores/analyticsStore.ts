@@ -21,12 +21,12 @@ export const useAnalyticsStore = defineStore(
       if (!analyticsMap.value[profileId][targetId]) {
         analyticsMap.value[profileId][targetId] = {
           mistakes: 0,
-          lastAttempt: "",
+          lastAttempt: new Date(),
         };
       }
 
       analyticsMap.value[profileId][targetId].mistakes++;
-      analyticsMap.value[profileId][targetId].lastAttempt = new Date().toISOString();
+      analyticsMap.value[profileId][targetId].lastAttempt = new Date();
     };
 
     const getProfileAnalytics = async (

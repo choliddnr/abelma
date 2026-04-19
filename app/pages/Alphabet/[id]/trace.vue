@@ -115,9 +115,7 @@ const retry = () => {
       <div
         class="bg-white rounded-[24px] sm:rounded-[40px] p-5 sm:p-8 max-w-lg w-full shadow-2xl border-4 sm:border-8 border-blue-400 flex flex-col items-center text-center animate-bounce-in"
       >
-        <h2
-          class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm"
-        >
+        <h2 class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm">
           {{
             scoreResult.stars === 5
               ? "Sempurna!"
@@ -151,10 +149,7 @@ const retry = () => {
         >
           <span>💰</span> +{{ coinsEarned }} Koin!
         </div>
-        <div
-          v-else
-          class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8"
-        >
+        <div v-else class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8">
           Gambar lebih rapi for dapat koin!
         </div>
 
@@ -165,10 +160,7 @@ const retry = () => {
           >
             Ulangi
           </button>
-          <button
-            @click="goBack"
-            class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4"
-          >
+          <button @click="goBack" class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4">
             Lanjut
           </button>
         </div>
@@ -181,8 +173,8 @@ const retry = () => {
         v-if="showIncompleteToast"
         class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-lg sm:text-2xl shadow-2xl flex items-center gap-3 sm:gap-4 w-[90%] sm:w-auto justify-center"
       >
-        <span class="text-2xl sm:text-3xl">⚠️</span> Sepertinya kamu belum
-        selesai menggambar! Ayo coba lagi! 😊
+        <span class="text-2xl sm:text-3xl">⚠️</span> Sepertinya kamu belum selesai menggambar! Ayo
+        coba lagi! 😊
       </div>
     </transition>
   </div>

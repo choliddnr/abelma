@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const { session, isLoaded } = storeToRefs(useUserStore());
+const { fetchSession } = useUserStore();
+const { fetchProfiles } = useProfileStore();
+
 isLoaded.value = false;
-callOnce(async () => {
-  const { fetchSession } = useUserStore();
-  await fetchSession();
-});
+
+// Since SSR is false, we can use top-level await in script setup
+await fetchSession();
+
 if (session.value) {
-  const { fetchProfiles } = useProfileStore();
   await fetchProfiles();
 }
 
@@ -16,9 +18,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col"
-  >
+  <div class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col">
     <!-- Orientation Guard -->
     <!-- <UiOrientationGuard /> -->
     <!-- Background Image -->
@@ -39,21 +39,13 @@ onMounted(() => {
       v-if="!isLoaded"
       class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FFF9E3]/80 backdrop-blur-sm"
     >
-      <BubbleCard
-        class="w-24 h-24 sm:w-32 sm:h-32 bg-primary rounded-3xl animate-bounce shadow-xl"
-      >
-        <span class="text-5xl sm:text-6xl font-black text-white drop-shadow-md"
-          >Ab</span
-        >
+      <BubbleCard class="w-24 h-24 sm:w-32 sm:h-32 bg-primary rounded-3xl animate-bounce shadow-xl">
+        <span class="text-5xl sm:text-6xl font-black text-white drop-shadow-md">Ab</span>
       </BubbleCard>
-      <p class="mt-6 text-2xl font-black text-[#8B7700] animate-pulse">
-        Memuat...
-      </p>
+      <p class="mt-6 text-2xl font-black text-[#8B7700] animate-pulse">Memuat...</p>
     </div>
 
-    <main
-      class="relative z-10 flex-1 w-full overflow-y-auto overflow-x-hidden custom-scrollbar"
-    >
+    <main class="relative z-10 flex-1 w-full overflow-y-auto overflow-x-hidden custom-scrollbar">
       <GlobalHeader />
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
       <UiConfirmModal />

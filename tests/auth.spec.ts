@@ -19,12 +19,9 @@ setup("authenticate", async ({ browser }) => {
     await page.getByRole("button", { name: /Masuk Sekarang/i }).click();
 
     // Wait for the login to complete and redirect
-    await page.waitForURL(
-      (url) => url.pathname === "/" || url.pathname.startsWith("/welcome"),
-      {
-        timeout: 30000,
-      },
-    );
+    await page.waitForURL((url) => url.pathname === "/" || url.pathname.startsWith("/welcome"), {
+      timeout: 30000,
+    });
     if (page.url().includes("/welcome")) {
       console.log("welcome page");
     }

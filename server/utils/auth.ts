@@ -24,9 +24,7 @@ export const _auth = (e: H3Event) => {
       },
     },
     // Secrets pulled from Cloudflare env bindings at runtime with process.env fallbacks via runtimeConfig
-    secret:
-      cloudflare?.env?.BETTER_AUTH_SECRET ??
-      useRuntimeConfig(e).betterAuth.secret,
+    secret: cloudflare?.env?.BETTER_AUTH_SECRET ?? useRuntimeConfig(e).betterAuth.secret,
     baseURL:
       cloudflare?.env?.BETTER_AUTH_URL ??
       useRuntimeConfig(e).betterAuth.url ??
@@ -40,13 +38,9 @@ export const _auth = (e: H3Event) => {
           const salt = crypto.getRandomValues(new Uint8Array(16));
 
           // Import the password as a key
-          const key = await crypto.subtle.importKey(
-            "raw",
-            data,
-            { name: "PBKDF2" },
-            false,
-            ["deriveBits"],
-          );
+          const key = await crypto.subtle.importKey("raw", data, { name: "PBKDF2" }, false, [
+            "deriveBits",
+          ]);
 
           // Derive the hash - Using 10,000 iterations for a balance of speed and security
           const hashBuffer = await crypto.subtle.deriveBits(
@@ -72,20 +66,14 @@ export const _auth = (e: H3Event) => {
         },
         verify: async ({ hash, password }) => {
           const [saltHex, originalHashHex] = hash.split(":");
-          const salt = new Uint8Array(
-            saltHex!.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
-          );
+          const salt = new Uint8Array(saltHex!.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
 
           const encoder = new TextEncoder();
           const data = encoder.encode(password);
 
-          const key = await crypto.subtle.importKey(
-            "raw",
-            data,
-            { name: "PBKDF2" },
-            false,
-            ["deriveBits"],
-          );
+          const key = await crypto.subtle.importKey("raw", data, { name: "PBKDF2" }, false, [
+            "deriveBits",
+          ]);
 
           const verifyBuffer = await crypto.subtle.deriveBits(
             {
@@ -107,14 +95,9 @@ export const _auth = (e: H3Event) => {
     },
     socialProviders: {
       google: {
-        clientId:
-          cloudflare?.env?.GOOGLE_CLIENT_ID ??
-          useRuntimeConfig(e).google.clientId ??
-          "",
+        clientId: cloudflare?.env?.GOOGLE_CLIENT_ID ?? useRuntimeConfig(e).google.clientId ?? "",
         clientSecret:
-          cloudflare?.env?.GOOGLE_CLIENT_SECRET ??
-          useRuntimeConfig(e).google.clientSecret ??
-          "",
+          cloudflare?.env?.GOOGLE_CLIENT_SECRET ?? useRuntimeConfig(e).google.clientSecret ?? "",
       },
     },
     plugins: [username()],

@@ -176,11 +176,11 @@ onUnmounted(async () => {});
       </div>
 
       <div
-        class="grid grid-cols-4 p-2 bg-white/40 backdrop-blur-md rounded-4xl gap-2 border border-white/50 shadow-sm mb-4"
+        class="grid grid-cols-5 p-2 bg-white/40 backdrop-blur-md rounded-2xl gap-2 border border-white/50 shadow-sm mb-4 overflow-x-auto"
       >
         <NuxtLink
           to="/parent"
-          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
+          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-2 md:px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300 min-w-[70px]"
           :class="
             route.path === '/parent'
               ? 'bg-white text-indigo-600 shadow-md scale-[1.02]'
@@ -188,11 +188,11 @@ onUnmounted(async () => {});
           "
         >
           <span class="text-xl md:text-2xl">👥</span>
-          <span>Anak</span>
+          <span class="hidden md:inline">Anak</span>
         </NuxtLink>
         <NuxtLink
           to="/parent/rewards"
-          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
+          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-2 md:px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300 min-w-[70px]"
           :class="
             route.path === '/parent/rewards'
               ? 'bg-white text-amber-600 shadow-md scale-[1.02]'
@@ -200,11 +200,23 @@ onUnmounted(async () => {});
           "
         >
           <span class="text-xl md:text-2xl">🎁</span>
-          <span>Hadiah</span>
+          <span class="hidden md:inline">Hadiah</span>
+        </NuxtLink>
+        <NuxtLink
+          to="/parent/challenge"
+          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-2 md:px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300 min-w-[70px]"
+          :class="
+            route.path === '/parent/challenge'
+              ? 'bg-white text-sky-600 shadow-md scale-[1.02]'
+              : 'text-slate-500 hover:bg-white/40'
+          "
+        >
+          <span class="text-xl md:text-2xl">⭐</span>
+          <span class="hidden md:inline">Misi</span>
         </NuxtLink>
         <NuxtLink
           to="/parent/analytics"
-          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
+          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-2 md:px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300 min-w-[70px]"
           :class="
             route.path === '/parent/analytics'
               ? 'bg-white text-emerald-600 shadow-md scale-[1.02]'
@@ -212,19 +224,19 @@ onUnmounted(async () => {});
           "
         >
           <span class="text-xl md:text-2xl">📊</span>
-          <span>Laporan</span>
+          <span class="hidden md:inline">Laporan</span>
         </NuxtLink>
         <NuxtLink
-          to="/parent/challenge"
-          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300"
+          to="/parent/quiz"
+          class="flex flex-col md:flex-row items-center justify-center gap-2 py-3 px-2 md:px-4 rounded-2xl font-black text-xs md:text-base transition-all duration-300 min-w-[70px]"
           :class="
-            route.path === '/parent/challenge'
+            route.path === '/parent/quiz'
               ? 'bg-white text-violet-600 shadow-md scale-[1.02]'
               : 'text-slate-500 hover:bg-white/40'
           "
         >
           <span class="text-xl md:text-2xl">🎮</span>
-          <span>Tantangan</span>
+          <span class="hidden md:inline">Kuis</span>
         </NuxtLink>
       </div>
 

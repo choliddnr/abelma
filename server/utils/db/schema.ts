@@ -1,9 +1,4 @@
-import {
-  sqliteTable,
-  integer,
-  text,
-  uniqueIndex,
-} from "drizzle-orm/sqlite-core";
+import { sqliteTable, integer, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 
 // --- BETTER-AUTH TABLES ---
@@ -101,6 +96,24 @@ export const rewards = sqliteTable("rewards", {
     .$defaultFn(() => new Date()),
 });
 
+export const challenges = sqliteTable("challenges", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  profileId: text("profile_id")
+    .notNull()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  coinReward: integer("coin_reward").notNull(),
+  status: text("status").notNull().default("available"), // 'available', 'pending_validation', 'completed'
+  completedAt: integer("completed_at", { mode: "timestamp" }),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 export const analytics = sqliteTable(
   "analytics",
   {
@@ -121,13 +134,7 @@ export const analytics = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date()),
   },
-  (table) => [
-    uniqueIndex("analytics_unique_idx").on(
-      table.profileId,
-      table.type,
-      table.targetId,
-    ),
-  ],
+  (table) => [uniqueIndex("analytics_unique_idx").on(table.profileId, table.type, table.targetId)],
 );
 
 export const stickers = sqliteTable("stickers", {
@@ -147,27 +154,22 @@ export const stickers = sqliteTable("stickers", {
     .$defaultFn(() => new Date()),
 });
 
-export const alphabetChallengeProgress = sqliteTable(
-  "alphabet_challenge_progress",
-  {
-    profileId: text("profile_id")
-      .primaryKey()
-      .references(() => profiles.id, { onDelete: "cascade" }),
-    score: integer("score").notNull().default(0),
-    level: integer("level").notNull().default(1),
-    isFinished: integer("is_finished", { mode: "boolean" })
-      .notNull()
-      .default(false),
-    weights: text("weights").notNull().default("{}"),
-    challengeConfig: text("challenge_config").notNull().default("[]"),
-    createdAt: integer("created_at", { mode: "timestamp" })
-      .notNull()
-      .$defaultFn(() => new Date()),
-    updatedAt: integer("updated_at", { mode: "timestamp" })
-      .notNull()
-      .$defaultFn(() => new Date()),
-  },
-);
+export const alphabetQuizProgress = sqliteTable("alphabet_quiz_progress", {
+  profileId: text("profile_id")
+    .primaryKey()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  score: integer("score").notNull().default(0),
+  level: integer("level").notNull().default(1),
+  isFinished: integer("is_finished", { mode: "boolean" }).notNull().default(false),
+  weights: text("weights").notNull().default("{}"),
+  quizConfig: text("quiz_config").notNull().default("[]"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
 
 export const storybookProgress = sqliteTable(
   "storybook_progress",
@@ -177,9 +179,7 @@ export const storybookProgress = sqliteTable(
       .notNull()
       .references(() => profiles.id, { onDelete: "cascade" }),
     letter: text("letter").notNull(),
-    isCompleted: integer("is_completed", { mode: "boolean" })
-      .notNull()
-      .default(false),
+    isCompleted: integer("is_completed", { mode: "boolean" }).notNull().default(false),
     lastRead: integer("last_read", { mode: "timestamp" })
       .notNull()
       .$defaultFn(() => new Date()),
@@ -190,19 +190,17 @@ export const storybookProgress = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date()),
   },
-  (table) => [
-    uniqueIndex("storybook_unique_idx").on(table.profileId, table.letter),
-  ],
+  (table) => [uniqueIndex("storybook_unique_idx").on(table.profileId, table.letter)],
 );
 
-export const wordChallengeProgress = sqliteTable("word_challenge_progress", {
+export const wordQuizProgress = sqliteTable("word_quiz_progress", {
   profileId: text("profile_id")
     .primaryKey()
     .references(() => profiles.id, { onDelete: "cascade" }),
   score: integer("score").notNull().default(0),
   level: integer("level").notNull().default(1),
   weights: text("weights").notNull().default("{}"),
-  challengeConfig: text("challenge_config").notNull().default("[]"),
+  quizConfig: text("quiz_config").notNull().default("[]"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -225,15 +223,16 @@ export const profileRelations = relations(profiles, ({ one, many }) => ({
     references: [user.id],
   }),
   rewards: many(rewards),
+  challenges: many(challenges),
   analytics: many(analytics),
   stickers: many(stickers),
-  alphabetChallengeProgress: one(alphabetChallengeProgress, {
+  alphabetQuizProgress: one(alphabetQuizProgress, {
     fields: [profiles.id],
-    references: [alphabetChallengeProgress.profileId],
+    references: [alphabetQuizProgress.profileId],
   }),
-  wordChallengeProgress: one(wordChallengeProgress, {
+  wordQuizProgress: one(wordQuizProgress, {
     fields: [profiles.id],
-    references: [wordChallengeProgress.profileId],
+    references: [wordQuizProgress.profileId],
   }),
   storybookProgress: many(storybookProgress),
 }));
@@ -245,6 +244,13 @@ export const rewardRelations = relations(rewards, ({ one }) => ({
   }),
 }));
 
+export const challengeRelations = relations(challenges, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [challenges.profileId],
+    references: [profiles.id],
+  }),
+}));
+
 export const analyticsRelations = relations(analytics, ({ one }) => ({
   profile: one(profiles, {
     fields: [analytics.profileId],
@@ -252,15 +258,12 @@ export const analyticsRelations = relations(analytics, ({ one }) => ({
   }),
 }));
 
-export const storybookProgressRelations = relations(
-  storybookProgress,
-  ({ one }) => ({
-    profile: one(profiles, {
-      fields: [storybookProgress.profileId],
-      references: [profiles.id],
-    }),
+export const storybookProgressRelations = relations(storybookProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [storybookProgress.profileId],
+    references: [profiles.id],
   }),
-);
+}));
 
 export const stickerRelations = relations(stickers, ({ one }) => ({
   profile: one(profiles, {
@@ -269,22 +272,19 @@ export const stickerRelations = relations(stickers, ({ one }) => ({
   }),
 }));
 
-export const alphabetChallengeProgressRelations = relations(
-  alphabetChallengeProgress,
+export const alphabetQuizProgressRelations = relations(
+  alphabetQuizProgress,
   ({ one }) => ({
     profile: one(profiles, {
-      fields: [alphabetChallengeProgress.profileId],
+      fields: [alphabetQuizProgress.profileId],
       references: [profiles.id],
     }),
   }),
 );
 
-export const wordChallengeProgressRelations = relations(
-  wordChallengeProgress,
-  ({ one }) => ({
-    profile: one(profiles, {
-      fields: [wordChallengeProgress.profileId],
-      references: [profiles.id],
-    }),
+export const wordQuizProgressRelations = relations(wordQuizProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [wordQuizProgress.profileId],
+    references: [profiles.id],
   }),
-);
+}));

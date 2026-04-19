@@ -1,27 +1,25 @@
 <script setup lang="ts">
-defineOptions({ name: "AlphabetChallenge" });
+defineOptions({ name: "AlphabetQuiz" });
 
 const { activeProfileId } = storeToRefs(useProfileStore());
-const { alphabetChallangeProgress } = storeToRefs(useAlphabetStore());
+const { alphabetQuizProgress } = storeToRefs(useAlphabetStore());
 const { profile } = storeToRefs(useProfileStore());
 const { fetch } = useAlphabetStore();
 
 const { preloadSounds } = useAlphabetAudio();
 
-callOnce(
-  async () => await useAsyncData("alphabet-challenge-progress", () => fetch()),
-);
+callOnce(async () => await useAsyncData("alphabet-quiz-progress", () => fetch()));
 onMounted(() => {
   preloadSounds();
 });
 
-const stopChallenge = async () => {
+const stopQuiz = async () => {
   //save state here
-  await $fetch(`/api/alphabet/challange/${activeProfileId.value}/progress`, {
+  await $fetch(`/api/alphabet/quiz/${activeProfileId.value}/progress`, {
     method: "PATCH",
     body: {
       coins: profile.value.coins,
-      progress: alphabetChallangeProgress.value,
+      progress: alphabetQuizProgress.value,
     },
   });
   navigateTo("/alphabet");
@@ -30,7 +28,7 @@ const stopChallenge = async () => {
 
 <template>
   <div class="alphabet-view-container overflow-x-hidden mt-4">
-    <AlphabetChallengeMode @stop-challenge="stopChallenge" />
+    <AlphabetQuizMode @stop-quiz="stopQuiz" />
   </div>
 </template>
 

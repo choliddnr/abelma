@@ -9,9 +9,9 @@ const emit = defineEmits<{
   fail: [];
 }>();
 
-const shuffled = ref<
-  { letter: string; top: string; left: string; color: string; id: number }[]
->([]);
+const shuffled = ref<{ letter: string; top: string; left: string; color: string; id: number }[]>(
+  [],
+);
 
 const randomColors = [
   "#ef4444", // red-500
@@ -43,24 +43,19 @@ const shuffleOptions = () => {
   const shuffledZones = [...zones];
   for (let i = shuffledZones.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffledZones[i], shuffledZones[j]] = [
-      shuffledZones[j]!,
-      shuffledZones[i]!,
-    ];
+    [shuffledZones[i], shuffledZones[j]] = [shuffledZones[j]!, shuffledZones[i]!];
   }
 
   shuffled.value = arr.map((letter, index) => {
     const zone = shuffledZones[index % shuffledZones.length]!;
 
-    const leftVal =
-      zone.leftMin + Math.random() * (zone.leftMax - zone.leftMin);
+    const leftVal = zone.leftMin + Math.random() * (zone.leftMax - zone.leftMin);
     const topVal = zone.topMin + Math.random() * (zone.topMax - zone.topMin);
 
     const top = `${topVal}%`;
     const left = `${leftVal}%`;
 
-    const color =
-      randomColors[Math.floor(Math.random() * randomColors.length)]!;
+    const color = randomColors[Math.floor(Math.random() * randomColors.length)]!;
     return { letter, top, left, color, id: ++nextId };
   });
 };
@@ -103,8 +98,7 @@ defineExpose({ reset });
       class="font-quicksand absolute flex items-center justify-center font-black transition-transform cursor-pointer select-none floating-letter drop-shadow-2xl pointer-events-auto"
       :class="{
         'shake-it': wrongLetterId === item.id,
-        'hover:scale-110 active:scale-95':
-          wrongLetterId !== item.id && !isLocked,
+        'hover:scale-110 active:scale-95': wrongLetterId !== item.id && !isLocked,
       }"
       :style="{
         top: item.top,

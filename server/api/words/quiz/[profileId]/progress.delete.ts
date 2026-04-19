@@ -1,4 +1,4 @@
-import { wordChallengeProgress } from "#server/utils/db/schema";
+import { wordQuizProgress } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
@@ -7,11 +7,11 @@ export default defineEventHandler(async (event) => {
 
   try {
     const res = await d1
-      .delete(wordChallengeProgress)
-      .where(eq(wordChallengeProgress.profileId, profileId))
+      .delete(wordQuizProgress)
+      .where(eq(wordQuizProgress.profileId, profileId))
       .returning()
       .get();
-    
+
     if (!res) {
       return { success: false, message: "Progress not found" };
     }

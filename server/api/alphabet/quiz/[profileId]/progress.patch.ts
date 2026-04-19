@@ -1,24 +1,24 @@
 // import type { Reward, CloudProfile } from "@/types/stores";
-import type { ReqAlphabetChallangeProgressPut } from "#shared/types/api";
-import { alphabetChallengeProgress, profiles } from "#server/utils/db/schema";
+import type { ReqAlphabetQuizProgressPut } from "#shared/types/api";
+import { alphabetQuizProgress, profiles } from "#server/utils/db/schema";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 
 export default defineEventHandler(async (event) => {
   const d1 = db(event);
-  const payload = (await readBody(event)) as ReqAlphabetChallangeProgressPut;
+  const payload = (await readBody(event)) as ReqAlphabetQuizProgressPut;
   const profileId = getRouterParam(event, "profileId") as string;
 
   try {
     await d1.update(profiles).set({ coins: payload.coins }).where(eq(profiles.id, profileId));
 
     return await d1
-      .update(alphabetChallengeProgress)
+      .update(alphabetQuizProgress)
       .set({
         score: payload.progress.score,
         level: payload.progress.level,
         weights: JSON.stringify(payload.progress.weights),
       })
-      .where(eq(alphabetChallengeProgress.profileId, profileId))
+      .where(eq(alphabetQuizProgress.profileId, profileId))
       .returning()
       .get();
   } catch (error) {

@@ -9,7 +9,7 @@ const emit = defineEmits<{
 }>();
 
 const { saveConfig } = useWordStore();
-const { wordChallengeProgress } = storeToRefs(useWordStore());
+const { wordQuizProgress } = storeToRefs(useWordStore());
 const { activeProfileId } = storeToRefs(useProfileStore());
 
 const lastSavedWordSettings = ref<string>("");
@@ -20,7 +20,7 @@ const localLevels = ref<any[]>([]);
 
 // Watch for store changes to update local state
 watch(
-  () => wordChallengeProgress.value.challengeConfig,
+  () => wordQuizProgress.value.quizConfig,
   (newVal) => {
     if (newVal && newVal.length > 0) {
       localLevels.value = JSON.parse(JSON.stringify(newVal));
@@ -165,8 +165,8 @@ watch(
                       <button
                         v-for="c in ['uppercase', 'lowercase', 'mixed']"
                         :key="c"
-                        @click="cfg.letterCase = c as any"
-                        class="flex-1 py-2 px-1 rounded-xl border-2 text-[10px] font-black uppercase transition-all"
+                        @click="cfg.letterCase = c"
+                        class="flex-1 py-2 px-1 rounded-xl border-2 text-[10px] font-black transition-all"
                         :class="
                           cfg.letterCase === c
                             ? 'bg-violet-50 border-violet-500 text-violet-700 shadow-sm'

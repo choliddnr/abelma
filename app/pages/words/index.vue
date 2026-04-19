@@ -15,7 +15,7 @@ const menuItems = [
     subtitle: "Tantangan Tebak Kata",
     icon: "🏆",
     colorClass: "bg-[#6BCB77] text-white",
-    to: "/words/challenge",
+    to: "/words/quiz",
   },
 ];
 </script>
@@ -23,9 +23,7 @@ const menuItems = [
 <template>
   <div class="flex flex-col min-h-screen relative p-4 md:p-8">
     <!-- Full-screen Frosted Overlay -->
-    <div
-      class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"
-    ></div>
+    <div class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"></div>
 
     <!-- View Actions (Contextual items not in Global Header) -->
     <!-- <div class="flex items-center shrink-0 z-10 w-full max-w-5xl mx-auto mb-4 animate-entrance">
@@ -51,14 +49,8 @@ const menuItems = [
       class="flex-1 flex flex-col items-center justify-center max-w-5xl mx-auto w-full gap-6 md:gap-10 z-10"
     >
       <div class="text-center space-y-4 animate-entrance">
-        <h1
-          class="text-5xl md:text-7xl font-black text-indigo-600 drop-shadow-sm"
-        >
-          Belajar Kata
-        </h1>
-        <p class="text-xl md:text-2xl font-bold text-slate-500">
-          Pilih mode bermainmu!
-        </p>
+        <h1 class="text-5xl md:text-7xl font-black text-indigo-600 drop-shadow-sm">Belajar Kata</h1>
+        <p class="text-xl md:text-2xl font-bold text-slate-500">Pilih mode bermainmu!</p>
       </div>
       <div class="flex flex-wrap justify-center gap-4">
         <MenuCard

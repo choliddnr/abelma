@@ -7,7 +7,7 @@ import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 // ─── Data ────────────────────────────────────────────────────
 const data = ALPHABET_STORYBOOK as AlphabetStorybook[];
 const router = useRouter();
-const { currentIndex, isSpeaking, challengeDone, showFinish, showChallenge, viewMode } =
+const { currentIndex, isSpeaking, quizDone, showFinish, showQuiz, viewMode } =
   storeToRefs(useStorybookStore());
 const { markCompleted, reset: resetStorybook } = useStorybookStore();
 // const { syncAlphabet } = useSyncStore();
@@ -27,7 +27,7 @@ const goToLetter = async (index: number) => {
   if (index < 0 || index >= data.length) return;
   window.speechSynthesis.cancel();
   isSpeaking.value = false;
-  showChallenge.value = false;
+  showQuiz.value = false;
   currentIndex.value = index;
   viewMode.value = "story";
   await nextTick();
@@ -75,7 +75,7 @@ watch(
   { immediate: true },
 );
 
-// ─── Challenge callbacks ──────────────────────────────────────
+// ─── Quiz callbacks ──────────────────────────────────────
 const onSuccess = () => {
   markCompleted(currentIndex.value);
   setTimeout(() => nextLetter(), 1400);
@@ -118,7 +118,7 @@ const restartStorybook = () => {
 // ─── Dot color helper ─────────────────────────────────────────
 const progressDotClass = (idx: number) => {
   if (idx === currentIndex.value) return "bg-white scale-150 shadow-lg";
-  if (challengeDone.value.has(idx)) return "bg-white/60";
+  if (quizDone.value.has(idx)) return "bg-white/60";
   return "bg-white/25";
 };
 
@@ -235,7 +235,7 @@ onUnmounted(() => {
         class="bg-white/90 px-4 py-2 rounded-2xl font-black text-gray-700 shadow-md text-sm border-b-4 border-black/10 flex items-center gap-1"
       >
         <span>⭐</span>
-        <span>{{ challengeDone.size }}/{{ data.length }}</span>
+        <span>{{ quizDone.size }}/{{ data.length }}</span>
       </div>
     </header>
 
@@ -254,7 +254,7 @@ onUnmounted(() => {
             @click="goToLetter(idx)"
             class="relative bg-white rounded-[2rem] p-6 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all border-b-8 group outline-none"
             :class="
-              challengeDone.has(idx) ? 'border-green-400 border-2 border-b-8' : 'border-slate-200'
+              quizDone.has(idx) ? 'border-green-400 border-2 border-b-8' : 'border-slate-200'
             "
           >
             <div
@@ -271,7 +271,7 @@ onUnmounted(() => {
               entry.title
             }}</span>
             <div
-              v-if="challengeDone.has(idx)"
+              v-if="quizDone.has(idx)"
               class="absolute -top-3 -right-3 text-3xl drop-shadow-md animate-bounce"
             >
               ⭐
@@ -359,12 +359,12 @@ onUnmounted(() => {
                 </button>
               </div>
 
-              <!-- Bottom Area: Floating Card for Text / Challenge -->
+              <!-- Bottom Area: Floating Card for Text / Quiz -->
               <div class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full">
                 <div
                   class="bg-white/75 backdrop-blur-md shadow-2xl rounded-3xl p-6 sm:p-8 w-full max-w-3xl border-4 border-white/50 transition-all duration-300"
                 >
-                  <template v-if="!showChallenge">
+                  <template v-if="!showQuiz">
                     <!-- Story View -->
                     <div class="space-y-4 text-center">
                       <h2
@@ -376,10 +376,10 @@ onUnmounted(() => {
                         class="text-xl md:text-2xl lg:text-3xl font-medium leading-normal text-slate-700 max-w-2xl mx-auto"
                         v-html="highlightedStory"
                       />
-                      <!-- Continue to Challenge Button -->
+                      <!-- Continue to Quiz Button -->
                       <div class="pt-2">
                         <button
-                          @click="showChallenge = true"
+                          @click="showQuiz = true"
                           class="ui-capsule-interactive bg-green-500 border-green-700 text-white w-full sm:w-auto px-8 py-3 text-lg justify-center hover:bg-green-400"
                         >
                           <span class="font-black">Lanjut ke Tantangan 🎯</span>
@@ -389,11 +389,11 @@ onUnmounted(() => {
                   </template>
 
                   <template v-else>
-                    <!-- Challenge View -->
+                    <!-- Quiz View -->
                     <div class="flex flex-col gap-6">
                       <div class="flex items-center justify-between w-full">
                         <button
-                          @click="showChallenge = false"
+                          @click="showQuiz = false"
                           class="text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1"
                         >
                           <span>⬅️ Kembali</span>
@@ -407,9 +407,9 @@ onUnmounted(() => {
 
                       <InteractionZone
                         ref="interactionRef"
-                        :target="current.challenge.target"
-                        :options="current.challenge.options"
-                        :instruction="current.challenge.instruction"
+                        :target="current.quiz.target"
+                        :options="current.quiz.options"
+                        :instruction="current.quiz.instruction"
                         :themeColor="current.themeColor"
                         @success="onSuccess"
                         @fail="onFail"

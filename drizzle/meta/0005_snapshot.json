@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "49e72ccf-9394-4337-8665-0eef8ef83056",
+  "id": "24c373f9-8580-4181-a620-b798ae583482",
   "prevId": "917f0db5-d09a-4b46-9a4c-078df3273cbb",
   "tables": {
     "account": {
@@ -119,8 +119,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "alphabet_challenge_progress": {
-      "name": "alphabet_challenge_progress",
+    "alphabet_quiz_progress": {
+      "name": "alphabet_quiz_progress",
       "columns": {
         "profile_id": {
           "name": "profile_id",
@@ -161,8 +161,8 @@
           "autoincrement": false,
           "default": "'{}'"
         },
-        "challenge_config": {
-          "name": "challenge_config",
+        "quiz_config": {
+          "name": "quiz_config",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -186,9 +186,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "alphabet_challenge_progress_profile_id_profiles_id_fk": {
-          "name": "alphabet_challenge_progress_profile_id_profiles_id_fk",
-          "tableFrom": "alphabet_challenge_progress",
+        "alphabet_quiz_progress_profile_id_profiles_id_fk": {
+          "name": "alphabet_quiz_progress_profile_id_profiles_id_fk",
+          "tableFrom": "alphabet_quiz_progress",
           "tableTo": "profiles",
           "columnsFrom": [
             "profile_id"
@@ -834,8 +834,8 @@
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
-    "word_challenge_progress": {
-      "name": "word_challenge_progress",
+    "word_quiz_progress": {
+      "name": "word_quiz_progress",
       "columns": {
         "profile_id": {
           "name": "profile_id",
@@ -868,8 +868,8 @@
           "autoincrement": false,
           "default": "'{}'"
         },
-        "challenge_config": {
-          "name": "challenge_config",
+        "quiz_config": {
+          "name": "quiz_config",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -893,9 +893,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "word_challenge_progress_profile_id_profiles_id_fk": {
-          "name": "word_challenge_progress_profile_id_profiles_id_fk",
-          "tableFrom": "word_challenge_progress",
+        "word_quiz_progress_profile_id_profiles_id_fk": {
+          "name": "word_quiz_progress_profile_id_profiles_id_fk",
+          "tableFrom": "word_quiz_progress",
           "tableTo": "profiles",
           "columnsFrom": [
             "profile_id"
@@ -916,8 +916,12 @@
   "enums": {},
   "_meta": {
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {
+      "\"alphabet_challenge_progress\"": "\"alphabet_quiz_progress\""
+    },
+    "columns": {
+      "\"alphabet_quiz_progress\".\"challenge_config\"": "\"alphabet_quiz_progress\".\"quiz_config\""
+    }
   },
   "internal": {
     "indexes": {}

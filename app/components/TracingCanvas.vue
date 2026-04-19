@@ -14,10 +14,10 @@ const isVertical = ref(false);
 // Scale the brush proportionally to the canvas width so it feels natural
 // on both mobile (small) and desktop (large) screens.
 const getBrushSize = (canvasWidth: number): number => {
-  if (canvasWidth < 400) return 18;       // small phones
-  if (canvasWidth < 600) return 24;       // large phones / small tablets
-  if (canvasWidth < 900) return 32;       // tablets
-  return 40;                              // desktop
+  if (canvasWidth < 400) return 18; // small phones
+  if (canvasWidth < 600) return 24; // large phones / small tablets
+  if (canvasWidth < 900) return 32; // tablets
+  return 40; // desktop
 };
 
 const initCanvas = () => {
@@ -192,8 +192,7 @@ const buildTargetCanvas = async (
 };
 
 const calculateScore = async () => {
-  if (!canvasRef.value || !ctx.value)
-    return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+  if (!canvasRef.value || !ctx.value) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
 
   const width = canvasRef.value.width;
   const height = canvasRef.value.height;

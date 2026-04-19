@@ -1,11 +1,11 @@
 import type {
-  AlphabetChallengeProgress,
+  AlphabetQuizProgress,
   CloudProfile,
-  AlphabetChallengeModeConfig,
+  AlphabetQuizModeConfig,
 } from "@/types/stores";
 import {
-  DEFAULT_ALPHABET_CHALLENGE_CONFIG,
-  DEFAULT_ALPHABET_CHALLENGE_PROGRESS,
+  DEFAULT_ALPHABET_QUIZ_CONFIG,
+  DEFAULT_ALPHABET_QUIZ_PROGRESS,
   letters,
 } from "~/constants/alphabet";
 
@@ -17,87 +17,85 @@ export const useAlphabetStore = defineStore(
     // const { syncAlphabet } = useSyncStore();
 
     // State
-    const profileAlphabetMap = ref<Record<string, AlphabetChallengeProgress>>(
-      {},
-    );
+    const profileAlphabetMap = ref<Record<string, AlphabetQuizProgress>>({});
 
-    const alphabetChallangeProgress = ref<AlphabetChallengeProgress>(
-      DEFAULT_ALPHABET_CHALLENGE_PROGRESS,
+    const alphabetQuizProgress = ref<AlphabetQuizProgress>(
+      DEFAULT_ALPHABET_QUIZ_PROGRESS,
     );
     // Initialize (Handled by persistence)
     const initialize = () => {};
 
-    // const alphabetChallangeProgress = computed<AlphabetChallengeProgress>(
+    // const alphabetQuizProgress = computed<AlphabetQuizProgress>(
     //   () => {
     //     console.log(activeProfileId.value);
 
-    //     return DEFAULT_ALPHABET_CHALLENGE_PROGRESS;
+    //     return DEFAULT_ALPHABET_QUIZ_PROGRESS;
     //     // if (!profileAlphabetMap.value[activeProfileId.value]) {
     //     //   profileAlphabetMap.value[activeProfileId.value] =
-    //     //     DEFAULT_ALPHABET_CHALLENGE_PROGRESS;
+    //     //     DEFAULT_ALPHABET_QUIZ_PROGRESS;
     //     // }
     //     // return (
     //     //   profileAlphabetMap.value[activeProfileId.value] ||
-    //     //   DEFAULT_ALPHABET_CHALLENGE_PROGRESS
+    //     //   DEFAULT_ALPHABET_QUIZ_PROGRESS
     //     // );
     //   },
     // );
 
     // Actions
-    // const getAlphabetChallangeProgress = (
+    // const getAlphabetQuizProgress = (
     //   profileId: string,
-    // ): AlphabetChallengeProgress => {
+    // ): AlphabetQuizProgress => {
     //   if (!profileAlphabetMap.value[profileId]) {
     //     profileAlphabetMap.value[profileId] = {
     //       score: 0,
     //       level: 1,
     //       weights: {},
-    //       challengeConfig: DEFAULT_ALPHABET_CHALLENGE_CONFIG,
+    //       quizConfig: DEFAULT_ALPHABET_QUIZ_CONFIG,
     //       updatedAt: new Date(0).toISOString(),
     //     };
     //   }
     //   return profileAlphabetMap.value[profileId];
     // };
 
-    // const getAlphabetChallangeConfig = (
+    // const getAlphabetQuizConfig = (
     //   profileId: string,
-    // ): AlphabetChallengeModeConfig => {
+    // ): AlphabetQuizModeConfig => {
     //   if (!profileAlphabetMap.value[profileId]) {
     //     profileAlphabetMap.value[profileId] = {
     //       score: 0,
     //       level: 1,
     //       weights: {},
-    //       challengeConfig: [],
+    //       quizConfig: [],
     //       updatedAt: new Date(0).toISOString(),
     //     };
     //   }
     //   return (
-    //     profileAlphabetMap.value[profileId].challengeConfig ||
-    //     DEFAULT_ALPHABET_CHALLENGE_CONFIG
+    //     profileAlphabetMap.value[profileId].quizConfig ||
+    //     DEFAULT_ALPHABET_QUIZ_CONFIG
     //   );
     // };
 
-    // const getCurrentAlphabetState = (): AlphabetChallengeProgress => {
-    //   return getAlphabetChallangeProgress(activeProfileId.value || "");
+    // const getCurrentAlphabetState = (): AlphabetQuizProgress => {
+    //   return getAlphabetQuizProgress(activeProfileId.value || "");
     // };
 
     // const updateProgress = async (
     //   profileId: string,
-    //   data: Partial<AlphabetChallengeProgress>,
+    //   data: Partial<AlphabetQuizProgress>,
     // ) => {
-    //   const state = getAlphabetChallangeProgress(profileId);
+    //   const state = getAlphabetQuizProgress(profileId);
     //   Object.assign(state, {
     //     ...data,
     //     updatedAt: new Date().toISOString(),
     //   });
     // };
 
-    // const updateChallengeConfig = async (
+    // const updateQuizConfig = async (
     //   profileId: string,
-    //   config: AlphabetChallengeModeConfig,
+    //   config: AlphabetQuizModeConfig,
     // ) => {
-    //   const state = getAlphabetChallangeProgress(profileId);
-    //   state.challengeConfig = config;
+    //   const state = getAlphabetQuizProgress(profileId);
+    //   state.quizConfig = config;
     //   state.updatedAt = new Date().toISOString();
     //   await triggerSync();
     // };
@@ -107,7 +105,7 @@ export const useAlphabetStore = defineStore(
     //     score: 0,
     //     level: 1,
     //     weights: {},
-    //     challengeConfig: [],
+    //     quizConfig: [],
     //     updatedAt: new Date().toISOString(),
     //   };
     // };
@@ -140,10 +138,10 @@ export const useAlphabetStore = defineStore(
     //               typeof cloudAP.weights === "string"
     //                 ? JSON.parse(cloudAP.weights)
     //                 : cloudAP.weights || {},
-    //             challengeConfig: cloudAP.challengeConfig
-    //               ? typeof cloudAP.challengeConfig === "string"
-    //                 ? JSON.parse(cloudAP.challengeConfig)
-    //                 : cloudAP.challengeConfig
+    //             quizConfig: cloudAP.quizConfig
+    //               ? typeof cloudAP.quizConfig === "string"
+    //                 ? JSON.parse(cloudAP.quizConfig)
+    //                 : cloudAP.quizConfig
     //               : [],
     //             updatedAt: cloudAP.updatedAt,
     //           };
@@ -181,8 +179,8 @@ export const useAlphabetStore = defineStore(
 
     const reset = () => {
       profileAlphabetMap.value = {};
-      alphabetChallangeProgress.value = JSON.parse(
-        JSON.stringify(DEFAULT_ALPHABET_CHALLENGE_PROGRESS),
+      alphabetQuizProgress.value = JSON.parse(
+        JSON.stringify(DEFAULT_ALPHABET_QUIZ_PROGRESS),
       );
     };
 
@@ -191,67 +189,55 @@ export const useAlphabetStore = defineStore(
         console.warn("AlphabetStore: Cannot fetch progress - no activeProfileId");
         return;
       }
-      await $fetch(
-        `/api/alphabet/challange/${activeProfileId.value}/progress`,
-        {
-          onResponse: async ({ response }) => {
-            if (!response.ok) {
-              console.error("AlphabetStore: Fetch failed", response.status);
-              return;
-            }
-            if (response.status === 200 && response._data) {
-              console.log("AlphabetStore: Progress fetched", response._data);
-              alphabetChallangeProgress.value = response._data;
-            }
-            if (response.status === 204) {
-              console.log("AlphabetStore: No progress found, creating new...");
-              await $fetch(
-                `/api/alphabet/challange/${activeProfileId.value}/progress`,
-                {
-                  method: "POST",
-                  body: {
-                    ...DEFAULT_ALPHABET_CHALLENGE_PROGRESS,
-                    weights: letters.reduce(
-                      (acc, letter) => {
-                        acc[letter] = 0;
-                        acc[letter.toLowerCase()] = 0;
-                        return acc;
-                      },
-                      {} as Record<string, number>,
-                    ),
-                    challengeConfig: DEFAULT_ALPHABET_CHALLENGE_CONFIG,
+      await $fetch(`/api/alphabet/quiz/${activeProfileId.value}/progress`, {
+        onResponse: async ({ response }) => {
+          if (!response.ok) {
+            console.error("AlphabetStore: Fetch failed", response.status);
+            return;
+          }
+          if (response.status === 200 && response._data) {
+            console.log("AlphabetStore: Progress fetched", response._data);
+            alphabetQuizProgress.value = response._data;
+          }
+          if (response.status === 204) {
+            console.log("AlphabetStore: No progress found, creating new...");
+            await $fetch(`/api/alphabet/quiz/${activeProfileId.value}/progress`, {
+              method: "POST",
+              body: {
+                ...DEFAULT_ALPHABET_QUIZ_PROGRESS,
+                weights: letters.reduce(
+                  (acc, letter) => {
+                    acc[letter] = 0;
+                    acc[letter.toLowerCase()] = 0;
+                    return acc;
                   },
-                  onResponse: async ({ response: res }) => {
-                    if (res.status === 200 && res._data) {
-                      alphabetChallangeProgress.value = res._data;
-                    }
-                    if (!res.ok) {
-                      console.error("AlphabetStore: POST failed", res.status);
-                      return;
-                    }
-                  },
-                },
-              );
-            }
-          },
+                  {} as Record<string, number>,
+                ),
+                quizConfig: DEFAULT_ALPHABET_QUIZ_CONFIG,
+              },
+              onResponse: async ({ response: res }) => {
+                if (res.status === 200 && res._data) {
+                  alphabetQuizProgress.value = res._data;
+                }
+                if (!res.ok) {
+                  console.error("AlphabetStore: POST failed", res.status);
+                  return;
+                }
+              },
+            });
+          }
         },
-      );
+      });
     };
 
-    const saveConfig = async (
-      profileId: string,
-      config: AlphabetChallengeModeConfig,
-    ) => {
+    const saveConfig = async (profileId: string, config: AlphabetQuizModeConfig) => {
       try {
-        const result = await $fetch(
-          `/api/alphabet/challange/${profileId}/config`,
-          {
-            method: "PATCH",
-            body: { challengeConfig: config },
-          },
-        );
+        const result = await $fetch(`/api/alphabet/quiz/${profileId}/config`, {
+          method: "PATCH",
+          body: { quizConfig: config },
+        });
         if (result) {
-          alphabetChallangeProgress.value.challengeConfig = config;
+          alphabetQuizProgress.value.quizConfig = config;
           return true;
         }
       } catch (error) {
@@ -264,7 +250,7 @@ export const useAlphabetStore = defineStore(
     return {
       profileAlphabetMap,
       totalScore,
-      alphabetChallangeProgress,
+      alphabetQuizProgress,
       initialize,
       fetch,
       saveConfig,

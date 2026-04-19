@@ -1,12 +1,12 @@
 import type { CloudProfile, Profile } from "@/types/stores";
-import { DEFAULT_ALPHABET_CHALLENGE_CONFIG } from "~/constants/alphabet";
+import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
 
 export const useProfileStore = defineStore(
   "profile",
   () => {
     // Other Stores
     // const { syncProfile } = useSyncStore();
-    // const { updateChallengeConfig } = useAlphabetStore();
+    // const { updateQuizConfig } = useAlphabetStore();
 
     const { user } = storeToRefs(useUserStore());
     // const { fetch: fetchRewards } = useRewardStore();
@@ -31,9 +31,7 @@ export const useProfileStore = defineStore(
           coins: 0,
         } as Profile;
 
-      activeProfileIndex.value = profiles.value.findIndex(
-        (p) => p.id === activeProfileId.value,
-      );
+      activeProfileIndex.value = profiles.value.findIndex((p) => p.id === activeProfileId.value);
 
       // If no valid active ID, fallback to first profile or default object
       if (activeProfileIndex.value === -1) {
@@ -91,8 +89,7 @@ export const useProfileStore = defineStore(
     };
 
     const changeCoins = (coins: number) => {
-      if (profiles.value.length === 0 || activeProfileIndex.value === -1)
-        return;
+      if (profiles.value.length === 0 || activeProfileIndex.value === -1) return;
       const p = profile.value;
       p.coins += coins;
       profiles.value[activeProfileIndex.value] = p;

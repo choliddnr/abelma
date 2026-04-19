@@ -4,10 +4,10 @@ import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
 import confetti from "canvas-confetti";
 // import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 
-const emit = defineEmits(["start-challenge"]);
+const emit = defineEmits(["start-quiz"]);
 
 const { speaking, playLetterSound } = useAlphabetAudio();
-// const { challengeDone } = storeToRefs(useStorybookStore());
+// const { quizDone } = storeToRefs(useStorybookStore());
 
 // --- Dashboard State ---
 // const data = ALPHABET_STORYBOOK;
@@ -29,9 +29,7 @@ const shuffleLetters = (arrayToShuffle: string[]) => {
 
 const toggleRandomize = () => {
   isRandomized.value = !isRandomized.value;
-  learningLetters.value = isRandomized.value
-    ? shuffleLetters([...letters])
-    : [...letters];
+  learningLetters.value = isRandomized.value ? shuffleLetters([...letters]) : [...letters];
 };
 
 // Auto Play Logic
@@ -127,9 +125,7 @@ onUnmounted(() => {
 <template>
   <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
     <!-- Learning Dashboard -->
-    <div
-      class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]"
-    >
+    <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
       <div
         class="flex flex-wrap items-center justify-center gap-3 md:gap-4 bg-white/30 backdrop-blur-lg p-3 md:p-4 rounded-4xl border-4 border-slate-50 shadow-xl"
         style="
@@ -150,11 +146,7 @@ onUnmounted(() => {
         >
 
         <!-- Randomize -->
-        <UiButton
-          @click="toggleRandomize"
-          variant="white"
-          icon="🎲"
-          class="px-3 py-2 h-10"
+        <UiButton @click="toggleRandomize" variant="white" icon="🎲" class="px-3 py-2 h-10"
           ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
             isRandomized ? "Normal" : "Acak"
           }}</span></UiButton
@@ -171,9 +163,9 @@ onUnmounted(() => {
           }}</span></UiButton
         >
 
-        <!-- Start Challenge CTA -->
+        <!-- Start Quiz CTA -->
         <UiButton
-          @click="emit('start-challenge')"
+          @click="emit('start-quiz')"
           variant="primary"
           icon="🎮"
           class="px-3 py-2 h-10"
@@ -185,9 +177,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Instructions / Feedback Area -->
-    <div
-      class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4"
-    >
+    <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
       <transition name="fade" mode="out-in">
         <div
           v-if="feedback"
@@ -206,9 +196,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Alphabet Grid -->
-    <div
-      class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative"
-    >
+    <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
@@ -223,14 +211,14 @@ onUnmounted(() => {
             isAutoPlaying && index === autoPlayIndex
               ? 'scale-110 shadow-2xl ring-4 ring-white z-20'
               : 'hover:-translate-y-2 hover:shadow-xl shadow-md',
-            // challengeDone.has(data.findIndex((d) => d.id === letter))
+            // quizDone.has(data.findIndex((d) => d.id === letter))
             //   ? 'border-b-8 border-green-400'
             //   : '',
           ]"
           :style="{ animationDelay: `${index * 0.05}s` }"
         >
           <!-- <div
-            v-if="challengeDone.has(data.findIndex((d) => d.id === letter))"
+            v-if="quizDone.has(data.findIndex((d) => d.id === letter))"
             class="absolute -top-3 -right-3 text-3xl drop-shadow-md z-10 w-8 h-8 flex items-center justify-center"
           >
             ⭐

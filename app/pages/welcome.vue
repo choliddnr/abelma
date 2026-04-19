@@ -62,13 +62,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex flex-col items-center justify-center p-6 relative"
-  >
+  <div class="min-h-screen flex flex-col items-center justify-center p-6 relative">
     <!-- Visual Backdrop -->
-    <div
-      class="fixed inset-0 bg-linear-to-b from-indigo-50/50 to-white -z-10"
-    ></div>
+    <div class="fixed inset-0 bg-linear-to-b from-indigo-50/50 to-white -z-10"></div>
 
     <div class="w-full max-w-md animate-in fade-in zoom-in-95 duration-700">
       <!-- Welcome Header -->
@@ -78,9 +74,7 @@ onBeforeMount(() => {
         >
           <span class="text-5xl">👋</span>
         </div>
-        <h1 class="text-4xl font-black text-slate-800 font-quicksand">
-          Selamat Datang!
-        </h1>
+        <h1 class="text-4xl font-black text-slate-800 font-quicksand">Selamat Datang!</h1>
         <p class="text-slate-500 font-bold text-lg">
           Mari buat profil si kecil untuk mulai belajar & bermain.
         </p>
@@ -102,8 +96,7 @@ onBeforeMount(() => {
 
         <!-- Name Input -->
         <div class="space-y-3">
-          <label
-            class="block text-sm font-black text-slate-400 uppercase tracking-widest ml-2"
+          <label class="block text-sm font-black text-slate-400 uppercase tracking-widest ml-2"
             >Nama Panggilan</label
           >
           <input
@@ -117,8 +110,7 @@ onBeforeMount(() => {
 
         <!-- Avatar Choice -->
         <div class="space-y-4">
-          <label
-            class="block text-sm font-black text-slate-400 uppercase tracking-widest ml-2"
+          <label class="block text-sm font-black text-slate-400 uppercase tracking-widest ml-2"
             >Pilih Avatar</label
           >
           <div class="grid grid-cols-4 gap-3">
@@ -154,8 +146,7 @@ onBeforeMount(() => {
       </div>
 
       <p class="text-center mt-8 text-slate-400 font-bold text-sm">
-        Tenang, Ayah/Bunda bisa menambah atau mengubah profil nanti di Area
-        Orang Tua.
+        Tenang, Ayah/Bunda bisa menambah atau mengubah profil nanti di Area Orang Tua.
       </p>
     </div>
   </div>

@@ -40,14 +40,8 @@ onMounted(() => {
       <!-- Branding -->
       <template v-if="isHome">
         <div class="flex flex-col leading-tight">
-          <h1
-            class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600"
-          >
-            Abelma
-          </h1>
-          <span
-            class="text-[8px] sm:text-[10px] md:text-sm font-bold text-slate-400 uppercase"
-          >
+          <h1 class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600">Abelma</h1>
+          <span class="text-[8px] sm:text-[10px] md:text-sm font-bold text-slate-400 uppercase">
             Belajar & Bermain
           </span>
         </div>
@@ -55,30 +49,15 @@ onMounted(() => {
 
       <!-- Back + Home -->
       <template v-else>
-        <UiButton
-          @click="router.back()"
-          variant="white"
-          icon="🔙"
-          class="px-2 py-2 h-10"
-        />
-        <UiButton
-          @click="router.push('/')"
-          variant="white"
-          icon="🏠"
-          class="px-2 py-2 h-10"
-        />
+        <UiButton @click="router.back()" variant="white" icon="🔙" class="px-2 py-2 h-10" />
+        <UiButton @click="router.push('/')" variant="white" icon="🏠" class="px-2 py-2 h-10" />
       </template>
     </div>
 
     <!-- RIGHT -->
     <div class="flex items-center gap-2">
       <!-- Coins (ALWAYS visible) -->
-      <UiButton
-        to="/rewards"
-        variant="primary"
-        icon="🪙"
-        class="px-3 py-2 h-10 text-xs sm:text-sm"
-      >
+      <UiButton to="/rewards" variant="primary" icon="🪙" class="px-3 py-2 h-10 text-xs sm:text-sm">
         <span class="font-black text-lg">
           {{ profile?.coins }}
           <span class="hidden sm:inline">Koin</span>
@@ -95,25 +74,15 @@ onMounted(() => {
       <!-- DESKTOP MENU -->
       <div class="hidden sm:flex items-center gap-3">
         <!-- Parent -->
-        <UiButton
-          @click="router.push('/parent')"
-          variant="white"
-          icon="👨‍👩‍👧"
-          class="px-3 py-2 h-10"
-        >
+        <UiButton @click="router.push('/parent')" variant="white" icon="👨‍👩‍👧" class="px-3 py-2 h-10">
           <span class="font-black text-sm ml-1">Orang Tua</span>
         </UiButton>
 
         <!-- Profile -->
-        <div
-          v-if="profile"
-          class="flex items-center gap-2 border-l pl-3 border-slate-200"
-        >
+        <div v-if="profile" class="flex items-center gap-2 border-l pl-3 border-slate-200">
           <div class="text-right leading-tight">
             <p class="text-xs font-bold text-slate-500">Halo,</p>
-            <p
-              class="text-sm font-black text-indigo-600 truncate max-w-[100px]"
-            >
+            <p class="text-sm font-black text-indigo-600 truncate max-w-[100px]">
               {{ profile?.name }}
             </p>
           </div>
@@ -169,9 +138,7 @@ onMounted(() => {
             </div>
             <div class="leading-tight">
               <p class="text-xs text-slate-500">Halo,</p>
-              <p
-                class="text-sm font-bold text-indigo-600 truncate max-w-[100px]"
-              >
+              <p class="text-sm font-bold text-indigo-600 truncate max-w-[100px]">
                 {{ profile?.name }}
               </p>
             </div>

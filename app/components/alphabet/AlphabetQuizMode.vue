@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { letters, getLetterColor } from "~/constants/alphabet";
-import { DEFAULT_ALPHABET_CHALLENGE_CONFIG } from "~/constants/alphabet";
+import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
 import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
 import confetti from "canvas-confetti";
 
-const emit = defineEmits(["stop-challenge"]);
+const emit = defineEmits(["stop-quiz"]);
 
 const router = useRouter();
 const { speaking, playLetterSound, speak } = useAlphabetAudio();
-const { alphabetChallangeProgress: alphabetProgress } =
-  storeToRefs(useAlphabetStore());
+const { alphabetQuizProgress: alphabetProgress } = storeToRefs(useAlphabetStore());
 const { changeCoins } = useProfileStore();
 // const { syncAlphabet } = useSyncStore();
 
@@ -17,23 +16,20 @@ const { changeCoins } = useProfileStore();
 // const alphabetProgress = getCurrentAlphabetState();
 const score = ref(alphabetProgress.value.score);
 const level = ref(alphabetProgress.value.level);
-const letterWeights = ref<Record<string, number>>(
-  alphabetProgress.value.weights,
-);
+const letterWeights = ref<Record<string, number>>(alphabetProgress.value.weights);
 
-const challengeConfig = computed(() =>
-  alphabetProgress.value.challengeConfig &&
-  alphabetProgress.value.challengeConfig.length > 0
-    ? alphabetProgress.value.challengeConfig
-    : DEFAULT_ALPHABET_CHALLENGE_CONFIG,
+const quizConfig = computed(() =>
+  alphabetProgress.value.quizConfig && alphabetProgress.value.quizConfig.length > 0
+    ? alphabetProgress.value.quizConfig
+    : DEFAULT_ALPHABET_QUIZ_CONFIG,
 );
 
 const currentConfig = computed(() => {
   const index = Math.max(0, level.value - 1);
   return (
-    challengeConfig.value[index] ||
-    challengeConfig.value[challengeConfig.value.length - 1] ||
-    DEFAULT_ALPHABET_CHALLENGE_CONFIG[0]!
+    quizConfig.value[index] ||
+    quizConfig.value[quizConfig.value.length - 1] ||
+    DEFAULT_ALPHABET_QUIZ_CONFIG[0]!
   );
 });
 
@@ -78,7 +74,7 @@ const feedback = ref<{ message: string; type: "success" | "error" | null }>({
 const wrongLetter = ref("");
 const isUpperCase = ref(true);
 const targetLetter = ref("");
-const challengeLetters = ref([...letters]);
+const quizLetters = ref([...letters]);
 const timeLeft = ref(0);
 const timerInterval = ref<number | null>(null);
 const mistakeMadeInCurrentLevel = ref(false);
@@ -103,27 +99,19 @@ const progressPercentage = computed(() => {
     (sum, l) => sum + Math.max(0, letterWeights.value[l] || 0),
     0,
   );
-  const requiredTarget = mistakeMadeInCurrentLevel.value
-    ? targetWeight.value
-    : 1;
+  const requiredTarget = mistakeMadeInCurrentLevel.value ? targetWeight.value : 1;
   const maxTotalWeight = requiredTarget * allLetters.length;
-  return Math.min(
-    100,
-    Math.max(0, (currentTotalWeight / maxTotalWeight) * 100),
-  );
+  return Math.min(100, Math.max(0, (currentTotalWeight / maxTotalWeight) * 100));
 });
 
 const pickNextLetter = (lastLetter: string = ""): string => {
   const currentTargetWeight = currentConfig.value.targetWeight;
   const allLetters = [...letters, ...letters.map((l) => l.toLowerCase())];
   let candidates = allLetters.filter(
-    (l) =>
-      l !== lastLetter && (letterWeights.value[l] || 0) < currentTargetWeight,
+    (l) => l !== lastLetter && (letterWeights.value[l] || 0) < currentTargetWeight,
   );
   if (candidates.length === 0) return allLetters[0]!;
-  const minCurrentWeight = Math.min(
-    ...candidates.map((l) => letterWeights.value[l] || 0),
-  );
+  const minCurrentWeight = Math.min(...candidates.map((l) => letterWeights.value[l] || 0));
   const minWeightCandidates = candidates.filter(
     (l) => (letterWeights.value[l] || 0) === minCurrentWeight,
   );
@@ -135,16 +123,12 @@ const pickNextLetter = (lastLetter: string = ""): string => {
 
 const checkLevelUp = (): "leveled-up" | "completed" | false => {
   const allLetters = [...letters, ...letters.map((l) => l.toLowerCase())];
-  const minWeight = Math.min(
-    ...allLetters.map((l) => letterWeights.value[l] || 0),
-  );
-  const requiredWeight = mistakeMadeInCurrentLevel.value
-    ? targetWeight.value
-    : 1;
+  const minWeight = Math.min(...allLetters.map((l) => letterWeights.value[l] || 0));
+  const requiredWeight = mistakeMadeInCurrentLevel.value ? targetWeight.value : 1;
   if (minWeight >= requiredWeight) {
     allLetters.forEach((l) => (letterWeights.value[l] = 0));
     mistakeMadeInCurrentLevel.value = false;
-    if (level.value < challengeConfig.value.length) {
+    if (level.value < quizConfig.value.length) {
       level.value++;
       return "leveled-up";
     } else {
@@ -177,8 +161,7 @@ const handleTimeout = () => {
   stopTimer();
   score.value = Math.max(0, score.value - 5);
   if (targetLetter.value) {
-    letterWeights.value[targetLetter.value] =
-      (letterWeights.value[targetLetter.value] || 0) - 0.5;
+    letterWeights.value[targetLetter.value] = (letterWeights.value[targetLetter.value] || 0) - 0.5;
   }
   mistakeMadeInCurrentLevel.value = true;
   feedback.value = {
@@ -189,7 +172,7 @@ const handleTimeout = () => {
   wrongLetter.value = targetLetter.value;
   setTimeout(() => {
     wrongLetter.value = "";
-    if (level.value >= 2) challengeLetters.value = shuffleLetters(letters);
+    if (level.value >= 2) quizLetters.value = shuffleLetters(letters);
     const nextLetter = pickNextLetter(targetLetter.value);
     targetLetter.value = nextLetter;
     isUpperCase.value = nextLetter === nextLetter.toUpperCase();
@@ -228,20 +211,18 @@ const launchConfetti = () => {
 };
 
 const isProcessingClick = ref(false);
-const isChallengeCompleted = ref(false);
+const isQuizCompleted = ref(false);
 
 const handleLetterClick = async (letter: string) => {
   if (
     speaking.value ||
     isProcessingClick.value ||
     celebrationData.value.show ||
-    isChallengeCompleted.value
+    isQuizCompleted.value
   )
     return;
   isProcessingClick.value = true;
-  const currentTarget = isUpperCase.value
-    ? targetLetter.value
-    : targetLetter.value.toUpperCase();
+  const currentTarget = isUpperCase.value ? targetLetter.value : targetLetter.value.toUpperCase();
 
   if (letter === currentTarget) {
     stopTimer();
@@ -254,8 +235,7 @@ const handleLetterClick = async (letter: string) => {
     const caseCorrectLetter = isUpperCase.value
       ? targetLetter.value
       : targetLetter.value.toLowerCase();
-    letterWeights.value[caseCorrectLetter] =
-      (letterWeights.value[caseCorrectLetter] || 0) + 1;
+    letterWeights.value[caseCorrectLetter] = (letterWeights.value[caseCorrectLetter] || 0) + 1;
 
     const levelStatus = checkLevelUp();
     const leveledUp = levelStatus === "leveled-up";
@@ -263,11 +243,7 @@ const handleLetterClick = async (letter: string) => {
 
     let gotReward = false;
     const config = currentConfig.value;
-    if (
-      config.streak > 0 &&
-      streak.value > 0 &&
-      streak.value % config.streak === 0
-    ) {
+    if (config.streak > 0 && streak.value > 0 && streak.value % config.streak === 0) {
       gotReward = true;
       lastEarnedReward.value = config.streakReward;
       changeCoins(config.streakReward);
@@ -288,7 +264,7 @@ const handleLetterClick = async (letter: string) => {
     }
 
     if (completed) {
-      isChallengeCompleted.value = true;
+      isQuizCompleted.value = true;
       speak(`Luar biasa! Kamu telah menyelesaikan semua tantangan!`);
       feedback.value = { message: "Tantangan Selesai! 🎉", type: "success" };
       celebrationData.value = {
@@ -348,10 +324,7 @@ const handleLetterClick = async (letter: string) => {
       launchConfetti();
     } else if (!gotReward) {
       feedback.value = {
-        message:
-          streak.value > 2
-            ? `${streak.value} Beruntun! 🎉`
-            : "Hebat! Kamu Benar! 🎉",
+        message: streak.value > 2 ? `${streak.value} Beruntun! 🎉` : "Hebat! Kamu Benar! 🎉",
         type: "success",
       };
     }
@@ -366,12 +339,10 @@ const handleLetterClick = async (letter: string) => {
       speak(`${gotReward ? "Sekarang " : "Benar, "}tebak huruf ${nextLetter}`);
     }
 
-    await new Promise((resolve) =>
-      setTimeout(resolve, leveledUp ? 3500 : gotReward ? 2500 : 1500),
-    );
+    await new Promise((resolve) => setTimeout(resolve, leveledUp ? 3500 : gotReward ? 2500 : 1500));
 
     isUpperCase.value = nextLetter === nextLetter.toUpperCase();
-    if (level.value >= 2) challengeLetters.value = shuffleLetters(letters);
+    if (level.value >= 2) quizLetters.value = shuffleLetters(letters);
     targetLetter.value = nextLetter;
     feedback.value = {
       message: "Dengarkan suara, lalu pilih huruf yang benar!",
@@ -381,14 +352,10 @@ const handleLetterClick = async (letter: string) => {
   } else {
     streak.value = 0;
     score.value = Math.max(0, score.value - 5);
-    const targetCased = isUpperCase.value
-      ? targetLetter.value
-      : targetLetter.value.toLowerCase();
-    letterWeights.value[targetCased] =
-      (letterWeights.value[targetCased] || 0) - 0.5;
+    const targetCased = isUpperCase.value ? targetLetter.value : targetLetter.value.toLowerCase();
+    letterWeights.value[targetCased] = (letterWeights.value[targetCased] || 0) - 0.5;
     const clickedCased = isUpperCase.value ? letter : letter.toLowerCase();
-    letterWeights.value[clickedCased] =
-      (letterWeights.value[clickedCased] || 0) - 0.5;
+    letterWeights.value[clickedCased] = (letterWeights.value[clickedCased] || 0) - 0.5;
     mistakeMadeInCurrentLevel.value = true;
     feedback.value = {
       message: "Coba lagi yuk! Kamu pasti bisa! 💪",
@@ -404,7 +371,7 @@ const handleLetterClick = async (letter: string) => {
 };
 
 onMounted(() => {
-  if (level.value >= 2) challengeLetters.value = shuffleLetters(letters);
+  if (level.value >= 2) quizLetters.value = shuffleLetters(letters);
   const nextLetter = pickNextLetter("");
   targetLetter.value = nextLetter;
   isUpperCase.value = nextLetter === nextLetter.toUpperCase();
@@ -419,17 +386,15 @@ onMounted(() => {
 onUnmounted(() => {
   if (timerInterval.value) window.clearInterval(timerInterval.value);
   // syncAlphabet();
-  console.log("stop-challenge", timerInterval.value);
-  emit("stop-challenge");
+  console.log("stop-quiz", timerInterval.value);
+  emit("stop-quiz");
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
-    <!-- Challenge Dashboard (Single Row) -->
-    <div
-      class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]"
-    >
+    <!-- Quiz Dashboard (Single Row) -->
+    <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
       <div class="w-full max-w-4xl mx-auto flex flex-col gap-4">
         <div
           :data-target-letter="targetLetter"
@@ -452,10 +417,7 @@ onUnmounted(() => {
               <div
                 class="absolute inset-0 bg-indigo-500/10 rounded-full blur-xl animate-pulse"
               ></div>
-              <svg
-                class="w-full h-full transform -rotate-90 drop-shadow-sm"
-                viewBox="0 0 80 80"
-              >
+              <svg class="w-full h-full transform -rotate-90 drop-shadow-sm" viewBox="0 0 80 80">
                 <circle
                   cx="40"
                   cy="40"
@@ -478,9 +440,7 @@ onUnmounted(() => {
                   :stroke-dashoffset="213.63 * (1 - progressPercentage / 100)"
                 />
               </svg>
-              <div
-                class="absolute flex flex-col items-center justify-center leading-tight"
-              >
+              <div class="absolute flex flex-col items-center justify-center leading-tight">
                 <span class="text-[10px] md:text-sm font-black text-indigo-600"
                   >{{ Math.round(progressPercentage) }}%</span
                 >
@@ -488,15 +448,12 @@ onUnmounted(() => {
             </div>
 
             <!-- Stats -->
-            <div
-              class="flex-1 flex flex-wrap items-center justify-center gap-2 md:gap-4"
-            >
+            <div class="flex-1 flex flex-wrap items-center justify-center gap-2 md:gap-4">
               <div
                 v-if="currentConfig.timer > 0"
                 class="ui-capsule bg-rose-50 border-rose-200 px-3 md:px-4 h-10 md:h-12 transition-all duration-300"
                 :class="{
-                  'animate-pulse bg-rose-100 border-rose-400 shadow-lg':
-                    timeLeft <= 3,
+                  'animate-pulse bg-rose-100 border-rose-400 shadow-lg': timeLeft <= 3,
                 }"
               >
                 <span class="text-base md:text-xl animate-bounce">⏱️</span>
@@ -509,10 +466,9 @@ onUnmounted(() => {
                 class="ui-capsule bg-orange-50 border-orange-200 px-3 md:px-4 h-10 md:h-12 animate-float"
               >
                 <span class="text-base md:text-xl">🔥</span>
-                <span
-                  class="text-base md:text-xl font-black text-orange-600 ml-1"
-                  >{{ streak }}</span
-                >
+                <span class="text-base md:text-xl font-black text-orange-600 ml-1">{{
+                  streak
+                }}</span>
               </div>
               <div
                 v-if="currentConfig.streak > 0"
@@ -522,26 +478,18 @@ onUnmounted(() => {
                   >Target: {{ currentConfig.streak }} 🔥</span
                 >
               </div>
-              <div
-                class="ui-capsule bg-sky-50 border-sky-200 px-4 md:px-5 h-10 md:h-12"
-              >
-                <span class="text-sm md:text-lg font-black text-sky-700"
-                  >Lvl {{ level }}</span
-                >
+              <div class="ui-capsule bg-sky-50 border-sky-200 px-4 md:px-5 h-10 md:h-12">
+                <span class="text-sm md:text-lg font-black text-sky-700">Lvl {{ level }}</span>
               </div>
-              <div
-                class="ui-capsule bg-indigo-50 border-indigo-200 px-4 md:px-5 h-10 md:h-12"
-              >
-                <span class="text-sm md:text-lg font-black text-indigo-700"
-                  >🏆 {{ score }}</span
-                >
+              <div class="ui-capsule bg-indigo-50 border-indigo-200 px-4 md:px-5 h-10 md:h-12">
+                <span class="text-sm md:text-lg font-black text-indigo-700">🏆 {{ score }}</span>
               </div>
             </div>
 
             <!-- Stop -->
             <div class="shrink-0">
               <button
-                @click="emit('stop-challenge')"
+                @click="emit('stop-quiz')"
                 class="ui-capsule-interactive bg-rose-500 border-rose-600 text-white w-10 md:w-12 h-10 md:h-12 p-0 flex items-center justify-center shadow-lg hover:bg-rose-400 active:scale-95 transition-all"
               >
                 <span class="text-xl md:text-2xl">⏹️</span>
@@ -553,9 +501,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Feedback -->
-    <div
-      class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4"
-    >
+    <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
       <transition name="fade" mode="out-in">
         <div
           v-if="feedback.message"
@@ -573,14 +519,12 @@ onUnmounted(() => {
     </div>
 
     <!-- Alphabet Grid -->
-    <div
-      class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative"
-    >
+    <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
       <div
         class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
         <BubbleCard
-          v-for="(letter, index) in challengeLetters"
+          v-for="(letter, index) in quizLetters"
           :key="letter"
           as="button"
           @click="handleLetterClick(letter)"
@@ -604,9 +548,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Replay Sound Button -->
-      <div
-        class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-20 animate-pulse"
-      >
+      <div class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-20 animate-pulse">
         <button
           @click="playLetterSound(targetLetter)"
           class="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-white rounded-full shadow-2xl border-[5px] border-indigo-500 hover:scale-110 active:scale-95 transition-all"

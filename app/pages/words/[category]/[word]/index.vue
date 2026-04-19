@@ -21,11 +21,7 @@ const speaking = ref(false);
 const activeSyllableIndex = ref<number | null>(null);
 let autoPlayTimeout: number | null = null;
 
-const fallbackToSpeech = async (
-  text: string,
-  path?: string,
-  onEnd?: () => void,
-) => {
+const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void) => {
   speaking.value = true;
   await playWordAudio(text, path);
   speaking.value = false;
@@ -35,19 +31,13 @@ const fallbackToSpeech = async (
 const playSyllable = async (syllable: string, index: number) => {
   if (speaking.value) return;
   activeSyllableIndex.value = index;
-  await playSyllableAudio(
-    syllable,
-    `/audio/syllables/${syllable.toLowerCase()}.mp3`,
-  );
+  await playSyllableAudio(syllable, `/audio/syllables/${syllable.toLowerCase()}.mp3`);
   activeSyllableIndex.value = null;
 };
 
 const playFullWord = () => {
   if (speaking.value || !wordData.value) return;
-  fallbackToSpeech(
-    wordData.value.word,
-    `/audio/words/${wordData.value.id}.mp3`,
-  );
+  fallbackToSpeech(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`);
 };
 
 const playAuto = async () => {
@@ -64,10 +54,7 @@ const playAuto = async () => {
 
     for (let i = 0; i < syllables.length; i++) {
       activeSyllableIndex.value = i;
-      await playSyllableAudio(
-        syllables[i]!,
-        `/audio/syllables/${syllables[i]!.toLowerCase()}.mp3`,
-      );
+      await playSyllableAudio(syllables[i]!, `/audio/syllables/${syllables[i]!.toLowerCase()}.mp3`);
 
       if (i < syllables.length - 1) {
         await new Promise((resolve) => {
@@ -81,10 +68,7 @@ const playAuto = async () => {
       autoPlayTimeout = window.setTimeout(resolve, 800);
     });
 
-    await playWordAudio(
-      wordData.value.word,
-      `/audio/words/${wordData.value.id}.mp3`,
-    );
+    await playWordAudio(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`);
     popConfettiCenter();
   } finally {
     speaking.value = false;
@@ -118,14 +102,8 @@ onMounted(() => {
 });
 
 // Colors for alternating syllables
-const syllableColors = [
-  "bg-[#FFD93D]",
-  "bg-[#4D96FF]",
-  "bg-[#6BCB77]",
-  "bg-[#ff9a9a]",
-];
-const getSyllableColor = (index: number) =>
-  syllableColors[index % syllableColors.length];
+const syllableColors = ["bg-[#FFD93D]", "bg-[#4D96FF]", "bg-[#6BCB77]", "bg-[#ff9a9a]"];
+const getSyllableColor = (index: number) => syllableColors[index % syllableColors.length];
 </script>
 
 <template>
@@ -168,9 +146,7 @@ const getSyllableColor = (index: number) =>
             class="w-auto px-6 h-12"
             icon="📖"
           >
-            <span class="text-lg font-semibold hidden sm:inline"
-              >Daftar Kata</span
-            >
+            <span class="text-lg font-semibold hidden sm:inline">Daftar Kata</span>
           </UiButton>
           <UiButton
             @click="playAuto"
@@ -181,12 +157,7 @@ const getSyllableColor = (index: number) =>
           >
             <span class="text-lg font-semibold hidden sm:inline">Ucapkan</span>
           </UiButton>
-          <UiButton
-            @click="goExercise"
-            variant="accent"
-            class="w-auto px-6 h-12"
-            icon="🧩"
-          >
+          <UiButton @click="goExercise" variant="accent" class="w-auto px-6 h-12" icon="🧩">
             <span class="text-lg font-semibold hidden sm:inline">Latihan</span>
           </UiButton>
         </div>

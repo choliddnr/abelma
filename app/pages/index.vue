@@ -33,6 +33,13 @@ const menuItems = [
   //   to: "/storybook",
   // },
   {
+    title: "Misi",
+    subtitle: "Dapatkan Koin",
+    icon: "⭐",
+    colorClass: "bg-[#4D96FF] text-white",
+    to: "/challenge",
+  },
+  {
     title: "Hadiah",
     subtitle: "Tukar Koinmu",
     icon: "🎁",
@@ -43,9 +50,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div
-    class="flex flex-col min-h-screen relative p-4 md:p-8 overflow-hidden -mt-24"
-  >
+  <div class="flex flex-col h-auto relative p-4 md:p-8 overflow-hidden -mt-24">
     <!-- Full-screen Frosted Overlay -->
     <div
       class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"

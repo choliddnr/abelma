@@ -23,11 +23,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: [
-        "canvas-confetti",
-        "better-auth/vue",
-        "better-auth/client/plugins",
-      ],
+      include: ["canvas-confetti", "better-auth/vue", "better-auth/client/plugins"],
     },
   },
   nitro: {

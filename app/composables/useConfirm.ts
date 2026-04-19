@@ -4,17 +4,17 @@ interface ConfirmOptions {
   confirmText?: string;
   cancelText?: string;
   icon?: string;
-  variant?: 'danger' | 'primary' | 'accent' | 'success';
+  variant?: "danger" | "primary" | "accent" | "success";
 }
 
 const isOpen = ref(false);
 const options = ref<ConfirmOptions>({
-  title: 'Konfirmasi',
-  message: 'Apakah Anda yakin?',
-  confirmText: 'Ya',
-  cancelText: 'Batal',
-  icon: '❓',
-  variant: 'primary',
+  title: "Konfirmasi",
+  message: "Apakah Anda yakin?",
+  confirmText: "Ya",
+  cancelText: "Batal",
+  icon: "❓",
+  variant: "primary",
 });
 
 let resolvePromise: (value: boolean) => void;
@@ -22,12 +22,12 @@ let resolvePromise: (value: boolean) => void;
 export const useConfirm = () => {
   const confirm = (opts: ConfirmOptions = {}) => {
     options.value = {
-      title: opts.title || 'Konfirmasi',
-      message: opts.message || 'Apakah Anda yakin?',
-      confirmText: opts.confirmText || 'Ya',
-      cancelText: opts.cancelText || 'Batal',
-      icon: opts.icon || '❓',
-      variant: opts.variant || 'primary',
+      title: opts.title || "Konfirmasi",
+      message: opts.message || "Apakah Anda yakin?",
+      confirmText: opts.confirmText || "Ya",
+      cancelText: opts.cancelText || "Batal",
+      icon: opts.icon || "❓",
+      variant: opts.variant || "primary",
     };
     isOpen.value = true;
 

@@ -57,10 +57,7 @@ export const useStickerStore = defineStore(
       let earnedSticker: Sticker | null = null;
 
       for (const sticker of allAvailableStickers) {
-        if (
-          currentScore >= sticker.requiredScore &&
-          !earnedStickers.value.has(sticker.id)
-        ) {
+        if (currentScore >= sticker.requiredScore && !earnedStickers.value.has(sticker.id)) {
           earnedStickers.value.add(sticker.id);
           if (!earnedSticker) {
             earnedSticker = sticker;
@@ -73,9 +70,7 @@ export const useStickerStore = defineStore(
           if (!currentProfileStickers.value[profileId.value]) {
             currentProfileStickers.value[profileId.value] = [];
           }
-          const profileStickers = currentProfileStickers.value[
-            profileId.value
-          ] as string[];
+          const profileStickers = currentProfileStickers.value[profileId.value] as string[];
           if (!profileStickers.includes(earnedSticker.id)) {
             profileStickers.push(earnedSticker.id);
           }
@@ -95,15 +90,11 @@ export const useStickerStore = defineStore(
 
     // Computed
     const earnedStickerList = computed(() => {
-      return allAvailableStickers.filter((sticker) =>
-        earnedStickers.value.has(sticker.id),
-      );
+      return allAvailableStickers.filter((sticker) => earnedStickers.value.has(sticker.id));
     });
 
     const unearnedStickers = computed(() => {
-      return allAvailableStickers.filter(
-        (sticker) => !earnedStickers.value.has(sticker.id),
-      );
+      return allAvailableStickers.filter((sticker) => !earnedStickers.value.has(sticker.id));
     });
 
     const totalEarned = computed(() => {

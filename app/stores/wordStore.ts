@@ -1,30 +1,30 @@
-import type { WordChallengeProgress, WordLevelConfig } from "@/types/stores";
+import type { WordQuizProgress, WordLevelConfig } from "@/types/stores";
 
 export const useWordStore = defineStore(
   "word",
   () => {
     const { activeProfileId } = storeToRefs(useProfileStore());
 
-    const wordChallengeProgress = ref<WordChallengeProgress>({
+    const wordQuizProgress = ref<WordQuizProgress>({
       score: 0,
       level: 1,
       weights: {},
-      challengeConfig: [
+      quizConfig: [
         { timer: 0, coinReward: 5, letterCase: "uppercase", numOptions: 2 },
         { timer: 30, coinReward: 10, letterCase: "lowercase", numOptions: 3 },
         { timer: 20, coinReward: 20, letterCase: "mixed", numOptions: 4 },
         { timer: 10, coinReward: 30, letterCase: "mixed", numOptions: 6 },
       ],
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date(),
     });
 
     const fetch = async () => {
       if (!activeProfileId.value) return;
-      
+
       try {
-        const res = await $fetch<any>(`/api/words/challenge/${activeProfileId.value}/progress`);
+        const res = await $fetch<any>(`/api/words/quiz/${activeProfileId.value}/progress`);
         if (res) {
-          wordChallengeProgress.value = res;
+          wordQuizProgress.value = res;
         }
       } catch (error: any) {
         if (error.status === 204 || error.status === 404) {
@@ -40,26 +40,32 @@ export const useWordStore = defineStore(
       try {
         // Try to update config first
         try {
-          const result = await $fetch(`/api/words/challenge/${profileId}/config`, {
-            method: "PATCH",
-            body: { challengeConfig: config },
-          });
+          const result = await $fetch<WordQuizProgress>(
+            `/api/words/quiz/${profileId}/config`,
+            {
+              method: "PATCH",
+              body: { quizConfig: config },
+            },
+          );
           if (result) {
-            wordChallengeProgress.value.challengeConfig = config;
+            wordQuizProgress.value = result;
             return true;
           }
         } catch (error: any) {
           // If not found, create the record
           if (error.status === 404) {
-            const createRes = await $fetch(`/api/words/challenge/${profileId}/progress`, {
-              method: "POST",
-              body: {
-                ...wordChallengeProgress.value,
-                challengeConfig: config,
+            const createRes = await $fetch<WordQuizProgress>(
+              `/api/words/quiz/${profileId}/progress`,
+              {
+                method: "POST",
+                body: {
+                  ...wordQuizProgress.value,
+                  quizConfig: config,
+                },
               },
-            });
+            );
             if (createRes) {
-              wordChallengeProgress.value = createRes;
+              wordQuizProgress.value = createRes;
               return true;
             }
           }
@@ -72,14 +78,17 @@ export const useWordStore = defineStore(
       return false;
     };
 
-    const updateProgress = async (profileId: string, data: Partial<WordChallengeProgress>) => {
+    const updateProgress = async (profileId: string, data: Partial<WordQuizProgress>) => {
       try {
-        const res = await $fetch<any>(`/api/words/challenge/${profileId}/progress`, {
-          method: "PATCH",
-          body: data,
-        });
+        const res = await $fetch<WordQuizProgress>(
+          `/api/words/quiz/${profileId}/progress`,
+          {
+            method: "PATCH",
+            body: data,
+          },
+        );
         if (res) {
-          wordChallengeProgress.value = res;
+          wordQuizProgress.value = res;
           return true;
         }
       } catch (error) {
@@ -89,7 +98,7 @@ export const useWordStore = defineStore(
     };
 
     return {
-      wordChallengeProgress,
+      wordQuizProgress,
       fetch,
       saveConfig,
       updateProgress,

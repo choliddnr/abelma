@@ -11,7 +11,7 @@ export const ALPHABET_STORYBOOK = [
       "Andi memakannya dengan lahap sambil tersenyum.",
     ],
     themeColor: "bg-red-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf A besar?",
         target: "A",
@@ -36,7 +36,7 @@ export const ALPHABET_STORYBOOK = [
       "Semua tertawa melihat bola melambung tinggi.",
     ],
     themeColor: "bg-blue-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf B besar?",
         target: "B",
@@ -61,7 +61,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia ingin mencicipinya sedikit saja.",
     ],
     themeColor: "bg-orange-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf C besar?",
         target: "C",
@@ -86,7 +86,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia penasaran siapa yang datang.",
     ],
     themeColor: "bg-green-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf D besar?",
         target: "D",
@@ -111,7 +111,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia merasa bebas saat terbang.",
     ],
     themeColor: "bg-sky-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf E besar?",
         target: "E",
@@ -136,7 +136,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia tersenyum saat difoto.",
     ],
     themeColor: "bg-pink-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf F besar?",
         target: "F",
@@ -161,7 +161,7 @@ export const ALPHABET_STORYBOOK = [
       "Gani tertawa melihatnya.",
     ],
     themeColor: "bg-purple-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf G besar?",
         target: "G",
@@ -186,7 +186,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia menunggu hujan berhenti.",
     ],
     themeColor: "bg-yellow-600",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf H besar?",
         target: "H",
@@ -211,7 +211,7 @@ export const ALPHABET_STORYBOOK = [
       "Ipin merasa sangat senang.",
     ],
     themeColor: "bg-cyan-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf I besar?",
         target: "I",
@@ -236,7 +236,7 @@ export const ALPHABET_STORYBOOK = [
       "Semua kagum melihat jam Jojo yang keren.",
     ],
     themeColor: "bg-amber-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf J besar?",
         target: "J",
@@ -261,7 +261,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia tidak sabar membagikan kue itu.",
     ],
     themeColor: "bg-rose-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf K besar?",
         target: "K",
@@ -286,7 +286,7 @@ export const ALPHABET_STORYBOOK = [
       "Akhirnya Lani kembali ke sarangnya.",
     ],
     themeColor: "bg-yellow-300",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf L besar?",
         target: "L",
@@ -311,7 +311,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia tersenyum menikmati buahnya.",
     ],
     themeColor: "bg-orange-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf M besar?",
         target: "M",
@@ -336,7 +336,7 @@ export const ALPHABET_STORYBOOK = [
       "Hari itu penuh kebahagiaan.",
     ],
     themeColor: "bg-emerald-600",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf N besar?",
         target: "N",
@@ -361,7 +361,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia berayun dengan gembira.",
     ],
     themeColor: "bg-orange-700",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf O besar?",
         target: "O",
@@ -386,7 +386,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia siap menikmati pisangnya.",
     ],
     themeColor: "bg-slate-700",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf P besar?",
         target: "P",
@@ -411,7 +411,7 @@ export const ALPHABET_STORYBOOK = [
       "Qila merasa bangga bisa belajar.",
     ],
     themeColor: "bg-indigo-600",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf Q besar?",
         target: "Q",
@@ -436,7 +436,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia tiba dengan selamat.",
     ],
     themeColor: "bg-amber-700",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf R besar?",
         target: "R",
@@ -461,7 +461,7 @@ export const ALPHABET_STORYBOOK = [
       "Akhirnya dia bisa berjalan dengan baik.",
     ],
     themeColor: "bg-neutral-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf S besar?",
         target: "S",
@@ -486,7 +486,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia merasa sangat senang.",
     ],
     themeColor: "bg-orange-300",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf T besar?",
         target: "T",
@@ -511,7 +511,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia beristirahat di bawah pohon.",
     ],
     themeColor: "bg-yellow-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf U besar?",
         target: "U",
@@ -536,7 +536,7 @@ export const ALPHABET_STORYBOOK = [
       "Vina menikmati pemandangan.",
     ],
     themeColor: "bg-violet-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf V besar?",
         target: "V",
@@ -561,7 +561,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia akhirnya merasa aman.",
     ],
     themeColor: "bg-lime-500",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf W besar?",
         target: "W",
@@ -586,7 +586,7 @@ export const ALPHABET_STORYBOOK = [
       "Xena tersenyum bahagia.",
     ],
     themeColor: "bg-teal-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf X besar?",
         target: "X",
@@ -611,7 +611,7 @@ export const ALPHABET_STORYBOOK = [
       "Yoga merasa bangga.",
     ],
     themeColor: "bg-red-400",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf Y besar?",
         target: "Y",
@@ -637,7 +637,7 @@ export const ALPHABET_STORYBOOK = [
       "Dia bermain bersama teman-temannya.",
     ],
     themeColor: "bg-zinc-600",
-    challenge: [
+    quiz: [
       {
         question: "Mana huruf Z besar?",
         target: "Z",
