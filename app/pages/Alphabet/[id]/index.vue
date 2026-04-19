@@ -3,7 +3,7 @@ const route = useRoute();
 const router = useRouter();
 const letter = (route.params.id as string).toUpperCase();
 
-const { speak } = useAlphabetAudio();
+const { speak } = useTTS();
 
 const words = {
   A: { word: "Apel", icon: "🍎" },

@@ -6,7 +6,7 @@ const { alphabetQuizProgress } = storeToRefs(useAlphabetStore());
 const { profile } = storeToRefs(useProfileStore());
 const { fetch } = useAlphabetStore();
 
-const { preloadSounds } = useAlphabetAudio();
+const { preloadSounds } = useTTS();
 
 callOnce(async () => await useAsyncData("alphabet-quiz-progress", () => fetch()));
 onMounted(() => {

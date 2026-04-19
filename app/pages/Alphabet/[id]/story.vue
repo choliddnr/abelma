@@ -5,6 +5,7 @@ import type { AlphabetStorybook } from "@/types/alphabet";
 import FloatingInteractionZone from "~/components/alphabet/FloatingInteractionZone.vue";
 import CelebrationModal from "~/components/ui/CelebrationModal.vue";
 import { useStorybookStore } from "~/stores/storybookStore";
+import { speakTTS, cancelTTS } from "~/composables/useTTS";
 
 const route = useRoute();
 const router = useRouter();
@@ -67,29 +68,19 @@ const highlightStory = computed(() => {
   );
 });
 
-// const highlightedStory = computed(() => {
-//   if (!storybook.value) return "";
-//   const u = storybook.value.letter.upper;
-//   const l = storybook.value.letter.lower;
-//   return storybook.value.story.replace(
-//     new RegExp(`(${u}|${l})`, "g"),
-//     `<mark class="story-mark">$1</mark>`,
-//   );
-// });
-
 const letter = route.params.id as string;
 
-const currentIndex = computed(() => {
-  if (!storybook.value) return -1;
-  return data.findIndex((d) => d.id === storybook.value?.id);
-});
+// const currentIndex = computed(() => {
+//   if (!storybook.value) return -1;
+//   return data.findIndex((d) => d.id === storybook.value?.id);
+// });
 const isSpeakingStory = ref(false);
 
-const buildPhonicsText = (entry: AlphabetStorybook): string => {
-  const u = entry.letter.upper;
-  const l = entry.letter.lower;
-  return `Huruf ${u}. ${u} besar dan ${l} kecil. ${entry.title}. ${entry.story}`;
-};
+// const buildPhonicsText = (entry: AlphabetStorybook): string => {
+//   const u = entry.letter.upper;
+//   const l = entry.letter.lower;
+//   return `Huruf ${u}. ${u} besar dan ${l} kecil. ${entry.title}. ${entry.story}`;
+// };
 
 const currentQuizList = computed(() => {
   if (!storybook.value?.quiz) return [];
@@ -111,17 +102,16 @@ const readQuizQuestion = () => {
   if (!text) return;
 
   currentPlayId++;
-  window.speechSynthesis.cancel();
+  cancelTTS();
   isSpeakingStory.value = true;
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "id-ID";
-  utterance.rate = 0.85;
-  utterance.pitch = 1.1;
-  utterance.onend = utterance.onerror = () => {
-    isSpeakingStory.value = false;
-  };
-  window.speechSynthesis.speak(utterance);
+  speakTTS(text, {
+    rate: 0.85,
+    pitch: 1.1,
+    onEnd: () => {
+      isSpeakingStory.value = false;
+    },
+  });
 };
 
 const startQuiz = () => {
@@ -136,7 +126,7 @@ const speakStory = () => {
   if (!story) return;
 
   const playId = ++currentPlayId;
-  window.speechSynthesis.cancel();
+  cancelTTS();
   isSpeakingStory.value = true;
 
   let s = 0;
@@ -153,23 +143,16 @@ const speakStory = () => {
     }
 
     storyText.value = story[s] ?? "";
-    const utterance = new SpeechSynthesisUtterance(story[s] as string);
-    utterance.lang = "id-ID";
-    utterance.rate = 0.85;
-    utterance.pitch = 1.1;
 
-    utterance.onend = () => {
-      if (playId !== currentPlayId) return;
-      s++;
-      playNext();
-    };
-
-    utterance.onerror = () => {
-      if (playId !== currentPlayId) return;
-      isSpeakingStory.value = false;
-    };
-
-    window.speechSynthesis.speak(utterance);
+    speakTTS(story[s] as string, {
+      rate: 0.85,
+      pitch: 1.1,
+      onEnd: () => {
+        if (playId !== currentPlayId) return;
+        s++;
+        playNext();
+      },
+    });
   };
 
   playNext();
@@ -179,26 +162,27 @@ const closeStory = () => {
   router.push(`/alphabet/${letter}`);
 };
 
-const nextStoryLetter = () => {
-  if (!storybook.value) return;
-  const currentIdx = data.findIndex((d) => d.id === storybook.value!.id);
-  if (currentIdx < data.length - 1) {
-    router.push(`/alphabet/${data[currentIdx + 1]!.letter.lower}/story`);
-  } else {
-    closeStory();
-  }
-};
+// const nextStoryLetter = () => {
+//   if (!storybook.value) return;
+//   const currentIdx = data.findIndex((d) => d.id === storybook.value!.id);
+//   if (currentIdx < data.length - 1) {
+//     router.push(`/alphabet/${data[currentIdx + 1]!.letter.lower}/story`);
+//   } else {
+//     closeStory();
+//   }
+// };
 
-const prevStoryLetter = () => {
-  if (!storybook.value) return;
-  const currentIdx = data.findIndex((d) => d.id === storybook.value!.id);
-  if (currentIdx > 0) {
-    router.push(`/alphabet/${data[currentIdx - 1]!.letter.lower}/story`);
-  }
-};
+// const prevStoryLetter = () => {
+//   if (!storybook.value) return;
+//   const currentIdx = data.findIndex((d) => d.id === storybook.value!.id);
+//   if (currentIdx > 0) {
+//     router.push(`/alphabet/${data[currentIdx - 1]!.letter.lower}/story`);
+//   }
+// };
 
 const onQuizSuccess = async () => {
   showCelebration.value = true;
+  playEffectAudio("correct");
 
   changeCoins(10);
 
@@ -236,6 +220,7 @@ const onQuizSuccess = async () => {
 
 const onQuizFail = () => {
   // Add logic later if needed (FloatingInteractionZone already shakes and randomizes)
+  speakTTS("Kurang tepat, coba lagi yaaa!", { rate: 0.85, pitch: 1.1 });
 };
 
 onMounted(() => {
@@ -244,12 +229,16 @@ onMounted(() => {
 
 onUnmounted(() => {
   currentPlayId++;
-  window.speechSynthesis.cancel();
+  cancelTTS();
 });
 </script>
 
 <template>
-  <div v-if="storybook" class="flex sm:items-center justify-center sm:p-6" @click.self="closeStory">
+  <div
+    v-if="storybook"
+    class="flex sm:items-center justify-center sm:p-6"
+    @click.self="closeStory"
+  >
     <div
       class="relative bg-white rounded-[2.5rem] shadow-2xl flex flex-col mt-5 border-8 border-white/80 overflow-hidden w-full max-w-4xl h-screen sm:h-[88vh] mb-5 mx-2 md:mx-0 md:mb-0"
     >
@@ -266,7 +255,9 @@ onUnmounted(() => {
       </template>
 
       <template v-else>
-        <div class="absolute inset-0 bg-slate-50 flex items-center justify-center overflow-hidden">
+        <div
+          class="absolute inset-0 bg-slate-50 flex items-center justify-center overflow-hidden"
+        >
           <span
             class="text-[15rem] select-none opacity-[0.15]"
             style="animation: letter-bounce 3s ease-in-out infinite"
@@ -326,7 +317,9 @@ onUnmounted(() => {
 
       <!-- Bottom floating card: Story text or Quiz -->
 
-      <div class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full">
+      <div
+        class="mt-auto relative z-10 p-4 sm:p-6 flex flex-col items-center w-full"
+      >
         <template v-if="!showQuiz">
           <div class="space-y-4 text-center bg-black/50 rounded-2xl max-w-2xl">
             <span class="text-xl md:text-2xl lg:text-3xl text-white font-bold"
@@ -338,17 +331,6 @@ onUnmounted(() => {
             />
           </div>
         </template>
-        <!-- <template v-else-if="activeQuiz">
-          <div
-            class="text-center bg-black/60 rounded-3xl p-4 sm:p-6 shadow-xl backdrop-blur-sm pointer-events-none w-full max-w-2xl"
-          >
-            <p
-              class="text-xl md:text-2xl lg:text-3xl font-black text-white px-2"
-            >
-              {{ activeQuiz.question || activeQuiz.instruction }}
-            </p>
-          </div>
-        </template> -->
       </div>
     </div>
     <CelebrationModal

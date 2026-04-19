@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { letters, idLetterMap, getLetterColor } from "~/constants/alphabet";
-import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
+import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
+import { cancelTTS } from "~/composables/useTTS";
 // import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 
 const emit = defineEmits(["start-quiz"]);
 
-const { speaking, playLetterSound } = useAlphabetAudio();
+const { isSpeaking: speaking, playLetterSound } = useTTS();
 // const { quizDone } = storeToRefs(useStorybookStore());
 
 // --- Dashboard State ---
@@ -118,7 +119,7 @@ const handleLetterClick = (letter: string, event?: Event) => {
 
 onUnmounted(() => {
   stopAutoPlay();
-  window.speechSynthesis.cancel();
+  cancelTTS();
 });
 </script>
 

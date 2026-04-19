@@ -2,6 +2,7 @@
 import { wordCategories, type Word } from "~/constants/words";
 import confetti from "canvas-confetti";
 import type { Sticker } from "@/types/stores";
+import { cancelTTS } from "~/composables/useTTS";
 
 const router = useRouter();
 const wordStore = useWordStore();
@@ -455,13 +456,13 @@ onMounted(async () => {
 
 onUnmounted(async () => {
   if (timerInterval) clearInterval(timerInterval);
-  window.speechSynthesis.cancel();
+  cancelTTS();
   await syncProgressToDb();
 });
 
 onScopeDispose(() => {
   if (timerInterval) clearInterval(timerInterval);
-  window.speechSynthesis.cancel();
+  cancelTTS();
 });
 </script>
 

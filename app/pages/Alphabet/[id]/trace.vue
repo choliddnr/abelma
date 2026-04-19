@@ -11,6 +11,7 @@ const showResult = ref(false);
 const scoreResult = ref({ score: 0, stars: 0, coverage: 0, accuracy: 0 });
 const coinsEarned = ref(0);
 const showIncompleteToast = ref(false);
+const isScrambled = ref(false);
 
 const goBack = () => router.push(`/alphabet/${letter}`);
 
@@ -28,9 +29,26 @@ const onSaved = async () => {
 
   try {
     const result = await tracingCanvasRef.value.calculateScore();
-    console.log(result);
+    if (result.isScrambled) {
+      isScrambled.value = true;
+      showIncompleteToast.value = true;
+      speakTTS("Tulis lebih rapi lagi yaa!", {
+        rate: 0.85,
+        pitch: 1.1,
+      });
+      clearTracing();
+      setTimeout(() => {
+        showIncompleteToast.value = false;
+        isScrambled.value = false;
+      }, 3000);
+      return;
+    }
     if (result.score === 0) {
       showIncompleteToast.value = true;
+      speakTTS("Sepertinya kamu belum selesai menulis huruf ini!", {
+        rate: 0.85,
+        pitch: 1.1,
+      });
       setTimeout(() => {
         showIncompleteToast.value = false;
       }, 3000);
@@ -115,7 +133,9 @@ const retry = () => {
       <div
         class="bg-white rounded-[24px] sm:rounded-[40px] p-5 sm:p-8 max-w-lg w-full shadow-2xl border-4 sm:border-8 border-blue-400 flex flex-col items-center text-center animate-bounce-in"
       >
-        <h2 class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm">
+        <h2
+          class="text-2xl sm:text-4xl font-black text-blue-600 mb-3 sm:mb-6 drop-shadow-sm"
+        >
           {{
             scoreResult.stars === 5
               ? "Sempurna!"
@@ -149,7 +169,10 @@ const retry = () => {
         >
           <span>💰</span> +{{ coinsEarned }} Koin!
         </div>
-        <div v-else class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8">
+        <div
+          v-else
+          class="text-base sm:text-xl font-bold text-gray-500 mb-4 sm:mb-8"
+        >
           Gambar lebih rapi for dapat koin!
         </div>
 
@@ -160,7 +183,10 @@ const retry = () => {
           >
             Ulangi
           </button>
-          <button @click="goBack" class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4">
+          <button
+            @click="goBack"
+            class="flex-1 btn-primary text-base sm:text-xl py-3 sm:py-4"
+          >
             Lanjut
           </button>
         </div>
@@ -173,8 +199,12 @@ const retry = () => {
         v-if="showIncompleteToast"
         class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-lg sm:text-2xl shadow-2xl flex items-center gap-3 sm:gap-4 w-[90%] sm:w-auto justify-center"
       >
-        <span class="text-2xl sm:text-3xl">⚠️</span> Sepertinya kamu belum selesai menggambar! Ayo
-        coba lagi! 😊
+        <span class="text-2xl sm:text-3xl">⚠️</span>
+        {{
+          isScrambled
+            ? "Tulis lebih rapi lagi yaa!"
+            : "Sepertinya kamu belum selesai menggambar! Ayo coba lagi! 😊"
+        }}
       </div>
     </transition>
   </div>

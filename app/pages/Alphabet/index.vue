@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: "AlphabetLearning" });
 
-const { preloadSounds } = useAlphabetAudio();
+const { preloadSounds } = useTTS();
 
 onMounted(() => {
   preloadSounds();

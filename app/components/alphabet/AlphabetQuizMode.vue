@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { letters, getLetterColor } from "~/constants/alphabet";
 import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
-import { useAlphabetAudio } from "~/composables/useAlphabetAudio";
+import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
 
 const emit = defineEmits(["stop-quiz"]);
 
 const router = useRouter();
-const { speaking, playLetterSound, speak } = useAlphabetAudio();
+const { isSpeaking: speaking, playLetterSound, speak } = useTTS();
 const { alphabetQuizProgress: alphabetProgress } = storeToRefs(useAlphabetStore());
 const { changeCoins } = useProfileStore();
 // const { syncAlphabet } = useSyncStore();

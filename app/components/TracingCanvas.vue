@@ -14,9 +14,9 @@ const isVertical = ref(false);
 // Scale the brush proportionally to the canvas width so it feels natural
 // on both mobile (small) and desktop (large) screens.
 const getBrushSize = (canvasWidth: number): number => {
-  if (canvasWidth < 400) return 18; // small phones
-  if (canvasWidth < 600) return 24; // large phones / small tablets
-  if (canvasWidth < 900) return 32; // tablets
+  if (canvasWidth < 400) return 24; // small phones
+  if (canvasWidth < 600) return 32; // large phones / small tablets
+  if (canvasWidth < 900) return 40; // tablets
   return 40; // desktop
 };
 
@@ -40,6 +40,11 @@ const initCanvas = () => {
     ctx.value.lineWidth = getBrushSize(width);
     ctx.value.strokeStyle = "#28abb9"; // Teal color
   }
+
+  // DEBUG: generate the target canvas immediately so it's visible while drawing
+  setTimeout(() => {
+    buildTargetCanvas(width, height);
+  }, 100);
 };
 
 onMounted(() => {
@@ -70,7 +75,9 @@ onUnmounted(() => {
   }
 });
 
-const getCoords = (e: MouseEvent | TouchEvent): { x: number; y: number } | null => {
+const getCoords = (
+  e: MouseEvent | TouchEvent,
+): { x: number; y: number } | null => {
   if (!canvasRef.value) return null;
   const rect = canvasRef.value.getBoundingClientRect();
 
@@ -146,53 +153,65 @@ const buildTargetCanvas = async (
 ): Promise<HTMLCanvasElement | null> => {
   if (!svgRef.value) return null;
 
-  // Clone the SVG and mutate its text element into a solid filled target
-  const svgClone = svgRef.value.cloneNode(true) as SVGSVGElement;
-  svgClone.setAttribute("width", String(width));
-  svgClone.setAttribute("height", String(height));
+  const targetCanvas = document.createElement("canvas");
+  targetCanvas.width = width;
+  targetCanvas.height = height;
+  const tCtx = targetCanvas.getContext("2d", { willReadFrequently: true });
+  if (!tCtx) return null;
 
-  const textEls = svgClone.querySelectorAll("text");
+  const textEls = svgRef.value.querySelectorAll("text");
   if (textEls.length === 0) return null;
 
   textEls.forEach((textEl) => {
-    // Make it solid black fill + thick stroke for a generous hit zone
-    textEl.setAttribute("fill", "black");
-    textEl.setAttribute("stroke", "black");
-    textEl.setAttribute("stroke-width", "50"); // ≈ brush lineWidth
-    textEl.removeAttribute("stroke-dasharray");
-    textEl.removeAttribute("stroke-dashoffset");
+    const style = window.getComputedStyle(textEl);
+    const fontSize = style.fontSize;
+    const fontFamily = style.fontFamily;
+    const fontWeight = style.fontWeight;
+
+    // Set font styles exactly as they appear in the DOM
+    tCtx.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+    tCtx.textAlign = "center";
+    tCtx.textBaseline = "middle";
+
+    // Convert percentage attributes to pixel coordinates
+    const xAttr = textEl.getAttribute("x") || "50%";
+    const yAttr = textEl.getAttribute("y") || "50%";
+    const x = xAttr.endsWith("%")
+      ? (parseFloat(xAttr) / 100) * width
+      : parseFloat(xAttr);
+    const y = yAttr.endsWith("%")
+      ? (parseFloat(yAttr) / 100) * height
+      : parseFloat(yAttr);
+
+    const text = textEl.textContent || "";
+
+    // For debugging/hit-testing, we draw the shape solid
+    // Note: using 5px stroke to match the visible outline requested by user
+    tCtx.strokeStyle = "rgba(200, 200, 200, .1)";
+    tCtx.fillStyle = "rgba(200, 200, 200, .1)";
+    tCtx.lineWidth = 5;
+    tCtx.lineCap = "round";
+    tCtx.lineJoin = "round";
+
+    // if() isVertical ? 18 : 22;
+
+    tCtx.strokeText(text, x, y + (isVertical.value ? 18 : 22));
+    tCtx.fillText(text, x, y + (isVertical.value ? 18 : 22));
   });
 
-  const svgString = new XMLSerializer().serializeToString(svgClone);
-  const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
+  // DEBUG: Append targetCanvas to the container so you can see it
+  targetCanvas.id = "debug-target-canvas";
+  targetCanvas.className = "absolute inset-0 pointer-events-none z-50";
+  const existing = containerRef.value?.querySelector("#debug-target-canvas");
+  if (existing) existing.remove();
+  containerRef.value?.appendChild(targetCanvas);
 
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => {
-      const targetCanvas = document.createElement("canvas");
-      targetCanvas.width = width;
-      targetCanvas.height = height;
-      const tCtx = targetCanvas.getContext("2d", { willReadFrequently: true });
-      if (!tCtx) {
-        URL.revokeObjectURL(url);
-        resolve(null);
-        return;
-      }
-      tCtx.drawImage(img, 0, 0, width, height);
-      URL.revokeObjectURL(url);
-      resolve(targetCanvas);
-    };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      resolve(null);
-    };
-    img.src = url;
-  });
+  return targetCanvas;
 };
 
 const calculateScore = async () => {
-  if (!canvasRef.value || !ctx.value) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+  if (!canvasRef.value || !ctx.value)
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
 
   const width = canvasRef.value.width;
   const height = canvasRef.value.height;
@@ -219,14 +238,31 @@ const calculateScore = async () => {
     if (isUser) userPixels++;
     if (isUser && isTarget) overlapPixels++;
   }
-
-  if (targetPixels === 0 || userPixels === 0)
-    return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
-
   // coverage = how much of the target the user filled (recall)
   // accuracy = how much of the user's drawing lands on the target (precision)
   const coverage = overlapPixels / targetPixels;
   const accuracy = overlapPixels / userPixels;
+
+  console.log(
+    "overlapPixels",
+    overlapPixels,
+    "userPixels",
+    userPixels,
+    coverage,
+    accuracy,
+  );
+
+  if (targetPixels === 0 || userPixels === 0)
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
+
+  // if user drew too much outside the target
+  if (userPixels - overlapPixels > targetPixels * 0.5) {
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: true };
+  }
+
+  if (coverage < 0.5) {
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
+  }
 
   // Weighted score: coverage matters more (missing strokes is worse than small overrun)
   // user note: i don't thing so, i think accuracy matters more
@@ -238,10 +274,10 @@ const calculateScore = async () => {
   score = Math.min(Math.round(score), 100);
 
   let stars = 0;
-  if (score >= 85) stars = 5;
-  else if (score >= 70) stars = 4;
-  else if (score >= 55) stars = 3;
-  else if (score >= 35) stars = 2;
+  if (score >= 90) stars = 5;
+  else if (score >= 85) stars = 4;
+  else if (score >= 80) stars = 3;
+  else if (score >= 75) stars = 2;
   else stars = 1;
 
   return {
@@ -249,6 +285,7 @@ const calculateScore = async () => {
     stars,
     coverage: Math.round(coverage * 100),
     accuracy: Math.round(accuracy * 100),
+    isScrambled: false,
   };
 };
 
