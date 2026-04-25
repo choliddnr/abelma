@@ -10,14 +10,30 @@ const svgRef = ref<SVGSVGElement | null>(null);
 const isDrawing = ref(false);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 const isVertical = ref(false);
+const brushColor = ref("#28abb9");
+const colors = [
+  "#28abb9", // Teal
+  "#e74c3c", // Red
+  "#3498db", // Blue
+  "#f1c40f", // Yellow
+  "#2ecc71", // Green
+  "#9b59b6", // Purple
+  "#e67e22", // Orange
+  "#333333", // Dark Gray
+];
+
+const encodedBrushColor = computed(() => encodeURIComponent(brushColor.value));
+const cursorStyle = computed(() => {
+  return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none' stroke='${encodedBrushColor.value}' stroke-width='2'%3E%3Cpath d='M16 4v24M4 16h24'/%3E%3Ccircle cx='16' cy='16' r='3' fill='${encodedBrushColor.value}'/%3E%3C/svg%3E") 16 16, crosshair`;
+});
 
 // Scale the brush proportionally to the canvas width so it feels natural
 // on both mobile (small) and desktop (large) screens.
 const getBrushSize = (canvasWidth: number): number => {
-  if (canvasWidth < 400) return 24; // small phones
-  if (canvasWidth < 600) return 32; // large phones / small tablets
-  if (canvasWidth < 900) return 40; // tablets
-  return 40; // desktop
+  if (canvasWidth < 400) return 20; // small phones
+  if (canvasWidth < 600) return 25; // large phones / small tablets
+  if (canvasWidth < 900) return 30; // tablets
+  return 35; // desktop
 };
 
 watch(
@@ -46,7 +62,7 @@ const initCanvas = () => {
     ctx.value.lineCap = "round";
     ctx.value.lineJoin = "round";
     ctx.value.lineWidth = getBrushSize(width);
-    ctx.value.strokeStyle = "#28abb9"; // Teal color
+    ctx.value.strokeStyle = brushColor.value;
   }
 
   // DEBUG: generate the target canvas immediately so it's visible while drawing
@@ -54,6 +70,12 @@ const initCanvas = () => {
     buildTargetCanvas(width, height);
   }, 100);
 };
+
+watch(brushColor, (newColor) => {
+  if (ctx.value) {
+    ctx.value.strokeStyle = newColor;
+  }
+});
 
 onMounted(() => {
   initCanvas();
@@ -104,11 +126,14 @@ const getCoords = (
   };
 };
 
+const emit = defineEmits(["interaction"]);
+
 const startDrawing = (e: MouseEvent | TouchEvent) => {
   // Prevent scroll/zoom on touch so the canvas receives the gesture
   if (e instanceof TouchEvent) e.preventDefault();
 
   isDrawing.value = true;
+  emit("interaction");
   if (!ctx.value) return;
 
   const coords = getCoords(e);
@@ -134,6 +159,7 @@ const draw = (e: MouseEvent | TouchEvent) => {
   const coords = getCoords(e);
   if (!coords) return;
 
+  emit("interaction");
   ctx.value.lineTo(coords.x, coords.y);
   ctx.value.stroke();
   ctx.value.beginPath();
@@ -372,11 +398,42 @@ defineExpose({ clearCanvas, calculateScore });
     <!-- Drawing Canvas -->
     <canvas
       ref="canvasRef"
-      class="absolute inset-0 w-full h-full cursor-crosshair touch-none"
+      class="absolute inset-0 w-full h-full touch-none"
+      :style="{ cursor: cursorStyle }"
       @mousedown="startDrawing"
       @mousemove="draw"
       @mouseup="stopDrawing"
       @mouseleave="stopDrawing"
     ></canvas>
+
+    <!-- Color Picker Overlay -->
+    <div
+      class="absolute top-4 right-4 flex flex-col gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 z-50 transform transition-all duration-300 hover:scale-105"
+    >
+      <div class="flex flex-col gap-2">
+        <div
+          v-for="color in colors"
+          :key="color"
+          @click="brushColor = color"
+          class="w-8 h-8 rounded-full cursor-pointer border-2 transition-all duration-200 hover:scale-110 active:scale-95"
+          :class="
+            brushColor === color ? 'border-gray-800 scale-110' : 'border-white'
+          "
+          :style="{ backgroundColor: color }"
+        ></div>
+        <div
+          class="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white hover:scale-110 transition-transform"
+        >
+          <input
+            type="color"
+            v-model="brushColor"
+            class="absolute inset-0 w-full h-full cursor-pointer scale-150 border-none p-0"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+<style scoped>
+/* Custom animations or extra styles if needed */
+</style>

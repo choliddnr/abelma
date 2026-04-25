@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "pinia-plugin-unstorage/nuxt",
     "@nuxt/test-utils/module",
+    "@nuxt/icon",
   ],
   // pinia: {
   //   // storesDirs: ["./stores/**"],

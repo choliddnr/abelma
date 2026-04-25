@@ -68,21 +68,21 @@ onBeforeMount(() => {
 
     <div class="w-full max-w-md animate-in fade-in zoom-in-95 duration-700">
       <!-- Welcome Header -->
-      <div class="text-center mb-10 space-y-3">
+      <div class="text-center mb-6 lg:mb-8 space-y-3">
         <div
-          class="inline-flex items-center justify-center w-24 h-24 bg-white rounded-[2.5rem] shadow-xl border-4 border-indigo-100 mb-4 animate-bounce"
+          class="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 bg-white rounded-[2.5rem] shadow-xl border-4 border-indigo-100 mb-2 lg:mb-4 animate-bounce"
         >
-          <span class="text-5xl">👋</span>
+          <span class="text-4xl lg:text-5xl">👋</span>
         </div>
-        <h1 class="text-4xl font-black text-slate-800 font-quicksand">Selamat Datang!</h1>
-        <p class="text-slate-500 font-bold text-lg">
+        <h1 class="text-3xl lg:text-4xl font-black text-slate-800 font-quicksand">Selamat Datang!</h1>
+        <p class="text-slate-500 font-bold text-base lg:text-lg">
           Mari buat profil si kecil untuk mulai belajar & bermain.
         </p>
       </div>
 
       <!-- Creation Card -->
       <div
-        class="bg-white/90 backdrop-blur-xl rounded-[3rem] p-10 shadow-2xl border border-white space-y-8 relative overflow-hidden"
+        class="bg-white/90 backdrop-blur-xl rounded-[2.5rem] lg:rounded-[3rem] p-8 lg:p-10 shadow-2xl border border-white space-y-6 lg:space-y-8 relative overflow-hidden"
       >
         <div
           v-if="isCreating"
@@ -138,7 +138,7 @@ onBeforeMount(() => {
           :loading="isCreating"
           variant="accent"
           class="w-full py-6 text-xl shadow-xl shadow-indigo-100 mt-4"
-          icon="🚀"
+          icon="lucide:rocket"
           icon-position="right"
         >
           Mulai Petualangan

@@ -59,7 +59,15 @@ const stopAutoPlay = () => {
 };
 
 watch(speaking, (newVal) => {
-  if (!newVal && isAutoPlaying.value) {
+  if (newVal) {
+    if (autoPlayTimeout.value) {
+      clearTimeout(autoPlayTimeout.value);
+      autoPlayTimeout.value = null;
+    }
+    return;
+  }
+
+  if (isAutoPlaying.value) {
     autoPlayTimeout.value = window.setTimeout(() => {
       autoPlayIndex.value++;
       if (autoPlayIndex.value >= learningLetters.value.length) {
@@ -68,7 +76,7 @@ watch(speaking, (newVal) => {
         const nextLetter = learningLetters.value[autoPlayIndex.value];
         if (nextLetter) handleLetterClick(nextLetter);
       }
-    }, 1000);
+    }, 1500);
   }
 });
 
@@ -139,16 +147,16 @@ onUnmounted(() => {
         <UiButton
           @click="isUpperCase = !isUpperCase"
           variant="white"
-          icon="Aa"
+          icon="lucide:case-sensitive"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
+          ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isUpperCase ? "abc" : "ABC"
           }}</span></UiButton
         >
 
         <!-- Randomize -->
-        <UiButton @click="toggleRandomize" variant="white" icon="🎲" class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
+        <UiButton @click="toggleRandomize" variant="white" icon="lucide:dices" class="px-3 py-2 h-10"
+          ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isRandomized ? "Normal" : "Acak"
           }}</span></UiButton
         >
@@ -157,9 +165,9 @@ onUnmounted(() => {
         <UiButton
           @click="toggleAutoPlay"
           variant="white"
-          :icon="isAutoPlaying ? '⏹️' : '▶️'"
+          :icon="isAutoPlaying ? 'lucide:square' : 'lucide:play'"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl hidden md:inline font-black">{{
+          ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isAutoPlaying ? "Stop" : "Play"
           }}</span></UiButton
         >
@@ -168,9 +176,9 @@ onUnmounted(() => {
         <UiButton
           @click="emit('start-quiz')"
           variant="primary"
-          icon="🎮"
+          icon="lucide:gamepad-2"
           class="px-3 py-2 h-10"
-          ><span class="text-xl md:text-2xl hidden md:inline font-black"
+          ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black"
             >Mulai Tantangan!</span
           ></UiButton
         >
@@ -183,13 +191,13 @@ onUnmounted(() => {
         <div
           v-if="feedback"
           :key="feedback"
-          class="text-xl md:text-2xl lg:text-3xl font-black text-slate-600 drop-shadow-sm animate-bounce"
+          class="text-lg md:text-xl xl:text-2xl 2xl:text-3xl font-black text-slate-600 drop-shadow-sm animate-bounce"
         >
           {{ feedback }}
         </div>
         <h1
           v-else
-          class="text-2xl md:text-3xl lg:text-4xl font-black text-slate-600 drop-shadow-sm"
+          class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl font-black text-slate-600 drop-shadow-sm"
         >
           Klik huruf untuk dengar suara!
         </h1>
@@ -199,7 +207,7 @@ onUnmounted(() => {
     <!-- Alphabet Grid -->
     <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
       <div
-        class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
+        class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(100px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
         <BubbleCard
           v-for="(letter, index) in learningLetters"
@@ -212,28 +220,18 @@ onUnmounted(() => {
             isAutoPlaying && index === autoPlayIndex
               ? 'scale-110 shadow-2xl ring-4 ring-white z-20'
               : 'hover:-translate-y-2 hover:shadow-xl shadow-md',
-            // quizDone.has(data.findIndex((d) => d.id === letter))
-            //   ? 'border-b-8 border-green-400'
-            //   : '',
           ]"
           :style="{ animationDelay: `${index * 0.05}s` }"
         >
-          <!-- <div
-            v-if="quizDone.has(data.findIndex((d) => d.id === letter))"
-            class="absolute -top-3 -right-3 text-3xl drop-shadow-md z-10 w-8 h-8 flex items-center justify-center"
-          >
-            ⭐
-          </div> -->
-
           <div
             class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 w-full h-full relative"
           >
             <span
-              class="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
+              class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
               >{{ isUpperCase ? letter : letter.toLowerCase() }}</span
             >
             <span
-              class="text-xl sm:text-3xl lg:text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block absolute bottom-2 xl:bottom-4"
+              class="text-lg sm:text-2xl lg:text-3xl 2xl:text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block absolute bottom-2 xl:bottom-4"
               >{{ idLetterMap[letter]?.emoji }}</span
             >
           </div>

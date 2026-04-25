@@ -50,6 +50,7 @@ onMounted(() => {
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
       <UiConfirmModal />
       <UiNotificationToast />
+      <UiFloatingMentor />
     </main>
   </div>
 </template>

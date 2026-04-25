@@ -115,7 +115,7 @@ onUnmounted(() => {
             class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:blur-2xl transition-all"
           ></div>
           <div class="btn-primary relative z-10 flex items-center gap-3">
-            <span class="text-2xl">🔄</span>
+            <Icon name="lucide:rotate-cw" class="text-2xl" />
             Ok, Mengerti!
           </div>
         </button>

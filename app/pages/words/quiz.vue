@@ -9,6 +9,9 @@ const wordStore = useWordStore();
 const { wordQuizProgress } = storeToRefs(wordStore);
 const { activeProfileId } = storeToRefs(useProfileStore());
 const { changeCoins } = useProfileStore();
+const mentorStore = useMentorStore();
+const { resetTimer } = useMentorHint("Ayo, pilih kata yang tepat!", 10000);
+
 const goBack = () => router.push("/words");
 
 // Flatten all words from all categories into a single pool
@@ -231,6 +234,7 @@ const onDrop = (slotIndex: number) => {
   hoveredSlotIndex.value = null;
   if (draggedItemIndex.value === null || !currentTarget.value) return;
 
+  resetTimer();
   const sourceIndex = draggedItemIndex.value;
   const letterObj = availableLetters.value[sourceIndex]!;
   const correctLetter = currentTarget.value.word.charAt(slotIndex);
@@ -279,7 +283,12 @@ const handleCorrect = () => {
   streak.value++;
 
   playEffectAudio("correct");
+  mentorStore.wiggle();
+  const feedback = ["Hebat!", "Pintar!", "Luar Biasa!", "Bagus!", "Keren!"];
+  mentorStore.showMessage(feedback[Math.floor(Math.random() * feedback.length)]!);
+  
   changeCoins(currentLevelConfig.value.coinReward); // Fix T3: Activate coin reward
+  resetTimer();
 
   if (score.value >= maxScore) {
     setTimeout(triggerWinScreen, 1000);
@@ -294,13 +303,16 @@ const playTargetAudio = () => {
   let textToSpeak =
     activityType.value === "PICK_WORD"
       ? "Cari tulisan " + currentTarget.value.word.toLowerCase()
-      : "Eja kata" + currentTarget.value.word.toLowerCase();
+      : "Eja kata " + currentTarget.value.word.toLowerCase();
 
-  playWordAudio(textToSpeak, `/audio/words/${currentTarget.value.id}.mp3`);
+  mentorStore.showMessage(textToSpeak);
+  // playWordAudio(textToSpeak, `/audio/words/${currentTarget.value.id}.mp3`);
 };
 
 const playErrorAudio = () => {
   playEffectAudio("wrong");
+  mentorStore.wiggle();
+  mentorStore.showMessage("Ayo coba lagi!");
 };
 
 const isCorrecting = ref(false); // Added this line
@@ -308,6 +320,7 @@ const isCorrecting = ref(false); // Added this line
 const handleChoice = (word: Word) => {
   if (!currentTarget.value || isCorrecting.value) return;
 
+  resetTimer();
   if (word.id === currentTarget.value.id) {
     handleCorrect();
   } else {
@@ -339,18 +352,6 @@ const popConfetti = () => {
   });
 };
 
-const popStickerCelebration = () => {
-  // Extra fancy confetti for sticker!
-  confetti({
-    particleCount: 150,
-    spread: 100,
-    origin: { y: 0.6 },
-    colors: ["#FFD700", "#FFA500", "#FF4500"],
-    zIndex: 200,
-  });
-
-  playEffectAudio("sticker");
-};
 
 const isWin = ref(false);
 
@@ -482,7 +483,7 @@ onScopeDispose(() => {
         <UiButton
           @click="restartGame"
           variant="success"
-          icon="🔄"
+          icon="lucide:rotate-ccw"
           class="w-full shadow-lg shadow-emerald-200"
         >
           <span class="font-black text-lg ml-2">Main Lagi</span>
@@ -490,7 +491,7 @@ onScopeDispose(() => {
         <UiButton
           @click="goBack"
           variant="white"
-          icon="🏠"
+          icon="lucide:house"
           class="w-full shadow-xl"
         >
           <span class="font-black text-lg ml-2">Menu</span>
@@ -573,7 +574,7 @@ onScopeDispose(() => {
                     timeLeft <= 5,
                 }"
               >
-                <span class="text-base md:text-xl animate-bounce">⏱️</span>
+                <Icon name="lucide:timer" class="text-base md:text-xl animate-bounce" />
                 <span class="text-base md:text-xl font-black text-rose-600 ml-1"
                   >{{ Math.ceil(timeLeft) }}s</span
                 >
@@ -584,7 +585,7 @@ onScopeDispose(() => {
                 v-if="streak >= 2"
                 class="ui-capsule bg-orange-50 border-orange-200 px-3 md:px-4 h-10 md:h-12 animate-float"
               >
-                <span class="text-base md:text-xl">🔥</span>
+                <Icon name="lucide:flame" class="text-base md:text-xl" />
                 <span
                   class="text-base md:text-xl font-black text-orange-600 ml-1"
                   >{{ streak }}</span
@@ -605,7 +606,7 @@ onScopeDispose(() => {
                 class="ui-capsule bg-indigo-50 border-indigo-200 px-4 md:px-5 h-10 md:h-12"
               >
                 <span class="text-sm md:text-lg font-black text-indigo-700"
-                  >🏆 {{ score }}</span
+                  ><Icon name="lucide:trophy" class="mr-1" /> {{ score }}</span
                 >
               </div>
             </div>
@@ -616,7 +617,7 @@ onScopeDispose(() => {
                 @click="goBack"
                 class="ui-capsule-interactive bg-rose-500 border-rose-600 text-white w-10 md:w-12 h-10 md:h-12 p-0 flex items-center justify-center shadow-lg hover:bg-rose-400 active:scale-95 transition-all"
               >
-                <span class="text-xl md:text-2xl">⏹️</span>
+                <Icon name="lucide:square" class="text-xl md:text-2xl" />
               </button>
             </div>
           </div>

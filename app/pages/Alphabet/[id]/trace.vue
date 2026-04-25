@@ -7,6 +7,9 @@ const letter = (route.params.id as string) || "A";
 
 const tracingCanvasRef = ref<InstanceType<typeof TracingCanvas> | null>(null);
 const { changeCoins } = useProfileStore();
+const mentorStore = useMentorStore();
+const { resetTimer } = useMentorHint("Ayo, sedikit lagi!", 5000);
+
 const showResult = ref(false);
 const scoreResult = ref({ score: 0, stars: 0, coverage: 0, accuracy: 0 });
 const coinsEarned = ref(0);
@@ -31,11 +34,10 @@ const onSaved = async () => {
     const result = await tracingCanvasRef.value.calculateScore();
     if (result.isScrambled) {
       isScrambled.value = true;
-      showIncompleteToast.value = true;
-      speakTTS("Tulis lebih rapi lagi yaa!", {
-        rate: 0.85,
-        pitch: 1.1,
-      });
+      // showIncompleteToast.value = true;
+      mentorStore.wiggle();
+      mentorStore.showMessage("Tulis lebih rapi lagi yaa!");
+      
       clearTracing();
       setTimeout(() => {
         showIncompleteToast.value = false;
@@ -44,11 +46,10 @@ const onSaved = async () => {
       return;
     }
     if (result.score === 0) {
-      showIncompleteToast.value = true;
-      speakTTS("Sepertinya kamu belum selesai menulis huruf ini!", {
-        rate: 0.85,
-        pitch: 1.1,
-      });
+      // showIncompleteToast.value = true;
+      mentorStore.wiggle();
+      mentorStore.showMessage("Sepertinya kamu belum selesai menulis huruf ini!");
+      
       setTimeout(() => {
         showIncompleteToast.value = false;
       }, 3000);
@@ -60,17 +61,22 @@ const onSaved = async () => {
     if (result.stars === 5) {
       coinsEarned.value = 15;
       changeCoins(15);
+      mentorStore.showMessage("Wah, luar biasa! Kamu pintar sekali!");
     } else if (result.stars === 4) {
       coinsEarned.value = 10;
       changeCoins(10);
+      mentorStore.showMessage("Bagus sekali! Sedikit lagi sempurna!");
     } else if (result.stars === 3) {
       coinsEarned.value = 5;
       changeCoins(5);
+      mentorStore.showMessage("Bagus! Terus berlatih ya!");
     } else if (result.stars === 2) {
       coinsEarned.value = 2;
       changeCoins(2);
+      mentorStore.showMessage("Ayo coba lebih rapi lagi!");
     } else {
       coinsEarned.value = 0;
+      mentorStore.showMessage("Jangan menyerah, coba lagi!");
     }
 
     showResult.value = true;
@@ -82,6 +88,7 @@ const onSaved = async () => {
 const retry = () => {
   showResult.value = false;
   clearTracing();
+  resetTimer();
 };
 </script>
 
@@ -104,7 +111,7 @@ const retry = () => {
     <div
       class="w-full grow relative bg-white/50 backdrop-blur-md rounded-[40px] p-6 shadow-xl border-4 border-white"
     >
-      <TracingCanvas ref="tracingCanvasRef" :letter="letter" />
+      <TracingCanvas ref="tracingCanvasRef" :letter="letter" @interaction="resetTimer" />
     </div>
 
     <!-- Actions -->
@@ -113,14 +120,14 @@ const retry = () => {
         @click="clearTracing"
         variant="white"
         label="Ulangi"
-        icon="🔄"
+        icon="lucide:rotate-ccw"
         class="h-12 sm:h-14 px-4 sm:px-6 text-sm sm:text-base"
       />
       <UiButton
         @click="onSaved"
         variant="success"
         label="Selesai!"
-        icon="🌟"
+        icon="lucide:star"
         class="h-12 sm:h-14 px-4 sm:px-6 text-sm sm:text-base"
       />
     </div>
@@ -150,24 +157,24 @@ const retry = () => {
         </h2>
 
         <div class="flex gap-2 sm:gap-4 text-4xl sm:text-6xl mb-3 sm:mb-6">
-          <span
+          <Icon
             v-for="i in 5"
             :key="i"
+            name="lucide:star"
             class="transition-all duration-500 transform"
             :class="
               i <= scoreResult.stars
                 ? 'text-yellow-400 scale-110 drop-shadow-lg'
                 : 'text-gray-300 scale-90 grayscale'
             "
-            >⭐</span
-          >
+          />
         </div>
 
         <div
           v-if="coinsEarned > 0"
           class="bg-yellow-100 border-2 sm:border-4 border-yellow-400 text-yellow-700 px-4 sm:px-6 py-2 sm:py-3 rounded-full text-lg sm:text-2xl font-bold mb-4 sm:mb-8 flex items-center gap-2"
         >
-          <span>💰</span> +{{ coinsEarned }} Koin!
+          <Icon name="lucide:circle-dollar-sign" class="text-amber-500" /> +{{ coinsEarned }} Koin!
         </div>
         <div
           v-else
@@ -199,7 +206,7 @@ const retry = () => {
         v-if="showIncompleteToast"
         class="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 bg-red-500 border-4 border-red-300 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-lg sm:text-2xl shadow-2xl flex items-center gap-3 sm:gap-4 w-[90%] sm:w-auto justify-center"
       >
-        <span class="text-2xl sm:text-3xl">⚠️</span>
+        <Icon name="lucide:alert-triangle" class="text-2xl sm:text-3xl" />
         {{
           isScrambled
             ? "Tulis lebih rapi lagi yaa!"

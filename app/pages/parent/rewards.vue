@@ -44,7 +44,7 @@ const handleDeleteReward = async (id: number) => {
       "Apakah Anda yakin ingin menghapus hadiah ini? Koin anak Anda tidak akan dikembalikan.",
     confirmText: "Hapus",
     cancelText: "Batal",
-    icon: "🗑️",
+    icon: "lucide:trash-2",
     variant: "danger",
   });
 
@@ -110,7 +110,7 @@ const handleFulfillReward = async (id: number) => {
           @click="handleDeleteReward(reward.id)"
           variant="ghost"
           class="absolute top-3 right-3 text-red-500 hover:text-red-700 hover:bg-red-50 p-0 rounded-full transition-colors w-10 h-10 flex items-center justify-center text-lg"
-          icon="🗑️"
+          icon="lucide:trash-2"
         />
 
         <div class="flex-1 flex flex-col justify-center items-center w-full mt-2">
@@ -120,7 +120,7 @@ const handleFulfillReward = async (id: number) => {
           </p>
           <span
             class="text-sm font-bold text-amber-600 bg-amber-50/80 border border-amber-100/50 px-3 py-1.5 rounded-xl shadow-sm mt-3"
-            >🪙 {{ reward.cost }}</span
+            ><Icon name="lucide:circle-dollar-sign" class="mr-1" /> {{ reward.cost }}</span
           >
         </div>
 
@@ -132,7 +132,7 @@ const handleFulfillReward = async (id: number) => {
             class="w-full py-2.5 shadow-sm leading-tight gap-1 h-auto"
           >
             <div class="flex flex-col items-center">
-              <span>Berikan! 🎁</span>
+              <span>Berikan! <Icon name="lucide:gift" class="ml-1" /></span>
               <span class="text-[10px] font-bold opacity-90 capitalize">{{
                 formatDate(reward.claimedAt!.toString())
               }}</span>
@@ -140,10 +140,9 @@ const handleFulfillReward = async (id: number) => {
           </UiButton>
 
           <div
-            v-else-if="reward.status === 'fulfilled'"
             class="w-full py-2.5 bg-emerald-100/50 border border-emerald-200 block rounded-xl text-sm font-black shadow-sm text-emerald-600 uppercase tracking-wider"
           >
-            SELESAI ✅
+            SELESAI <Icon name="lucide:check-circle" />
           </div>
         </div>
       </div>

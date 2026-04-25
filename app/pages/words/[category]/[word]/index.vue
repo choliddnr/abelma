@@ -111,7 +111,7 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
   <div v-if="wordData" class="flex flex-col gap-4 min-h-screen">
     <!-- Main Content -->
     <div
-      class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-8 md:gap-12 py-8"
+      class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-6 md:gap-12 py-4 xl:py-8"
     >
       <!-- Top Section: Image & Full Word (Animated) -->
       <div
@@ -122,17 +122,17 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
         <UiButton
           @click="playFullWord"
           variant="none"
-          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105"
+          class="relative w-40 h-40 md:w-48 md:h-48 xl:w-64 xl:h-64 rounded-[2.5rem] md:rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105"
         >
           <span
-            class="text-8xl md:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
+            class="text-7xl md:text-8xl xl:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
           >
             {{ wordData.emoji }}
           </span>
           <div
-            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
+            class="absolute -bottom-4 -right-4 w-12 h-12 md:w-16 md:h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-2xl md:text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
           >
-            🔊
+            <Icon name="lucide:volume-2" />
           </div>
         </UiButton>
       </div>
@@ -144,33 +144,33 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
           <UiButton
             @click="navigateTo(`/words/learn`)"
             variant="secondary"
-            class="w-auto px-6 h-12"
-            icon="📖"
+            class="w-auto px-4 md:px-6 h-10 md:h-12"
+            icon="lucide:book-open"
           >
-            <span class="text-lg font-semibold hidden sm:inline">Daftar Kata</span>
+            <span class="text-base md:text-lg font-semibold hidden sm:inline">Daftar Kata</span>
           </UiButton>
           <UiButton
             @click="playAuto"
             :disabled="speaking"
             variant="white"
-            class="w-auto px-6 h-12"
-            icon="▶️"
+            class="w-auto px-4 md:px-6 h-10 md:h-12"
+            icon="lucide:play"
           >
-            <span class="text-lg font-semibold hidden sm:inline">Ucapkan</span>
+            <span class="text-base md:text-lg font-semibold hidden sm:inline">Ucapkan</span>
           </UiButton>
-          <UiButton @click="goExercise" variant="accent" class="w-auto px-6 h-12" icon="🧩">
-            <span class="text-lg font-semibold hidden sm:inline">Latihan</span>
+          <UiButton @click="goExercise" variant="accent" class="w-auto px-4 md:px-6 h-10 md:h-12" icon="lucide:puzzle">
+            <span class="text-base md:text-lg font-semibold hidden sm:inline">Latihan</span>
           </UiButton>
         </div>
 
         <!-- Syllable Boxes (Animated Grid) -->
-        <div class="flex flex-wrap justify-center gap-4 w-full">
+        <div class="flex flex-wrap justify-center gap-3 md:gap-4 w-full">
           <UiButton
             v-for="(syllable, index) in wordData.syllables"
             :key="index"
             @click="playSyllable(syllable, index)"
             variant="none"
-            class="relative px-8 py-6 md:px-12 md:py-8 rounded-3xl transition-all duration-300 active:scale-95 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] border-x-4 border-t-4 border-white overflow-hidden animate-entrance"
+            class="relative px-6 py-4 md:px-10 md:py-6 xl:px-12 xl:py-8 rounded-2xl md:rounded-3xl transition-all duration-300 active:scale-95 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.2)] border-x-4 border-t-4 border-white overflow-hidden animate-entrance"
             :class="[
               getSyllableColor(index),
               activeSyllableIndex === index
@@ -185,7 +185,7 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
             ></div>
 
             <span
-              class="text-5xl md:text-7xl font-black text-white drop-shadow-[0_6px_0_rgba(0,0,0,0.15)] tracking-widest relative z-10"
+              class="text-4xl md:text-6xl xl:text-7xl font-black text-white drop-shadow-[0_6px_0_rgba(0,0,0,0.15)] tracking-widest relative z-10"
             >
               {{
                 settingsStore.settings.letterCase === "uppercase"

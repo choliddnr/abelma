@@ -59,21 +59,21 @@ const openWordModal = () => {
           class="absolute -top-10 -right-10 w-40 h-40 bg-sky-100 rounded-full blur-3xl group-hover:bg-sky-200 transition-colors"
         ></div>
         <div class="relative z-10 flex flex-col gap-6">
-          <div
-            class="w-16 h-16 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-sky-200 group-hover:scale-110 transition-transform"
-          >
-            🔤
-          </div>
+            <div
+              class="w-16 h-16 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-sky-200 group-hover:scale-110 transition-transform"
+            >
+              <Icon name="lucide:case-sensitive" />
+            </div>
           <div>
             <h4 class="text-2xl font-black text-slate-800 font-quicksand">Tantangan Huruf</h4>
             <p class="text-slate-500 font-bold mt-1">
               Atur target bobot, timer, dan hadiah koin untuk setiap level.
             </p>
           </div>
-          <div class="flex items-center gap-2 text-sky-600 font-black">
-            <span>Buka Pengaturan</span>
-            <span class="group-hover:translate-x-1 transition-transform">➜</span>
-          </div>
+            <div class="flex items-center gap-2 text-sky-600 font-black">
+              <span>Buka Pengaturan</span>
+              <Icon name="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform" />
+            </div>
         </div>
       </button>
 
@@ -86,21 +86,21 @@ const openWordModal = () => {
           class="absolute -top-10 -right-10 w-40 h-40 bg-violet-100 rounded-full blur-3xl group-hover:bg-violet-200 transition-colors"
         ></div>
         <div class="relative z-10 flex flex-col gap-6">
-          <div
-            class="w-16 h-16 rounded-2xl bg-violet-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-violet-200 group-hover:scale-110 transition-transform"
-          >
-            📖
-          </div>
+            <div
+              class="w-16 h-16 rounded-2xl bg-violet-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-violet-200 group-hover:scale-110 transition-transform"
+            >
+              <Icon name="lucide:book-open" />
+            </div>
           <div>
             <h4 class="text-2xl font-black text-slate-800 font-quicksand">Belajar Kata</h4>
             <p class="text-slate-500 font-bold mt-1">
               Sesuaikan gaya tulisan (KAPITAL/kecil) dan batas waktu kuis.
             </p>
           </div>
-          <div class="flex items-center gap-2 text-violet-600 font-black">
-            <span>Buka Pengaturan</span>
-            <span class="group-hover:translate-x-1 transition-transform">➜</span>
-          </div>
+            <div class="flex items-center gap-2 text-violet-600 font-black">
+              <span>Buka Pengaturan</span>
+              <Icon name="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform" />
+            </div>
         </div>
       </button>
     </div>

@@ -49,15 +49,15 @@ onMounted(() => {
 
       <!-- Back + Home -->
       <template v-else>
-        <UiButton @click="router.back()" variant="white" icon="🔙" class="px-2 py-2 h-10" />
-        <UiButton @click="router.push('/')" variant="white" icon="🏠" class="px-2 py-2 h-10" />
+        <UiButton @click="router.back()" variant="white" icon="lucide:arrow-left" class="px-2 py-2 h-10" />
+        <UiButton @click="router.push('/')" variant="white" icon="lucide:house" class="px-2 py-2 h-10" />
       </template>
     </div>
 
     <!-- RIGHT -->
     <div class="flex items-center gap-2">
       <!-- Coins (ALWAYS visible) -->
-      <UiButton to="/rewards" variant="primary" icon="🪙" class="px-3 py-2 h-10 text-xs sm:text-sm">
+      <UiButton to="/rewards" variant="primary" icon="lucide:circle-dollar-sign" class="px-3 py-2 h-10 text-xs sm:text-sm">
         <span class="font-black text-lg">
           {{ profile?.coins }}
           <span class="hidden sm:inline">Koin</span>
@@ -66,7 +66,7 @@ onMounted(() => {
       <UiButton
         @click="toggleFullscreen"
         variant="white"
-        :icon="isFullscreen ? '🔳' : '⛶'"
+        :icon="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'"
         class="px-3 py-2 h-10"
         title="Layar Penuh"
       />
@@ -74,7 +74,7 @@ onMounted(() => {
       <!-- DESKTOP MENU -->
       <div class="hidden sm:flex items-center gap-3">
         <!-- Parent -->
-        <UiButton @click="router.push('/parent')" variant="white" icon="👨‍👩‍👧" class="px-3 py-2 h-10">
+        <UiButton @click="router.push('/parent')" variant="white" icon="lucide:users" class="px-3 py-2 h-10">
           <span class="font-black text-sm ml-1">Orang Tua</span>
         </UiButton>
 
@@ -100,7 +100,7 @@ onMounted(() => {
         <UiButton
           @click="isMenuOpen = !isMenuOpen"
           variant="white"
-          icon="☰"
+          icon="lucide:menu"
           class="px-4 py-2 h-10"
         />
         <!-- <button
@@ -123,7 +123,7 @@ onMounted(() => {
             "
             class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100"
           >
-            👨‍👩‍👧 <span class="font-bold text-sm">Orang Tua</span>
+            <Icon name="lucide:users" /> <span class="font-bold text-sm">Orang Tua</span>
           </button>
 
           <!-- Profile -->

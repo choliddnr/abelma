@@ -13,6 +13,8 @@ const { markCompleted } = useStorybookStore();
 
 const { changeCoins } = useProfileStore();
 const { activeProfileId, profile } = storeToRefs(useProfileStore());
+const mentorStore = useMentorStore();
+const { resetTimer } = useMentorHint("Ayo kita dengarkan ceritanya!", 8000);
 
 const data = ALPHABET_STORYBOOK as AlphabetStorybook[];
 const emojiMap: Record<string, string> = {
@@ -55,7 +57,7 @@ const storybook = computed(() => {
 
 const storyImageSrc = computed(() => {
   if (!storybook.value) return "";
-  return `/${storybook.value.letter.upper}.webp`;
+  return `/img/${storybook.value.letter.upper}.webp`;
 });
 
 const highlightStory = computed(() => {
@@ -125,6 +127,7 @@ const speakStory = () => {
   const story = storybook.value?.story;
   if (!story) return;
 
+  resetTimer();
   const playId = ++currentPlayId;
   cancelTTS();
   isSpeakingStory.value = true;
@@ -220,7 +223,8 @@ const onQuizSuccess = async () => {
 
 const onQuizFail = () => {
   // Add logic later if needed (FloatingInteractionZone already shakes and randomizes)
-  speakTTS("Kurang tepat, coba lagi yaaa!", { rate: 0.85, pitch: 1.1 });
+  mentorStore.wiggle();
+  mentorStore.showMessage("Kurang tepat, coba lagi yaaa!");
 };
 
 onMounted(() => {
@@ -240,7 +244,7 @@ onUnmounted(() => {
     @click.self="closeStory"
   >
     <div
-      class="relative bg-white rounded-[2.5rem] shadow-2xl flex flex-col mt-5 border-8 border-white/80 overflow-hidden w-full max-w-4xl h-screen sm:h-[88vh] mb-5 mx-2 md:mx-0 md:mb-0"
+      class="relative bg-white rounded-[2.5rem] shadow-2xl flex flex-col mt-5 border-8 border-white/80 overflow-hidden w-full max-w-4xl h-[85vh] sm:h-[88vh] mb-5 mx-2 md:mx-0 md:mb-0"
     >
       <!-- Background Image -->
       <template v-if="!imageError">
@@ -296,22 +300,22 @@ onUnmounted(() => {
       <div class="absolute top-6 right-6 md:right-8 z-30 flex gap-3">
         <UiButton
           variant="primary"
-          icon="🎯"
+          icon="lucide:target"
           v-if="!showQuiz && currentQuizList.length > 0"
           @click="startQuiz"
           class="px-4"
         />
         <UiButton
-          label="🔊"
+          icon="lucide:volume-2"
           variant="white"
           @click="showQuiz ? readQuizQuestion() : speakStory()"
           class="py-4 px-5"
           :class="{ 'animate-pulse': isSpeakingStory }"
         />
         <UiButton
-          label="X"
+          icon="lucide:x"
           @click="closeStory"
-          class="bg-rose-500 hover:bg-rose-400 active:scale-90 rounded-full shadow-xl transition-all border-b-4 border-rose-700 active:border-b-0 active:translate-y-1 text-white font-black text-xl"
+          class="bg-rose-500 hover:bg-rose-400 active:scale-90 rounded-full shadow-xl transition-all border-b-4 border-rose-700 active:border-b-0 active:translate-y-1 text-white font-black text-xl px-4 py-4"
         />
       </div>
 
@@ -323,7 +327,7 @@ onUnmounted(() => {
         <template v-if="!showQuiz">
           <div class="space-y-4 text-center bg-black/50 rounded-2xl max-w-2xl">
             <span class="text-xl md:text-2xl lg:text-3xl text-white font-bold"
-              >📖 {{ storybook.title }}</span
+              ><Icon name="lucide:book-open" class="mr-1" /> {{ storybook.title }}</span
             >
             <p
               class="text-xl md:text-2xl lg:text-3xl font-medium leading-normal p-2 text-white mx-auto"

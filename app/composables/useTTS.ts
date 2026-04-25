@@ -11,14 +11,16 @@ export const isSupported = ref(
 const preloadedAudio = new Map<string, HTMLAudioElement>();
 let currentAudio: HTMLAudioElement | null = null;
 
-export const cancelTTS = () => {
+export const cancelTTS = (keepSpeakingState = false) => {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
   }
-  isSpeaking.value = false;
+  if (!keepSpeakingState) {
+    isSpeaking.value = false;
+  }
 };
 
 export const speakTTS = (
@@ -36,7 +38,14 @@ export const speakTTS = (
   }
 
   // Always cancel ongoing speech before starting a new one
-  cancelTTS();
+  cancelTTS(true);
+  isSpeaking.value = true;
+
+  if (!text) {
+    isSpeaking.value = false;
+    if (options?.onEnd) options.onEnd();
+    return;
+  }
 
   const utterance = new SpeechSynthesisUtterance(text);
 
@@ -145,18 +154,14 @@ export const preloadSounds = () => {
 };
 
 export const playLetterSound = (letter: string, isLearningMode: boolean = false) => {
-  cancelTTS();
+  cancelTTS(true);
   isSpeaking.value = true;
 
   const upperLetter = letter.toUpperCase();
   const audio = preloadedAudio.get(upperLetter);
 
   const fallbackToSpeech = (text: string) => {
-    speakTTS(text, {
-      onEnd: () => {
-        isSpeaking.value = false;
-      }
-    });
+    speakTTS(text);
   };
 
   if (audio) {

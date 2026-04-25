@@ -67,13 +67,21 @@ const componentType = computed(() => (props.to ? defineNuxtLink({}) : "button"))
     </div>
 
     <template v-else>
-      <span v-if="icon && iconPosition === 'left'" class="text-2xl">{{ icon }}</span>
+      <Icon
+        v-if="icon && iconPosition === 'left'"
+        :name="icon"
+        class="text-2xl"
+      />
 
       <slot>
         <span v-if="label" class="font-black uppercase tracking-wide">{{ label }}</span>
       </slot>
 
-      <span v-if="icon && iconPosition === 'right'" class="text-2xl">{{ icon }}</span>
+      <Icon
+        v-if="icon && iconPosition === 'right'"
+        :name="icon"
+        class="text-2xl"
+      />
     </template>
   </component>
 </template>

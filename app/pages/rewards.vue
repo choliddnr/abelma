@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: "WordRewards" });
-import { playEffectAudio } from "@/utils/audio";
+const { playEffectAudio } = useTTS();
 import confetti from "canvas-confetti";
 import type { Reward } from "~~/shared/types/api";
 
@@ -8,6 +8,8 @@ const router = useRouter();
 const { profile } = storeToRefs(useProfileStore());
 const { rewards } = storeToRefs(useRewardStore());
 const { fetch } = useRewardStore();
+const mentorStore = useMentorStore();
+
 callOnce(async () => await useAsyncData("rewards", () => fetch()));
 
 const celebrationData = ref({
@@ -38,6 +40,9 @@ const handleClaim = async (reward: Reward) => {
         onResponse({ response }) {
           if (response.ok) {
             playEffectAudio("sticker");
+            mentorStore.wiggle();
+            mentorStore.showMessage(`Yeay! Kamu hebat! Hadiah ${reward.title} sudah kamu dapatkan!`);
+            
             confetti({
               particleCount: 100,
               spread: 70,
@@ -83,7 +88,7 @@ const handleClaim = async (reward: Reward) => {
       <h1
         class="text-3xl md:text-5xl font-black text-indigo-600 drop-shadow-sm font-quicksand flex items-center gap-2"
       >
-        <span class="text-4xl">🎁</span> Toko Hadiah
+        <Icon name="lucide:gift" class="text-4xl" /> Toko Hadiah
       </h1>
     </div>
 
@@ -117,7 +122,7 @@ const handleClaim = async (reward: Reward) => {
             <div
               class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-black text-lg border-2 border-amber-200"
             >
-              {{ reward.cost }} 🪙
+              {{ reward.cost }} <Icon name="lucide:circle-dollar-sign" class="ml-1" />
             </div>
           </div>
 
@@ -136,9 +141,9 @@ const handleClaim = async (reward: Reward) => {
               v-else-if="reward.status === 'claimed'"
               class="text-indigo-600 font-black flex items-center gap-1"
             >
-              ⌚ Sudah ditukar! Tunggu Ayah/Bunda ya...
+              <Icon name="lucide:clock" /> Sudah ditukar! Tunggu Ayah/Bunda ya...
             </p>
-            <p v-else class="text-emerald-600 font-black">✨ Sudah diterima!</p>
+            <p v-else class="text-emerald-600 font-black"><Icon name="lucide:sparkles" /> Sudah diterima!</p>
           </div>
 
           <!-- Action -->
@@ -148,7 +153,7 @@ const handleClaim = async (reward: Reward) => {
             :disabled="profile.coins < reward.cost"
             variant="primary"
             class="w-full text-xl shadow-lg transition-all transform hover:scale-105 active:scale-95"
-            icon="🚀"
+            icon="lucide:rocket"
             icon-position="right"
           >
             <span class="drop-shadow-sm uppercase font-black"
@@ -159,7 +164,7 @@ const handleClaim = async (reward: Reward) => {
             v-else-if="reward.status === 'claimed'"
             class="py-3 px-6 bg-indigo-100 text-indigo-700 border-2 border-indigo-200 rounded-2xl text-center font-black"
           >
-            TERKLAIM ✅
+            TERKLAIM <Icon name="lucide:check-circle" />
           </div>
         </div>
       </div>
@@ -181,24 +186,21 @@ const handleClaim = async (reward: Reward) => {
 
           <div class="relative flex flex-col items-center text-center gap-6">
             <div class="flex items-end justify-center gap-1 min-h-[5.5rem]">
-              <span
-                class="text-5xl sm:text-6xl drop-shadow-sm animate-float select-none"
+              <Icon
+                name="lucide:gift"
+                class="text-5xl sm:text-6xl drop-shadow-sm animate-float select-none text-indigo-500"
                 :style="{ animationDelay: '0s' }"
-                aria-hidden="true"
-                >🎁</span
-              >
-              <span
-                class="text-3xl sm:text-4xl pb-1 opacity-85 animate-float select-none"
+              />
+              <Icon
+                name="lucide:sparkles"
+                class="text-3xl sm:text-4xl pb-1 opacity-85 animate-float select-none text-amber-400"
                 :style="{ animationDelay: '0.6s' }"
-                aria-hidden="true"
-                >✨</span
-              >
-              <span
-                class="text-4xl sm:text-5xl pb-0.5 opacity-90 animate-float select-none"
+              />
+              <Icon
+                name="lucide:circle-dollar-sign"
+                class="text-4xl sm:text-5xl pb-0.5 opacity-90 animate-float select-none text-amber-500"
                 :style="{ animationDelay: '1.1s' }"
-                aria-hidden="true"
-                >🪙</span
-              >
+              />
             </div>
 
             <div class="space-y-3 max-w-md">
@@ -221,7 +223,7 @@ const handleClaim = async (reward: Reward) => {
               <span
                 class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-4 py-2 text-sm font-black text-amber-900 border-2 border-amber-200/80 shadow-sm"
               >
-                🪙 Koinmu menunggu
+                <Icon name="lucide:circle-dollar-sign" /> Koinmu menunggu
               </span>
               <span
                 class="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-4 py-2 text-sm font-black text-indigo-700 border-2 border-indigo-100 shadow-sm"
@@ -239,14 +241,14 @@ const handleClaim = async (reward: Reward) => {
       v-if="rewards.length > 0"
       class="mt-8 text-center text-indigo-400 font-bold font-quicksand italic animate-pulse"
     >
-      "Terus belajar, kumpulkan koinnya, dapatkan hadiahnya! 🚀✨"
+      "Terus belajar, kumpulkan koinnya, dapatkan hadiahnya! <Icon name="lucide:rocket" /> <Icon name="lucide:sparkles" />"
     </div>
     <div
       v-else
       class="mt-8 text-center text-slate-500 font-bold font-quicksand text-sm sm:text-base max-w-md mx-auto leading-relaxed px-2"
     >
       Begitu Ayah/Bunda menambah hadiah baru, kamu bisa langsung menukarnya
-      dengan koin. ✨
+      dengan koin. <Icon name="lucide:sparkles" />
     </div>
 
     <!-- Reward Celebration Pop-up -->

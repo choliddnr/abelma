@@ -456,8 +456,8 @@ onUnmounted(() => {
                   'animate-pulse bg-rose-100 border-rose-400 shadow-lg': timeLeft <= 3,
                 }"
               >
-                <span class="text-base md:text-xl animate-bounce">⏱️</span>
-                <span class="text-base md:text-xl font-black text-rose-600 ml-1"
+                <span class="text-sm md:text-base xl:text-xl animate-bounce">⏱️</span>
+                <span class="text-sm md:text-base xl:text-xl font-black text-rose-600 ml-1"
                   >{{ timeLeft }}s</span
                 >
               </div>
@@ -465,8 +465,8 @@ onUnmounted(() => {
                 v-if="streak >= 2"
                 class="ui-capsule bg-orange-50 border-orange-200 px-3 md:px-4 h-10 md:h-12 animate-float"
               >
-                <span class="text-base md:text-xl">🔥</span>
-                <span class="text-base md:text-xl font-black text-orange-600 ml-1">{{
+                <span class="text-sm md:text-base xl:text-xl">🔥</span>
+                <span class="text-sm md:text-base xl:text-xl font-black text-orange-600 ml-1">{{
                   streak
                 }}</span>
               </div>
@@ -474,15 +474,15 @@ onUnmounted(() => {
                 v-if="currentConfig.streak > 0"
                 class="ui-capsule bg-amber-50 border-amber-200 px-3 md:px-4 h-10 md:h-12 border-dashed"
               >
-                <span class="text-xs md:text-sm font-black text-amber-700"
+                <span class="text-[10px] md:text-xs xl:text-sm font-black text-amber-700"
                   >Target: {{ currentConfig.streak }} 🔥</span
                 >
               </div>
-              <div class="ui-capsule bg-sky-50 border-sky-200 px-4 md:px-5 h-10 md:h-12">
-                <span class="text-sm md:text-lg font-black text-sky-700">Lvl {{ level }}</span>
+              <div class="ui-capsule bg-sky-50 border-sky-200 px-3 md:px-5 h-10 md:h-12">
+                <span class="text-xs md:text-base xl:text-lg font-black text-sky-700">Lvl {{ level }}</span>
               </div>
-              <div class="ui-capsule bg-indigo-50 border-indigo-200 px-4 md:px-5 h-10 md:h-12">
-                <span class="text-sm md:text-lg font-black text-indigo-700">🏆 {{ score }}</span>
+              <div class="ui-capsule bg-indigo-50 border-indigo-200 px-3 md:px-5 h-10 md:h-12">
+                <span class="text-xs md:text-base xl:text-lg font-black text-indigo-700">🏆 {{ score }}</span>
               </div>
             </div>
 
@@ -506,7 +506,7 @@ onUnmounted(() => {
         <div
           v-if="feedback.message"
           :key="feedback.message"
-          class="text-xl md:text-2xl lg:text-3xl font-black drop-shadow-sm animate-bounce"
+          class="text-lg md:text-xl xl:text-2xl 2xl:text-3xl font-black drop-shadow-sm animate-bounce"
           :class="{
             'text-secondary': feedback.type === 'success',
             'text-danger': feedback.type === 'error',
@@ -521,7 +521,7 @@ onUnmounted(() => {
     <!-- Alphabet Grid -->
     <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
       <div
-        class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
+        class="grid grid-cols-[repeat(auto-fit,minmax(70px,1fr))] sm:grid-cols-[repeat(auto-fit,minmax(90px,1fr))] md:grid-cols-[repeat(auto-fit,minmax(100px,1fr))] xl:grid-cols-[repeat(auto-fit,minmax(110px,1fr))] gap-3 sm:gap-4 lg:gap-5 w-full place-content-center"
       >
         <BubbleCard
           v-for="(letter, index) in quizLetters"
@@ -539,7 +539,7 @@ onUnmounted(() => {
         >
           <div class="flex items-center justify-center w-full h-full">
             <span
-              class="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
+              class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
             >
               {{ isUpperCase ? letter : letter.toLowerCase() }}
             </span>

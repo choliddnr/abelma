@@ -97,7 +97,7 @@ const handleDeleteChallenge = async (id: number) => {
     message: "Apakah Anda yakin ingin menghapus misi ini?",
     confirmText: "Hapus",
     cancelText: "Batal",
-    icon: "🗑️",
+    icon: "lucide:trash-2",
     variant: "danger",
   });
 
@@ -204,20 +204,20 @@ const handleResetChallenge = async (id: number) => {
             @click="openEditModal(challenge)"
             variant="ghost"
             class="text-sky-500 hover:text-sky-700 hover:bg-sky-50 p-0 rounded-full transition-colors w-10 h-10 flex items-center justify-center text-lg"
-            icon="✏️"
+            icon="lucide:pencil"
           />
           <UiButton
             v-if="challenge.status !== 'pending_validation'"
             @click="handleDeleteChallenge(challenge.id)"
             variant="ghost"
             class="text-red-500 hover:text-red-700 hover:bg-red-50 p-0 rounded-full transition-colors w-10 h-10 flex items-center justify-center text-lg"
-            icon="🗑️"
+            icon="lucide:trash-2"
           />
         </div>
 
         <div class="mt-2">
           <div class="flex items-center gap-2 mb-2">
-            <span class="text-3xl">⭐</span>
+            <Icon name="lucide:star" class="text-3xl text-amber-400" />
             <h4 class="font-black text-slate-800 text-xl">
               {{ challenge.title }}
             </h4>
@@ -228,7 +228,7 @@ const handleResetChallenge = async (id: number) => {
           <span
             class="inline-block text-sm font-bold text-amber-600 bg-amber-50/80 border border-amber-100/50 px-3 py-1.5 rounded-xl shadow-sm mb-4"
           >
-            🪙 Hadiah: {{ challenge.coinReward }} Koin
+            <Icon name="lucide:circle-dollar-sign" class="mr-1" /> Hadiah: {{ challenge.coinReward }} Koin
           </span>
         </div>
 
@@ -242,14 +242,14 @@ const handleResetChallenge = async (id: number) => {
               variant="success"
               class="w-full py-2.5 shadow-sm leading-tight gap-1 h-auto"
             >
-              Validasi Selesai ✅
+              Validasi Selesai <Icon name="lucide:check-circle" />
             </UiButton>
             <UiButton
               @click="handleResetChallenge(challenge.id)"
               variant="accent"
               class="w-full py-2.5 h-auto text-amber-600 border-amber-200 hover:bg-amber-50 text-sm font-bold"
             >
-              Tolak & Ulangi 🔄
+              Tolak & Ulangi <Icon name="lucide:rotate-ccw" />
             </UiButton>
           </div>
 
@@ -260,14 +260,14 @@ const handleResetChallenge = async (id: number) => {
             <div
               class="w-full py-2.5 bg-emerald-100/50 border border-emerald-200 block text-center rounded-xl text-sm font-black shadow-sm text-emerald-600 uppercase tracking-wider"
             >
-              SELESAI ✅
+              SELESAI <Icon name="lucide:check-circle" />
             </div>
             <UiButton
               @click="handleResetChallenge(challenge.id)"
               variant="accent"
               class="w-full py-2.5 h-auto text-sky-600 border-sky-200 hover:bg-sky-50 text-sm font-bold"
             >
-              Ulangi Misi 🔄
+              Ulangi Misi <Icon name="lucide:rotate-ccw" />
             </UiButton>
           </div>
           <div

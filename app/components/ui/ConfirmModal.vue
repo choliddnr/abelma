@@ -36,7 +36,7 @@ watch(isOpen, (val) => {
               'shadow-emerald-100': options.variant === 'success',
             }"
           >
-            {{ options.icon }}
+            <Icon v-if="options.icon" :name="options.icon" />
           </div>
 
           <h3 class="text-2xl font-black text-slate-800 mb-2 font-quicksand leading-tight">

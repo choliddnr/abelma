@@ -52,7 +52,7 @@ const highlightedWord = computed(() => {
 <template>
   <div class="flex flex-col items-center gap-12 mx-4 lg:mx-0 mb-7">
     <div
-      class="glass-card flex-wrap p-12 w-full max-w-4xl flex flex-col md:flex-row items-center justify-around gap-12 mt-5"
+      class="glass-card p-6 md:p-8 flex-wrap w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 mt-5"
     >
       <div class="flex gap-4">
         <div
@@ -70,30 +70,30 @@ const highlightedWord = computed(() => {
           {{ letter.toLowerCase() }}
         </div>
       </div>
-      <div class="flex flex-col items-center gap-6">
+      <div class="flex flex-row items-center gap-6">
         <div
-          class="text-[120px] md:text-[200px] bg-white rounded-full w-48 h-48 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-primary cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+          class="text-8xl md:text-[180px]  bg-white rounded-full size-32 sm:size-52 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-primary cursor-pointer hover:scale-105 active:scale-95 transition-transform"
           @click="speak(item.word)"
         >
           {{ item.icon }}
         </div>
         <div class="text-center space-y-2">
-          <p class="text-3xl font-bold text-gray-500">untuk...</p>
-          <h2 class="text-6xl md:text-8xl font-black tracking-wide" v-html="highlightedWord"></h2>
+          <p class="text-3xl md:text-6xl font-bold text-gray-500">untuk...</p>
+          <h2 class="text-6xl md:text-9xl font-black tracking-wide" v-html="highlightedWord"></h2>
         </div>
       </div>
     </div>
 
     <div class="flex gap-6">
-      <UiButton label="Daftar Huruf" icon="📚" variant="secondary" @click="router.push(`/alphabet`)"
+      <UiButton label="Daftar Huruf" icon="lucide:library" variant="secondary" @click="router.push(`/alphabet`)"
         ><span class="hidden sm:block font-bold text-lg">Daftar Huruf</span></UiButton
       >
-      <UiButton label="Buka Cerita" icon="📖" @click="router.push(`/alphabet/${letter}/story`)"
+      <UiButton label="Buka Cerita" icon="lucide:book-open" @click="router.push(`/alphabet/${letter}/story`)"
         ><span class="hidden sm:block font-bold text-lg">Buka Cerita</span></UiButton
       >
       <UiButton
         label="Latihan Menulis"
-        icon="✍️"
+        icon="lucide:pen-tool"
         variant="accent"
         @click="router.push(`/alphabet/${letter}/trace`)"
         ><span class="hidden sm:block font-bold text-lg">Latihan Menulis</span></UiButton

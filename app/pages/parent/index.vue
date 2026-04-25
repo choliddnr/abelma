@@ -72,7 +72,7 @@ const handleAddProfile = async () => {
             Pilih Sekarang
           </UiButton>
           <span v-else class="text-xs font-black text-emerald-500 uppercase tracking-widest"
-            >Sedang Aktif ✅</span
+            >Sedang Aktif <Icon name="lucide:check-circle" class="ml-1" /></span
           >
         </div>
       </div>

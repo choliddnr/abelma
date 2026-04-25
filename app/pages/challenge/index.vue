@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { playEffectAudio } from "@/utils/audio";
+const { playEffectAudio } = useTTS();
 import confetti from "canvas-confetti";
 
 defineOptions({ name: "ChallengesList" });
@@ -77,7 +77,7 @@ const handleComplete = async (challenge: any) => {
       <h1
         class="text-3xl md:text-5xl font-black text-sky-600 drop-shadow-sm font-quicksand flex items-center gap-2"
       >
-        <span class="text-4xl">⭐</span> Papan Misi
+        <Icon name="lucide:star" class="text-4xl text-amber-400" /> Papan Misi
       </h1>
     </div>
 
@@ -106,12 +106,12 @@ const handleComplete = async (challenge: any) => {
             <div
               class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center text-5xl shadow-inner group-hover:scale-110 transition-transform"
             >
-              ⭐
+              <Icon name="lucide:star" class="text-amber-400" />
             </div>
             <div
               class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-black text-lg border-2 border-amber-200"
             >
-              +{{ challenge.coinReward }} 🪙
+              +{{ challenge.coinReward }} <Icon name="lucide:circle-dollar-sign" class="ml-1" />
             </div>
           </div>
 
@@ -135,9 +135,9 @@ const handleComplete = async (challenge: any) => {
               v-else-if="challenge.status === 'pending_validation'"
               class="text-indigo-600 font-black flex items-center gap-1"
             >
-              ⌚ Sudah dikerjakan! Tunggu validasi...
+              <Icon name="lucide:clock" /> Sudah dikerjakan! Tunggu validasi...
             </p>
-            <p v-else class="text-emerald-600 font-black">✨ Misi Selesai!</p>
+            <p v-else class="text-emerald-600 font-black"><Icon name="lucide:sparkles" /> Misi Selesai!</p>
           </div>
 
           <!-- Action -->
@@ -146,7 +146,7 @@ const handleComplete = async (challenge: any) => {
             @click="handleComplete(challenge)"
             variant="primary"
             class="w-full text-xl shadow-lg transition-all transform hover:scale-105 active:scale-95 bg-sky-500 hover:bg-sky-600 border-sky-600 shadow-sky-500/50"
-            icon="🚀"
+            icon="lucide:rocket"
             icon-position="right"
           >
             <span class="drop-shadow-sm uppercase font-black text-sm"
@@ -157,7 +157,7 @@ const handleComplete = async (challenge: any) => {
             v-else-if="challenge.status === 'pending_validation'"
             class="py-3 px-6 bg-sky-100 text-sky-700 border-2 border-sky-200 rounded-2xl text-center font-black text-sm uppercase"
           >
-            MENUNGGU VALIDASI ✅
+            MENUNGGU VALIDASI <Icon name="lucide:check-circle" />
           </div>
         </div>
       </div>
@@ -172,12 +172,11 @@ const handleComplete = async (challenge: any) => {
         >
           <div class="relative flex flex-col items-center text-center gap-6">
             <div class="flex items-end justify-center gap-1 min-h-[5.5rem]">
-              <span
-                class="text-5xl sm:text-6xl drop-shadow-sm animate-float select-none"
+              <Icon
+                name="lucide:star"
+                class="text-5xl sm:text-6xl drop-shadow-sm animate-float select-none text-amber-400"
                 :style="{ animationDelay: '0s' }"
-                aria-hidden="true"
-                >⭐</span
-              >
+              />
             </div>
 
             <div class="space-y-3 max-w-md">

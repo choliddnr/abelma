@@ -265,33 +265,33 @@ const onTouchEnd = (e: TouchEvent) => {
 
     <!-- Main Game Area -->
     <div
-      class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-6 max-w-6xl mx-auto w-full p-2 overflow-hidden pt-2"
+      class=" flex-1 flex flex-col items-center justify-center gap-2 md:gap-4 max-w-6xl mx-auto w-full p-2 overflow-hidden pt-2"
     >
       <!-- Top Section: Image & Full Word (Animated) -->
       <div
-        class="flex flex-col items-center gap-6 w-full relative animate-entrance"
+        class="flex flex-col items-center gap-4 w-full relative animate-entrance"
         style="animation-delay: 0.2s"
       >
         <!-- Giant Emoji -->
         <UiButton
           @click="playTargetWord"
           variant="none"
-          class="relative w-48 h-48 md:w-64 md:h-64 rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105"
+          class="relative w-40 h-40 md:w-48 md:h-48 2xl:w-64 2xl:h-64 rounded-[2.5rem] md:rounded-[3rem] bg-white shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] border-4 border-white flex items-center justify-center transition-all active:scale-95 group hover:scale-105"
         >
           <span
-            class="text-8xl md:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
+            class="text-7xl md:text-8xl xl:text-[140px] drop-shadow-xl select-none group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500"
           >
             {{ wordData.emoji }}
           </span>
           <div
-            class="absolute -bottom-4 -right-4 w-16 h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
+            class="absolute -bottom-4 -right-4 w-12 h-12 md:w-16 md:h-16 bg-white rounded-full shadow-lg border-4 border-indigo-50 flex items-center justify-center text-2xl md:text-3xl opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100"
           >
-            🔊
+            <Icon name="lucide:volume-2" />
           </div>
         </UiButton>
       </div>
       <!-- Target Slots -->
-      <div class="flex flex-wrap justify-center gap-3 md:gap-6 w-full">
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4 xl:gap-6 w-full">
         <div
           v-for="(slot, index) in placedLetters"
           :key="`slot-${index}`"
@@ -301,20 +301,20 @@ const onTouchEnd = (e: TouchEvent) => {
           @dragenter.prevent="onDragEnter(index)"
           @dragleave.prevent="onDragLeave(index)"
           @drop.prevent="onDrop($event, index)"
-          class="relative w-20 h-24 md:w-32 md:h-40 rounded-2xl md:rounded-3xl border-4 md:border-8 flex items-center justify-center transition-all duration-300"
+          class="relative w-16 h-20 md:w-24 md:h-32 2xl:w-32 2xl:h-40 rounded-xl md:rounded-3xl border-2 md:border-4 xl:border-8 flex items-center justify-center transition-all duration-300"
           :class="[
             placedLetters[index] !== null
               ? 'bg-emerald-400 border-white shadow-[0_10px_20px_rgba(52,211,153,0.4)] scale-105 cursor-pointer'
               : 'bg-slate-100 border-dashed border-slate-300 shadow-inner',
             wrongDropIndex === index ? 'shake-animation bg-rose-400 border-rose-500' : '',
             hoveredSlotIndex === index && placedLetters[index] === null
-              ? 'ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]'
+              ? 'ring-4 md:ring-8 ring-indigo-400 bg-indigo-50 border-indigo-400 scale-110 shadow-[inset_0_0_20px_rgba(99,102,241,0.6)]'
               : '',
           ]"
         >
           <span
             v-if="placedLetters[index] !== null"
-            class="text-5xl md:text-[5rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none font-quicksand"
+            class="text-4xl md:text-6xl xl:text-[5rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] leading-none font-quicksand"
             :class="{ 'pop-animation': true }"
           >
             {{
@@ -331,14 +331,14 @@ const onTouchEnd = (e: TouchEvent) => {
         <!-- Instruction -->
 
         <div
-          class="flex flex-col justify-center gap-3 md:gap-4 w-full p-4 md:p-8 bg-white/50 backdrop-blur-md rounded-[3rem] border-t-4 border-white shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.1)] min-h-[160px]"
+          class="flex flex-col justify-center gap-2 md:gap-4 w-full p-3 md:p-4 2xl:p-8 bg-white/50 backdrop-blur-md rounded-[2.5rem] md:rounded-[3rem] border-t-4 border-white shadow-[0_-10px_40px_-20px_rgba(0,0,0,0.1)] min-h-[120px] md:min-h-[140px] xl:min-h-[160px]"
         >
           <p
-            class="text-center text-slate-500 font-bold mb-4 text-lg md:text-xl uppercase tracking-widest font-quicksand"
+            class="text-center text-slate-500 font-bold mb-2 md:mb-4 text-base md:text-lg xl:text-xl uppercase tracking-widest font-quicksand"
           >
             {{ isComplete ? "Luar biasa!" : "Tarik huruf ke dalam kotak kosong" }}
           </p>
-          <div class="flex flex-wrap justify-center gap-3 md:gap-4 w-full">
+          <div class="flex flex-wrap justify-center gap-2 md:gap-4 w-full">
             <BubbleCard
               v-for="(item, index) in availableLetters"
               :key="item.id"
@@ -348,14 +348,14 @@ const onTouchEnd = (e: TouchEvent) => {
               @touchstart.prevent="onTouchStart($event, index)"
               @touchmove.prevent="onTouchMove($event)"
               @touchend.prevent="onTouchEnd($event)"
-              class="w-16 h-20 md:w-24 md:h-32 rounded-2xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300 touch-none"
+              class="w-14 h-16 md:w-24 md:h-32 2xl:w-32 2xl:h-40 rounded-xl md:rounded-3xl active:scale-95 shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] border-2 border-indigo-200/50 bg-sky-400 cursor-grab active:cursor-grabbing hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] transition-all duration-300 touch-none"
               :class="[
                 item.isDragging ? 'opacity-20 scale-95 rotate-6' : 'opacity-100',
                 isComplete ? 'opacity-0 scale-50 pointer-events-none' : '',
               ]"
             >
               <span
-                class="text-4xl md:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none font-quicksand"
+                class="text-3xl md:text-5xl xl:text-[4rem] font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] tracking-wider pointer-events-none font-quicksand"
               >
                 {{
                   settingsStore.settings.letterCase === "uppercase"

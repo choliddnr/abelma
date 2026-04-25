@@ -56,7 +56,7 @@ watch(
             <div
               class="w-16 h-16 rounded-2xl bg-indigo-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-indigo-200 group-hover:scale-110 transition-transform"
             >
-              🔤
+              <Icon name="lucide:case-sensitive" />
             </div>
             <div>
               <h4 class="text-2xl font-black text-slate-800 font-quicksand">Progres Huruf</h4>
@@ -66,7 +66,7 @@ watch(
             </div>
             <div class="flex items-center gap-2 text-indigo-600 font-black">
               <span>Buka Laporan</span>
-              <span class="group-hover:translate-x-1 transition-transform">➜</span>
+              <Icon name="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </button>
@@ -83,7 +83,7 @@ watch(
             <div
               class="w-16 h-16 rounded-2xl bg-rose-500 text-white flex items-center justify-center text-3xl shadow-lg shadow-rose-200 group-hover:scale-110 transition-transform"
             >
-              📖
+              <Icon name="lucide:book-open" />
             </div>
             <div>
               <h4 class="text-2xl font-black text-slate-800 font-quicksand">Progres Kata</h4>
@@ -93,7 +93,7 @@ watch(
             </div>
             <div class="flex items-center gap-2 text-rose-600 font-black">
               <span>Buka Laporan</span>
-              <span class="group-hover:translate-x-1 transition-transform">➜</span>
+              <Icon name="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
         </button>
@@ -114,7 +114,7 @@ watch(
     </div>
     <div v-else class="text-center py-12">
       <div class="bg-slate-50 p-12 rounded-[3rem] border-4 border-dashed border-slate-100 inline-block px-20">
-        <span class="text-6xl mb-4 block">👋</span>
+        <Icon name="lucide:hand" class="text-6xl mb-4 block mx-auto text-amber-400" />
         <p class="text-slate-500 font-black text-xl font-quicksand">Silakan pilih profil anak...</p>
       </div>
     </div>

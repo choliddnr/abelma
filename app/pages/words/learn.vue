@@ -74,7 +74,7 @@ const navigateToWord = (wordId: string) => {
             class="flex-1 flex items-center justify-center w-full z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
           >
             <span
-              class="text-6xl md:text-7xl lg:text-8xl drop-shadow-md select-none"
+              class="text-5xl md:text-6xl xl:text-8xl drop-shadow-md select-none"
             >
               {{ word.emoji }}
             </span>
@@ -82,10 +82,10 @@ const navigateToWord = (wordId: string) => {
 
           <!-- Word Text -->
           <div
-            class="w-full text-center z-10 bg-slate-50/80 backdrop-blur-sm p-2 rounded-2xl border border-slate-100/50 mt-2"
+            class="w-full text-center z-10 bg-slate-50/80 backdrop-blur-sm p-1.5 md:p-2 rounded-xl md:rounded-2xl border border-slate-100/50 mt-1 md:mt-2"
           >
             <span
-              class="text-xl md:text-2xl font-black text-slate-700 tracking-wide"
+              class="text-lg md:text-xl xl:text-2xl font-black text-slate-700 tracking-wide"
             >
               {{
                 settingsStore.settings.letterCase === "uppercase"

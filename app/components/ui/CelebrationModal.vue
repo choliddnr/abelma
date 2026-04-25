@@ -27,7 +27,10 @@ const close = () => emit("update:modelValue", false);
       >
         <div class="absolute inset-0 bg-linear-to-b from-yellow-50 to-white -z-10"></div>
         <div class="text-7xl md:text-8xl mb-4 animate-bounce">
-          {{ mainEmoji ?? (rewardAmount ? "✨💰✨" : "✨🎉✨") }}
+          <template v-if="mainEmoji">{{ mainEmoji }}</template>
+          <template v-else>
+            <Icon :name="rewardAmount ? 'lucide:circle-dollar-sign' : 'lucide:party-popper'" />
+          </template>
         </div>
 
         <h2
@@ -46,7 +49,7 @@ const close = () => emit("update:modelValue", false);
             v-if="rewardAmount"
             class="inline-flex items-center justify-center gap-3 bg-yellow-100 px-8 py-4 rounded-[1.5rem] border-4 border-yellow-200 shadow-inner"
           >
-            <span class="text-4xl md:text-5xl">{{ rewardIcon ?? "🪙" }}</span>
+            <Icon :name="rewardIcon ?? 'lucide:circle-dollar-sign'" class="text-4xl md:text-5xl" />
             <span class="text-4xl md:text-5xl font-black text-yellow-700">+{{ rewardAmount }}</span>
           </div>
         </slot>
