@@ -52,18 +52,18 @@ const highlightedWord = computed(() => {
 <template>
   <div class="flex flex-col items-center gap-12 mx-4 lg:mx-0 mb-7">
     <div
-      class="glass-card p-6 md:p-8 flex-wrap w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 mt-5"
+      class="glass-card p-6 md:py-16 flex-wrap w-[99hw] xl:w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center gap-6 md:gap-8 mt-5"
     >
       <div class="flex gap-4">
         <div
-          class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
+          class="text-[200px] md:text-[230px] lg:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
           :data-text="letter.toUpperCase()"
           @click="speak(`Ini huruf ${letter.toUpperCase()} besar`)"
         >
           {{ letter.toUpperCase() }}
         </div>
         <div
-          class="text-[200px] md:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
+          class="text-[200px] md:text-[230px] lg:text-[300px] font-black leading-none text-accent cursor-pointer hover:scale-110 transition-transform active:scale-95 text-outline-fix"
           :data-text="letter.toLowerCase()"
           @click="speak(`Ini huruf ${letter.toLowerCase()} kecil`)"
         >
@@ -72,14 +72,14 @@ const highlightedWord = computed(() => {
       </div>
       <div class="flex flex-row items-center gap-6">
         <div
-          class="text-8xl md:text-[180px]  bg-white rounded-full size-32 sm:size-52 md:w-64 md:h-64 flex items-center justify-center shadow-lg border-8 border-primary cursor-pointer hover:scale-105 active:scale-95 transition-transform"
+          class="text-8xl md:text-[160px] lg:text-[180px]  bg-white rounded-full size-32 sm:size-52 md:size-56 xl:size-64 flex items-center justify-center shadow-lg border-8 border-primary cursor-pointer hover:scale-105 active:scale-95 transition-transform"
           @click="speak(item.word)"
         >
           {{ item.icon }}
         </div>
         <div class="text-center space-y-2">
-          <p class="text-3xl md:text-6xl font-bold text-gray-500">untuk...</p>
-          <h2 class="text-6xl md:text-9xl font-black tracking-wide" v-html="highlightedWord"></h2>
+          <p class="text-3xl md:text-4xl lg:text-6xl font-bold text-gray-500">untuk...</p>
+          <h2 class="text-3xl md:text-5xl lg:text-7xl font-black tracking-wide" v-html="highlightedWord"></h2>
         </div>
       </div>
     </div>

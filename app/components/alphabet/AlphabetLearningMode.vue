@@ -3,6 +3,7 @@ import { letters, idLetterMap, getLetterColor } from "~/constants/alphabet";
 import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
 import { cancelTTS } from "~/composables/useTTS";
+import type { AudioSequence } from "~/types";
 // import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 
 const emit = defineEmits(["start-quiz"]);
@@ -112,17 +113,38 @@ const handleLetterClick = (letter: string, event?: Event) => {
     router.push(`/alphabet/${letter}`);
     return;
   }
+
   lastClickedLetter.value = letter;
   lastClickTime.value = now;
 
   // Fast Learning Mode
   if (event) popConfetti(event);
-  playLetterSound(letter, true);
+
+  const { playSequence } = useAudio();
   const detail = idLetterMap[letter];
-  feedback.value = `${letter} untuk ${detail?.word || ""} ${detail?.emoji || ""}`;
+  const feedbackText = `${letter} untuk ${detail?.word || ""} ${detail?.emoji || ""}`;
+
+  // Sequential audio: "Ini huruf" -> [Letter] -> [Word]
+  const sequence: AudioSequence[] = [
+    { key: "Ini huruf" },
+    { key: letter },
+  ];
+
+  // if (detail?.word) {
+  //   sequence.push({ key: detail.word, delay: 200 });
+  // }
+
+  // playSequence(sequence, feedbackText);
+  playSequence(sequence);
+
+  feedback.value = feedbackText;
   setTimeout(() => {
     feedback.value = "";
-  }, 2000);
+  }, 3000);
+};
+
+const openLetterPage = (letter: string) => {
+  navigateTo(`/alphabet/${letter}`);
 };
 
 onUnmounted(() => {
@@ -186,7 +208,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Instructions / Feedback Area -->
-    <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
+    <!-- <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">
       <transition name="fade" mode="out-in">
         <div
           v-if="feedback"
@@ -202,7 +224,7 @@ onUnmounted(() => {
           Klik huruf untuk dengar suara!
         </h1>
       </transition>
-    </div>
+    </div> -->
 
     <!-- Alphabet Grid -->
     <div class="flex-1 px-4 pb-12 w-full max-w-7xl mx-auto overflow-visible relative">
@@ -226,14 +248,55 @@ onUnmounted(() => {
           <div
             class="flex flex-col items-center justify-center gap-0.5 sm:gap-1 w-full h-full relative"
           >
-            <span
-              class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
-              >{{ isUpperCase ? letter : letter.toLowerCase() }}</span
-            >
-            <span
+           <Transition
+              enter-active-class="transition duration-300 ease-out"
+              enter-from-class="transform scale-0 rotate-[-45deg] opacity-0"
+              enter-to-class="transform scale-100 rotate-0 opacity-100"
+              leave-active-class="transition duration-200 ease-in"
+              leave-from-class="transform scale-100 opacity-100"
+              leave-to-class="transform scale-0 opacity-0"
+              >
+              <div
+                :class="lastClickedLetter === letter? 'bottom-0 md:bottom-4 left-2 md:left-5' : 'top-1/2  left-1/2 translate-x-[-50%] translate-y-[-50%]'"
+                class="absolute flex items-center justify-center transition-all duration-300 ease-in-out"
+                >
+                <span
+                :class="lastClickedLetter === letter? 'scale-75': ''"
+                  class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
+                  >{{ isUpperCase ? letter : letter.toLowerCase() }}</span
+                >
+              </div>
+              <!-- <span 
+                  class="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-black text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.15)] select-none font-quicksand"
+                  >{{ isUpperCase ? letter : letter.toLowerCase() }}</span
+                > -->
+            </Transition> 
+
+            <!-- <span
               class="text-lg sm:text-2xl lg:text-3xl 2xl:text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:block absolute bottom-2 xl:bottom-4"
               >{{ idLetterMap[letter]?.emoji }}</span
+            > -->
+
+            <!-- Hint Icon: Magnifying Glass -->
+            <Transition
+              enter-active-class="transition duration-300 ease-out"
+              enter-from-class="transform scale-0 rotate-[-45deg] opacity-0"
+              enter-to-class="transform scale-100 rotate-0 opacity-100"
+              leave-active-class="transition duration-200 ease-in"
+              leave-from-class="transform scale-100 opacity-100"
+              leave-to-class="transform scale-0 opacity-0"
             >
+              <div
+                v-if="lastClickedLetter === letter"
+                @click.stop.prevent="openLetterPage(letter)"
+                class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-orange-500 backdrop-blur-md rounded-2xl p-1 sm:p-1.5 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+              >
+                <Icon
+                  name="lucide:arrow-up-right"
+                  class="text-white font-bold text-2xl w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5"
+                />
+              </div>
+            </Transition>
           </div>
         </BubbleCard>
       </div>

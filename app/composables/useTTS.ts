@@ -31,78 +31,82 @@ export const speakTTS = (
     lang?: string;
     onEnd?: () => void;
   },
-) => {
-  if (typeof window === "undefined" || !window.speechSynthesis) {
-    if (options?.onEnd) options.onEnd();
-    return;
-  }
+): Promise<void> => {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      if (options?.onEnd) options.onEnd();
+      resolve();
+      return;
+    }
 
-  // Always cancel ongoing speech before starting a new one
-  cancelTTS(true);
-  isSpeaking.value = true;
-
-  if (!text) {
-    isSpeaking.value = false;
-    if (options?.onEnd) options.onEnd();
-    return;
-  }
-
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  // Default configurations
-  utterance.lang = options?.lang || "id-ID";
-  utterance.rate = options?.rate || 0.9;
-  utterance.pitch = options?.pitch || 1.0;
-
-  utterance.onstart = () => {
+    // Always cancel ongoing speech before starting a new one
+    cancelTTS(true);
     isSpeaking.value = true;
-  };
 
-  utterance.onend = () => {
-    isSpeaking.value = false;
-    if (options?.onEnd) options.onEnd();
-  };
+    if (!text) {
+      isSpeaking.value = false;
+      if (options?.onEnd) options.onEnd();
+      resolve();
+      return;
+    }
 
-  utterance.onerror = (e) => {
-    isSpeaking.value = false;
-    console.error("TTS Error:", e);
-    // Resolve anyway to prevent app from getting stuck
-    if (options?.onEnd) options.onEnd();
-  };
+    const utterance = new SpeechSynthesisUtterance(text);
 
-  window.speechSynthesis.speak(utterance);
+    // Default configurations
+    utterance.lang = options?.lang || "id-ID";
+    utterance.rate = options?.rate || 0.9;
+    utterance.pitch = options?.pitch || 1.0;
+
+    utterance.onstart = () => {
+      isSpeaking.value = true;
+    };
+
+    utterance.onend = () => {
+      isSpeaking.value = false;
+      if (options?.onEnd) options.onEnd();
+      resolve();
+    };
+
+    utterance.onerror = (e) => {
+      isSpeaking.value = false;
+      console.error("TTS Error:", e);
+      if (options?.onEnd) options.onEnd();
+      resolve(); // Resolve anyway to prevent app from getting stuck
+    };
+
+    window.speechSynthesis.speak(utterance);
+  });
 };
 
 // --- Word / General Audio Utilities ---
 
 export const playWordAudio = (text: string, path?: string) => {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(async (resolve) => {
     cancelTTS();
-
-    const onEnd = () => {
-      resolve();
-    };
 
     if (path) {
       const audio = new Audio(path);
       let fallbackTriggered = false;
 
-      const triggerFallback = () => {
+      const triggerFallback = async () => {
         if (fallbackTriggered) return;
         fallbackTriggered = true;
         console.warn(`Local audio not found at ${path}, falling back to TTS.`);
-        speakTTS(text, { rate: 0.9, onEnd });
+        await speakTTS(text, { rate: 0.9 });
+        resolve();
       };
 
-      audio.onended = onEnd;
+      audio.onended = () => resolve();
       audio.onerror = triggerFallback;
       audio.play().catch(triggerFallback);
       return;
     }
 
-    speakTTS(text, { rate: 0.9, onEnd });
+    await speakTTS(text, { rate: 0.9 });
+    resolve();
   });
 };
+
 
 export const playSyllableAudio = (syllable: string, path?: string) => {
   return new Promise<void>((resolve) => {

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useMentorStore } from '@/stores/mentorStore'
 import { useTTS } from '@/composables/useTTS'
+import { ref, watch } from 'vue'
 
 const mentorStore = useMentorStore()
-const { speak, cancel } = useTTS()
+const { isSpeaking: appIsSpeaking, speak, cancel } = useTTS()
 
-const { isVisible, message, isWiggling, isSpeaking } = storeToRefs(mentorStore)
+const { isVisible, message, isWiggling } = storeToRefs(mentorStore)
 
 // Draggable State
 const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
-const hasDragged = ref(false) // To distinguish between click and drag
+const hasDragged = ref(false)
 
 const startDrag = (e: MouseEvent | TouchEvent) => {
   isDragging.value = true
@@ -31,7 +32,7 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
 
 const onDrag = (e: MouseEvent | TouchEvent) => {
   if (!isDragging.value) return
-  if ('preventDefault' in e) e.preventDefault() // Prevent scroll on touch
+  if ('preventDefault' in e) e.preventDefault()
   
   const clientX = 'touches' in e ? e.touches[0]!.clientX : e.clientX
   const clientY = 'touches' in e ? e.touches[0]!.clientY : e.clientY
@@ -39,7 +40,6 @@ const onDrag = (e: MouseEvent | TouchEvent) => {
   const deltaX = clientX - dragStart.value.x
   const deltaY = clientY - dragStart.value.y
   
-  // Minimal movement threshold to consider it a drag
   if (Math.abs(deltaX - position.value.x) > 5 || Math.abs(deltaY - position.value.y) > 5) {
     hasDragged.value = true
   }
@@ -61,15 +61,12 @@ const handleClick = () => {
   }
 }
 
-// Watch for message changes to trigger audio
 watch(message, (newMsg) => {
   if (newMsg) {
     speak(newMsg, {
       onEnd: () => {
-        mentorStore.isSpeaking = false
-        // We can keep the message visible for a bit or hide it
         setTimeout(() => {
-          if (!mentorStore.isSpeaking) {
+          if (!appIsSpeaking.value) {
             mentorStore.hideMessage()
           }
         }, 3000)
@@ -78,12 +75,6 @@ watch(message, (newMsg) => {
   } else {
     cancel()
   }
-})
-
-// Auto-trigger on mount if needed (e.g., initial greeting)
-onMounted(() => {
-  // If we want a global "Hello" on load
-  // mentorStore.showMessage("Halo teman! Ayo kita mulai belajar!")
 })
 </script>
 
@@ -108,7 +99,6 @@ onMounted(() => {
         <p class="text-indigo-900 font-black text-lg font-quicksand leading-tight text-center">
           {{ message }}
         </p>
-        <!-- Triangle pointer -->
         <div class="absolute -bottom-4 right-0 w-8 h-8 bg-white border-r-4 border-b-4 border-indigo-400 rotate-45 -translate-x-1/2"></div>
       </div>
     </Transition>
@@ -124,6 +114,7 @@ onMounted(() => {
         class="relative pointer-events-auto cursor-grab group select-none"
         :class="{ 
           'animate-wiggle': isWiggling,
+          'animate-speaking': appIsSpeaking,
           'cursor-grabbing scale-110': isDragging
         }"
         @mousedown="startDrag"
@@ -132,18 +123,19 @@ onMounted(() => {
       >
         <div
           class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-indigo-50 transform transition-all duration-300 group-hover:scale-110"
-          :class="{ 'ring-8 ring-indigo-400/30 scale-105': isSpeaking }"
+          :class="{ 'ring-8 ring-indigo-400/30 scale-105': appIsSpeaking }"
         >
           <img
             src="/img/mentor-boy.png"
             alt="Mentor Boy"
             class="w-full h-full object-cover"
+            :class="{ 'animate-pulse-slow': appIsSpeaking }"
           />
         </div>
 
         <!-- Pulse Effect when speaking -->
         <div
-          v-if="isSpeaking"
+          v-if="appIsSpeaking"
           class="absolute inset-0 rounded-full bg-indigo-400 animate-ping opacity-20"
         ></div>
       </div>
@@ -158,8 +150,27 @@ onMounted(() => {
   75% { transform: rotate(10deg) scale(1.1); }
 }
 
+@keyframes speaking {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-5px) rotate(-2deg); }
+  75% { transform: translateY(-5px) rotate(2deg); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
+}
+
+.animate-speaking {
+  animation: speaking 0.4s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
 }
 
 .font-quicksand {

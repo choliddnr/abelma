@@ -5,9 +5,9 @@ const { profile } = storeToRefs(useProfileStore());
 const mentorStore = useMentorStore();
 
 onMounted(() => {
-  if (profile.value?.name) {
-    mentorStore.showMessage(`Halo ${profile.value.name}! Ayo kita belajar sambil bermain!`);
-  }
+  // if (profile.value?.name) {
+  //   mentorStore.showMessage(`Halo ${profile.value.name}! Ayo kita belajar sambil bermain!`);
+  // }
 });
 
 const menuItems = [
