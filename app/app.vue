@@ -19,6 +19,7 @@ onMounted(() => {
 
 <template>
   <div class="h-screen w-full relative overflow-hidden bg-[#FFF9E3] flex flex-col">
+    <VitePwaManifest />
     <!-- Orientation Guard -->
     <!-- <UiOrientationGuard /> -->
     <!-- Background Image -->
@@ -50,6 +51,7 @@ onMounted(() => {
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
       <UiConfirmModal />
       <UiNotificationToast />
+      <UiPwaUpdatePrompt />
       <UiFloatingMentor />
     </main>
   </div>
