@@ -18,7 +18,13 @@ callOnce(async () => await useAsyncData("challenges-parent", () => challengeStor
 const isEditing = ref(false);
 const editingChallengeId = ref<number | null>(null);
 
+const { isPremium } = useSubscription();
+
 const openAddModal = () => {
+  if (!isPremium.value && challenges.value.length >= 1) {
+    navigateTo('/parent/premium');
+    return;
+  }
   isEditing.value = false;
   editingChallengeId.value = null;
   newChallengeTitle.value = "";
@@ -168,13 +174,16 @@ const handleResetChallenge = async (id: number) => {
   >
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Misi Anak</h3>
-      <UiButton
+           <UiButton
         @click="openAddModal"
-        variant="ghost"
-        class="text-sky-600 font-black flex items-center gap-1 hover:underline p-0 h-auto"
-      >
-        + Tambah Misi Baru
+        :variant="!isPremium && challenges.length >= 1 ?  'success' : 'accent'"
+        class="font-black flex items-center gap-1 h-10"
+        >
+        <Icon v-if="!isPremium && challenges.length >= 1" name="lucide:lock" class="w-4 h-4" />
+        <span v-else class="text-lg md:text-xl font-black">+</span>
+        Tambah Misi Baru
       </UiButton>
+      
     </div>
 
     <div

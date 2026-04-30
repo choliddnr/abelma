@@ -11,44 +11,52 @@ const { activeProfileId } = storeToRefs(useProfileStore());
 const { changeCoins } = useProfileStore();
 const mentorStore = useMentorStore();
 const { resetTimer } = useMentorHint("Ayo, pilih kata yang tepat!", 10000);
+const { isPremium } = useSubscription();
+const { play: playAudio } = useAudio();
 
 const goBack = () => router.push("/words");
 
 // Flatten all words from all categories into a single pool
 const allWords = computed<Word[]>(() => {
-  return wordCategories.flatMap((c) => c.words);
+  return wordCategories.flatMap((c) => {
+    return isPremium.value ? c.words : c.words.slice(0, 1);
+  });
 });
+
+
 
 const currentTarget = ref<Word | null>(null);
 const currentOptions = ref<Word[]>([]);
 const wrongChoiceId = ref<string | null>(null);
 const score = ref(0);
-const maxScore = 150;
+const pointsPerLevel = 100;
 const streak = ref(0);
 const timeLeft = ref(30);
+const hasMadeMistake = ref(false);
+
 const currentLevel = computed(() => {
-  if (score.value < 50) return 1;
-  if (score.value < 100) return 2;
-  return 3;
+  return Math.floor(score.value / pointsPerLevel) + 1;
 });
 
+const currentLetterCase = ref<"uppercase" | "lowercase">("uppercase");
+
 const currentLevelConfig = computed(() => {
-  const levels = wordQuizProgress.value.quizConfig || [];
-  const idx = Math.min(currentLevel.value - 1, Math.max(0, levels.length - 1));
   return (
-    levels[idx] || {
-      timer: 30,
+    wordQuizProgress.value.quizConfig || {
       coinReward: 10,
-      letterCase: "uppercase",
-      numOptions: 3,
+      levelUpReward: 50,
+      streakThreshold: 5,
+      streakReward: 10,
     }
   );
 });
-
-const timerMax = computed(() => currentLevelConfig.value.timer);
+const timerMax = computed(() => {
+  if (currentLevel.value < 3) return 0;
+  return Math.max(5, 30 - (currentLevel.value - 3));
+});
 let timerInterval: any = null;
 
-const progressPercentage = computed(() => (score.value / maxScore) * 100);
+const progressPercentage = computed(() => ((score.value % pointsPerLevel) / pointsPerLevel) * 100);
 
 // Activity Control
 type QuizType = "PICK_WORD" | "SPELL_WORD";
@@ -65,11 +73,13 @@ const hoveredSlotIndex = ref<number | null>(null);
 const touchPosition = ref({ x: 0, y: 0 });
 const isTouching = ref(false);
 
-// Sticker Reveal State
-const newSticker = ref<Sticker | null>(null);
-const showStickerModal = ref(false);
 
-const numOptions = computed(() => currentLevelConfig.value.numOptions);
+const numOptions = computed(() => {
+  if (currentLevel.value === 1) return 2;
+  if (currentLevel.value === 2) return 3;
+  if (currentLevel.value === 3) return 4;
+  return 6;
+});
 
 const startTimer = () => {
   if (timerInterval) clearInterval(timerInterval);
@@ -111,10 +121,31 @@ const initQuestion = () => {
   wrongDropIndex.value = null;
   draggedItemIndex.value = null;
   hoveredSlotIndex.value = null;
+  hasMadeMistake.value = false;
 
-  // Pick a random target
-  const targetIndex = Math.floor(Math.random() * allWords.value.length);
-  const target = allWords.value[targetIndex]!;
+  // Randomize letter case for this question
+  currentLetterCase.value = Math.random() > 0.5 ? "uppercase" : "lowercase";
+
+  // Pick a target using weighted random selection
+  const weightsDict = wordQuizProgress.value.weights || {};
+  let totalWeight = 0;
+  const weightedList = allWords.value.map((word) => {
+    // Inverse weight: base 10 - mastery. Positive mastery = lower weight.
+    const mastery = weightsDict[word.id] || 0;
+    const weight = Math.max(1, 10 - mastery);
+    totalWeight += weight;
+    return { word, weight };
+  });
+
+  let random = Math.random() * totalWeight;
+  let target = allWords.value[0]!;
+  for (const item of weightedList) {
+    random -= item.weight;
+    if (random <= 0) {
+      target = item.word;
+      break;
+    }
+  }
   currentTarget.value = target;
 
   // Randomize Activity Type
@@ -168,10 +199,9 @@ const initQuestion = () => {
 
     const letters = target.word.split("").map((l, i) => {
       let displayLetter = l;
-      if (currentLevelConfig.value.letterCase === "lowercase")
+      if (currentLetterCase.value === "lowercase") {
         displayLetter = l.toLowerCase();
-      else if (currentLevelConfig.value.letterCase === "mixed")
-        displayLetter = Math.random() > 0.5 ? l.toUpperCase() : l.toLowerCase();
+      }
 
       return { id: `target-${i}-${l}`, letter: displayLetter };
     });
@@ -188,10 +218,9 @@ const initQuestion = () => {
     }
     const noise = noisePool.slice(0, noiseCount).map((l, i) => {
       let displayLetter = l;
-      if (currentLevelConfig.value.letterCase === "lowercase")
+      if (currentLetterCase.value === "lowercase") {
         displayLetter = l.toLowerCase();
-      else if (currentLevelConfig.value.letterCase === "mixed")
-        displayLetter = Math.random() > 0.5 ? l.toUpperCase() : l.toLowerCase();
+      }
 
       return {
         id: `noise-${i}-${l}`,
@@ -252,6 +281,13 @@ const onDrop = (slotIndex: number) => {
       handleCorrect();
     }
   } else {
+    hasMadeMistake.value = true;
+    score.value = Math.max(0, score.value - 1);
+    if (currentTarget.value) {
+      if (!wordQuizProgress.value.weights) wordQuizProgress.value.weights = {};
+      wordQuizProgress.value.weights[currentTarget.value.id] = (wordQuizProgress.value.weights[currentTarget.value.id] || 0) - 0.5;
+    }
+    wordStore.updateLocalProgress({ score: score.value });
     streak.value = 0;
     if (activeProfileId.value) {
       // analyticsStore.recordMistake(
@@ -276,11 +312,19 @@ const putBackLetter = (slotIndex: number) => {
   }
 };
 
-const handleCorrect = () => {
+const handleCorrect = async () => {
   if (timerInterval) clearInterval(timerInterval);
   popConfetti();
+  
+  const previousLevel = currentLevel.value;
   score.value += 10;
   streak.value++;
+
+  if (currentTarget.value && !hasMadeMistake.value) {
+    if (!wordQuizProgress.value.weights) wordQuizProgress.value.weights = {};
+    wordQuizProgress.value.weights[currentTarget.value.id] = (wordQuizProgress.value.weights[currentTarget.value.id] || 0) + 1;
+  }
+  wordStore.updateLocalProgress({ score: score.value, level: currentLevel.value });
 
   playEffectAudio("correct");
   mentorStore.wiggle();
@@ -288,9 +332,18 @@ const handleCorrect = () => {
   mentorStore.showMessage(feedback[Math.floor(Math.random() * feedback.length)]!);
   
   changeCoins(currentLevelConfig.value.coinReward); // Fix T3: Activate coin reward
+  
+  if (streak.value > 0 && streak.value % currentLevelConfig.value.streakThreshold === 0) {
+
+    changeCoins(currentLevelConfig.value.streakReward);
+    mentorStore.showMessage("Bonus beruntun!");
+    await playAudio("Selamat, kamu dapat bonus karena bisa jawab secara beruntun!");
+  }
+  
   resetTimer();
 
-  if (score.value >= maxScore) {
+  if (currentLevel.value > previousLevel) {
+    changeCoins(currentLevelConfig.value.levelUpReward);
     setTimeout(triggerWinScreen, 1000);
   } else {
     setTimeout(initQuestion, 1500);
@@ -324,6 +377,13 @@ const handleChoice = (word: Word) => {
   if (word.id === currentTarget.value.id) {
     handleCorrect();
   } else {
+    hasMadeMistake.value = true;
+    score.value = Math.max(0, score.value - 5);
+    if (currentTarget.value) {
+      if (!wordQuizProgress.value.weights) wordQuizProgress.value.weights = {};
+      wordQuizProgress.value.weights[currentTarget.value.id] = (wordQuizProgress.value.weights[currentTarget.value.id] || 0) - 0.5;
+    }
+    wordStore.updateLocalProgress({ score: score.value });
     if (activeProfileId.value) {
       // analyticsStore.recordMistake(
       //   activeProfileId.value,
@@ -388,7 +448,6 @@ const triggerWinScreen = () => {
 // Fix T5: Extract restart logic into a named function instead of inline template code
 const restartGame = () => {
   isWin.value = false;
-  score.value = 0;
   initQuestion();
 };
 
@@ -442,11 +501,35 @@ const syncProgressToDb = async () => {
   await wordStore.updateProgress(activeProfileId.value, {
     score: score.value,
     level: currentLevel.value,
-    // Add weights if needed, e.g. from analyticsStore
+    weights: wordQuizProgress.value.weights,
+  });
+};
+
+// Use native fetch with keepalive for page reloads/closes
+const handleUnloadSync = () => {
+  if (!activeProfileId.value) return;
+  
+  const url = `/api/words/quiz/${activeProfileId.value}/progress`;
+  const data = {
+    score: score.value,
+    level: currentLevel.value,
+    weights: wordQuizProgress.value.weights,
+    coins: useProfileStore().profile?.coins
+  };
+
+  // Navigator.sendBeacon is also an option, but fetch with keepalive is more flexible for PATCH
+  fetch(url, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+    keepalive: true
   });
 };
 
 onMounted(async () => {
+  window.addEventListener('pagehide', handleUnloadSync);
+  window.addEventListener('beforeunload', handleUnloadSync);
+
   await wordStore.fetch();
   // Initialize local score from database if available
   if (wordQuizProgress.value.score) {
@@ -456,12 +539,18 @@ onMounted(async () => {
 });
 
 onUnmounted(async () => {
+  window.removeEventListener('pagehide', handleUnloadSync);
+  window.removeEventListener('beforeunload', handleUnloadSync);
+
   if (timerInterval) clearInterval(timerInterval);
   cancelTTS();
   await syncProgressToDb();
 });
 
 onScopeDispose(() => {
+  window.removeEventListener('pagehide', handleUnloadSync);
+  window.removeEventListener('beforeunload', handleUnloadSync);
+
   if (timerInterval) clearInterval(timerInterval);
   cancelTTS();
 });
@@ -475,7 +564,7 @@ onScopeDispose(() => {
       v-model="isWin"
       title="LUAR BIASA!"
       message="Kamu telah menyelesaikan tantangan!"
-      :reward-amount="score"
+      :reward-amount="currentLevelConfig.levelUpReward"
       footer-text="Koin Berhasil Ditambah!"
       main-emoji="✨🏆✨"
     >
@@ -681,9 +770,9 @@ onScopeDispose(() => {
               "
             >
               {{
-                currentLevelConfig.letterCase === "uppercase"
+                currentLetterCase === "uppercase"
                   ? option.word.toUpperCase()
-                  : currentLevelConfig.letterCase === "lowercase"
+                  : currentLetterCase === "lowercase"
                     ? option.word.toLowerCase()
                     : option.word
                         .split("")

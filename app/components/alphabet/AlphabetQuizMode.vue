@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { letters, getLetterColor } from "~/constants/alphabet";
+import { letters as allLetters, getLetterColor } from "~/constants/alphabet";
 import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
 import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
 
-const emit = defineEmits(["stop-quiz"]);
 
+
+const emit = defineEmits(["stop-quiz"]);
 const router = useRouter();
 const { isSpeaking: speaking, playLetterSound, speak } = useTTS();
 const { alphabetQuizProgress: alphabetProgress } = storeToRefs(useAlphabetStore());
 const { changeCoins } = useProfileStore();
+const { isPremium } = useSubscription();
 // const { syncAlphabet } = useSyncStore();
+
+let letters = allLetters;
+if (!isPremium.value) {
+  letters = allLetters.slice(0, 5);
+}
 
 // Game State from Store
 // const alphabetProgress = getCurrentAlphabetState();
@@ -544,6 +551,15 @@ onUnmounted(() => {
               {{ isUpperCase ? letter : letter.toLowerCase() }}
             </span>
           </div>
+          <div
+                v-if="!isPremium && letter > 'E'"
+                class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-gray-500/50 backdrop-blur-md rounded-full p-1 sm:p-1.5 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+              >
+                <Icon
+                  name="lucide:lock-keyhole"
+                  class="text-white font-bold bg-gray-500/50 size-2 sm:size-3 md:size-4"
+                />
+              </div>
         </BubbleCard>
       </div>
 

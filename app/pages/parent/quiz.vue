@@ -14,7 +14,6 @@ callOnce(async () => {
   await Promise.all([fetch(), fetchWordProgress()]);
 });
 
-const levelLabels = ["Pemula", "Mantap", "Berwaktu", "Sprint"];
 
 // Modal state
 const isAlphabetModalOpen = ref(false);

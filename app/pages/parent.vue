@@ -140,7 +140,7 @@ onUnmounted(async () => {});
       <div
         class="flex items-center justify-between border-b border-slate-200/50 pb-6"
       >
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 w-full">
           <div v-if="user?.image" class="relative group">
             <img
               :src="user?.image"
@@ -153,8 +153,8 @@ onUnmounted(async () => {});
           >
             👨‍👩‍👧
           </div>
-          <div>
-            <div class="flex items-center gap-2">
+          <div class="w-full flex-col">
+            <div class="flex items-center justify-between gap-2">
               <h2
                 class="text-3xl md:text-4xl font-black text-slate-800 font-quicksand"
               >
@@ -162,15 +162,24 @@ onUnmounted(async () => {});
               </h2>
               <UiButton
                 @click="logout"
-                variant="ghost"
-                class="ml-2 h-auto py-1 px-2 text-rose-500 hover:text-rose-600 bg-rose-50"
+                variant="danger"
+                class="ml-2 h-auto py-1.5 px-3 transition-all flex items-center gap-1.5 group shadow-sm"
               >
-                <span class="text-[10px] md:text-xs">Keluar</span>
+                <Icon name="lucide:log-out" class="w-3.5 h-3.5 md:w-4 md:h-4 transition-transform group-hover:-translate-x-0.5" />
+                <span class="text-[10px] md:text-xs font-bold">Keluar</span>
               </UiButton>
             </div>
             <p class="text-slate-700 font-bold">
               Kelola profil, hadiah, dan tingkat kesulitan.
             </p>
+            <UiButton
+                @click="navigateTo('/parent/premium')"
+                variant="success"
+                class="h-auto py-1.5 px-3 transition-all flex items-center gap-1.5 group shadow-sm text-md md:text-lg font-bold"
+              >
+                <Icon name="glyphs-poly:crown-3" class="text-yellow-500 text-xl size-5 md:size-5 transition-transform group-hover:-translate-x-0.5" />
+                <span class=" font-bold">Upgrade ke Premium</span>
+              </UiButton>
           </div>
         </div>
       </div>

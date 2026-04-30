@@ -13,6 +13,16 @@ const { fetch } = useRewardStore();
 
 callOnce(async () => await useAsyncData("rewards", () => fetch()));
 
+const { isPremium } = useSubscription();
+
+const handleAddClick = () => {
+  if (!isPremium.value && rewards.value.length >= 1) {
+    navigateTo('/parent/premium');
+    return;
+  }
+  showAddReward.value = true;
+};
+
 const handleAddReward = async () => {
   if (newRewardTitle.value.trim() && newRewardCost.value > 0) {
     await $fetch<ResRewardPost>("/api/reward", {
@@ -83,12 +93,14 @@ const handleFulfillReward = async (id: number) => {
   <div class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300">
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Hadiah Tugas</h3>
-      <UiButton
-        @click="showAddReward = true"
-        variant="ghost"
-        class="text-indigo-600 font-black flex items-center gap-1 hover:underline p-0 h-auto"
-      >
-        + Tambah Hadiah Baru
+           <UiButton
+        @click="handleAddClick"
+        :variant="!isPremium && rewards.length >= 1 ?  'success' : 'accent'"
+        class="font-black flex items-center gap-1 h-10"
+        >
+        <Icon v-if="!isPremium && rewards.length >= 1" name="lucide:lock" class="w-4 h-4" />
+        <span v-else class="text-lg md:text-xl font-black">+</span>
+        Tambah Hadiah Baru
       </UiButton>
     </div>
 

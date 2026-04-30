@@ -6,6 +6,7 @@ export default defineEventHandler(async (e) => {
     "/api/reward",
     "/api/sync",
     "/api/words",
+    "/api/midtrans/checkout",
   ];
 
   if (protectedPrefixes.some((p) => url.pathname.startsWith(p))) {

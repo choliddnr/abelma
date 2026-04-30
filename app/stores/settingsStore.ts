@@ -1,5 +1,12 @@
-import type { WordSettings, CloudProfile, LetterCase } from "@/types/stores";
+import type { CloudProfile } from "@/types/stores";
 
+export type LetterCase = "uppercase" | "lowercase" | "mixed";
+
+export type WordSettings = {
+  levels: any[];
+  timerDuration: number; // Legacy/Default
+  letterCase: LetterCase; // Legacy/Default
+};
 export const useSettingsStore = defineStore(
   "settings",
   () => {

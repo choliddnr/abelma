@@ -40,5 +40,14 @@ export default defineNuxtConfig({
       clientId: "",
       clientSecret: "",
     },
+    midtrans: {
+      serverKey: "",
+      isProduction: false,
+    },
+    public: {
+      midtrans: {
+        clientKey: "",
+      },
+    },
   },
 });

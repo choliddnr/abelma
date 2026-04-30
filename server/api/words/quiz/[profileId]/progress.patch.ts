@@ -12,14 +12,20 @@ export default defineEventHandler(async (event) => {
     level: z.number().int().min(1).optional(),
     weights: z.record(z.string(), z.number()).optional(),
     quizConfig: z.array(z.any()).optional(),
+    coins: z.number().int().min(0).optional(),
+    updatedAt: z.string().datetime().or(z.date()).optional(),
   });
 
   const payload = await readValidatedBody(event, (data) => progressSchema.parse(data));
 
   try {
     const updateData: any = {
-      updatedAt: new Date(),
+      updatedAt: payload.updatedAt ? new Date(payload.updatedAt) : new Date(),
     };
+
+    if (payload.coins !== undefined) {
+      await d1.update(profiles).set({ coins: payload.coins }).where(eq(profiles.id, profileId));
+    }
 
     if (payload.score !== undefined) updateData.score = payload.score;
     if (payload.level !== undefined) updateData.level = payload.level;

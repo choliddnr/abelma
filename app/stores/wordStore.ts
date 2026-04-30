@@ -1,20 +1,15 @@
-import type { WordQuizProgress, WordLevelConfig } from "@/types/stores";
+import type { WordQuizProgress, WordQuizConfig } from "@/types/stores";
 
 export const useWordStore = defineStore(
   "word",
   () => {
-    const { activeProfileId } = storeToRefs(useProfileStore());
+    const { activeProfileId, profile } = storeToRefs(useProfileStore());
 
     const wordQuizProgress = ref<WordQuizProgress>({
       score: 0,
       level: 1,
       weights: {},
-      quizConfig: [
-        { timer: 0, coinReward: 5, letterCase: "uppercase", numOptions: 2 },
-        { timer: 30, coinReward: 10, letterCase: "lowercase", numOptions: 3 },
-        { timer: 20, coinReward: 20, letterCase: "mixed", numOptions: 4 },
-        { timer: 10, coinReward: 30, letterCase: "mixed", numOptions: 6 },
-      ],
+      quizConfig: { coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 },
       updatedAt: new Date(),
     });
 
@@ -22,9 +17,32 @@ export const useWordStore = defineStore(
       if (!activeProfileId.value) return;
 
       try {
-        const res = await $fetch<any>(`/api/words/quiz/${activeProfileId.value}/progress`);
-        if (res) {
-          wordQuizProgress.value = res;
+        const apiRes = await $fetch<any>(`/api/words/quiz/${activeProfileId.value}/progress`);
+        if (!apiRes) return;
+
+        const apiData = {
+          ...apiRes,
+          weights: typeof apiRes.weights === "string" ? JSON.parse(apiRes.weights) : apiRes.weights,
+          quizConfig:
+            typeof apiRes.quizConfig === "string" ? JSON.parse(apiRes.quizConfig) : apiRes.quizConfig,
+          updatedAt: new Date(apiRes.updatedAt),
+        };
+
+        const localTime = new Date(wordQuizProgress.value.updatedAt || 0).getTime();
+        const apiTime = apiData.updatedAt.getTime();
+
+        if (localTime > apiTime) {
+          // Local is newer, sync to DB
+          console.log("Word progress local is newer, syncing to DB...");
+          updateProgress(activeProfileId.value, {
+            score: wordQuizProgress.value.score,
+            level: wordQuizProgress.value.level,
+            weights: wordQuizProgress.value.weights,
+            updatedAt: wordQuizProgress.value.updatedAt,
+          });
+        } else {
+          // API is newer or same
+          wordQuizProgress.value = apiData;
         }
       } catch (error: any) {
         if (error.status === 204 || error.status === 404) {
@@ -36,7 +54,7 @@ export const useWordStore = defineStore(
       }
     };
 
-    const saveConfig = async (profileId: string, config: WordLevelConfig[]) => {
+    const saveConfig = async (profileId: string, config: WordQuizConfig) => {
       try {
         // Try to update config first
         try {
@@ -80,11 +98,16 @@ export const useWordStore = defineStore(
 
     const updateProgress = async (profileId: string, data: Partial<WordQuizProgress>) => {
       try {
+        const payload = { 
+          ...data, 
+          coins: profile.value.coins,
+          updatedAt: data.updatedAt || new Date()
+        };
         const res = await $fetch<WordQuizProgress>(
           `/api/words/quiz/${profileId}/progress`,
           {
             method: "PATCH",
-            body: data,
+            body: payload,
           },
         );
         if (res) {
@@ -97,11 +120,20 @@ export const useWordStore = defineStore(
       return false;
     };
 
+    const updateLocalProgress = (data: Partial<WordQuizProgress>) => {
+      wordQuizProgress.value = {
+        ...wordQuizProgress.value,
+        ...data,
+        updatedAt: new Date(),
+      };
+    };
+
     return {
       wordQuizProgress,
       fetch,
       saveConfig,
       updateProgress,
+      updateLocalProgress,
     };
   },
   {

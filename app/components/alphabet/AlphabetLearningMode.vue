@@ -4,6 +4,8 @@ import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
 import { cancelTTS } from "~/composables/useTTS";
 import type { AudioSequence } from "~/types";
+import { useSubscription } from "~/composables/useSubscription";
+import ParentGate from "~/components/shared/ParentGate.vue";
 // import { ALPHABET_STORYBOOK } from "~/constants/alphabetStorybook";
 
 const emit = defineEmits(["start-quiz"]);
@@ -17,6 +19,8 @@ const isUpperCase = ref(true);
 const isRandomized = ref(false);
 const learningLetters = ref([...letters]);
 const feedback = ref("");
+const showParentGate = ref(false);
+const { isPremium } = useSubscription();
 
 const shuffleLetters = (arrayToShuffle: string[]) => {
   const array = [...arrayToShuffle];
@@ -105,6 +109,11 @@ const lastClickTime = ref<number>(0);
 const router = useRouter();
 
 const handleLetterClick = (letter: string, event?: Event) => {
+  if (!isPremium.value && letter > "E") {
+    // showParentGate.value = true;
+    return;
+  }
+
   // Handle Double click here
   const now = Date.now();
   if (lastClickedLetter.value === letter && now - lastClickTime.value < 400) {
@@ -144,7 +153,16 @@ const handleLetterClick = (letter: string, event?: Event) => {
 };
 
 const openLetterPage = (letter: string) => {
+  if (!isPremium.value && letter > "E") {
+    showParentGate.value = true;
+    return;
+  }
   navigateTo(`/alphabet/${letter}`);
+};
+
+const handleParentGateSuccess = () => {
+  showParentGate.value = false;
+  navigateTo("/parent/premium");
 };
 
 onUnmounted(() => {
@@ -297,10 +315,30 @@ onUnmounted(() => {
                 />
               </div>
             </Transition>
+
+            <!-- Lock Icon for Premium Letters -->
+             <div
+                v-if="!isPremium && letter > 'E'"
+                class="absolute top-1 right-1 sm:top-2 sm:right-2 bg-gray-500/50 backdrop-blur-md rounded-full p-1 sm:p-1.5 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+              >
+                <Icon
+                  name="lucide:lock-keyhole"
+                  class="text-white font-bold bg-gray-500/50 size-2 sm:size-3 md:size-4"
+                />
+              </div>
+            <!-- <div
+              v-if="!isPremium && letter > 'E'"
+              class="absolute inset-0 bg-white/20 backdrop-blur-[2px] rounded-[inherit] flex items-center justify-center pointer-events-none"
+            >
+              <div class="bg-gray-900/80 p-2 sm:p-3 rounded-full shadow-lg">
+                <Icon name="lucide:lock" class="text-white w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+            </div> -->
           </div>
         </BubbleCard>
       </div>
     </div>
+    <ParentGate :isOpen="showParentGate" @success="handleParentGateSuccess" @close="showParentGate = false" />
   </div>
 </template>
 

@@ -14,6 +14,10 @@ export const user = sqliteTable("user", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
   username: text("username").unique(),
   displayUsername: text("display_username"),
+  tier: text("tier").notNull().default("free"),
+  premiumUntil: integer("premium_until", { mode: "timestamp" }),
+  midtransCustomerId: text("midtrans_customer_id"),
+  midtransSubscriptionId: text("midtrans_subscription_id"),
 });
 
 export const session = sqliteTable("session", {

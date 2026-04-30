@@ -8,7 +8,12 @@ export default defineEventHandler(async (event) => {
   const profileId = getRouterParam(event, "profileId") as string;
 
   const configSchema = z.object({
-    quizConfig: z.array(z.any()),
+    quizConfig: z.object({
+      coinReward: z.number(),
+      levelUpReward: z.number(),
+      streakThreshold: z.number(),
+      streakReward: z.number(),
+    }),
   });
 
   const body = await readValidatedBody(event, (data) => configSchema.parse(data));

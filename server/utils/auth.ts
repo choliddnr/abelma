@@ -23,6 +23,23 @@ export const _auth = (e: H3Event) => {
         // Let BetterAuth handle ID generation for tables with text primary keys
       },
     },
+    user: {
+      additionalFields: {
+        tier: {
+          type: "string",
+          defaultValue: "free",
+        },
+        premiumUntil: {
+          type: "date",
+        },
+        midtransCustomerId: {
+          type: "string",
+        },
+        midtransSubscriptionId: {
+          type: "string",
+        },
+      },
+    },
     // Secrets pulled from Cloudflare env bindings at runtime with process.env fallbacks via runtimeConfig
     secret: cloudflare?.env?.BETTER_AUTH_SECRET ?? useRuntimeConfig(e).betterAuth.secret,
     baseURL:

@@ -16,14 +16,14 @@ const lastSavedWordSettings = ref<string>("");
 const isSaving = ref(false);
 
 // Use local state for editing to allow "Cancel" or "Save" pattern
-const localLevels = ref<any[]>([]);
+const localConfig = ref<any>({});
 
 // Watch for store changes to update local state
 watch(
   () => wordQuizProgress.value.quizConfig,
   (newVal) => {
-    if (newVal && newVal.length > 0) {
-      localLevels.value = JSON.parse(JSON.stringify(newVal));
+    if (newVal) {
+      localConfig.value = JSON.parse(JSON.stringify(newVal));
       if (!lastSavedWordSettings.value) {
         lastSavedWordSettings.value = JSON.stringify(newVal);
       }
@@ -33,7 +33,7 @@ watch(
 );
 
 const hasChanges = computed(() => {
-  return JSON.stringify(localLevels.value) !== lastSavedWordSettings.value;
+  return JSON.stringify(localConfig.value) !== lastSavedWordSettings.value;
 });
 
 const notification = useNotification();
@@ -43,9 +43,9 @@ const handleSave = async () => {
 
   isSaving.value = true;
   try {
-    const success = await saveConfig(activeProfileId.value, localLevels.value);
+    const success = await saveConfig(activeProfileId.value, localConfig.value);
     if (success) {
-      lastSavedWordSettings.value = JSON.stringify(localLevels.value);
+      lastSavedWordSettings.value = JSON.stringify(localConfig.value);
       notification.success("Pengaturan berhasil disimpan! ✨");
     } else {
       notification.error("Gagal menyimpan pengaturan. Silakan coba lagi.");
@@ -116,118 +116,66 @@ watch(
         <!-- Modal Body (Scrollable) -->
         <div class="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
           <div class="space-y-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div
-                v-for="(cfg, idx) in localLevels"
-                :key="idx"
-                class="bg-white rounded-4xl border-2 border-slate-100 p-6 space-y-6 shadow-sm"
-              >
-                <!-- Level Header -->
-                <div
-                  class="flex items-center gap-4 pb-4 border-b border-slate-50"
-                >
-                  <div
-                    class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white shadow-lg"
-                    :class="
-                      [
-                        'bg-violet-400',
-                        'bg-indigo-400',
-                        'bg-purple-400',
-                        'bg-pink-400',
-                      ][idx] || 'bg-slate-400'
-                    "
-                  >
-                    {{ idx + 1 }}
-                  </div>
-                  <div>
-                    <p class="font-black text-slate-800 font-quicksand">
-                      Level {{ idx + 1 }}
-                    </p>
-                    <p
-                      class="text-[10px] font-bold text-slate-400 uppercase tracking-widest"
-                    >
-                      {{
-                        ["Pemula", "Terampil", "Mahir", "Sultan"][idx] ||
-                        "Kustom"
-                      }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Fields -->
+            <div class="bg-white rounded-4xl border-2 border-slate-100 p-6 space-y-6 shadow-sm">
                 <div class="space-y-4">
-                  <!-- Case Selection -->
-                  <div class="space-y-2">
-                    <label class="text-xs font-black text-slate-600"
-                      >Gaya Tulisan</label
-                    >
-                    <div class="flex gap-2">
-                      <button
-                        v-for="c in ['uppercase', 'lowercase', 'mixed']"
-                        :key="c"
-                        @click="cfg.letterCase = c"
-                        class="flex-1 py-2 px-1 rounded-xl border-2 text-[10px] font-black transition-all"
-                        :class="
-                          cfg.letterCase === c
-                            ? 'bg-violet-50 border-violet-500 text-violet-700 shadow-sm'
-                            : 'bg-white border-slate-50 text-slate-400 opacity-60'
-                        "
-                      >
-                        {{
-                          c === "uppercase"
-                            ? "ABC"
-                            : c === "lowercase"
-                              ? "abc"
-                              : "AbC"
-                        }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="grid grid-cols-2 gap-4">
+                  <!-- Case Selection removed as it's now dynamically set by level -->
+                  <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
                     <div class="space-y-1">
                       <label
-                        class="text-[10px] font-black text-slate-500 uppercase"
-                        >Waktu (s)</label
-                      >
-                      <input
-                        type="number"
-                        v-model.number="cfg.timer"
-                        min="0"
-                        max="60"
-                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-50 focus:border-violet-400 focus:outline-none bg-slate-50/50"
-                      />
-                    </div>
-                    <div class="space-y-1">
-                      <label
-                        class="text-[10px] font-black text-slate-500 uppercase"
+                        class="text-sm font-black text-slate-500 uppercase whitespace-nowrap"
                         >Hadiah 🪙</label
                       >
                       <input
                         type="number"
-                        v-model.number="cfg.coinReward"
+                        v-model.number="localConfig.coinReward"
                         min="0"
                         max="100"
-                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-50 focus:border-violet-400 focus:outline-none bg-slate-50/50"
+                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-200 focus:border-violet-400 focus:outline-none bg-slate-50/50"
                       />
                     </div>
                     <div class="space-y-1">
                       <label
-                        class="text-[10px] font-black text-slate-500 uppercase"
-                        >Opsi Kata</label
+                        class="text-sm font-black text-slate-500 uppercase whitespace-nowrap"
+                        >Bonus Lvl Up</label
                       >
                       <input
                         type="number"
-                        v-model.number="cfg.numOptions"
-                        min="2"
-                        max="6"
-                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-50 focus:border-violet-400 focus:outline-none bg-slate-50/50"
+                        v-model.number="localConfig.levelUpReward"
+                        min="0"
+                        max="1000"
+                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-200 focus:border-violet-400 focus:outline-none bg-slate-50/50"
+                      />
+                    </div>
+                    <div class="space-y-1">
+                      <label
+                        class="text-sm font-black text-slate-500 uppercase whitespace-nowrap"
+                        >Batas Streak</label
+                      >
+                      <input
+                        type="number"
+                        v-model.number="localConfig.streakThreshold"
+                        min="1"
+                        max="20"
+                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-200 focus:border-violet-400 focus:outline-none bg-slate-50/50"
+                      />
+                    </div>
+                    <div class="space-y-1">
+                      <label
+                        class="text-sm font-black text-slate-500 uppercase whitespace-nowrap"
+                        >Bonus Streak</label
+                      >
+                      <input
+                        type="number"
+                        v-model.number="localConfig.streakReward"
+                        min="0"
+                        max="500"
+                        class="w-full text-center text-sm font-black p-2 rounded-xl border-2 border-slate-200 focus:border-violet-400 focus:outline-none bg-slate-50/50"
                       />
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+
 
             <div
               class="p-6 bg-amber-50 rounded-3xl border-2 border-amber-100 text-amber-800 text-sm leading-relaxed shadow-sm"
@@ -235,12 +183,7 @@ watch(
               <strong class="font-black text-base flex items-center gap-2 mb-1">
                 <span>💡</span> Tips Orang Tua
               </strong>
-              Gunakan
-              <span class="font-black underline">Huruf Kecil</span> untuk anak
-              yang sudah mulai membaca, dan
-              <span class="font-black underline">Mixed (AbC)</span> untuk
-              tantangan lebih tinggi yang memadukan huruf kapital dan kecil
-              secara acak.
+              Kini <span class="font-black underline">Waktu Kuis</span> dan <span class="font-black underline">Gaya Tulisan</span> (Huruf Kapital / Kecil) akan otomatis menyesuaikan dengan tingkat level anak Anda untuk memberikan pengalaman belajar yang lebih adaptif dan menantang!
             </div>
           </div>
         </div>

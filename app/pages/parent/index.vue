@@ -8,6 +8,15 @@ const newProfileName = ref("");
 const selectedAvatar = ref("👦");
 const isCreating = ref(false);
 const { addProfile, changeProfile } = useProfileStore();
+const { isPremium } = useSubscription();
+
+const handleAddClick = () => {
+  if (!isPremium.value && profiles.value.length >= 1) {
+    navigateTo('/parent/premium');
+    return;
+  }
+  showAddProfile.value = true;
+};
 
 const handleAddProfile = async () => {
   if (!newProfileName.value.trim()) return;
@@ -38,12 +47,15 @@ const handleAddProfile = async () => {
   <div class="flex-1 space-y-6 animate-in fade-in slide-in-from-left-4 duration-300">
     <div class="flex items-center justify-between">
       <h3 class="text-xl font-black text-slate-700">Daftar Anak</h3>
+
       <UiButton
-        @click="showAddProfile = true"
-        variant="ghost"
-        class="text-indigo-600 font-black flex items-center gap-1 hover:underline p-0 h-auto"
-      >
-        + Tambah Profil Baru
+        @click="handleAddClick"
+        :variant="!isPremium && profiles.length >= 1 ?  'success' : 'accent'"
+        class="font-black flex items-center gap-1 h-10"
+        >
+        <Icon v-if="!isPremium && profiles.length >= 1" name="lucide:lock" class="w-4 h-4" />
+        <span v-else class="text-lg md:text-xl font-black">+</span>
+        Tambah Profil Baru
       </UiButton>
     </div>
 

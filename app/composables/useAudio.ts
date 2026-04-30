@@ -1,5 +1,6 @@
 import type { AudioSequence } from "~/types";
 import { isSpeaking, cancelTTS, speakTTS } from "./useTTS";
+import { AUDIO_FILES } from "~/constants/audio";
 
 let currentAudio: HTMLAudioElement | null = null;
 
@@ -11,13 +12,13 @@ export const useAudio = () => {
   const play = (key: string, options?: { fallbackText?: string }): Promise<void> => {
     return new Promise((resolve) => {
       // Use provided fallback text or default to the key itself
-      const fallbackText = options?.fallbackText || key;
+      const audioConfig = AUDIO_FILES.find((item) => item.key === key);
+      const fallbackText = options?.fallbackText || audioConfig?.fallback || key;
+      const audioPath = audioConfig?.path || `/audio/${key.toLowerCase().replace(/ /g, "-")}.webm`;
 
-      // Format key to match file naming: "Ini huruf" -> "ini-huruf"
-      const formattedKey = key.toLowerCase().replace(/ /g, "-");
-      const audioPath = `/audio/${formattedKey}.webm`;
-
-      const audio = new Audio(audioPath);
+      const audio = new Audio();
+      audio.src = audioPath;
+      audio.preload = "auto";
       currentAudio = audio;
 
       let hasFinished = false;
@@ -29,23 +30,54 @@ export const useAudio = () => {
         resolve();
       };
 
-      const handleFallback = async () => {
+      const handleFallback = async (reason?: string) => {
         if (hasFinished) return;
         hasFinished = true;
         if (currentAudio === audio) currentAudio = null;
 
-        console.warn(`Audio ${audioPath} not found, falling back to TTS: ${fallbackText}`);
+        console.warn(`Audio ${audioPath} issue (${reason || 'unknown'}), falling back to TTS: ${fallbackText}`);
         await speakTTS(fallbackText);
         resolve();
       };
 
       audio.onended = onFinished;
-      audio.onerror = handleFallback;
+      audio.onerror = () => handleFallback("loading error");
 
-      audio.play().catch((err) => {
-        console.error("Audio play error:", err);
-        handleFallback();
-      });
+      const attemptPlay = () => {
+        audio.play().catch((err) => {
+          if (err.name === 'NotAllowedError') {
+            console.warn("Autoplay blocked. Audio will play on next user interaction.");
+            
+            const resumeAudio = () => {
+              audio.play().catch(() => {});
+              window.removeEventListener('click', resumeAudio);
+              window.removeEventListener('touchstart', resumeAudio);
+              window.removeEventListener('keydown', resumeAudio);
+            };
+            
+            window.addEventListener('click', resumeAudio, { once: true });
+            window.addEventListener('touchstart', resumeAudio, { once: true });
+            window.addEventListener('keydown', resumeAudio, { once: true });
+            
+            // Resolve the promise so the app doesn't hang, 
+            // even if the audio hasn't actually played yet.
+            resolve();
+          } else {
+            console.error("Audio play error:", err);
+            handleFallback("playback error");
+          }
+        });
+      };
+
+      // Wait for audio to be playable
+      if (audio.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+        attemptPlay();
+      } else {
+        audio.oncanplay = () => {
+          attemptPlay();
+          audio.oncanplay = null; // Prevent multiple calls
+        };
+      }
     });
   };
 

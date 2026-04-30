@@ -50,6 +50,13 @@
       "when": 1776567809451,
       "tag": "0006_quick_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1777344556282,
+      "tag": "0007_lame_junta",
+      "breakpoints": true
     }
   ]
 }

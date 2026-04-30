@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
     name: z.string().trim().min(1, "Name is required").max(100).optional(),
     avatar: z.string().trim().min(1, "Avatar is required").optional(),
     coins: z.number().int().min(0).optional(),
+    updatedAt: z.string().datetime().or(z.date()).optional(),
   });
 
   // Validate the request body.
@@ -47,7 +48,7 @@ export default defineEventHandler(async (event) => {
       .update(schema.profiles)
       .set({
         ...body,
-        updatedAt: new Date(),
+        updatedAt: body.updatedAt ? new Date(body.updatedAt) : new Date(),
       })
       .where(eq(schema.profiles.id, profileId))
       .returning();

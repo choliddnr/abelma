@@ -7,7 +7,7 @@ if (!isLoaded.value) {
 }
 
 if (isLoaded.value && profiles.value.length > 0) {
-  navigateTo("/");
+  navigateTo("/profiles");
 }
 
 const newProfileName = ref("");

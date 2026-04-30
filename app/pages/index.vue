@@ -8,6 +8,9 @@ onMounted(() => {
   // if (profile.value?.name) {
   //   mentorStore.showMessage(`Halo ${profile.value.name}! Ayo kita belajar sambil bermain!`);
   // }
+  useAudio().play("home_greeting");
+  console.log("mounted");
+  
 });
 
 const menuItems = [
@@ -65,8 +68,9 @@ const menuItems = [
 
     <!-- Main Content -->
     <div
-      class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10 mt-4 md:mt-8"
+    class="flex-1 flex flex-col items-center justify-center  max-w-5xl mx-auto w-full gap-2 z-10"
     >
+    <!-- class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10 mt-4 md:mt-8" -->
       <!-- Main Greeting -->
       <div class="text-center space-y-4 mt-12 lg:-mt-24 xl:-mt-32 2xl:-mt-48">
         <h1
@@ -87,10 +91,20 @@ const menuItems = [
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-40 sm:size-52 md:size-56 lg:size-60 2xl:size-72 "
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-36 sm:size-52 md:size-56 lg:size-60 2xl:size-72 "
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
+        
       </div>
+       <!-- <div class="flex flex-wrap justify-center gap-2  md:gap-4">
+        <MenuCard
+          v-for="(item, index) in menuItems"
+          :key="item.title"
+          v-bind="item"
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance  size-40 sm:size-52 md:size-60 lg:size-60 2xl:size-72"
+          :style="{ animationDelay: `${index * 0.15}s` }"
+        />
+      </div> -->
     </div>
   </div>
 </template>

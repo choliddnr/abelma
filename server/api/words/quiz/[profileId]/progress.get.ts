@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
         score: 0,
         level: 1,
         weights: JSON.stringify({}),
-        quizConfig: JSON.stringify([]),
+        quizConfig: JSON.stringify({ coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 }),
       })
       .returning()
       .get();

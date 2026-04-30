@@ -29,6 +29,7 @@ export const useProfileStore = defineStore(
           name: "",
           avatar: "",
           coins: 0,
+          updatedAt: new Date(),
         } as Profile;
 
       activeProfileIndex.value = profiles.value.findIndex((p) => p.id === activeProfileId.value);
@@ -42,6 +43,7 @@ export const useProfileStore = defineStore(
             name: "",
             avatar: "",
             coins: 0,
+            updatedAt: new Date(),
           } as Profile)
         );
       }
@@ -84,14 +86,15 @@ export const useProfileStore = defineStore(
     const updateProfile = (profile: Profile) => {
       const index = profiles.value.findIndex((p) => p.id === profile.id);
       if (index !== -1) {
-        profiles.value[index] = profile;
+        profiles.value[index] = { ...profile, updatedAt: new Date() };
       }
     };
 
     const changeCoins = (coins: number) => {
       if (profiles.value.length === 0 || activeProfileIndex.value === -1) return;
-      const p = profile.value;
+      const p = { ...profile.value };
       p.coins += coins;
+      p.updatedAt = new Date();
       profiles.value[activeProfileIndex.value] = p;
     };
 
@@ -100,33 +103,54 @@ export const useProfileStore = defineStore(
       activeProfileId.value = undefined;
       isLoaded.value = false;
     };
-    const fetchProfiles = async () => {
-      // if (isLoaded.value || !session.value?.user?.id) {
-      //   return;
-      // }
 
+    async function fetchProfiles() {
       try {
-        await $fetch<Profile[]>("/api/profile/user/" + user.value?.id, {
-          method: "GET",
-          onResponse({ response }) {
-            if (response.ok) {
-              profiles.value = response._data;
-              isLoaded.value = true;
+        const apiProfiles = await $fetch<Profile[]>("/api/profile/user/" + user.value?.id);
 
-              // Automatic Selection logic
-              if (profiles.value.length > 0 && !activeProfileId.value) {
-                activeProfileId.value = profiles.value[0]!.id;
-              } else if (profiles.value.length === 0) {
-                navigateTo("/welcome");
-              }
+        // Conflict resolution
+        const mergedProfiles = [...profiles.value];
+
+        apiProfiles.forEach((apiP) => {
+          const localIdx = mergedProfiles.findIndex(p => p.id === apiP.id);
+          if (localIdx === -1) {
+            // New profile from server
+            mergedProfiles.push({ ...apiP, updatedAt: new Date(apiP.updatedAt) });
+          } else {
+            const localP = mergedProfiles[localIdx]!;
+            const localTime = new Date(localP.updatedAt || 0).getTime();
+            const apiTime = new Date(apiP.updatedAt || 0).getTime();
+
+            if (localTime > apiTime) {
+              // Local is newer, sync to DB in background
+              console.log(`Profile ${apiP.name} local is newer, syncing to DB...`);
+              $fetch(`/api/profile/${localP.id}`, {
+                method: "PUT",
+                body: {
+                  coins: localP.coins,
+                  name: localP.name,
+                  avatar: localP.avatar,
+                  updatedAt: localP.updatedAt
+                }
+              });
+            } else {
+              // API is newer or same, overwrite local
+              mergedProfiles[localIdx] = { ...apiP, updatedAt: new Date(apiP.updatedAt) };
             }
-          },
+          }
         });
+
+        profiles.value = mergedProfiles;
+        isLoaded.value = true;
+
+        // Automatic Selection logic (Removed to force selection screen)
+        if (profiles.value.length === 0) {
+          navigateTo("/welcome");
+        }
       } catch (error) {
         console.error("fetch profile failed:", error);
       }
-    };
-
+    }
     return {
       profiles,
       profile,

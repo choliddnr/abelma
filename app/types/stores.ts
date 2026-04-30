@@ -19,6 +19,7 @@ export type Profile = {
   name: string;
   avatar: string;
   coins: number;
+  updatedAt: Date;
 };
 
 // ==================== REWARD TYPES ====================
@@ -88,26 +89,19 @@ export type AlphabetQuizProgress = {
 
 // ==================== SETTINGS TYPES ====================
 
-export type LetterCase = "uppercase" | "lowercase" | "mixed";
 
-export type WordLevelConfig = {
-  timer: number; // 0 for off, otherwise seconds
-  coinReward: number;
-  letterCase: LetterCase;
-  numOptions: number; // Number of options in PICK_WORD mode
-};
-
-export type WordSettings = {
-  levels: WordLevelConfig[];
-  timerDuration: number; // Legacy/Default
-  letterCase: LetterCase; // Legacy/Default
+export type WordQuizConfig = {
+  coinReward: number; //Reward for each correct answer
+  levelUpReward: number; // Reward given upon crossing a level threshold (100 points)
+  streakThreshold: number; // Number of correct answers in a row to earn bonus reward
+  streakReward: number; // Bonus reward given when reaching the streak threshold
 };
 
 export type WordQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  quizConfig: WordLevelConfig[];
+  quizConfig: WordQuizConfig;
   updatedAt: Date;
 };
 

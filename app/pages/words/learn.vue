@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { wordCategories } from "~/constants/words";
+import { useSubscription } from "~/composables/useSubscription";
+import ParentGate from "~/components/shared/ParentGate.vue";
+
 const router = useRouter();
 const settingsStore = useSettingsStore();
 const activeCategoryId = ref(wordCategories[0]?.id || "");
@@ -8,12 +11,24 @@ const activeCategory = computed(() => {
   return wordCategories.find((c) => c.id === activeCategoryId.value);
 });
 
+const { isPremium } = useSubscription();
+const showParentGate = ref(false);
+
 const goBack = () => router.push("/words");
 
-const navigateToWord = (wordId: string) => {
+const navigateToWord = (wordId: string, index: number) => {
+  if (!isPremium.value && index >= 2) {
+    showParentGate.value = true;
+    return;
+  }
   if (activeCategory.value) {
     router.push(`/words/${activeCategory.value.id}/${wordId}`);
   }
+};
+
+const handleParentGateSuccess = () => {
+  showParentGate.value = false;
+  navigateTo("/parent/premium");
 };
 </script>
 
@@ -47,6 +62,7 @@ const navigateToWord = (wordId: string) => {
           <span class="font-black text-sm md:text-base">{{
             category.name
           }}</span>
+          
         </UiButton>
       </div>
     </div>
@@ -58,9 +74,9 @@ const navigateToWord = (wordId: string) => {
         class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
       >
         <UiButton
-          v-for="word in activeCategory.words"
+          v-for="(word, index) in activeCategory.words"
           :key="word.id"
-          @click="navigateToWord(word.id)"
+          @click="navigateToWord(word.id, index)"
           variant="none"
           class="group relative flex flex-col items-center justify-between p-4 transition-all duration-300 active:scale-95 cursor-pointer w-full aspect-square border-none ring-0 focus:outline-none overflow-hidden rounded-3xl hover:-translate-y-2 hover:shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] shadow-[0_8px_20px_-5px_rgba(0,0,0,0.2)] bg-white"
         >
@@ -94,9 +110,29 @@ const navigateToWord = (wordId: string) => {
               }}
             </span>
           </div>
+
+          <!-- Lock Icon for Premium Words -->
+          <!-- <div
+            v-if="!isPremium && index >= 2"
+            class="absolute inset-0 bg-white/30 backdrop-blur-[2px] rounded-[inherit] flex items-center justify-center pointer-events-none"
+          >
+            <div class="bg-gray-900/80 p-2 sm:p-3 rounded-full shadow-lg">
+              <Icon name="lucide:lock" class="text-white w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+          </div> -->
+          <div
+               v-if="!isPremium && index >= 2"
+                class="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gray-500  backdrop-blur-md rounded-full p-1.5 sm:p-2 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+              >
+                <Icon
+                  name="lucide:lock-keyhole"
+                  class="text-white font-bold text-xl sm:text-2xl md:text-3xl"
+                />
+              </div>
         </UiButton>
       </div>
     </div>
+    <ParentGate :isOpen="showParentGate" @success="handleParentGateSuccess" @close="showParentGate = false" />
   </div>
 </template>
 
