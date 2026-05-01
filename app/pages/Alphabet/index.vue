@@ -1,10 +1,10 @@
 <script setup lang="ts">
 defineOptions({ name: "AlphabetLearning" });
 
-const { preloadSounds } = useTTS();
+// const { preloadAlphabetSounds } = useAudio();
 
 onMounted(() => {
-  preloadSounds();
+  // preloadAlphabetSounds();
 });
 
 const startQuiz = () => {

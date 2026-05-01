@@ -1,6 +1,0 @@
-{
-  "prompt": "Explain quantum entanglement in one sentence:",
-  "temperature": 0.2,
-  "n_predict": 100,
-  "stream": false
-}

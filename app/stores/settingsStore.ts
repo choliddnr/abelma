@@ -22,18 +22,6 @@ export const useSettingsStore = defineStore(
       ],
     });
 
-    // Initialize (Handled by persistence)
-    const initialize = () => {};
-
-    // Actions
-    // const setTimerDuration = (duration: number) => {
-    //   settings.value.timerDuration = duration;
-    // };
-
-    // const setLetterCase = (caseType: "uppercase" | "lowercase") => {
-    //   settings.value.letterCase = caseType;
-    // };
-
     const reset = () => {
       settings.value.timerDuration = 30;
       settings.value.letterCase = "uppercase";
@@ -52,10 +40,6 @@ export const useSettingsStore = defineStore(
       settings,
       isTimerOn,
       getTimerLabel,
-      initialize,
-      // setTimerDuration,
-      // setLetterCase,
-      // loadFromCloud,
       reset,
     };
   },

@@ -4,4 +4,9 @@ export const AUDIO_FILES = [
         path: "/audio/home_greeting.webm",
         fallback: "Siap jadi anak hebat hari ini?"
     },
+    {
+        key: "tebak_huruf",
+        path: "/audio/tebak-huruf.webm",
+        fallback: "Tebak huruf"
+    }
 ];

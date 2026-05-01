@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { letters as allLetters, getLetterColor } from "~/constants/alphabet";
 import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
-import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
 
 
 
 const emit = defineEmits(["stop-quiz"]);
 const router = useRouter();
-const { isSpeaking: speaking, playLetterSound, speak } = useTTS();
+const { isSpeaking: speaking, playLetterSound, speak, playSequence } = useAudio();
 const { alphabetQuizProgress: alphabetProgress } = storeToRefs(useAlphabetStore());
 const { changeCoins } = useProfileStore();
 const { isPremium } = useSubscription();
@@ -343,7 +342,13 @@ const handleLetterClick = async (letter: string) => {
     if (leveledUp) {
       speak(`Luar biasa, kamu naik level. Sekarang tebak huruf ${nextLetter}`);
     } else {
-      speak(`${gotReward ? "Sekarang " : "Benar, "}tebak huruf ${nextLetter}`);
+      let seq = [{ key: "tebak-huruf" }, { key: nextLetter }];
+      if(gotReward){
+        seq.unshift({ key: "sekarang" });
+      }else{
+        seq.unshift({ key: "benar" });
+      }
+      playSequence(seq);
     }
 
     await new Promise((resolve) => setTimeout(resolve, leveledUp ? 3500 : gotReward ? 2500 : 1500));
@@ -378,6 +383,7 @@ const handleLetterClick = async (letter: string) => {
 };
 
 onMounted(() => {
+  
   if (level.value >= 2) quizLetters.value = shuffleLetters(letters);
   const nextLetter = pickNextLetter("");
   targetLetter.value = nextLetter;
@@ -386,8 +392,16 @@ onMounted(() => {
     message: "Dengarkan suara, lalu pilih huruf yang benar!",
     type: null,
   };
-  speak(`Ayo bermain tebak huruf, coba tebak mana huruf ${targetLetter.value}`);
+  
   startTimer();
+  
+  // Use sequential audio playback instead of single TTS speak
+  playSequence([
+    { key: "tebak-huruf" },
+    { key: targetLetter.value.toLowerCase() }
+  ]);
+  
+  console.log("test");
 });
 
 onUnmounted(() => {
@@ -575,6 +589,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Reward Celebration Pop-up -->
+    <!-- v-model="celebrationData.show" -->
     <UiCelebrationModal
       v-model="celebrationData.show"
       :title="celebrationData.title"

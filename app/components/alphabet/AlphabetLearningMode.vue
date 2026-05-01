@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { letters, idLetterMap, getLetterColor } from "~/constants/alphabet";
-import { useTTS } from "~/composables/useTTS";
 import confetti from "canvas-confetti";
-import { cancelTTS } from "~/composables/useTTS";
+import { stopAllAudio } from "~/composables/useAudio";
 import type { AudioSequence } from "~/types";
 import { useSubscription } from "~/composables/useSubscription";
 import ParentGate from "~/components/shared/ParentGate.vue";
@@ -10,7 +9,7 @@ import ParentGate from "~/components/shared/ParentGate.vue";
 
 const emit = defineEmits(["start-quiz"]);
 
-const { isSpeaking: speaking, playLetterSound } = useTTS();
+const { isSpeaking: speaking, playLetterSound } = useAudio();
 // const { quizDone } = storeToRefs(useStorybookStore());
 
 // --- Dashboard State ---
@@ -165,9 +164,14 @@ const handleParentGateSuccess = () => {
   navigateTo("/parent/premium");
 };
 
+
+onMounted(()=>{
+  // playSequence([{ key: "Ini huruf" }, { key: "A" }]);
+})
+
 onUnmounted(() => {
   stopAutoPlay();
-  cancelTTS();
+  stopAllAudio();
 });
 </script>
 

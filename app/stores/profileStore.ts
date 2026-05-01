@@ -4,23 +4,12 @@ import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
 export const useProfileStore = defineStore(
   "profile",
   () => {
-    // Other Stores
-    // const { syncProfile } = useSyncStore();
-    // const { updateQuizConfig } = useAlphabetStore();
-
     const { user } = storeToRefs(useUserStore());
-    // const { fetch: fetchRewards } = useRewardStore();
 
     // State
     const profiles = ref<Profile[]>([]);
     const activeProfileId = ref<string>();
     const activeProfileIndex = ref<number>(-1);
-
-    // computed<number>(() => {
-    //   if (profiles.value.length === 0) return -1;
-    //   return 1;
-    //   // return profiles.value.findIndex((p) => p.id === activeProfileId.value);
-    // });
 
     const profile = computed<Profile>(() => {
       if (profiles.value.length === 0)
@@ -72,7 +61,6 @@ export const useProfileStore = defineStore(
             onResponse: async ({ response }) => {
               if (response.ok) {
                 await fetchProfiles();
-                // await fetchRewards();
               }
             },
           });
@@ -143,7 +131,6 @@ export const useProfileStore = defineStore(
         profiles.value = mergedProfiles;
         isLoaded.value = true;
 
-        // Automatic Selection logic (Removed to force selection screen)
         if (profiles.value.length === 0) {
           navigateTo("/welcome");
         }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useMentorStore } from '@/stores/mentorStore'
-import { useTTS } from '@/composables/useTTS'
 import { ref, watch } from 'vue'
 
 const mentorStore = useMentorStore()
-const { isSpeaking: appIsSpeaking, speak, cancel } = useTTS()
+//cancel
+const { isSpeaking: appIsSpeaking, speak } = useAudio()
 
 const { isVisible, message, isWiggling } = storeToRefs(mentorStore)
 
@@ -73,7 +73,7 @@ watch(message, (newMsg) => {
       }
     })
   } else {
-    cancel()
+    // cancel()
   }
 })
 </script>

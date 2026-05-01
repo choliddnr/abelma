@@ -5,7 +5,7 @@ import type { AlphabetStorybook } from "@/types/alphabet";
 import FloatingInteractionZone from "~/components/alphabet/FloatingInteractionZone.vue";
 import CelebrationModal from "~/components/ui/CelebrationModal.vue";
 import { useStorybookStore } from "~/stores/storybookStore";
-import { speakTTS, cancelTTS } from "~/composables/useTTS";
+import { speakTTS, stopAllAudio } from "~/composables/useAudio";
 
 const route = useRoute();
 const router = useRouter();
@@ -104,7 +104,7 @@ const readQuizQuestion = () => {
   if (!text) return;
 
   currentPlayId++;
-  cancelTTS();
+  stopAllAudio();
   isSpeakingStory.value = true;
 
   speakTTS(text, {
@@ -129,7 +129,7 @@ const speakStory = () => {
 
   resetTimer();
   const playId = ++currentPlayId;
-  cancelTTS();
+  stopAllAudio();
   isSpeakingStory.value = true;
 
   let s = 0;
@@ -233,7 +233,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   currentPlayId++;
-  cancelTTS();
+  stopAllAudio();
 });
 </script>
 

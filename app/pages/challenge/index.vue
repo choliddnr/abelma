@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { playEffectAudio } = useTTS();
+const { playEffectAudio } = useAudio();
 import confetti from "canvas-confetti";
 
 defineOptions({ name: "ChallengesList" });

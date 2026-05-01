@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { wordCategories } from "~/constants/words";
 import confetti from "canvas-confetti";
-import { cancelTTS } from "~/composables/useTTS";
+import { stopAllAudio } from "~/composables/useAudio";
 
 const route = useRoute();
 const router = useRouter();
@@ -89,7 +89,7 @@ const popConfettiCenter = () => {
 };
 
 onUnmounted(() => {
-  cancelTTS();
+  stopAllAudio();
   if (autoPlayTimeout) clearTimeout(autoPlayTimeout);
 });
 

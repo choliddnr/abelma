@@ -2,7 +2,7 @@
 import { wordCategories, type Word } from "~/constants/words";
 import confetti from "canvas-confetti";
 import type { Sticker } from "@/types/stores";
-import { cancelTTS } from "~/composables/useTTS";
+import { stopAllAudio } from "~/composables/useAudio";
 
 const router = useRouter();
 const wordStore = useWordStore();
@@ -543,7 +543,7 @@ onUnmounted(async () => {
   window.removeEventListener('beforeunload', handleUnloadSync);
 
   if (timerInterval) clearInterval(timerInterval);
-  cancelTTS();
+  stopAllAudio();
   await syncProgressToDb();
 });
 
@@ -552,7 +552,7 @@ onScopeDispose(() => {
   window.removeEventListener('beforeunload', handleUnloadSync);
 
   if (timerInterval) clearInterval(timerInterval);
-  cancelTTS();
+  stopAllAudio();
 });
 </script>
 

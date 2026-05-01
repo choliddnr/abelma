@@ -5,12 +5,8 @@ const { profile } = storeToRefs(useProfileStore());
 const mentorStore = useMentorStore();
 
 onMounted(() => {
-  // if (profile.value?.name) {
-  //   mentorStore.showMessage(`Halo ${profile.value.name}! Ayo kita belajar sambil bermain!`);
-  // }
   useAudio().play("home_greeting");
   console.log("mounted");
-  
 });
 
 const menuItems = [
@@ -28,20 +24,6 @@ const menuItems = [
     colorClass: "bg-[#6BCB77] text-white",
     to: "/words",
   },
-  // {
-  //   title: "Permainan",
-  //   subtitle: "Tebak Gambar",
-  //   icon: "lucide:gamepad-2",
-  //   colorClass: "bg-[#4D96FF] text-white",
-  //   to: "/games",
-  // },
-  // {
-  //   title: "Buku Huruf",
-  //   subtitle: "Cerita A–Z",
-  //   icon: "lucide:book-open",
-  //   colorClass: "bg-[#A084E8] text-white",
-  //   to: "/storybook",
-  // },
   {
     title: "Misi",
     subtitle: "Dapatkan Koin",
@@ -95,16 +77,7 @@ const menuItems = [
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
         
-      </div>
-       <!-- <div class="flex flex-wrap justify-center gap-2  md:gap-4">
-        <MenuCard
-          v-for="(item, index) in menuItems"
-          :key="item.title"
-          v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance  size-40 sm:size-52 md:size-60 lg:size-60 2xl:size-72"
-          :style="{ animationDelay: `${index * 0.15}s` }"
-        />
-      </div> -->
+    </div>
     </div>
   </div>
 </template>

@@ -48,34 +48,6 @@ export const useStorybookStore = defineStore(
       profileProgressMap.value = {};
     }
 
-    const loadFromCloud = async (cloudData?: CloudProfile[]) => {
-      try {
-        if (!cloudData) {
-          cloudData = await $fetch<CloudProfile[]>("/api/sync");
-        }
-
-        // cloudData is an array of profiles with storybookProgress
-        if (Array.isArray(cloudData)) {
-          cloudData.forEach((p: CloudProfile) => {
-            // storybookProgress is the key returned by the joined query in sync.ts
-            const rawStorybook = p.storybookProgress;
-            if (rawStorybook && Array.isArray(rawStorybook)) {
-              // alphabetData letters are A-Z, map them to indices 0-25
-              const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-              const indices = rawStorybook
-                .filter((s) => s.isCompleted)
-                .map((s) => alphabet.indexOf(s.letter))
-                .filter((idx: number) => idx !== -1);
-
-              profileProgressMap.value[p.id] = Array.from(new Set(indices));
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Storybook load error:", error);
-      }
-    };
-
     return {
       currentIndex,
       isSpeaking,
@@ -86,7 +58,6 @@ export const useStorybookStore = defineStore(
       profileProgressMap,
       reset,
       markCompleted,
-      loadFromCloud,
     };
   },
   {

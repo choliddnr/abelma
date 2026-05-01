@@ -9,9 +9,6 @@ export const useAnalyticsStore = defineStore(
     // State
     const analyticsMap = ref<Record<string, Record<string, WordAnalytics>>>({});
 
-    // Initialize (Handled by persistence)
-    const initialize = () => {};
-
     // Actions
     const recordMistake = async (profileId: string, type: string, targetId: string) => {
       if (!analyticsMap.value[profileId]) {
@@ -57,30 +54,6 @@ export const useAnalyticsStore = defineStore(
       analyticsMap.value[profileId] = {};
     };
 
-    const loadFromCloud = async (cloudData?: CloudProfile[]) => {
-      try {
-        if (!cloudData) {
-          cloudData = await $fetch<CloudProfile[]>("/api/sync");
-        }
-
-        if (Array.isArray(cloudData)) {
-          cloudData.forEach((p) => {
-            if (p.analytics) {
-              analyticsMap.value[p.id] = {};
-              p.analytics.forEach((a) => {
-                analyticsMap.value[p.id]![a.targetId] = {
-                  mistakes: a.mistakes,
-                  lastAttempt: a.lastAttempt,
-                };
-              });
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Cloud load error:", error);
-      }
-    };
-
     // Computed
     const totalMistakes = computed(() => {
       let total = 0;
@@ -108,12 +81,10 @@ export const useAnalyticsStore = defineStore(
     return {
       analyticsMap,
       totalMistakes,
-      initialize,
       recordMistake,
       getProfileAnalytics,
       getAllAnalytics,
       resetAnalytics,
-      loadFromCloud,
       getMistakeCount,
       reset,
     };

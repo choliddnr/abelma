@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: "WordRewards" });
-const { playEffectAudio } = useTTS();
+const { playEffectAudio } = useAudio();
 import confetti from "canvas-confetti";
 import type { Reward } from "~~/shared/types/api";
 
