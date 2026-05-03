@@ -64,7 +64,7 @@ watch(
       class="fixed inset-0 z-[150] flex items-center justify-center p-4"
     >
       <!-- Deep Overlay -->
-      <div class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-md" @click="close"></div>
 
       <!-- Modal Card -->
       <div
@@ -164,6 +164,14 @@ watch(
         >
           {{ footerText }}
         </div>
+
+        <!-- Optional Close Button -->
+        <button
+          @click="close"
+          class="absolute top-6 right-6 size-12 bg-slate-100 hover:bg-slate-200 text-slate-400 rounded-full flex items-center justify-center transition-colors border-2 border-white shadow-sm"
+        >
+          <Icon name="lucide:x" class="size-6" />
+        </button>
       </div>
     </div>
   </transition>

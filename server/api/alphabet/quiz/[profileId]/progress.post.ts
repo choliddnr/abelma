@@ -15,14 +15,14 @@ export default defineEventHandler(async (event) => {
         score: payload.score,
         level: payload.level,
         weights: JSON.stringify(payload.weights),
-        quizConfig: JSON.stringify(payload.quizConfig),
+        config: JSON.stringify(payload.config),
       })
       .returning()
       .get();
     return {
       ...res,
       weights: JSON.parse(res.weights),
-      quizConfig: JSON.parse(res.quizConfig),
+      config: JSON.parse(res.config),
     };
   } catch (error) {
     console.error("Error inserting alphabet progress:", error);

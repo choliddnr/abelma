@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         score: wordQuizProgress.score,
         level: wordQuizProgress.level,
         weights: wordQuizProgress.weights,
-        quizConfig: wordQuizProgress.quizConfig,
+        config: wordQuizProgress.config,
         updatedAt: wordQuizProgress.updatedAt,
       })
       .from(wordQuizProgress)
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       return {
         ...res,
         weights: JSON.parse(res.weights),
-        quizConfig: JSON.parse(res.quizConfig),
+        config: JSON.parse(res.config),
       };
 
     const res2 = await d1
@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
         score: 0,
         level: 1,
         weights: JSON.stringify({}),
-        quizConfig: JSON.stringify({ coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 }),
+        config: JSON.stringify({ coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 }),
       })
       .returning()
       .get();
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     return {
       ...res2,
       weights: JSON.parse(res2.weights),
-      quizConfig: JSON.parse(res2.quizConfig),
+      config: JSON.parse(res2.config),
     };
   } catch (error) {
     console.error("Error selecting word quiz progress:", error);

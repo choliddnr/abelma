@@ -24,17 +24,17 @@ const score = ref(alphabetProgress.value.score);
 const level = ref(alphabetProgress.value.level);
 const letterWeights = ref<Record<string, number>>(alphabetProgress.value.weights);
 
-const quizConfig = computed(() =>
-  alphabetProgress.value.quizConfig && alphabetProgress.value.quizConfig.length > 0
-    ? alphabetProgress.value.quizConfig
+const config = computed(() =>
+  alphabetProgress.value.config && alphabetProgress.value.config.length > 0
+    ? alphabetProgress.value.config
     : DEFAULT_ALPHABET_QUIZ_CONFIG,
 );
 
 const currentConfig = computed(() => {
   const index = Math.max(0, level.value - 1);
   return (
-    quizConfig.value[index] ||
-    quizConfig.value[quizConfig.value.length - 1] ||
+    config.value[index] ||
+    config.value[config.value.length - 1] ||
     DEFAULT_ALPHABET_QUIZ_CONFIG[0]!
   );
 });
@@ -134,7 +134,7 @@ const checkLevelUp = (): "leveled-up" | "completed" | false => {
   if (minWeight >= requiredWeight) {
     allLetters.forEach((l) => (letterWeights.value[l] = 0));
     mistakeMadeInCurrentLevel.value = false;
-    if (level.value < quizConfig.value.length) {
+    if (level.value < config.value.length) {
       level.value++;
       return "leveled-up";
     } else {

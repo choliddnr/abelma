@@ -20,7 +20,7 @@ const isSaving = ref(false);
 
 // Watch for initial load to set baseline
 watch(
-  () => alphabetQuizProgress.value?.quizConfig,
+  () => alphabetQuizProgress.value?.config,
   (newVal) => {
     if (newVal && !lastSavedConfig.value) {
       lastSavedConfig.value = JSON.stringify(newVal);
@@ -31,22 +31,22 @@ watch(
 
 const hasChanges = computed(() => {
   return (
-    alphabetQuizProgress.value?.quizConfig &&
-    JSON.stringify(alphabetQuizProgress.value.quizConfig) !== lastSavedConfig.value
+    alphabetQuizProgress.value?.config &&
+    JSON.stringify(alphabetQuizProgress.value.config) !== lastSavedConfig.value
   );
 });
 
 const handleSave = async () => {
-  if (!activeProfileId.value || !alphabetQuizProgress.value?.quizConfig) return;
+  if (!activeProfileId.value || !alphabetQuizProgress.value?.config) return;
 
   isSaving.value = true;
   try {
     const success = await saveConfig(
       activeProfileId.value,
-      alphabetQuizProgress.value.quizConfig,
+      alphabetQuizProgress.value.config,
     );
     if (success) {
-      lastSavedConfig.value = JSON.stringify(alphabetQuizProgress.value.quizConfig);
+      lastSavedConfig.value = JSON.stringify(alphabetQuizProgress.value.config);
     }
   } catch (e) {
     console.error("Save error:", e);
@@ -62,7 +62,7 @@ const updateConfigField = (
 ) => {
   if (!activeProfileId.value) return;
 
-  const config = alphabetQuizProgress.value?.quizConfig;
+  const config = alphabetQuizProgress.value?.config;
   if (!config) return;
 
   const updatedConfig = [...config];
@@ -71,7 +71,7 @@ const updateConfigField = (
     [field]: Math.max(0, Number(value)),
   } as QuizLevelConfig;
 
-  alphabetQuizProgress.value.quizConfig = updatedConfig;
+  alphabetQuizProgress.value.config = updatedConfig;
 };
 
 // Prevent scrolling when modal is open
@@ -96,7 +96,7 @@ watch(
   >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div
-        v-for="(cfg, idx) in alphabetQuizProgress?.quizConfig || []"
+        v-for="(cfg, idx) in alphabetQuizProgress?.config || []"
         :key="idx"
         class="bg-white rounded-4xl border-2 border-slate-100 p-6 space-y-6 shadow-sm"
       >

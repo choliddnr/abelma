@@ -1,0 +1,1 @@
+ALTER TABLE `cvc_progress` ADD `learning_weights` text DEFAULT '{}' NOT NULL;

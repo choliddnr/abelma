@@ -1,0 +1,1 @@
+ALTER TABLE `cvc_progress` ADD `quiz_config` text DEFAULT '{}' NOT NULL;

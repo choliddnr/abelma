@@ -13,7 +13,7 @@ export type CloudAlphabetProgress = {
   score: number;
   level: number;
   weights: string; // JSON string
-  quizConfig?: string; // JSON string of AlphabetQuizModeConfig[]
+  config?: string; // JSON string of AlphabetQuizModeConfig
   updatedAt: string;
 };
 

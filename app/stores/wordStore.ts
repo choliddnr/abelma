@@ -9,7 +9,7 @@ export const useWordStore = defineStore(
       score: 0,
       level: 1,
       weights: {},
-      quizConfig: { coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 },
+      config: { coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 },
       updatedAt: new Date(),
     });
 
@@ -23,8 +23,8 @@ export const useWordStore = defineStore(
         const apiData = {
           ...apiRes,
           weights: typeof apiRes.weights === "string" ? JSON.parse(apiRes.weights) : apiRes.weights,
-          quizConfig:
-            typeof apiRes.quizConfig === "string" ? JSON.parse(apiRes.quizConfig) : apiRes.quizConfig,
+          config:
+            typeof apiRes.config === "string" ? JSON.parse(apiRes.config) : apiRes.config,
           updatedAt: new Date(apiRes.updatedAt),
         };
 
@@ -62,7 +62,7 @@ export const useWordStore = defineStore(
             `/api/words/quiz/${profileId}/config`,
             {
               method: "PATCH",
-              body: { quizConfig: config },
+              body: { config: config },
             },
           );
           if (result) {
@@ -78,7 +78,7 @@ export const useWordStore = defineStore(
                 method: "POST",
                 body: {
                   ...wordQuizProgress.value,
-                  quizConfig: config,
+                  config: config,
                 },
               },
             );

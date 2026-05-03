@@ -83,7 +83,7 @@ export type AlphabetQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  quizConfig?: AlphabetQuizModeConfig;
+  config?: AlphabetQuizModeConfig;
   updatedAt: Date;
 };
 
@@ -101,7 +101,51 @@ export type WordQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  quizConfig: WordQuizConfig;
+  config: WordQuizConfig;
+  updatedAt: Date;
+};
+
+// ==================== CVC BLEND TYPES ====================
+
+export type CvcConfig = {
+  coinReward: number;
+  levelUpReward: number;
+  learningLevelUpReward: number;
+  streakThreshold: number;
+  streakReward: number;
+};
+
+export type CvcProgress = {
+  score: number;
+  learningLevel: number;
+  levelScores: Record<string, number>;
+  quizScore: number;
+  quizLevel: number;
+  quizWeights: Record<string, number>;
+  learningWeights: Record<string, number>;
+  config: CvcConfig;
+  updatedAt: Date;
+};
+
+// ==================== DDV PROGRESS TYPES ====================
+
+export type DdvConfig = {
+  coinReward: number;
+  levelUpReward: number;
+  learningLevelUpReward: number;
+  streakThreshold: number;
+  streakReward: number;
+};
+
+export type DdvProgress = {
+  score: number;
+  learningLevel: number;
+  levelScores: Record<string, number>;
+  quizScore: number;
+  quizLevel: number;
+  quizWeights: Record<string, number>;
+  learningWeights: Record<string, number>;
+  config: DdvConfig;
   updatedAt: Date;
 };
 
@@ -125,6 +169,8 @@ export type CloudData = {
   analytics?: Analytics[] | Record<string, Record<string, WordAnalytics>>;
   alphabetProgress?: AlphabetQuizProgress | Record<string, AlphabetQuizProgress>;
   wordProgress?: WordQuizProgress | Record<string, WordQuizProgress>;
+  cvcProgress?: CvcProgress | Record<string, CvcProgress>;
+  ddvProgress?: DdvProgress | Record<string, DdvProgress>;
   settings?: WordSettings;
 };
 

@@ -166,7 +166,7 @@ export const alphabetQuizProgress = sqliteTable("alphabet_quiz_progress", {
   level: integer("level").notNull().default(1),
   isFinished: integer("is_finished", { mode: "boolean" }).notNull().default(false),
   weights: text("weights").notNull().default("{}"),
-  quizConfig: text("quiz_config").notNull().default("[]"),
+  config: text("config").notNull().default("[]"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -204,7 +204,47 @@ export const wordQuizProgress = sqliteTable("word_quiz_progress", {
   score: integer("score").notNull().default(0),
   level: integer("level").notNull().default(1),
   weights: text("weights").notNull().default("{}"),
-  quizConfig: text("quiz_config").notNull().default("[]"),
+  config: text("config").notNull().default("[]"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const cvcProgress = sqliteTable("cvc_progress", {
+  profileId: text("profile_id")
+    .primaryKey()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  score: integer("score").notNull().default(0),
+  learningLevel: integer("learning_level").notNull().default(1),
+  levelScores: text("level_scores").notNull().default("{}"),
+  quizScore: integer("quiz_score").notNull().default(0),
+  quizLevel: integer("quiz_level").notNull().default(1),
+  quizWeights: text("quiz_weights").notNull().default("{}"),
+  learningWeights: text("learning_weights").notNull().default("{}"),
+  config: text("config").notNull().default("{}"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const ddvProgress = sqliteTable("ddv_progress", {
+  profileId: text("profile_id")
+    .primaryKey()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  score: integer("score").notNull().default(0),
+  learningLevel: integer("learning_level").notNull().default(1),
+  levelScores: text("level_scores").notNull().default("{}"),
+  quizScore: integer("quiz_score").notNull().default(0),
+  quizLevel: integer("quiz_level").notNull().default(1),
+  quizWeights: text("quiz_weights").notNull().default("{}"),
+  learningWeights: text("learning_weights").notNull().default("{}"),
+  config: text("config").notNull().default("{}"),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),
@@ -237,6 +277,14 @@ export const profileRelations = relations(profiles, ({ one, many }) => ({
   wordQuizProgress: one(wordQuizProgress, {
     fields: [profiles.id],
     references: [wordQuizProgress.profileId],
+  }),
+  cvcProgress: one(cvcProgress, {
+    fields: [profiles.id],
+    references: [cvcProgress.profileId],
+  }),
+  ddvProgress: one(ddvProgress, {
+    fields: [profiles.id],
+    references: [ddvProgress.profileId],
   }),
   storybookProgress: many(storybookProgress),
 }));
@@ -285,6 +333,20 @@ export const alphabetQuizProgressRelations = relations(
     }),
   }),
 );
+
+export const cvcProgressRelations = relations(cvcProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [cvcProgress.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const ddvProgressRelations = relations(ddvProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [ddvProgress.profileId],
+    references: [profiles.id],
+  }),
+}));
 
 export const wordQuizProgressRelations = relations(wordQuizProgress, ({ one }) => ({
   profile: one(profiles, {

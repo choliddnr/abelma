@@ -42,7 +42,7 @@ const currentLetterCase = ref<"uppercase" | "lowercase">("uppercase");
 
 const currentLevelConfig = computed(() => {
   return (
-    wordQuizProgress.value.quizConfig || {
+    wordQuizProgress.value.config || {
       coinReward: 10,
       levelUpReward: 50,
       streakThreshold: 5,

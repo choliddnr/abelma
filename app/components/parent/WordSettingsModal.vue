@@ -20,7 +20,7 @@ const localConfig = ref<any>({});
 
 // Watch for store changes to update local state
 watch(
-  () => wordQuizProgress.value.quizConfig,
+  () => wordQuizProgress.value.config,
   (newVal) => {
     if (newVal) {
       localConfig.value = JSON.parse(JSON.stringify(newVal));

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const profileId = getRouterParam(event, "profileId") as string;
 
   const configSchema = z.object({
-    quizConfig: z.object({
+    config: z.object({
       coinReward: z.number(),
       levelUpReward: z.number(),
       streakThreshold: z.number(),
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     const res = await d1
       .update(wordQuizProgress)
       .set({
-        quizConfig: JSON.stringify(body.quizConfig),
+        config: JSON.stringify(body.config),
         updatedAt: new Date(),
       })
       .where(eq(wordQuizProgress.profileId, profileId))
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
     return {
       ...res,
       weights: JSON.parse(res.weights),
-      quizConfig: JSON.parse(res.quizConfig),
+      config: JSON.parse(res.config),
     } as WordQuizProgress;
   } catch (error: any) {
     if (error.statusCode) throw error;

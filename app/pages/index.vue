@@ -25,6 +25,20 @@ const menuItems = [
     to: "/words",
   },
   {
+    title: "Lab Kata",
+    subtitle: "Gabungkan Bunyi",
+    icon: "lucide:flask-conical",
+    colorClass: "bg-[#A084E8] text-white",
+    to: "/cvc",
+  },
+  {
+    title: "Vokal Rangkap",
+    subtitle: "Diftong & Vokal Ganda",
+    icon: "lucide:audio-lines",
+    colorClass: "bg-[#14B8A6] text-white",
+    to: "/ddv",
+  },
+  {
     title: "Misi",
     subtitle: "Dapatkan Koin",
     icon: "lucide:star",

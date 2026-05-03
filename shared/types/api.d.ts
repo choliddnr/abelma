@@ -6,7 +6,7 @@ export type AlphabetQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  quizConfig: any[];
+  config: any;
   updatedAt: Date;
 };
 
@@ -14,7 +14,7 @@ export type WordQuizProgress = {
   score: number;
   level: number;
   weights: Record<string, number>;
-  quizConfig: any[];
+  config: any;
   updatedAt: Date;
 };
 

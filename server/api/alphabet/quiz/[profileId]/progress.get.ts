@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         score: alphabetQuizProgress.score,
         level: alphabetQuizProgress.level,
         weights: alphabetQuizProgress.weights,
-        quizConfig: alphabetQuizProgress.quizConfig,
+        config: alphabetQuizProgress.config,
         updatedAt: alphabetQuizProgress.updatedAt,
       })
       .from(alphabetQuizProgress)
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
       return {
         ...res,
         weights: JSON.parse(res.weights),
-        quizConfig: JSON.parse(res.quizConfig),
+        config: JSON.parse(res.config),
       };
     return;
   } catch (error) {

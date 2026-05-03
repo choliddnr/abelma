@@ -61,6 +61,6 @@ export const DEFAULT_ALPHABET_QUIZ_PROGRESS: AlphabetQuizProgress = {
   score: 0,
   level: 1,
   weights: {},
-  quizConfig: DEFAULT_ALPHABET_QUIZ_CONFIG,
+  config: DEFAULT_ALPHABET_QUIZ_CONFIG,
   updatedAt: new Date(),
 };

@@ -54,7 +54,7 @@ export const useAlphabetStore = defineStore(
                   },
                   {} as Record<string, number>,
                 ),
-                quizConfig: DEFAULT_ALPHABET_QUIZ_CONFIG,
+                config: DEFAULT_ALPHABET_QUIZ_CONFIG,
               },
               onResponse: async ({ response: res }) => {
                 if (res.status === 200 && res._data) {
@@ -71,10 +71,10 @@ export const useAlphabetStore = defineStore(
       try {
         const result = await $fetch(`/api/alphabet/quiz/${profileId}/config`, {
           method: "PATCH",
-          body: { quizConfig: config },
+          body: { config: config },
         });
         if (result) {
-          alphabetQuizProgress.value.quizConfig = config;
+          alphabetQuizProgress.value.config = config;
           return true;
         }
       } catch (error) {

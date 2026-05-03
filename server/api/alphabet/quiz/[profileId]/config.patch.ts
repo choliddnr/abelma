@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     return await d1
       .update(alphabetQuizProgress)
       .set({
-        quizConfig: JSON.stringify(payload.quizConfig),
+        config: JSON.stringify(payload.config),
         updatedAt: new Date(),
       })
       .where(eq(alphabetQuizProgress.profileId, profileId))

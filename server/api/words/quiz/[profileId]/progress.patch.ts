@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
     score: z.number().int().min(0).optional(),
     level: z.number().int().min(1).optional(),
     weights: z.record(z.string(), z.number()).optional(),
-    quizConfig: z.array(z.any()).optional(),
+    config: z.any().optional(),
     coins: z.number().int().min(0).optional(),
     updatedAt: z.string().datetime().or(z.date()).optional(),
   });
@@ -30,8 +30,8 @@ export default defineEventHandler(async (event) => {
     if (payload.score !== undefined) updateData.score = payload.score;
     if (payload.level !== undefined) updateData.level = payload.level;
     if (payload.weights !== undefined) updateData.weights = JSON.stringify(payload.weights);
-    if (payload.quizConfig !== undefined)
-      updateData.quizConfig = JSON.stringify(payload.quizConfig);
+    if (payload.config !== undefined)
+      updateData.config = JSON.stringify(payload.config);
 
     const res = await d1
       .update(wordQuizProgress)
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
     return {
       ...res,
       weights: JSON.parse(res.weights),
-      quizConfig: JSON.parse(res.quizConfig),
+      config: JSON.parse(res.config),
     } as WordQuizProgress;
   } catch (error: any) {
     if (error.statusCode) throw error;
