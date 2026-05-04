@@ -262,7 +262,7 @@ watch(selectedLetter, () => {
                :class="i <= (traceStore.traceProgress.stars[letter] || 0) ? 'fill-current' : 'opacity-30'"
              />
           </div>
-          <span class="text-3xl font-black">{{ letter }}</span>
+          <span class="font-black" :class=" !(traceStore.traceProgress.stars[letter]) || (traceStore.traceProgress.stars[letter] ===  0) ? 'text-5xl mb-5' : 'text-4xl'" >{{letter}}</span>
         </button>
       </div>
     </div>
