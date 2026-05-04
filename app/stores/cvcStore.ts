@@ -1,10 +1,13 @@
 import type { CvcProgress } from "@/types/stores";
 import { cvcLevels } from "~/constants/cvcBlends";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useCvcStore = defineStore(
   "cvc",
   () => {
     const { activeProfileId } = storeToRefs(useProfileStore());
+
+
 
     // State
     const cvcProgress = ref<CvcProgress>({
@@ -24,6 +27,29 @@ export const useCvcStore = defineStore(
       },
       updatedAt: new Date(),
     });
+
+    const reset = () => {
+      cvcProgress.value = {
+        score: 0,
+        learningLevel: 1,
+        levelScores: {},
+        quizScore: 0,
+        quizLevel: 1,
+        quizWeights: {},
+        learningWeights: {},
+        config: {
+          coinReward: 5,
+          levelUpReward: 50,
+          learningLevelUpReward: 50,
+          streakThreshold: 5,
+          streakReward: 10,
+        },
+        updatedAt: new Date(),
+      };
+    };
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
 
     // Actions
     const fetch = async () => {
@@ -156,26 +182,6 @@ export const useCvcStore = defineStore(
       // Increase weight because item is completed. Lower weight items will be prioritized.
       cvcProgress.value.learningWeights[itemId] = currentWeight + 1;
       cvcProgress.value.updatedAt = new Date();
-    };
-
-    const reset = () => {
-      cvcProgress.value = {
-        score: 0,
-        learningLevel: 1,
-        levelScores: {},
-        quizScore: 0,
-        quizLevel: 1,
-        quizWeights: {},
-        learningWeights: {},
-        config: {
-          coinReward: 5,
-          levelUpReward: 50,
-          learningLevelUpReward: 50,
-          streakThreshold: 5,
-          streakReward: 10,
-        },
-        updatedAt: new Date(),
-      };
     };
 
     return {

@@ -24,6 +24,13 @@ const menuItems = [
     colorClass: "bg-[#6BCB77] text-white",
     to: "/words",
   },
+   {
+    title: "Menulis Huruf",
+    subtitle: "Mahir Menulis",
+    icon: "lucide:pen",
+    colorClass: "bg-[#e67e22] text-white",
+    to: "/lettertrace",
+  },
   {
     title: "Lab Kata",
     subtitle: "Gabungkan Bunyi",
@@ -37,6 +44,13 @@ const menuItems = [
     icon: "lucide:audio-lines",
     colorClass: "bg-[#14B8A6] text-white",
     to: "/ddv",
+  },
+  {
+    title: "Bunyi Sengau",
+    subtitle: "Bunyi NG & NY",
+    icon: "lucide:wind",
+    colorClass: "bg-[#F97316] text-white",
+    to: "/nasal",
   },
   {
     title: "Misi",
@@ -87,7 +101,7 @@ const menuItems = [
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-36 sm:size-52 md:size-56 lg:size-60 2xl:size-72 "
+          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-40 sm:size-52 md:size-56 lg:size-60 2xl:size-72 "
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
         

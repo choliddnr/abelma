@@ -21,7 +21,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="flex flex-col h-[90vh] relative p-4 md:p-8">
+  <div class="flex flex-col h-[70vh] relative p-4 md:p-8">
     <!-- Full-screen Frosted Overlay -->
     <div class="fixed inset-0 bg-white/20 backdrop-blur-md pointer-events-none -z-10"></div>
 

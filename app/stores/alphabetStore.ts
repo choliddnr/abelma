@@ -8,6 +8,7 @@ import {
   DEFAULT_ALPHABET_QUIZ_PROGRESS,
   letters,
 } from "~/constants/alphabet";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useAlphabetStore = defineStore(
   "alphabet",
@@ -20,12 +21,14 @@ export const useAlphabetStore = defineStore(
       DEFAULT_ALPHABET_QUIZ_PROGRESS,
     );
 
-    // Actions
     const reset = () => {
       alphabetQuizProgress.value = JSON.parse(
         JSON.stringify(DEFAULT_ALPHABET_QUIZ_PROGRESS),
       );
     };
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
 
     const fetch = async () => {
       if (!activeProfileId.value) {

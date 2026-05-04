@@ -1,4 +1,5 @@
 import type { Analytics, WordAnalytics, CloudProfile } from "@/types/stores";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useAnalyticsStore = defineStore(
   "analytics",
@@ -8,6 +9,13 @@ export const useAnalyticsStore = defineStore(
 
     // State
     const analyticsMap = ref<Record<string, Record<string, WordAnalytics>>>({});
+
+    const reset = () => {
+      analyticsMap.value = {};
+    };
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
 
     // Actions
     const recordMistake = async (profileId: string, type: string, targetId: string) => {
@@ -50,6 +58,27 @@ export const useAnalyticsStore = defineStore(
       return allAnalytics;
     };
 
+    /**
+     * Fetches a high-level summary of all modules for a specific child.
+     * Use this in parent views to avoid switching the 'active' profile.
+     */
+    const fetchModuleSummary = async (profileId: string) => {
+      try {
+        const [alphabet, words, cvc, ddv, nasal] = await Promise.all([
+          $fetch(`/api/alphabet/quiz/${profileId}/progress`),
+          $fetch(`/api/words/quiz/${profileId}/progress`),
+          $fetch(`/api/cvc/${profileId}/progress`),
+          $fetch(`/api/ddv/${profileId}/progress`),
+          $fetch(`/api/nasal/${profileId}/progress`),
+        ]);
+
+        return { alphabet, words, cvc, ddv, nasal };
+      } catch (error) {
+        console.error(`Failed to fetch module summary for ${profileId}:`, error);
+        return null;
+      }
+    };
+
     const resetAnalytics = async (profileId: string) => {
       analyticsMap.value[profileId] = {};
     };
@@ -73,11 +102,6 @@ export const useAnalyticsStore = defineStore(
       }
       return 0;
     };
-
-    const reset = () => {
-      analyticsMap.value = {};
-    };
-
     return {
       analyticsMap,
       totalMistakes,
@@ -86,6 +110,7 @@ export const useAnalyticsStore = defineStore(
       getAllAnalytics,
       resetAnalytics,
       getMistakeCount,
+      fetchModuleSummary,
       reset,
     };
   },

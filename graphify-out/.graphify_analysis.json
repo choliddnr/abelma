@@ -1,0 +1,987 @@
+{
+  "communities": {
+    "0": [
+      "comp_menucard",
+      "page_alphabet_index",
+      "page_cvc_index",
+      "page_ddv_index",
+      "page_index",
+      "page_nasal_index",
+      "store_alphabetStore",
+      "store_analyticsStore",
+      "store_challengeStore",
+      "store_cvcStore",
+      "store_ddvStore",
+      "store_mentorStore",
+      "store_nasalStore",
+      "store_profileStore",
+      "store_rewardStore",
+      "store_storybookStore",
+      "store_wordStore"
+    ],
+    "1": [
+      "app_composables_useaudio_ts",
+      "app_pages_alphabet_id_story_vue",
+      "app_pages_challenge_index_vue",
+      "app_pages_rewards_vue",
+      "challenge_index_onresponse",
+      "composables_useaudio_playaudio",
+      "composables_useaudio_playeffectaudio",
+      "composables_useaudio_playlettersound",
+      "composables_useaudio_playsequence",
+      "composables_useaudio_playsyllableaudio",
+      "composables_useaudio_playwordaudio",
+      "composables_useaudio_speaktts",
+      "composables_useaudio_stopallaudio",
+      "composables_useaudio_useaudio",
+      "id_story_playnext",
+      "pages_rewards_if",
+      "pages_rewards_onresponse"
+    ],
+    "2": [
+      "app_pages_words_category_word_exercise_vue",
+      "word_exercise_checkcompletion",
+      "word_exercise_dropatslot",
+      "word_exercise_initializegame",
+      "word_exercise_ondragend",
+      "word_exercise_ondragenter",
+      "word_exercise_ondragleave",
+      "word_exercise_ondragstart",
+      "word_exercise_ondrop",
+      "word_exercise_ontouchend",
+      "word_exercise_ontouchmove",
+      "word_exercise_ontouchstart",
+      "word_exercise_playtargetword",
+      "word_exercise_popconfetti",
+      "word_exercise_putbackletter"
+    ],
+    "3": [
+      "app_pages_cvc_learn_level_vue",
+      "app_pages_ddv_learn_level_vue",
+      "app_pages_nasal_learn_level_vue",
+      "learn_level_finishlevel",
+      "learn_level_gotonextlevel",
+      "learn_level_handlecomplete",
+      "learn_level_handlemerge",
+      "learn_level_handlestepcomplete",
+      "learn_level_nextitem",
+      "learn_level_popconfetti"
+    ],
+    "4": [
+      "app_pages_ddv_quiz_vue",
+      "ddv_quiz_handleclustercorrect",
+      "ddv_quiz_handleconnectcomplete",
+      "ddv_quiz_handleconnectmatch",
+      "ddv_quiz_handlecorrect",
+      "ddv_quiz_handlediphthongcorrect",
+      "ddv_quiz_popconfetti",
+      "ddv_quiz_restartgame"
+    ],
+    "5": [
+      "alphabet_alphabetquizmode_handleletterclick",
+      "alphabet_alphabetquizmode_handletimeout",
+      "alphabet_alphabetquizmode_launchconfetti",
+      "alphabet_alphabetquizmode_picknextletter",
+      "alphabet_alphabetquizmode_shuffleletters",
+      "alphabet_alphabetquizmode_starttimer",
+      "alphabet_alphabetquizmode_stoptimer",
+      "app_components_alphabet_alphabetquizmode_vue"
+    ],
+    "6": [
+      "app_pages_parent_challenge_vue",
+      "parent_challenge_handledeletechallenge",
+      "parent_challenge_handlefulfillchallenge",
+      "parent_challenge_handleresetchallenge",
+      "parent_challenge_handlesavechallenge",
+      "parent_challenge_openaddmodal",
+      "parent_challenge_openeditmodal"
+    ],
+    "7": [
+      "app_components_interactionzone_vue",
+      "components_interactionzone_colorforindex",
+      "components_interactionzone_handleclick",
+      "components_interactionzone_popconfetti",
+      "components_interactionzone_reset",
+      "components_interactionzone_shuffleoptions"
+    ],
+    "8": [
+      "app_pages_cvc_learn_index_vue",
+      "app_pages_ddv_learn_index_vue",
+      "learn_index_getlink",
+      "learn_index_getscore",
+      "learn_index_ispremiumlocked"
+    ],
+    "9": [
+      "server_api_midtrans_notification_post_ts",
+      "server_utils_auth_ts",
+      "server_utils_db_ts",
+      "utils_auth_auth",
+      "utils_db_db"
+    ],
+    "10": [
+      "app_components_cvc_levelselector_vue",
+      "cvc_levelselector_getlink",
+      "cvc_levelselector_getscore",
+      "cvc_levelselector_ispremiumlocked"
+    ],
+    "11": [
+      "app_pages_alphabet_id_trace_vue",
+      "id_trace_cleartracing",
+      "id_trace_onsaved",
+      "id_trace_retry"
+    ],
+    "12": [
+      "app_components_shared_parentgate_vue",
+      "shared_parentgate_checkanswer",
+      "shared_parentgate_close",
+      "shared_parentgate_generateproblem"
+    ],
+    "13": [
+      "alphabet_floatinginteractionzone_reset",
+      "alphabet_floatinginteractionzone_shuffleoptions",
+      "app_components_alphabet_floatinginteractionzone_vue"
+    ],
+    "14": [
+      "app_pages_parent_vue",
+      "pages_parent_checkgate",
+      "pages_parent_logout"
+    ],
+    "15": [
+      "app_components_ui_pwaupdateprompt_vue",
+      "ui_pwaupdateprompt_dismiss",
+      "ui_pwaupdateprompt_update"
+    ],
+    "16": [
+      "alphabet_quiz_stopquiz",
+      "app_pages_alphabet_quiz_vue"
+    ],
+    "17": [
+      "app_utils_index_ts",
+      "utils_index_formatdate"
+    ],
+    "18": [
+      "app_composables_usesubscription_ts",
+      "composables_usesubscription_usesubscription"
+    ],
+    "19": [
+      "api_profile",
+      "util_auth"
+    ],
+    "20": [
+      "app_composables_useconfirm_ts",
+      "composables_useconfirm_useconfirm"
+    ],
+    "21": [
+      "app_components_globalheader_vue",
+      "components_globalheader_togglefullscreen"
+    ],
+    "22": [
+      "app_pages_words_quiz_vue",
+      "words_quiz_handlecorrect"
+    ],
+    "23": [
+      "app_constants_alphabet_ts",
+      "constants_alphabet_getlettercolor"
+    ],
+    "24": [
+      "app_components_ddv_vowelconnectquiz_vue",
+      "ddv_vowelconnectquiz_if"
+    ],
+    "25": [
+      "app_composables_usementorhint_ts",
+      "composables_usementorhint_usementorhint"
+    ],
+    "26": [
+      "app_components_ui_celebrationmodal_vue",
+      "ui_celebrationmodal_popconfetti"
+    ],
+    "27": [
+      "app_components_ui_orientationguard_vue",
+      "ui_orientationguard_if"
+    ],
+    "28": [
+      "alphabet_alphabetlearningmode_if",
+      "app_components_alphabet_alphabetlearningmode_vue"
+    ],
+    "29": [
+      "drizzle_config_ts"
+    ],
+    "30": [
+      "nuxt_config_ts"
+    ],
+    "31": [
+      "app_app_vue"
+    ],
+    "32": [
+      "app_components_bubblecard_vue"
+    ],
+    "33": [
+      "app_components_loadingskeleton_vue"
+    ],
+    "34": [
+      "app_components_loadingspinner_vue"
+    ],
+    "35": [
+      "app_components_menucard_vue"
+    ],
+    "36": [
+      "app_components_tracingcanvas_vue"
+    ],
+    "37": [
+      "app_components_cvc_blendresultdisplay_vue"
+    ],
+    "38": [
+      "app_components_cvc_mergeanimation_vue"
+    ],
+    "39": [
+      "app_components_cvc_mergebutton_vue"
+    ],
+    "40": [
+      "app_components_cvc_progresstracker_vue"
+    ],
+    "41": [
+      "app_components_cvc_syllablecard_vue"
+    ],
+    "42": [
+      "app_components_ddv_clusterquiz_vue"
+    ],
+    "43": [
+      "app_components_ddv_ddvmergebutton_vue"
+    ],
+    "44": [
+      "app_components_ddv_ddvprogresstracker_vue"
+    ],
+    "45": [
+      "app_components_ddv_diphthongquiz_vue"
+    ],
+    "46": [
+      "app_components_ddv_vowelfusedresult_vue"
+    ],
+    "47": [
+      "app_components_ddv_vowelslideanimation_vue"
+    ],
+    "48": [
+      "app_components_ddv_wordlabdisplay_vue"
+    ],
+    "49": [
+      "app_components_nasal_digraphfusion_vue"
+    ],
+    "50": [
+      "app_components_nasal_nasalquiz_vue"
+    ],
+    "51": [
+      "app_components_nasal_nasalwordpractice_vue"
+    ],
+    "52": [
+      "app_components_nasal_tailsoundanchor_vue"
+    ],
+    "53": [
+      "app_components_parent_alphabetanalyticsmodal_vue"
+    ],
+    "54": [
+      "app_components_parent_alphabetsettingsmodal_vue"
+    ],
+    "55": [
+      "app_components_parent_cvcsettingsmodal_vue"
+    ],
+    "56": [
+      "app_components_parent_ddvsettingsmodal_vue"
+    ],
+    "57": [
+      "app_components_parent_wordanalyticsmodal_vue"
+    ],
+    "58": [
+      "app_components_parent_wordsettingsmodal_vue"
+    ],
+    "59": [
+      "app_components_shared_basemodal_vue"
+    ],
+    "60": [
+      "app_components_ui_button_vue"
+    ],
+    "61": [
+      "app_components_ui_confirmmodal_vue"
+    ],
+    "62": [
+      "app_components_ui_floatingmentor_vue"
+    ],
+    "63": [
+      "app_components_ui_notificationtoast_vue"
+    ],
+    "64": [
+      "app_composables_usenotification_ts"
+    ],
+    "65": [
+      "app_constants_alphabetstorybook_ts"
+    ],
+    "66": [
+      "app_constants_audio_ts"
+    ],
+    "67": [
+      "app_constants_cvcblends_ts"
+    ],
+    "68": [
+      "app_constants_ddvdata_ts"
+    ],
+    "69": [
+      "app_constants_nasaldata_ts"
+    ],
+    "70": [
+      "app_constants_profile_ts"
+    ],
+    "71": [
+      "app_constants_reward_ts"
+    ],
+    "72": [
+      "app_constants_words_ts"
+    ],
+    "73": [
+      "app_middleware_auth_global_ts"
+    ],
+    "74": [
+      "app_middleware_premium_ts"
+    ],
+    "75": [
+      "app_middleware_profile_global_ts"
+    ],
+    "76": [
+      "app_pages_index_vue"
+    ],
+    "77": [
+      "app_pages_login_vue"
+    ],
+    "78": [
+      "app_pages_profiles_vue"
+    ],
+    "79": [
+      "app_pages_signup_vue"
+    ],
+    "80": [
+      "app_pages_welcome_vue"
+    ],
+    "81": [
+      "app_pages_alphabet_index_vue"
+    ],
+    "82": [
+      "app_pages_alphabet_id_index_vue"
+    ],
+    "83": [
+      "app_pages_cvc_index_vue"
+    ],
+    "84": [
+      "app_pages_cvc_quiz_vue"
+    ],
+    "85": [
+      "app_pages_ddv_index_vue"
+    ],
+    "86": [
+      "app_pages_games_index_vue"
+    ],
+    "87": [
+      "app_pages_nasal_index_vue"
+    ],
+    "88": [
+      "app_pages_parent_analytics_vue"
+    ],
+    "89": [
+      "app_pages_parent_index_vue"
+    ],
+    "90": [
+      "app_pages_parent_premium_vue"
+    ],
+    "91": [
+      "app_pages_parent_quiz_vue"
+    ],
+    "92": [
+      "app_pages_parent_rewards_vue"
+    ],
+    "93": [
+      "app_pages_words_index_vue"
+    ],
+    "94": [
+      "app_pages_words_learn_vue"
+    ],
+    "95": [
+      "app_pages_words_category_word_index_vue"
+    ],
+    "96": [
+      "app_stores_alphabetstore_ts"
+    ],
+    "97": [
+      "app_stores_analyticsstore_ts"
+    ],
+    "98": [
+      "app_stores_challengestore_ts"
+    ],
+    "99": [
+      "app_stores_cvcstore_ts"
+    ],
+    "100": [
+      "app_stores_ddvstore_ts"
+    ],
+    "101": [
+      "app_stores_mentorstore_ts"
+    ],
+    "102": [
+      "app_stores_nasalstore_ts"
+    ],
+    "103": [
+      "app_stores_profilestore_ts"
+    ],
+    "104": [
+      "app_stores_rewardstore_ts"
+    ],
+    "105": [
+      "app_stores_settingsstore_ts"
+    ],
+    "106": [
+      "app_stores_storybookstore_ts"
+    ],
+    "107": [
+      "app_stores_userstore_ts"
+    ],
+    "108": [
+      "app_stores_wordstore_ts"
+    ],
+    "109": [
+      "app_types_alphabet_ts"
+    ],
+    "110": [
+      "app_types_env_ts"
+    ],
+    "111": [
+      "app_types_index_ts"
+    ],
+    "112": [
+      "app_types_stores_ts"
+    ],
+    "113": [
+      "app_types_sync_ts"
+    ],
+    "114": [
+      "app_utils_auth_client_ts"
+    ],
+    "115": [
+      "server_api_alphabet_quiz_profileid_config_patch_ts"
+    ],
+    "116": [
+      "server_api_alphabet_quiz_profileid_progress_get_ts"
+    ],
+    "117": [
+      "server_api_alphabet_quiz_profileid_progress_patch_ts"
+    ],
+    "118": [
+      "server_api_alphabet_quiz_profileid_progress_post_ts"
+    ],
+    "119": [
+      "server_api_auth_all_ts"
+    ],
+    "120": [
+      "server_api_challenges_index_post_ts"
+    ],
+    "121": [
+      "server_api_challenges_id_delete_ts"
+    ],
+    "122": [
+      "server_api_challenges_id_patch_ts"
+    ],
+    "123": [
+      "server_api_challenges_profile_id_get_ts"
+    ],
+    "124": [
+      "server_api_cvc_profileid_progress_get_ts"
+    ],
+    "125": [
+      "server_api_cvc_profileid_progress_patch_ts"
+    ],
+    "126": [
+      "server_api_cvc_profileid_progress_post_ts"
+    ],
+    "127": [
+      "server_api_ddv_profileid_progress_get_ts"
+    ],
+    "128": [
+      "server_api_ddv_profileid_progress_patch_ts"
+    ],
+    "129": [
+      "server_api_ddv_profileid_progress_post_ts"
+    ],
+    "130": [
+      "server_api_midtrans_checkout_post_ts"
+    ],
+    "131": [
+      "server_api_nasal_profileid_progress_get_ts"
+    ],
+    "132": [
+      "server_api_nasal_profileid_progress_patch_ts"
+    ],
+    "133": [
+      "server_api_nasal_profileid_progress_post_ts"
+    ],
+    "134": [
+      "server_api_profile_index_post_ts"
+    ],
+    "135": [
+      "server_api_profile_profileid_get_ts"
+    ],
+    "136": [
+      "server_api_profile_profileid_put_ts"
+    ],
+    "137": [
+      "server_api_profile_user_id_get_ts"
+    ],
+    "138": [
+      "server_api_reward_index_post_ts"
+    ],
+    "139": [
+      "server_api_reward_id_delete_ts"
+    ],
+    "140": [
+      "server_api_reward_profile_id_get_ts"
+    ],
+    "141": [
+      "server_api_reward_id_claim_patch_ts"
+    ],
+    "142": [
+      "server_api_reward_id_index_delete_ts"
+    ],
+    "143": [
+      "server_api_reward_id_index_patch_ts"
+    ],
+    "144": [
+      "server_api_words_quiz_profileid_config_patch_ts"
+    ],
+    "145": [
+      "server_api_words_quiz_profileid_progress_delete_ts"
+    ],
+    "146": [
+      "server_api_words_quiz_profileid_progress_get_ts"
+    ],
+    "147": [
+      "server_api_words_quiz_profileid_progress_patch_ts"
+    ],
+    "148": [
+      "server_api_words_quiz_profileid_progress_post_ts"
+    ],
+    "149": [
+      "server_middleware_auth_ts"
+    ],
+    "150": [
+      "server_utils_db_schema_ts"
+    ],
+    "151": [
+      "shared_types_api_d_ts"
+    ],
+    "152": [
+      "logo_svg"
+    ],
+    "153": [
+      "bg1_webp"
+    ],
+    "154": [
+      "bg2_webp"
+    ],
+    "155": [
+      "img_a_webp"
+    ],
+    "156": [
+      "img_b_webp"
+    ],
+    "157": [
+      "img_c_webp"
+    ],
+    "158": [
+      "img_d_webp"
+    ],
+    "159": [
+      "img_e_webp"
+    ],
+    "160": [
+      "img_f_webp"
+    ],
+    "161": [
+      "img_g_webp"
+    ],
+    "162": [
+      "img_h_webp"
+    ],
+    "163": [
+      "img_i_webp"
+    ],
+    "164": [
+      "img_j_webp"
+    ],
+    "165": [
+      "img_k_webp"
+    ],
+    "166": [
+      "img_l_webp"
+    ],
+    "167": [
+      "img_m_webp"
+    ],
+    "168": [
+      "mentor_boy_png"
+    ],
+    "169": [
+      "img_n_webp"
+    ],
+    "170": [
+      "img_o_webp"
+    ],
+    "171": [
+      "img_p_webp"
+    ],
+    "172": [
+      "img_q_webp"
+    ],
+    "173": [
+      "img_r_webp"
+    ],
+    "174": [
+      "img_s_webp"
+    ],
+    "175": [
+      "img_t_webp"
+    ],
+    "176": [
+      "img_u_webp"
+    ],
+    "177": [
+      "img_v_webp"
+    ],
+    "178": [
+      "store_userStore"
+    ],
+    "179": [
+      "store_settingsStore"
+    ],
+    "180": [
+      "page_words_index"
+    ]
+  },
+  "cohesion": {
+    "0": 0.12,
+    "1": 0.16,
+    "2": 0.19,
+    "3": 0.36,
+    "4": 0.43,
+    "5": 0.5,
+    "6": 0.29,
+    "7": 0.47,
+    "8": 0.5,
+    "9": 0.5,
+    "10": 0.67,
+    "11": 0.83,
+    "12": 0.67,
+    "13": 1.0,
+    "14": 0.67,
+    "15": 0.67,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0,
+    "133": 1.0,
+    "134": 1.0,
+    "135": 1.0,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
+    "139": 1.0,
+    "140": 1.0,
+    "141": 1.0,
+    "142": 1.0,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
+    "146": 1.0,
+    "147": 1.0,
+    "148": 1.0,
+    "149": 1.0,
+    "150": 1.0,
+    "151": 1.0,
+    "152": 1.0,
+    "153": 1.0,
+    "154": 1.0,
+    "155": 1.0,
+    "156": 1.0,
+    "157": 1.0,
+    "158": 1.0,
+    "159": 1.0,
+    "160": 1.0,
+    "161": 1.0,
+    "162": 1.0,
+    "163": 1.0,
+    "164": 1.0,
+    "165": 1.0,
+    "166": 1.0,
+    "167": 1.0,
+    "168": 1.0,
+    "169": 1.0,
+    "170": 1.0,
+    "171": 1.0,
+    "172": 1.0,
+    "173": 1.0,
+    "174": 1.0,
+    "175": 1.0,
+    "176": 1.0,
+    "177": 1.0,
+    "178": 1.0,
+    "179": 1.0,
+    "180": 1.0
+  },
+  "gods": [
+    {
+      "id": "store_profileStore",
+      "label": "profileStore",
+      "degree": 10
+    },
+    {
+      "id": "alphabet_alphabetquizmode_handleletterclick",
+      "label": "handleLetterClick()",
+      "degree": 7
+    },
+    {
+      "id": "learn_level_popconfetti",
+      "label": "popConfetti()",
+      "degree": 6
+    },
+    {
+      "id": "word_exercise_dropatslot",
+      "label": "dropAtSlot()",
+      "degree": 6
+    },
+    {
+      "id": "composables_useaudio_playeffectaudio",
+      "label": "playEffectAudio()",
+      "degree": 5
+    },
+    {
+      "id": "ddv_quiz_handlecorrect",
+      "label": "handleCorrect()",
+      "degree": 5
+    },
+    {
+      "id": "alphabet_alphabetquizmode_stoptimer",
+      "label": "stopTimer()",
+      "degree": 4
+    },
+    {
+      "id": "composables_useaudio_playaudio",
+      "label": "playAudio()",
+      "degree": 4
+    },
+    {
+      "id": "composables_useaudio_playsequence",
+      "label": "playSequence()",
+      "degree": 4
+    },
+    {
+      "id": "composables_useaudio_playwordaudio",
+      "label": "playWordAudio()",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "handleLetterClick()",
+      "target": "playSequence()",
+      "source_files": [
+        "app/components/alphabet/AlphabetQuizMode.vue",
+        "app/composables/useAudio.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "handleMerge()",
+      "target": "playWordAudio()",
+      "source_files": [
+        "app/pages/ddv/learn/[level].vue",
+        "app/composables/useAudio.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "playTargetWord()",
+      "target": "playWordAudio()",
+      "source_files": [
+        "app/pages/words/[category]/[word]/exercise.vue",
+        "app/composables/useAudio.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "onResponse()",
+      "target": "playEffectAudio()",
+      "source_files": [
+        "app/pages/rewards.vue",
+        "app/composables/useAudio.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `onResponse()` unexpectedly reaches hub `playEffectAudio()`"
+    },
+    {
+      "source": "onResponse()",
+      "target": "playEffectAudio()",
+      "source_files": [
+        "app/pages/challenge/index.vue",
+        "app/composables/useAudio.ts"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; peripheral node `onResponse()` unexpectedly reaches hub `playEffectAudio()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `playWordAudio()` connect `Community 1` to `Community 2`, `Community 3`?",
+      "why": "High betweenness centrality (0.012) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `playEffectAudio()` connect `Community 1` to `Community 2`?",
+      "why": "High betweenness centrality (0.009) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `handleMerge()` connect `Community 3` to `Community 1`?",
+      "why": "High betweenness centrality (0.008) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 3 inferred relationships involving `playEffectAudio()` (e.g. with `onResponse()` and `onResponse()`) actually correct?",
+      "why": "`playEffectAudio()` has 3 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Abelma Logo`, `Underwater Background 1`, `Underwater Background 2` to the rest of the system?",
+      "why": "42 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

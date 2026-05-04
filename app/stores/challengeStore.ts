@@ -1,5 +1,7 @@
 
 
+import { registerProfileStore } from "~/utils/storeRegistry";
+
 export type Challenge = {
   id: number;
   title: string;
@@ -16,6 +18,11 @@ export const useChallengeStore = defineStore("challenge", () => {
   const reset = () => {
     challenges.value = [];
   };
+
+  // Register for automatic cleanup
+  registerProfileStore({ reset });
+
+
 
   const fetch = async () => {
     const activeProfileId = useProfileStore().activeProfileId;

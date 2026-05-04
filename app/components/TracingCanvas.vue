@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   letter: string;
+  brushColor: string;
 }>();
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
@@ -10,19 +11,19 @@ const svgRef = ref<SVGSVGElement | null>(null);
 const isDrawing = ref(false);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 const isVertical = ref(false);
-const brushColor = ref("#28abb9");
-const colors = [
-  "#28abb9", // Teal
-  "#e74c3c", // Red
-  "#3498db", // Blue
-  "#f1c40f", // Yellow
-  "#2ecc71", // Green
-  "#9b59b6", // Purple
-  "#e67e22", // Orange
-  "#333333", // Dark Gray
-];
+// const brushColor = ref("#28abb9");
+// const colors = [
+//   "#28abb9", // Teal
+//   "#e74c3c", // Red
+//   "#3498db", // Blue
+//   "#f1c40f", // Yellow
+//   "#2ecc71", // Green
+//   "#9b59b6", // Purple
+//   "#e67e22", // Orange
+//   "#333333", // Dark Gray
+// ];
 
-const encodedBrushColor = computed(() => encodeURIComponent(brushColor.value));
+const encodedBrushColor = computed(() => encodeURIComponent(props.brushColor));
 const cursorStyle = computed(() => {
   return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none' stroke='${encodedBrushColor.value}' stroke-width='2'%3E%3Cpath d='M16 4v24M4 16h24'/%3E%3Ccircle cx='16' cy='16' r='3' fill='${encodedBrushColor.value}'/%3E%3C/svg%3E") 16 16, crosshair`;
 });
@@ -62,7 +63,7 @@ const initCanvas = () => {
     ctx.value.lineCap = "round";
     ctx.value.lineJoin = "round";
     ctx.value.lineWidth = getBrushSize(width);
-    ctx.value.strokeStyle = brushColor.value;
+    ctx.value.strokeStyle = props.brushColor;
   }
 
   // DEBUG: generate the target canvas immediately so it's visible while drawing
@@ -71,7 +72,7 @@ const initCanvas = () => {
   }, 100);
 };
 
-watch(brushColor, (newColor) => {
+watch(() => props.brushColor, (newColor) => {
   if (ctx.value) {
     ctx.value.strokeStyle = newColor;
   }
@@ -221,8 +222,8 @@ const buildTargetCanvas = async (
 
     // For debugging/hit-testing, we draw the shape solid
     // Note: using 5px stroke to match the visible outline requested by user
-    tCtx.strokeStyle = "rgba(200, 200, 200, .1)";
-    tCtx.fillStyle = "rgba(200, 200, 200, .1)";
+    tCtx.strokeStyle = "rgba(200, 200, 200, 0)";
+    tCtx.fillStyle = "rgba(200, 200, 200, 0)";
     tCtx.lineWidth = 5;
     tCtx.lineCap = "round";
     tCtx.lineJoin = "round";
@@ -327,7 +328,7 @@ defineExpose({ clearCanvas, calculateScore });
 
 <template>
   <div
-    class="relative w-full h-full min-h-[500px] bg-white rounded-3xl flex items-center justify-center shadow-lg border-2 border-gray-100 overflow-hidden"
+    class="relative w-full h-[calc(40vh)] flex items-center justify-center shadow-lg  overflow-hidden"
     ref="containerRef"
   >
     <!-- Dashed Letter Background — captured by calculateScore via svgRef -->
@@ -339,7 +340,7 @@ defineExpose({ clearCanvas, calculateScore });
       <template v-if="!isVertical">
         <text
           x="50%"
-          y="50%"
+          y="45%"
           dominant-baseline="central"
           text-anchor="middle"
           font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
@@ -352,14 +353,14 @@ defineExpose({ clearCanvas, calculateScore });
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          {{ letter.toUpperCase() }} {{ letter.toLowerCase() }}
+          {{ letter }}
         </text>
       </template>
       <template v-else>
         <!-- Uppercase on Top -->
         <text
           x="50%"
-          y="30%"
+          y="45%"
           dominant-baseline="central"
           text-anchor="middle"
           font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
@@ -372,10 +373,10 @@ defineExpose({ clearCanvas, calculateScore });
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          {{ letter.toUpperCase() }}
+          {{ letter }}
         </text>
         <!-- Lowercase on Bottom -->
-        <text
+        <!-- <text
           x="50%"
           y="70%"
           dominant-baseline="central"
@@ -391,7 +392,7 @@ defineExpose({ clearCanvas, calculateScore });
           stroke-linejoin="round"
         >
           {{ letter.toLowerCase() }}
-        </text>
+        </text> -->
       </template>
     </svg>
 
@@ -406,32 +407,6 @@ defineExpose({ clearCanvas, calculateScore });
       @mouseleave="stopDrawing"
     ></canvas>
 
-    <!-- Color Picker Overlay -->
-    <div
-      class="absolute top-4 right-4 flex flex-col gap-3 p-3 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 z-50 transform transition-all duration-300 hover:scale-105"
-    >
-      <div class="flex flex-col gap-2">
-        <div
-          v-for="color in colors"
-          :key="color"
-          @click="brushColor = color"
-          class="w-8 h-8 rounded-full cursor-pointer border-2 transition-all duration-200 hover:scale-110 active:scale-95"
-          :class="
-            brushColor === color ? 'border-gray-800 scale-110' : 'border-white'
-          "
-          :style="{ backgroundColor: color }"
-        ></div>
-        <div
-          class="relative w-8 h-8 rounded-full overflow-hidden border-2 border-white hover:scale-110 transition-transform"
-        >
-          <input
-            type="color"
-            v-model="brushColor"
-            class="absolute inset-0 w-full h-full cursor-pointer scale-150 border-none p-0"
-          />
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <style scoped>

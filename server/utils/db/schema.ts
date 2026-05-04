@@ -253,6 +253,40 @@ export const ddvProgress = sqliteTable("ddv_progress", {
     .$defaultFn(() => new Date()),
 });
 
+export const nasalProgress = sqliteTable("nasal_progress", {
+  profileId: text("profile_id")
+    .primaryKey()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  score: integer("score").notNull().default(0),
+  learningLevel: integer("learning_level").notNull().default(1),
+  levelScores: text("level_scores").notNull().default("{}"),
+  quizScore: integer("quiz_score").notNull().default(0),
+  quizLevel: integer("quiz_level").notNull().default(1),
+  quizWeights: text("quiz_weights").notNull().default("{}"),
+  learningWeights: text("learning_weights").notNull().default("{}"),
+  config: text("config").notNull().default("{}"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const letterTrace = sqliteTable("letter_trace", {
+  profileId: text("profile_id")
+    .primaryKey()
+    .references(() => profiles.id, { onDelete: "cascade" }),
+  stars: text("stars").notNull().default("{}"),
+  config: text("config").notNull().default("[500, 600, 700, 800, 1000]"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
 // --- RELATIONS ---
 
 export const userRelations = relations(user, ({ many }) => ({
@@ -286,7 +320,15 @@ export const profileRelations = relations(profiles, ({ one, many }) => ({
     fields: [profiles.id],
     references: [ddvProgress.profileId],
   }),
+  nasalProgress: one(nasalProgress, {
+    fields: [profiles.id],
+    references: [nasalProgress.profileId],
+  }),
   storybookProgress: many(storybookProgress),
+  letterTrace: one(letterTrace, {
+    fields: [profiles.id],
+    references: [letterTrace.profileId],
+  }),
 }));
 
 export const rewardRelations = relations(rewards, ({ one }) => ({
@@ -351,6 +393,20 @@ export const ddvProgressRelations = relations(ddvProgress, ({ one }) => ({
 export const wordQuizProgressRelations = relations(wordQuizProgress, ({ one }) => ({
   profile: one(profiles, {
     fields: [wordQuizProgress.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const nasalProgressRelations = relations(nasalProgress, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [nasalProgress.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const letterTraceRelations = relations(letterTrace, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [letterTrace.profileId],
     references: [profiles.id],
   }),
 }));

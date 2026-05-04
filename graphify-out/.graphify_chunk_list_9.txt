@@ -1,0 +1,15 @@
+D:\Project\abelma\public\audio\m.webm
+D:\Project\abelma\public\audio\n.webm
+D:\Project\abelma\public\audio\o.webm
+D:\Project\abelma\public\audio\p.webm
+D:\Project\abelma\public\audio\q.webm
+D:\Project\abelma\public\audio\r.webm
+D:\Project\abelma\public\audio\s.webm
+D:\Project\abelma\public\audio\sekarang.webm
+D:\Project\abelma\public\audio\t.webm
+D:\Project\abelma\public\audio\tebak-huruf.webm
+D:\Project\abelma\public\audio\u.webm
+D:\Project\abelma\public\audio\v.webm
+D:\Project\abelma\public\audio\w.webm
+D:\Project\abelma\public\audio\y.webm
+D:\Project\abelma\public\audio\z.webm

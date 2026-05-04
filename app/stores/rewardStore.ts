@@ -1,4 +1,5 @@
 import type { Reward } from "#shared/types/api";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useRewardStore = defineStore("reward", () => {
   const rewards = ref<Reward[]>([]);
@@ -14,6 +15,9 @@ export const useRewardStore = defineStore("reward", () => {
   const reset = () => {
     rewards.value = [];
   };
+
+  // Register for automatic cleanup
+  registerProfileStore({ reset });
 
   const fetch = async () => {
     const activeProfileId = useProfileStore().activeProfileId;

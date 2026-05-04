@@ -11,7 +11,7 @@ defineProps<{
 <template>
   <NuxtLink
     :to="to"
-    class="glass-card p-4 md:p-6 flex flex-col items-center justify-center gap-0 md:gap-4 transition-all duration-300 hover:translate-y-[-10px] cursor-pointer group"
+    class="glass-card p-2 sm:p-4 md:p-6 flex flex-col items-center justify-center gap-1 md:gap-4 transition-all duration-300 hover:translate-y-[-10px] cursor-pointer group"
   >
     <div
       class="size-14 md:size-22 rounded-full flex items-center justify-center text-4xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-12"

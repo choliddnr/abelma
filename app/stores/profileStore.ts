@@ -1,5 +1,6 @@
 import type { CloudProfile, Profile } from "@/types/stores";
 import { DEFAULT_ALPHABET_QUIZ_CONFIG } from "~/constants/alphabet";
+import { resetAllProfileStores } from "~/utils/storeRegistry";
 
 export const useProfileStore = defineStore(
   "profile",
@@ -68,6 +69,7 @@ export const useProfileStore = defineStore(
           console.error("Failed to sync profile before switching:", error);
         }
       }
+      resetAllProfileStores();
       activeProfileId.value = id;
     };
 

@@ -1,4 +1,5 @@
 import type { WordQuizProgress, WordQuizConfig } from "@/types/stores";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useWordStore = defineStore(
   "word",
@@ -12,6 +13,19 @@ export const useWordStore = defineStore(
       config: { coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 },
       updatedAt: new Date(),
     });
+
+    const reset = () => {
+      wordQuizProgress.value = {
+        score: 0,
+        level: 1,
+        weights: {},
+        config: { coinReward: 5, levelUpReward: 50, streakThreshold: 5, streakReward: 10 },
+        updatedAt: new Date(),
+      };
+    };
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
 
     const fetch = async () => {
       if (!activeProfileId.value) return;
@@ -134,6 +148,7 @@ export const useWordStore = defineStore(
       saveConfig,
       updateProgress,
       updateLocalProgress,
+      reset,
     };
   },
   {

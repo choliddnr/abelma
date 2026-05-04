@@ -149,6 +149,36 @@ export type DdvProgress = {
   updatedAt: Date;
 };
 
+// ==================== NASAL PROGRESS TYPES ====================
+
+export type NasalConfig = {
+  coinReward: number;
+  levelUpReward: number;
+  learningLevelUpReward: number;
+  streakThreshold: number;
+  streakReward: number;
+};
+
+export type NasalProgress = {
+  score: number;
+  learningLevel: number;
+  levelScores: Record<string, number>;
+  quizScore: number;
+  quizLevel: number;
+  quizWeights: Record<string, number>;
+  learningWeights: Record<string, number>;
+  config: NasalConfig;
+  updatedAt: Date;
+};
+
+// ==================== TRACE PROGRESS TYPES ====================
+
+export type TraceProgress = {
+  stars: Record<string, number>;
+  config: number[];
+  updatedAt: Date;
+};
+
 // ==================== SYNC TYPES ====================
 
 export type {
@@ -171,6 +201,8 @@ export type CloudData = {
   wordProgress?: WordQuizProgress | Record<string, WordQuizProgress>;
   cvcProgress?: CvcProgress | Record<string, CvcProgress>;
   ddvProgress?: DdvProgress | Record<string, DdvProgress>;
+  nasalProgress?: NasalProgress | Record<string, NasalProgress>;
+  tracingProgress?: TraceProgress | Record<string, TraceProgress>;
   settings?: WordSettings;
 };
 

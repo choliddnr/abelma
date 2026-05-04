@@ -1,4 +1,5 @@
 import type { CloudProfile } from "@/types/sync";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useStorybookStore = defineStore(
   "storybook",
@@ -15,6 +16,20 @@ export const useStorybookStore = defineStore(
 
     // Progress map by profile ID: Record<profileId, Array of completed indices>
     const profileProgressMap = ref<Record<string, number[]>>({});
+
+    const reset = () => {
+      currentIndex.value = 0;
+      isSpeaking.value = false;
+      showFinish.value = false;
+      showQuiz.value = false;
+      viewMode.value = "list";
+      profileProgressMap.value = {};
+    }
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
+
+
 
     // Computed Set for compatibility with existing view logic
     const quizDone = computed(() => {
@@ -39,14 +54,7 @@ export const useStorybookStore = defineStore(
       }
     }
 
-    function reset() {
-      currentIndex.value = 0;
-      isSpeaking.value = false;
-      showFinish.value = false;
-      showQuiz.value = false;
-      viewMode.value = "list";
-      profileProgressMap.value = {};
-    }
+
 
     return {
       currentIndex,

@@ -1,0 +1,4893 @@
+{
+  "nodes": [
+    {
+      "id": "drizzle_config_ts",
+      "label": "drizzle.config.ts",
+      "file_type": "code",
+      "source_file": "drizzle.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "nuxt_config_ts",
+      "label": "nuxt.config.ts",
+      "file_type": "code",
+      "source_file": "nuxt.config.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_app_vue",
+      "label": "app.vue",
+      "file_type": "code",
+      "source_file": "app\\app.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_bubblecard_vue",
+      "label": "BubbleCard.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\BubbleCard.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_globalheader_vue",
+      "label": "GlobalHeader.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\GlobalHeader.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_globalheader_togglefullscreen",
+      "label": "toggleFullscreen()",
+      "file_type": "code",
+      "source_file": "app\\components\\GlobalHeader.vue",
+      "source_location": "L16"
+    },
+    {
+      "id": "app_components_interactionzone_vue",
+      "label": "InteractionZone.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "components_interactionzone_shuffleoptions",
+      "label": "shuffleOptions()",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L19"
+    },
+    {
+      "id": "components_interactionzone_colorforindex",
+      "label": "colorForIndex()",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L45"
+    },
+    {
+      "id": "components_interactionzone_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L49"
+    },
+    {
+      "id": "components_interactionzone_handleclick",
+      "label": "handleClick()",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L65"
+    },
+    {
+      "id": "components_interactionzone_reset",
+      "label": "reset()",
+      "file_type": "code",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L86"
+    },
+    {
+      "id": "app_components_loadingskeleton_vue",
+      "label": "LoadingSkeleton.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\LoadingSkeleton.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_loadingspinner_vue",
+      "label": "LoadingSpinner.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\LoadingSpinner.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_menucard_vue",
+      "label": "MenuCard.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\MenuCard.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_tracingcanvas_vue",
+      "label": "TracingCanvas.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\TracingCanvas.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_alphabet_alphabetlearningmode_vue",
+      "label": "AlphabetLearningMode.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetLearningMode.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "alphabet_alphabetlearningmode_if",
+      "label": "if()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetLearningMode.vue",
+      "source_location": "L67"
+    },
+    {
+      "id": "app_components_alphabet_alphabetquizmode_vue",
+      "label": "AlphabetQuizMode.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_shuffleletters",
+      "label": "shuffleLetters()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L89"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_picknextletter",
+      "label": "pickNextLetter()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L113"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_stoptimer",
+      "label": "stopTimer()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L147"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_starttimer",
+      "label": "startTimer()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L154"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_handletimeout",
+      "label": "handleTimeout()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L166"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_launchconfetti",
+      "label": "launchConfetti()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L194"
+    },
+    {
+      "id": "alphabet_alphabetquizmode_handleletterclick",
+      "label": "handleLetterClick()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L222"
+    },
+    {
+      "id": "app_components_alphabet_floatinginteractionzone_vue",
+      "label": "FloatingInteractionZone.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "alphabet_floatinginteractionzone_shuffleoptions",
+      "label": "shuffleOptions()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L29"
+    },
+    {
+      "id": "alphabet_floatinginteractionzone_reset",
+      "label": "reset()",
+      "file_type": "code",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L84"
+    },
+    {
+      "id": "app_components_cvc_blendresultdisplay_vue",
+      "label": "BlendResultDisplay.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\BlendResultDisplay.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_cvc_levelselector_vue",
+      "label": "LevelSelector.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "cvc_levelselector_ispremiumlocked",
+      "label": "isPremiumLocked()",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L10"
+    },
+    {
+      "id": "cvc_levelselector_getscore",
+      "label": "getScore()",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L11"
+    },
+    {
+      "id": "cvc_levelselector_getlink",
+      "label": "getLink()",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L13"
+    },
+    {
+      "id": "app_components_cvc_mergeanimation_vue",
+      "label": "MergeAnimation.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\MergeAnimation.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_cvc_mergebutton_vue",
+      "label": "MergeButton.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\MergeButton.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_cvc_progresstracker_vue",
+      "label": "ProgressTracker.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\ProgressTracker.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_cvc_syllablecard_vue",
+      "label": "SyllableCard.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\cvc\\SyllableCard.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_clusterquiz_vue",
+      "label": "ClusterQuiz.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\ClusterQuiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_ddvmergebutton_vue",
+      "label": "DdvMergeButton.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\DdvMergeButton.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_ddvprogresstracker_vue",
+      "label": "DdvProgressTracker.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\DdvProgressTracker.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_diphthongquiz_vue",
+      "label": "DiphthongQuiz.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\DiphthongQuiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_vowelconnectquiz_vue",
+      "label": "VowelConnectQuiz.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\VowelConnectQuiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "ddv_vowelconnectquiz_if",
+      "label": "if()",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\VowelConnectQuiz.vue",
+      "source_location": "L93"
+    },
+    {
+      "id": "app_components_ddv_vowelfusedresult_vue",
+      "label": "VowelFusedResult.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\VowelFusedResult.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_vowelslideanimation_vue",
+      "label": "VowelSlideAnimation.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\VowelSlideAnimation.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ddv_wordlabdisplay_vue",
+      "label": "WordLabDisplay.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ddv\\WordLabDisplay.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_nasal_digraphfusion_vue",
+      "label": "DigraphFusion.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\nasal\\DigraphFusion.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_nasal_nasalquiz_vue",
+      "label": "NasalQuiz.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\nasal\\NasalQuiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_nasal_nasalwordpractice_vue",
+      "label": "NasalWordPractice.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\nasal\\NasalWordPractice.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_nasal_tailsoundanchor_vue",
+      "label": "TailSoundAnchor.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\nasal\\TailSoundAnchor.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_alphabetanalyticsmodal_vue",
+      "label": "AlphabetAnalyticsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\AlphabetAnalyticsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_alphabetsettingsmodal_vue",
+      "label": "AlphabetSettingsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\AlphabetSettingsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_cvcsettingsmodal_vue",
+      "label": "CvcSettingsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\CvcSettingsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_ddvsettingsmodal_vue",
+      "label": "DdvSettingsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\DdvSettingsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_wordanalyticsmodal_vue",
+      "label": "WordAnalyticsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\WordAnalyticsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_parent_wordsettingsmodal_vue",
+      "label": "WordSettingsModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\parent\\WordSettingsModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_shared_basemodal_vue",
+      "label": "BaseModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\shared\\BaseModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_shared_parentgate_vue",
+      "label": "ParentGate.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "shared_parentgate_generateproblem",
+      "label": "generateProblem()",
+      "file_type": "code",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L62"
+    },
+    {
+      "id": "shared_parentgate_checkanswer",
+      "label": "checkAnswer()",
+      "file_type": "code",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L76"
+    },
+    {
+      "id": "shared_parentgate_close",
+      "label": "close()",
+      "file_type": "code",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L93"
+    },
+    {
+      "id": "app_components_ui_button_vue",
+      "label": "Button.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\Button.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ui_celebrationmodal_vue",
+      "label": "CelebrationModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\CelebrationModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_celebrationmodal_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\CelebrationModal.vue",
+      "source_location": "L19"
+    },
+    {
+      "id": "app_components_ui_confirmmodal_vue",
+      "label": "ConfirmModal.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\ConfirmModal.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ui_floatingmentor_vue",
+      "label": "FloatingMentor.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\FloatingMentor.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ui_notificationtoast_vue",
+      "label": "NotificationToast.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\NotificationToast.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_components_ui_orientationguard_vue",
+      "label": "OrientationGuard.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\OrientationGuard.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_orientationguard_if",
+      "label": "if()",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\OrientationGuard.vue",
+      "source_location": "L7"
+    },
+    {
+      "id": "app_components_ui_pwaupdateprompt_vue",
+      "label": "PwaUpdatePrompt.vue",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\PwaUpdatePrompt.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "ui_pwaupdateprompt_update",
+      "label": "update()",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\PwaUpdatePrompt.vue",
+      "source_location": "L6"
+    },
+    {
+      "id": "ui_pwaupdateprompt_dismiss",
+      "label": "dismiss()",
+      "file_type": "code",
+      "source_file": "app\\components\\ui\\PwaUpdatePrompt.vue",
+      "source_location": "L10"
+    },
+    {
+      "id": "app_composables_useaudio_ts",
+      "label": "useAudio.ts",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "composables_useaudio_stopallaudio",
+      "label": "stopAllAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "composables_useaudio_speaktts",
+      "label": "speakTTS()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L38"
+    },
+    {
+      "id": "composables_useaudio_playaudio",
+      "label": "playAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L96"
+    },
+    {
+      "id": "composables_useaudio_playsequence",
+      "label": "playSequence()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L181"
+    },
+    {
+      "id": "composables_useaudio_playwordaudio",
+      "label": "playWordAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L204"
+    },
+    {
+      "id": "composables_useaudio_playsyllableaudio",
+      "label": "playSyllableAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L208"
+    },
+    {
+      "id": "composables_useaudio_playeffectaudio",
+      "label": "playEffectAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L212"
+    },
+    {
+      "id": "composables_useaudio_playlettersound",
+      "label": "playLetterSound()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L231"
+    },
+    {
+      "id": "composables_useaudio_useaudio",
+      "label": "useAudio()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L273"
+    },
+    {
+      "id": "app_composables_useconfirm_ts",
+      "label": "useConfirm.ts",
+      "file_type": "code",
+      "source_file": "app\\composables\\useConfirm.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "composables_useconfirm_useconfirm",
+      "label": "useConfirm()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useConfirm.ts",
+      "source_location": "L22"
+    },
+    {
+      "id": "app_composables_usementorhint_ts",
+      "label": "useMentorHint.ts",
+      "file_type": "code",
+      "source_file": "app\\composables\\useMentorHint.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "composables_usementorhint_usementorhint",
+      "label": "useMentorHint()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useMentorHint.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "app_composables_usenotification_ts",
+      "label": "useNotification.ts",
+      "file_type": "code",
+      "source_file": "app\\composables\\useNotification.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_composables_usesubscription_ts",
+      "label": "useSubscription.ts",
+      "file_type": "code",
+      "source_file": "app\\composables\\useSubscription.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "composables_usesubscription_usesubscription",
+      "label": "useSubscription()",
+      "file_type": "code",
+      "source_file": "app\\composables\\useSubscription.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_alphabet_ts",
+      "label": "alphabet.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\alphabet.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "constants_alphabet_getlettercolor",
+      "label": "getLetterColor()",
+      "file_type": "code",
+      "source_file": "app\\constants\\alphabet.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "app_constants_alphabetstorybook_ts",
+      "label": "alphabetStorybook.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\alphabetStorybook.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_audio_ts",
+      "label": "audio.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\audio.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_cvcblends_ts",
+      "label": "cvcBlends.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\cvcBlends.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_ddvdata_ts",
+      "label": "ddvData.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\ddvData.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_nasaldata_ts",
+      "label": "nasalData.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\nasalData.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_profile_ts",
+      "label": "profile.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\profile.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_reward_ts",
+      "label": "reward.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\reward.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_constants_words_ts",
+      "label": "words.ts",
+      "file_type": "code",
+      "source_file": "app\\constants\\words.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_middleware_auth_global_ts",
+      "label": "auth.global.ts",
+      "file_type": "code",
+      "source_file": "app\\middleware\\auth.global.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_middleware_premium_ts",
+      "label": "premium.ts",
+      "file_type": "code",
+      "source_file": "app\\middleware\\premium.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_middleware_profile_global_ts",
+      "label": "profile.global.ts",
+      "file_type": "code",
+      "source_file": "app\\middleware\\profile.global.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_login_vue",
+      "label": "login.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\login.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_parent_vue",
+      "label": "parent.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "pages_parent_logout",
+      "label": "logout()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent.vue",
+      "source_location": "L14"
+    },
+    {
+      "id": "pages_parent_checkgate",
+      "label": "checkGate()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent.vue",
+      "source_location": "L57"
+    },
+    {
+      "id": "app_pages_profiles_vue",
+      "label": "profiles.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\profiles.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_rewards_vue",
+      "label": "rewards.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "pages_rewards_if",
+      "label": "if()",
+      "file_type": "code",
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L26"
+    },
+    {
+      "id": "pages_rewards_onresponse",
+      "label": "onResponse()",
+      "file_type": "code",
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L40"
+    },
+    {
+      "id": "app_pages_signup_vue",
+      "label": "signup.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\signup.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_welcome_vue",
+      "label": "welcome.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\welcome.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_alphabet_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_alphabet_quiz_vue",
+      "label": "quiz.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\quiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "alphabet_quiz_stopquiz",
+      "label": "stopQuiz()",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\quiz.vue",
+      "source_location": "L16"
+    },
+    {
+      "id": "app_pages_alphabet_id_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_alphabet_id_story_vue",
+      "label": "story.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\story.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "id_story_playnext",
+      "label": "playNext()",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\story.vue",
+      "source_location": "L137"
+    },
+    {
+      "id": "app_pages_alphabet_id_trace_vue",
+      "label": "trace.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "id_trace_cleartracing",
+      "label": "clearTracing()",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L23"
+    },
+    {
+      "id": "id_trace_onsaved",
+      "label": "onSaved()",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L29"
+    },
+    {
+      "id": "id_trace_retry",
+      "label": "retry()",
+      "file_type": "code",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L88"
+    },
+    {
+      "id": "app_pages_challenge_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\challenge\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "challenge_index_onresponse",
+      "label": "onResponse()",
+      "file_type": "code",
+      "source_file": "app\\pages\\challenge\\index.vue",
+      "source_location": "L32"
+    },
+    {
+      "id": "app_pages_cvc_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_cvc_quiz_vue",
+      "label": "quiz.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\quiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_cvc_learn_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "learn_index_ispremiumlocked",
+      "label": "isPremiumLocked()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L8"
+    },
+    {
+      "id": "learn_index_getscore",
+      "label": "getScore()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L9"
+    },
+    {
+      "id": "learn_index_getlink",
+      "label": "getLink()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L11"
+    },
+    {
+      "id": "app_pages_cvc_learn_level_vue",
+      "label": "[level].vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "learn_level_handlemerge",
+      "label": "handleMerge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L54"
+    },
+    {
+      "id": "learn_level_nextitem",
+      "label": "nextItem()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L75"
+    },
+    {
+      "id": "learn_level_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L87"
+    },
+    {
+      "id": "learn_level_gotonextlevel",
+      "label": "goToNextLevel()",
+      "file_type": "code",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L107"
+    },
+    {
+      "id": "app_pages_ddv_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_ddv_quiz_vue",
+      "label": "quiz.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "ddv_quiz_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L61"
+    },
+    {
+      "id": "ddv_quiz_handlecorrect",
+      "label": "handleCorrect()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L64"
+    },
+    {
+      "id": "ddv_quiz_handlediphthongcorrect",
+      "label": "handleDiphthongCorrect()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L81"
+    },
+    {
+      "id": "ddv_quiz_handleclustercorrect",
+      "label": "handleClusterCorrect()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L91"
+    },
+    {
+      "id": "ddv_quiz_handleconnectmatch",
+      "label": "handleConnectMatch()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L101"
+    },
+    {
+      "id": "ddv_quiz_handleconnectcomplete",
+      "label": "handleConnectComplete()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L106"
+    },
+    {
+      "id": "ddv_quiz_restartgame",
+      "label": "restartGame()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L121"
+    },
+    {
+      "id": "app_pages_ddv_learn_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "learn_index_getlink",
+      "label": "getLink()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\index.vue",
+      "source_location": "L13"
+    },
+    {
+      "id": "app_pages_ddv_learn_level_vue",
+      "label": "[level].vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "learn_level_handlemerge",
+      "label": "handleMerge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L43"
+    },
+    {
+      "id": "learn_level_handlecomplete",
+      "label": "handleComplete()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L65"
+    },
+    {
+      "id": "learn_level_nextitem",
+      "label": "nextItem()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L75"
+    },
+    {
+      "id": "learn_level_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L87"
+    },
+    {
+      "id": "learn_level_gotonextlevel",
+      "label": "goToNextLevel()",
+      "file_type": "code",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L106"
+    },
+    {
+      "id": "app_pages_games_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\games\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_nasal_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\nasal\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_nasal_learn_level_vue",
+      "label": "[level].vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "learn_level_handlestepcomplete",
+      "label": "handleStepComplete()",
+      "file_type": "code",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L40"
+    },
+    {
+      "id": "learn_level_finishlevel",
+      "label": "finishLevel()",
+      "file_type": "code",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L51"
+    },
+    {
+      "id": "learn_level_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L65"
+    },
+    {
+      "id": "app_pages_parent_analytics_vue",
+      "label": "analytics.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\analytics.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_parent_challenge_vue",
+      "label": "challenge.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "parent_challenge_openaddmodal",
+      "label": "openAddModal()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L23"
+    },
+    {
+      "id": "parent_challenge_openeditmodal",
+      "label": "openEditModal()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L36"
+    },
+    {
+      "id": "parent_challenge_handlesavechallenge",
+      "label": "handleSaveChallenge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L45"
+    },
+    {
+      "id": "parent_challenge_handledeletechallenge",
+      "label": "handleDeleteChallenge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L100"
+    },
+    {
+      "id": "parent_challenge_handlefulfillchallenge",
+      "label": "handleFulfillChallenge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L125"
+    },
+    {
+      "id": "parent_challenge_handleresetchallenge",
+      "label": "handleResetChallenge()",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L151"
+    },
+    {
+      "id": "app_pages_parent_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_parent_premium_vue",
+      "label": "premium.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\premium.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_parent_quiz_vue",
+      "label": "quiz.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\quiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_parent_rewards_vue",
+      "label": "rewards.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\parent\\rewards.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_words_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_words_learn_vue",
+      "label": "learn.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\learn.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_pages_words_quiz_vue",
+      "label": "quiz.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\quiz.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "words_quiz_handlecorrect",
+      "label": "handleCorrect()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\quiz.vue",
+      "source_location": "L378"
+    },
+    {
+      "id": "app_pages_words_category_word_exercise_vue",
+      "label": "exercise.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "word_exercise_initializegame",
+      "label": "initializeGame()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L37"
+    },
+    {
+      "id": "word_exercise_playtargetword",
+      "label": "playTargetWord()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L67"
+    },
+    {
+      "id": "word_exercise_checkcompletion",
+      "label": "checkCompletion()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L86"
+    },
+    {
+      "id": "word_exercise_popconfetti",
+      "label": "popConfetti()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L96"
+    },
+    {
+      "id": "word_exercise_ondragstart",
+      "label": "onDragStart()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L129"
+    },
+    {
+      "id": "word_exercise_ondragend",
+      "label": "onDragEnd()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L144"
+    },
+    {
+      "id": "word_exercise_ondragenter",
+      "label": "onDragEnter()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L152"
+    },
+    {
+      "id": "word_exercise_ondragleave",
+      "label": "onDragLeave()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L157"
+    },
+    {
+      "id": "word_exercise_dropatslot",
+      "label": "dropAtSlot()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L164"
+    },
+    {
+      "id": "word_exercise_ondrop",
+      "label": "onDrop()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L194"
+    },
+    {
+      "id": "word_exercise_putbackletter",
+      "label": "putBackLetter()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L199"
+    },
+    {
+      "id": "word_exercise_ontouchstart",
+      "label": "onTouchStart()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L209"
+    },
+    {
+      "id": "word_exercise_ontouchmove",
+      "label": "onTouchMove()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L222"
+    },
+    {
+      "id": "word_exercise_ontouchend",
+      "label": "onTouchEnd()",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L233"
+    },
+    {
+      "id": "app_pages_words_category_word_index_vue",
+      "label": "index.vue",
+      "file_type": "code",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\index.vue",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_alphabetstore_ts",
+      "label": "alphabetStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\alphabetStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_analyticsstore_ts",
+      "label": "analyticsStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\analyticsStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_challengestore_ts",
+      "label": "challengeStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\challengeStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_cvcstore_ts",
+      "label": "cvcStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\cvcStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_ddvstore_ts",
+      "label": "ddvStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\ddvStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_mentorstore_ts",
+      "label": "mentorStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\mentorStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_nasalstore_ts",
+      "label": "nasalStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\nasalStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_profilestore_ts",
+      "label": "profileStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\profileStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_rewardstore_ts",
+      "label": "rewardStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\rewardStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_settingsstore_ts",
+      "label": "settingsStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\settingsStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_storybookstore_ts",
+      "label": "storybookStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\storybookStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_userstore_ts",
+      "label": "userStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\userStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_stores_wordstore_ts",
+      "label": "wordStore.ts",
+      "file_type": "code",
+      "source_file": "app\\stores\\wordStore.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_types_alphabet_ts",
+      "label": "alphabet.ts",
+      "file_type": "code",
+      "source_file": "app\\types\\alphabet.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_types_env_ts",
+      "label": "env.ts",
+      "file_type": "code",
+      "source_file": "app\\types\\env.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_types_index_ts",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "app\\types\\index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_types_stores_ts",
+      "label": "stores.ts",
+      "file_type": "code",
+      "source_file": "app\\types\\stores.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_types_sync_ts",
+      "label": "sync.ts",
+      "file_type": "code",
+      "source_file": "app\\types\\sync.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_utils_auth_client_ts",
+      "label": "auth-client.ts",
+      "file_type": "code",
+      "source_file": "app\\utils\\auth-client.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_utils_index_ts",
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "app\\utils\\index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_index_formatdate",
+      "label": "formatDate()",
+      "file_type": "code",
+      "source_file": "app\\utils\\index.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_alphabet_quiz_profileid_config_patch_ts",
+      "label": "config.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_alphabet_quiz_profileid_progress_get_ts",
+      "label": "progress.get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_alphabet_quiz_profileid_progress_patch_ts",
+      "label": "progress.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_alphabet_quiz_profileid_progress_post_ts",
+      "label": "progress.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_auth_all_ts",
+      "label": "[...all].ts",
+      "file_type": "code",
+      "source_file": "server\\api\\auth\\[...all].ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_challenges_index_post_ts",
+      "label": "index.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\challenges\\index.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_challenges_id_delete_ts",
+      "label": "[id].delete.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\challenges\\[id].delete.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_challenges_id_patch_ts",
+      "label": "[id].patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\challenges\\[id].patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_challenges_profile_id_get_ts",
+      "label": "[id].get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\challenges\\profile\\[id].get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_cvc_profileid_progress_get_ts",
+      "label": "progress.get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_cvc_profileid_progress_patch_ts",
+      "label": "progress.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_cvc_profileid_progress_post_ts",
+      "label": "progress.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_ddv_profileid_progress_get_ts",
+      "label": "progress.get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_ddv_profileid_progress_patch_ts",
+      "label": "progress.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_ddv_profileid_progress_post_ts",
+      "label": "progress.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_midtrans_checkout_post_ts",
+      "label": "checkout.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\midtrans\\checkout.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_midtrans_notification_post_ts",
+      "label": "notification.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_nasal_profileid_progress_get_ts",
+      "label": "progress.get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_nasal_profileid_progress_patch_ts",
+      "label": "progress.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_nasal_profileid_progress_post_ts",
+      "label": "progress.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_profile_index_post_ts",
+      "label": "index.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\profile\\index.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_profile_profileid_get_ts",
+      "label": "[profileId].get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\profile\\[profileId].get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_profile_profileid_put_ts",
+      "label": "[profileId].put.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\profile\\[profileId].put.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_profile_user_id_get_ts",
+      "label": "[id].get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\profile\\user\\[id].get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_index_post_ts",
+      "label": "index.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\index.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_id_delete_ts",
+      "label": "[id].delete.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\[id].delete.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_profile_id_get_ts",
+      "label": "[id].get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\profile\\[id].get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_id_claim_patch_ts",
+      "label": "claim.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\[id]\\claim.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_id_index_delete_ts",
+      "label": "index.delete.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\[id]\\index.delete.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_reward_id_index_patch_ts",
+      "label": "index.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\reward\\[id]\\index.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_words_quiz_profileid_config_patch_ts",
+      "label": "config.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_words_quiz_profileid_progress_delete_ts",
+      "label": "progress.delete.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.delete.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_words_quiz_profileid_progress_get_ts",
+      "label": "progress.get.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_words_quiz_profileid_progress_patch_ts",
+      "label": "progress.patch.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_api_words_quiz_profileid_progress_post_ts",
+      "label": "progress.post.ts",
+      "file_type": "code",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_middleware_auth_ts",
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "server\\middleware\\auth.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "server_utils_auth_ts",
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_auth_auth",
+      "label": "_auth()",
+      "file_type": "code",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "server_utils_db_ts",
+      "label": "db.ts",
+      "file_type": "code",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "utils_db_db",
+      "label": "db()",
+      "file_type": "code",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "server_utils_db_schema_ts",
+      "label": "schema.ts",
+      "file_type": "code",
+      "source_file": "server\\utils\\db\\schema.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "shared_types_api_d_ts",
+      "label": "api.d.ts",
+      "file_type": "code",
+      "source_file": "shared\\types\\api.d.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "logo_svg",
+      "label": "Abelma Logo",
+      "file_type": "image",
+      "source_file": "app/assets/logo.svg"
+    },
+    {
+      "id": "bg1_webp",
+      "label": "Underwater Background 1",
+      "file_type": "image",
+      "source_file": "public/bg1.webp"
+    },
+    {
+      "id": "bg2_webp",
+      "label": "Underwater Background 2",
+      "file_type": "image",
+      "source_file": "public/bg2.webp"
+    },
+    {
+      "id": "img_a_webp",
+      "label": "Letter A Illustration",
+      "file_type": "image",
+      "source_file": "public/img/A.webp"
+    },
+    {
+      "id": "img_b_webp",
+      "label": "Letter B Illustration",
+      "file_type": "image",
+      "source_file": "public/img/B.webp"
+    },
+    {
+      "id": "img_c_webp",
+      "label": "Letter C Illustration",
+      "file_type": "image",
+      "source_file": "public/img/C.webp"
+    },
+    {
+      "id": "img_d_webp",
+      "label": "Letter D Illustration",
+      "file_type": "image",
+      "source_file": "public/img/D.webp"
+    },
+    {
+      "id": "img_e_webp",
+      "label": "Letter E Illustration",
+      "file_type": "image",
+      "source_file": "public/img/E.webp"
+    },
+    {
+      "id": "img_f_webp",
+      "label": "Letter F Illustration",
+      "file_type": "image",
+      "source_file": "public/img/F.webp"
+    },
+    {
+      "id": "img_g_webp",
+      "label": "Letter G Illustration",
+      "file_type": "image",
+      "source_file": "public/img/G.webp"
+    },
+    {
+      "id": "img_h_webp",
+      "label": "Letter H Illustration",
+      "file_type": "image",
+      "source_file": "public/img/H.webp"
+    },
+    {
+      "id": "img_i_webp",
+      "label": "Letter I Illustration",
+      "file_type": "image",
+      "source_file": "public/img/I.webp"
+    },
+    {
+      "id": "img_j_webp",
+      "label": "Letter J Illustration",
+      "file_type": "image",
+      "source_file": "public/img/J.webp"
+    },
+    {
+      "id": "img_k_webp",
+      "label": "Letter K Illustration",
+      "file_type": "image",
+      "source_file": "public/img/K.webp"
+    },
+    {
+      "id": "img_l_webp",
+      "label": "Letter L Illustration",
+      "file_type": "image",
+      "source_file": "public/img/L.webp"
+    },
+    {
+      "id": "img_m_webp",
+      "label": "Letter M Illustration",
+      "file_type": "image",
+      "source_file": "public/img/M.webp"
+    },
+    {
+      "id": "mentor_boy_png",
+      "label": "Mentor Character (Boy)",
+      "file_type": "image",
+      "source_file": "public/img/mentor-boy.png"
+    },
+    {
+      "id": "img_n_webp",
+      "label": "Letter N Illustration",
+      "file_type": "image",
+      "source_file": "public/img/N.webp"
+    },
+    {
+      "id": "img_o_webp",
+      "label": "Letter O Illustration",
+      "file_type": "image",
+      "source_file": "public/img/O.webp"
+    },
+    {
+      "id": "img_p_webp",
+      "label": "Letter P Illustration",
+      "file_type": "image",
+      "source_file": "public/img/P.webp"
+    },
+    {
+      "id": "img_q_webp",
+      "label": "Letter Q Illustration",
+      "file_type": "image",
+      "source_file": "public/img/Q.webp"
+    },
+    {
+      "id": "img_r_webp",
+      "label": "Letter R Illustration",
+      "file_type": "image",
+      "source_file": "public/img/R.webp"
+    },
+    {
+      "id": "img_s_webp",
+      "label": "Letter S Illustration",
+      "file_type": "image",
+      "source_file": "public/img/S.webp"
+    },
+    {
+      "id": "img_t_webp",
+      "label": "Letter T Illustration",
+      "file_type": "image",
+      "source_file": "public/img/T.webp"
+    },
+    {
+      "id": "img_u_webp",
+      "label": "Letter U Illustration",
+      "file_type": "image",
+      "source_file": "public/img/U.webp"
+    },
+    {
+      "id": "img_v_webp",
+      "label": "Letter V Illustration",
+      "file_type": "image",
+      "source_file": "public/img/V.webp"
+    },
+    {
+      "id": "store_profileStore",
+      "label": "profileStore",
+      "file_type": "code",
+      "source_file": "app/stores/profileStore.ts"
+    },
+    {
+      "id": "store_mentorStore",
+      "label": "mentorStore",
+      "file_type": "code",
+      "source_file": "app/stores/mentorStore.ts"
+    },
+    {
+      "id": "store_alphabetStore",
+      "label": "alphabetStore",
+      "file_type": "code",
+      "source_file": "app/stores/alphabetStore.ts"
+    },
+    {
+      "id": "store_wordStore",
+      "label": "wordStore",
+      "file_type": "code",
+      "source_file": "app/stores/wordStore.ts"
+    },
+    {
+      "id": "store_cvcStore",
+      "label": "cvcStore",
+      "file_type": "code",
+      "source_file": "app/stores/cvcStore.ts"
+    },
+    {
+      "id": "store_ddvStore",
+      "label": "ddvStore",
+      "file_type": "code",
+      "source_file": "app/stores/ddvStore.ts"
+    },
+    {
+      "id": "store_nasalStore",
+      "label": "nasalStore",
+      "file_type": "code",
+      "source_file": "app/stores/nasalStore.ts"
+    },
+    {
+      "id": "store_challengeStore",
+      "label": "challengeStore",
+      "file_type": "code",
+      "source_file": "app/stores/challengeStore.ts"
+    },
+    {
+      "id": "store_rewardStore",
+      "label": "rewardStore",
+      "file_type": "code",
+      "source_file": "app/stores/rewardStore.ts"
+    },
+    {
+      "id": "store_analyticsStore",
+      "label": "analyticsStore",
+      "file_type": "code",
+      "source_file": "app/stores/analyticsStore.ts"
+    },
+    {
+      "id": "store_storybookStore",
+      "label": "storybookStore",
+      "file_type": "code",
+      "source_file": "app/stores/storybookStore.ts"
+    },
+    {
+      "id": "store_userStore",
+      "label": "userStore",
+      "file_type": "code",
+      "source_file": "app/stores/userStore.ts"
+    },
+    {
+      "id": "store_settingsStore",
+      "label": "settingsStore",
+      "file_type": "code",
+      "source_file": "app/stores/settingsStore.ts"
+    },
+    {
+      "id": "page_index",
+      "label": "Home Page",
+      "file_type": "code",
+      "source_file": "app/pages/index.vue"
+    },
+    {
+      "id": "comp_menucard",
+      "label": "MenuCard Component",
+      "file_type": "code",
+      "source_file": "app/components/MenuCard.vue"
+    },
+    {
+      "id": "page_alphabet_index",
+      "label": "Alphabet Dashboard",
+      "file_type": "code",
+      "source_file": "app/pages/alphabet/index.vue"
+    },
+    {
+      "id": "page_words_index",
+      "label": "Words Dashboard",
+      "file_type": "code",
+      "source_file": "app/pages/words/index.vue"
+    },
+    {
+      "id": "page_cvc_index",
+      "label": "Cvc Dashboard",
+      "file_type": "code",
+      "source_file": "app/pages/cvc/index.vue"
+    },
+    {
+      "id": "page_ddv_index",
+      "label": "Ddv Dashboard",
+      "file_type": "code",
+      "source_file": "app/pages/ddv/index.vue"
+    },
+    {
+      "id": "page_nasal_index",
+      "label": "Nasal Dashboard",
+      "file_type": "code",
+      "source_file": "app/pages/nasal/index.vue"
+    },
+    {
+      "id": "api_profile",
+      "label": "Profile API",
+      "file_type": "code",
+      "source_file": "server/api/profile/index.post.ts"
+    },
+    {
+      "id": "util_auth",
+      "label": "Auth Utils",
+      "file_type": "code",
+      "source_file": "server/utils/auth.ts"
+    }
+  ],
+  "edges": [
+    {
+      "source": "drizzle_config_ts",
+      "target": "drizzle_kit",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "drizzle.config.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "nuxt_config_ts",
+      "target": "vite",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "nuxt.config.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_globalheader_vue",
+      "target": "components_globalheader_togglefullscreen",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\GlobalHeader.vue",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_interactionzone_vue",
+      "target": "components_interactionzone_shuffleoptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_interactionzone_vue",
+      "target": "components_interactionzone_colorforindex",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_interactionzone_vue",
+      "target": "components_interactionzone_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_interactionzone_vue",
+      "target": "components_interactionzone_handleclick",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_interactionzone_vue",
+      "target": "components_interactionzone_reset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "components_interactionzone_handleclick",
+      "target": "components_interactionzone_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "components_interactionzone_reset",
+      "target": "components_interactionzone_shuffleoptions",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\InteractionZone.vue",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetlearningmode_vue",
+      "target": "alphabet_alphabetlearningmode_if",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetLearningMode.vue",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_shuffleletters",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_picknextletter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L113",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_stoptimer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_starttimer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_handletimeout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L166",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_launchconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_alphabetquizmode_vue",
+      "target": "alphabet_alphabetquizmode_handleletterclick",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L222",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_starttimer",
+      "target": "alphabet_alphabetquizmode_stoptimer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handletimeout",
+      "target": "alphabet_alphabetquizmode_stoptimer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "alphabet_alphabetquizmode_stoptimer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L234",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "alphabet_alphabetquizmode_launchconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L330",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "alphabet_alphabetquizmode_picknextletter",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L339",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "alphabet_alphabetquizmode_shuffleletters",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L357",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "alphabet_alphabetquizmode_starttimer",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L363",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_floatinginteractionzone_vue",
+      "target": "alphabet_floatinginteractionzone_shuffleoptions",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_alphabet_floatinginteractionzone_vue",
+      "target": "alphabet_floatinginteractionzone_reset",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_floatinginteractionzone_reset",
+      "target": "alphabet_floatinginteractionzone_shuffleoptions",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\alphabet\\FloatingInteractionZone.vue",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_cvc_levelselector_vue",
+      "target": "cvc_levelselector_ispremiumlocked",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_cvc_levelselector_vue",
+      "target": "cvc_levelselector_getscore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_cvc_levelselector_vue",
+      "target": "cvc_levelselector_getlink",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "cvc_levelselector_getlink",
+      "target": "cvc_levelselector_ispremiumlocked",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\cvc\\LevelSelector.vue",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_ddv_vowelconnectquiz_vue",
+      "target": "ddv_vowelconnectquiz_if",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\ddv\\VowelConnectQuiz.vue",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_shared_parentgate_vue",
+      "target": "shared_parentgate_generateproblem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_shared_parentgate_vue",
+      "target": "shared_parentgate_checkanswer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_shared_parentgate_vue",
+      "target": "shared_parentgate_close",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "shared_parentgate_close",
+      "target": "shared_parentgate_generateproblem",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\shared\\ParentGate.vue",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_ui_celebrationmodal_vue",
+      "target": "ui_celebrationmodal_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\ui\\CelebrationModal.vue",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_ui_orientationguard_vue",
+      "target": "ui_orientationguard_if",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\ui\\OrientationGuard.vue",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_ui_pwaupdateprompt_vue",
+      "target": "ui_pwaupdateprompt_update",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\ui\\PwaUpdatePrompt.vue",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_components_ui_pwaupdateprompt_vue",
+      "target": "ui_pwaupdateprompt_dismiss",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\components\\ui\\PwaUpdatePrompt.vue",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "types",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "alphabet",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "audio",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_stopallaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_speaktts",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playsequence",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playwordaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L204",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playsyllableaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L208",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playeffectaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L212",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_playlettersound",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useaudio_ts",
+      "target": "composables_useaudio_useaudio",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L273",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playsequence",
+      "target": "composables_useaudio_stopallaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playsequence",
+      "target": "composables_useaudio_playaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playwordaudio",
+      "target": "composables_useaudio_playaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playsyllableaudio",
+      "target": "composables_useaudio_playaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playeffectaudio",
+      "target": "composables_useaudio_speaktts",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L218",
+      "weight": 1.0
+    },
+    {
+      "source": "composables_useaudio_playlettersound",
+      "target": "composables_useaudio_stopallaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useAudio.ts",
+      "source_location": "L232",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_useconfirm_ts",
+      "target": "composables_useconfirm_useconfirm",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useConfirm.ts",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_usementorhint_ts",
+      "target": "vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useMentorHint.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_usementorhint_ts",
+      "target": "mentorstore",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useMentorHint.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_usementorhint_ts",
+      "target": "composables_usementorhint_usementorhint",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useMentorHint.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "app_composables_usesubscription_ts",
+      "target": "composables_usesubscription_usesubscription",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\composables\\useSubscription.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_constants_alphabet_ts",
+      "target": "constants_alphabet_getlettercolor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\constants\\alphabet.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "app_constants_alphabet_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\constants\\alphabet.ts",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_vue",
+      "target": "pages_parent_logout",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent.vue",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_vue",
+      "target": "pages_parent_checkgate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent.vue",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_rewards_vue",
+      "target": "pages_rewards_if",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_rewards_vue",
+      "target": "pages_rewards_onresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_alphabet_quiz_vue",
+      "target": "alphabet_quiz_stopquiz",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\quiz.vue",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_alphabet_id_story_vue",
+      "target": "id_story_playnext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\story.vue",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_alphabet_id_trace_vue",
+      "target": "id_trace_cleartracing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_alphabet_id_trace_vue",
+      "target": "id_trace_onsaved",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_alphabet_id_trace_vue",
+      "target": "id_trace_retry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "id_trace_onsaved",
+      "target": "id_trace_cleartracing",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "id_trace_retry",
+      "target": "id_trace_cleartracing",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\alphabet\\[id]\\trace.vue",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_challenge_index_vue",
+      "target": "challenge_index_onresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\challenge\\index.vue",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_index_vue",
+      "target": "learn_index_ispremiumlocked",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_index_vue",
+      "target": "learn_index_getscore",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_index_vue",
+      "target": "learn_index_getlink",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_index_getlink",
+      "target": "learn_index_ispremiumlocked",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\index.vue",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_level_vue",
+      "target": "learn_level_handlemerge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_level_vue",
+      "target": "learn_level_nextitem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_level_vue",
+      "target": "learn_level_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_cvc_learn_level_vue",
+      "target": "learn_level_gotonextlevel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_handlemerge",
+      "target": "learn_level_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_handlecorrect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_handlediphthongcorrect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_handleclustercorrect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_handleconnectmatch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_handleconnectcomplete",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_quiz_vue",
+      "target": "ddv_quiz_restartgame",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "ddv_quiz_handlecorrect",
+      "target": "ddv_quiz_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "ddv_quiz_handlediphthongcorrect",
+      "target": "ddv_quiz_handlecorrect",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "ddv_quiz_handleclustercorrect",
+      "target": "ddv_quiz_handlecorrect",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "ddv_quiz_handleconnectmatch",
+      "target": "ddv_quiz_handlecorrect",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "ddv_quiz_handleconnectcomplete",
+      "target": "ddv_quiz_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\quiz.vue",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_index_vue",
+      "target": "learn_index_getlink",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\index.vue",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_level_vue",
+      "target": "learn_level_handlemerge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_level_vue",
+      "target": "learn_level_handlecomplete",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_level_vue",
+      "target": "learn_level_nextitem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_level_vue",
+      "target": "learn_level_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_ddv_learn_level_vue",
+      "target": "learn_level_gotonextlevel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_handlemerge",
+      "target": "learn_level_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_handlecomplete",
+      "target": "learn_level_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\ddv\\learn\\[level].vue",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_nasal_learn_level_vue",
+      "target": "learn_level_handlestepcomplete",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_nasal_learn_level_vue",
+      "target": "learn_level_finishlevel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_nasal_learn_level_vue",
+      "target": "learn_level_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_handlestepcomplete",
+      "target": "learn_level_finishlevel",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_finishlevel",
+      "target": "learn_level_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\nasal\\learn\\[level].vue",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_openaddmodal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_openeditmodal",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_handlesavechallenge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_handledeletechallenge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_handlefulfillchallenge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_parent_challenge_vue",
+      "target": "parent_challenge_handleresetchallenge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\parent\\challenge.vue",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_quiz_vue",
+      "target": "words_quiz_handlecorrect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\quiz.vue",
+      "source_location": "L378",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_initializegame",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_playtargetword",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_checkcompletion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_popconfetti",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ondragstart",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ondragend",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ondragenter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ondragleave",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L157",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_dropatslot",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ondrop",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_putbackletter",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ontouchstart",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ontouchmove",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L222",
+      "weight": 1.0
+    },
+    {
+      "source": "app_pages_words_category_word_exercise_vue",
+      "target": "word_exercise_ontouchend",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L233",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_checkcompletion",
+      "target": "word_exercise_playtargetword",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_checkcompletion",
+      "target": "word_exercise_popconfetti",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_dropatslot",
+      "target": "word_exercise_putbackletter",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_dropatslot",
+      "target": "word_exercise_checkcompletion",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L180",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_ondrop",
+      "target": "word_exercise_dropatslot",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_ontouchend",
+      "target": "word_exercise_dropatslot",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L242",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_alphabetstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\alphabetStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_alphabetstore_ts",
+      "target": "alphabet",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\alphabetStore.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_analyticsstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\analyticsStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_cvcstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\cvcStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_cvcstore_ts",
+      "target": "cvcblends",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\cvcStore.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_ddvstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\ddvStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_ddvstore_ts",
+      "target": "ddvdata",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\ddvStore.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_nasalstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\nasalStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_nasalstore_ts",
+      "target": "nasaldata",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\nasalStore.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_profilestore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\profileStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_profilestore_ts",
+      "target": "alphabet",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\profileStore.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_rewardstore_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\rewardStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_settingsstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\settingsStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_storybookstore_ts",
+      "target": "sync",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\storybookStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_userstore_ts",
+      "target": "better_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\userStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_userstore_ts",
+      "target": "auth_client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\userStore.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_stores_wordstore_ts",
+      "target": "stores",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\stores\\wordStore.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_utils_auth_client_ts",
+      "target": "vue",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\utils\\auth-client.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "app_utils_auth_client_ts",
+      "target": "plugins",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\utils\\auth-client.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "app_utils_index_ts",
+      "target": "utils_index_formatdate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app\\utils\\index.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_config_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_config_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_patch_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_post_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_alphabet_quiz_profileid_progress_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\alphabet\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_auth_all_ts",
+      "target": "h3",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\auth\\[...all].ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_index_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\index.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_id_delete_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\[id].delete.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_id_delete_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\[id].delete.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_id_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\[id].patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_id_patch_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\[id].patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_profile_id_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\profile\\[id].get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_challenges_profile_id_get_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\challenges\\profile\\[id].get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_patch_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_cvc_profileid_progress_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\cvc\\[profileId]\\progress.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_patch_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_ddv_profileid_progress_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\ddv\\[profileId]\\progress.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_checkout_post_ts",
+      "target": "midtrans_client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\checkout.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_checkout_post_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\checkout.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "crypto",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "d_project_abelma_server_utils_db",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "utils_db_db",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "d_project_abelma_server_utils_db_schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_midtrans_notification_post_ts",
+      "target": "db_schema_user",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\midtrans\\notification.post.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_patch_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_nasal_profileid_progress_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\nasal\\[profileId]\\progress.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_index_post_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\index.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_index_post_ts",
+      "target": "d_project_abelma_server_utils_db_schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\index.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_profileid_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\[profileId].get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_profileid_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\[profileId].get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_profileid_put_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\[profileId].put.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_profileid_put_ts",
+      "target": "d_project_abelma_server_utils_db_schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\[profileId].put.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_profileid_put_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\[profileId].put.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_user_id_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\user\\[id].get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_profile_user_id_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\profile\\user\\[id].get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_index_post_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\index.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_index_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\index.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_delete_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id].delete.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_delete_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id].delete.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_profile_id_get_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\profile\\[id].get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_profile_id_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\profile\\[id].get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_profile_id_get_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\profile\\[id].get.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_claim_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\claim.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_claim_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\claim.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_index_delete_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\index.delete.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_index_delete_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\index.delete.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_index_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\index.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_reward_id_index_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\reward\\[id]\\index.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_config_patch_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_config_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_config_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_config_patch_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\config.patch.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_delete_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.delete.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_delete_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.delete.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_get_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_get_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.get.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_patch_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_patch_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_patch_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_patch_ts",
+      "target": "conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.patch.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_post_ts",
+      "target": "zod",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_post_ts",
+      "target": "api",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_api_words_quiz_profileid_progress_post_ts",
+      "target": "schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\api\\words\\quiz\\[profileId]\\progress.post.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "h3",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "better_auth",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "plugins",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "drizzle",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "d_project_abelma_server_utils_db",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "utils_db_db",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "d_project_abelma_server_utils_db_schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_auth_ts",
+      "target": "utils_auth_auth",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_ts",
+      "target": "h3",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_ts",
+      "target": "d1",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_ts",
+      "target": "d_project_abelma_server_utils_db_schema",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_ts",
+      "target": "utils_db_db",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_schema_ts",
+      "target": "sqlite_core",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db\\schema.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "server_utils_db_schema_ts",
+      "target": "drizzle_orm",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "server\\utils\\db\\schema.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "alphabet_alphabetquizmode_handleletterclick",
+      "target": "composables_useaudio_playsequence",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\components\\alphabet\\AlphabetQuizMode.vue",
+      "source_location": "L351",
+      "weight": 1.0
+    },
+    {
+      "source": "pages_rewards_onresponse",
+      "target": "composables_useaudio_playeffectaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\rewards.vue",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "id_story_playnext",
+      "target": "composables_useaudio_speaktts",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\alphabet\\[id]\\story.vue",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "challenge_index_onresponse",
+      "target": "composables_useaudio_playeffectaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\challenge\\index.vue",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "learn_level_handlemerge",
+      "target": "composables_useaudio_playwordaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\cvc\\learn\\[level].vue",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_playtargetword",
+      "target": "composables_useaudio_playwordaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "word_exercise_dropatslot",
+      "target": "composables_useaudio_playeffectaudio",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "app\\pages\\words\\[category]\\[word]\\exercise.vue",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "utils_auth_auth",
+      "target": "utils_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "server\\utils\\auth.ts",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "img_a_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_b_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_c_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_d_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_e_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_f_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_g_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_h_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_i_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_j_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_k_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_l_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_m_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_n_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_o_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_p_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_q_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_r_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_s_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_t_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_u_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "img_v_webp",
+      "target": "alphabet_learning",
+      "relation": "visual_asset_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "store_wordStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_storybookStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_rewardStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_nasalStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_ddvStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_cvcStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_challengeStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_analyticsStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "store_alphabetStore",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "page_index",
+      "target": "comp_menucard",
+      "relation": "uses",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "page_index",
+      "target": "store_profileStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "page_index",
+      "target": "store_mentorStore",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "page_alphabet_index",
+      "target": "store_alphabetStore",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "page_words_index",
+      "target": "store_wordsStore",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "page_cvc_index",
+      "target": "store_cvcStore",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "page_ddv_index",
+      "target": "store_ddvStore",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "page_nasal_index",
+      "target": "store_nasalStore",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "api_profile",
+      "target": "util_auth",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

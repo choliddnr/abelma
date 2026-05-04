@@ -1,0 +1,24 @@
+# .graphifyignore
+node_modules/
+dist/
+*.generated.py
+ 
+# only index src/, ignore everything else
+*
+!app/
+!app/**
+
+!public/
+!public/**
+
+!server/
+!server/**
+
+!shared/
+!shared/**
+
+!wrangler.toml
+!package.json
+!drizzle.config.ts
+!nuxt.config.ts
+!.env

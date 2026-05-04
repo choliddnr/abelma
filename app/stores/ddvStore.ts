@@ -1,10 +1,13 @@
 import type { DdvProgress } from "@/types/stores";
 import { ddvLevels } from "~/constants/ddvData";
+import { registerProfileStore } from "~/utils/storeRegistry";
 
 export const useDdvStore = defineStore(
   "ddv",
   () => {
     const { activeProfileId } = storeToRefs(useProfileStore());
+
+
 
     // State
     const ddvProgress = ref<DdvProgress>({
@@ -26,6 +29,30 @@ export const useDdvStore = defineStore(
     });
 
     const loadedProfileId = ref<string | null>(null);
+
+    const reset = () => {
+      loadedProfileId.value = null;
+      ddvProgress.value = {
+        score: 0,
+        learningLevel: 1,
+        levelScores: {},
+        quizScore: 0,
+        quizLevel: 1,
+        quizWeights: {},
+        learningWeights: {},
+        config: {
+          coinReward: 5,
+          levelUpReward: 50,
+          learningLevelUpReward: 50,
+          streakThreshold: 5,
+          streakReward: 10,
+        },
+        updatedAt: new Date(),
+      };
+    };
+
+    // Register for automatic cleanup
+    registerProfileStore({ reset });
 
     // Actions
     const fetch = async (force = false) => {
@@ -167,26 +194,6 @@ export const useDdvStore = defineStore(
       ddvProgress.value.updatedAt = new Date();
     };
 
-    const reset = () => {
-      loadedProfileId.value = null;
-      ddvProgress.value = {
-        score: 0,
-        learningLevel: 1,
-        levelScores: {},
-        quizScore: 0,
-        quizLevel: 1,
-        quizWeights: {},
-        learningWeights: {},
-        config: {
-          coinReward: 5,
-          levelUpReward: 50,
-          learningLevelUpReward: 50,
-          streakThreshold: 5,
-          streakReward: 10,
-        },
-        updatedAt: new Date(),
-      };
-    };
 
     return {
       ddvProgress,
