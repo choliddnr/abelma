@@ -67,12 +67,13 @@ const handleFinish = async () => {
     const resLower = await lowercaseCanvasRef.value?.calculateScore();
 
     if (!resUpper || !resLower) return;
-
+    
     if (resUpper.isScrambled || resLower.isScrambled) {
       mentorStore.showMessage("Tulis lebih rapi lagi yaa!");
       return;
     }
-
+    
+    console.log(resUpper.score,resLower.score);
     if (resUpper.score === 0 || resLower.score === 0) {
       mentorStore.showMessage("Selesaikan kedua hurufnya ya!");
       return;
@@ -134,12 +135,12 @@ watch(selectedLetter, () => {
 </script>
 
 <template>
-  <div class="h-[90vh]  flex flex-col items-center p-2 sm:p-8 font-sans overflow-x-hidden">
+  <div class="h-[90vh]  flex flex-col items-center  font-sans overflow-x-hidden">
     <!-- Header/Title -->
-    <div class="w-full max-w-5xl flex justify-between items-center mb-8">
-       <button @click="$router.back()" class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+    <div class="w-full max-w-5xl flex justify-center items-center mb-8">
+       <!-- <button @click="$router.back()" class="p-2 rounded-full hover:bg-gray-200 transition-colors">
          <Icon name="lucide:arrow-left" class="text-3xl text-gray-600" />
-       </button>
+       </button> -->
        <h1 class="text-3xl sm:text-4xl font-black text-gray-800 text-center flex-1">
          Belajar Menulis Huruf Yuk!
        </h1>
@@ -180,7 +181,7 @@ watch(selectedLetter, () => {
           :letter="selectedLetter.toUpperCase()" 
           :show-picker="false"
           :brush-color="activeColor"
-          class="bg-white border-[#ff6600] rounded-4xl border-8 shadow-xl relative max-w-[180px] max-h-[240px]"
+          class="bg-white border-[#ff6600] rounded-4xl border-8 shadow-xl relative max-w-[240px] max-h-[240px]"
         />
         
          <TracingCanvas 
@@ -188,7 +189,7 @@ watch(selectedLetter, () => {
             :letter="selectedLetter.toLowerCase()" 
             :show-picker="false"
             :brush-color="activeColor"
-            class="bg-white border-[#ff6600] rounded-4xl border-8 shadow-xl relative max-w-[180px] max-h-[240px]"
+            class="bg-white border-[#ff6600] rounded-4xl border-8 shadow-xl relative max-w-[240px] max-h-[240px]"
           />
         <!-- Lowercase Card -->
         <!-- <div class="flex-1 bg-white border-[6px] border-[#ff6600] rounded-[40px] p-6 shadow-xl relative min-h-[350px] sm:min-h-[450px]">
@@ -235,7 +236,7 @@ watch(selectedLetter, () => {
     </div>
 
     <!-- Bottom Letter Carousel -->
-    <div class="w-full mt-12 bg-white/30 backdrop-blur-md py-6 border-t-2 border-white/50">
+    <!-- <div class="w-full mt-12 bg-white/30 backdrop-blur-md py-6 border-t-2 border-white/50">
       <div 
         ref="carouselRef"
         class="flex gap-4 overflow-x-auto px-8 pb-4 scrollbar-hide snap-x"
@@ -252,7 +253,6 @@ watch(selectedLetter, () => {
               : 'bg-[#ff6600] border-4 border-[#ff6600] hover:bg-orange-50'
           ]"
         >
-          <!-- Stars -->
           <div class="flex gap-0 mb-1 h-3">
              <Icon 
                v-for="i in traceStore.traceProgress.stars[letter]" 
@@ -265,7 +265,14 @@ watch(selectedLetter, () => {
           <span class="font-black" :class=" !(traceStore.traceProgress.stars[letter]) || (traceStore.traceProgress.stars[letter] ===  0) ? 'text-5xl mb-5' : 'text-4xl'" >{{letter}}</span>
         </button>
       </div>
-    </div>
+    </div> -->
+  <UiMembacaLetterSlider
+      :letters="letters"
+      :selected-letter="selectedLetter"
+      :trace-progress="traceStore.traceProgress"
+      :stars="traceStore.traceProgress.stars"
+      @select="selectLetter"
+    />
 
     <!-- Result Modal -->
     <UiCelebrationModal

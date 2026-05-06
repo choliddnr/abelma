@@ -2,13 +2,90 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #ffd93d;
-  --color-secondary: #6bcb77;
-  --color-accent: #4d96ff;
-  --color-danger: #ff6b6b;
-  --color-soft: #f9f9f9;
+  /* --color-primary: #4DA6FF;
+  --color-primary-hover: #1E8EED;
+  --color-primary-active: #0F6FBF;
+  --color-secondary: #43B05C;
+  --color-secondary-hover: #36964E;
+  --color-secondary-active: #2A793D;
+  --color-accent: #FFD700;
+  --color-accent-hover: #EBC400;
+  --color-accent-active: #D9A800;
+  --color-danger: #D32F2F;
+  --color-danger-hover: #B71C1C;
+  --color-danger-active: #9A1111;
+  --color-success: #388E3C;
+  --color-success-hover: #2E7D32;
+  --color-success-active: #266B2F;
+  --color-soft: #F1F1E6;
+  --color-soft-hover: #E7E7D1;
+  --color-soft-active: #DADABA;
+  --color-white: #FFFFFF;
+  --color-white-hover: #F0F0F0;
+  --color-white-active: #E0E0E0;
+  --color-ghost: #F5F8FA;
+  --color-ghost-hover: #EBEFF2;
+  --color-ghost-active: #DCE3E8;
+  --color-glass: rgba(255, 255, 255, 0.40);
+  --color-glass-hover: rgba(255, 255, 255, 0.55);
+  --color-glass-active: rgba(255, 255, 255, 0.70); */
+
+  /* Primary: Royal Indigo */
+  /* --color-primary: #4A69BD;
+  --color-primary-hover: #3C55A5;
+  --color-primary-active: #2E418C; */
+
+  --color-primary: #4DA6FF;
+  --color-primary-hover: #1E8EED;
+  --color-primary-active: #0F6FBF;
+  
+  /* Secondary: Bright Aqua */
+  --color-secondary: #00CEC9;
+  --color-secondary-hover: #00B5B0;
+  --color-secondary-active: #009C97;
+
+  /* Accent: Tangy Orange */
+  /* --color-accent: #FF9F43;
+  --color-accent-hover: #EE8A26;
+  --color-accent-active: #D37A21; */
+
+  --color-accent: #FFD700;
+  --color-accent-hover: #EBC400;
+  --color-accent-active: #D9A800;
+
+  /* Danger: Deep Red/Coral variant for this palette */
+  --color-danger: #EB4D4B;
+  --color-danger-hover: #D43F3D;
+  --color-danger-active: #BC312F;
+
+  /* Success: Clean Science Green */
+  --color-success: #2ECC71;
+  --color-success-hover: #27AD60;
+  --color-success-active: #1F8C4D;
+
+  /* Soft: Modern cool gray/blue background tint */
+  --color-soft: #F1F2F6;
+  --color-soft-hover: #E1E2E7;
+  --color-soft-active: #CED0D9;
+
+  /* White: Pure paper white */
+  --color-white: #FFFFFF;
+  --color-white-hover: #F9F9FB;
+  --color-white-active: #F1F2F6;
+
+  /* Ghost: Deep Slate Blue (Text-based tints) */
+  --color-ghost: #2F3640;
+  --color-ghost-hover: rgba(47, 54, 64, 0.08);
+  --color-ghost-active: rgba(47, 54, 64, 0.15);
+
+  /* Glass: Crystal clear frosted effects */
+  --color-glass: rgba(255, 255, 255, 0.40);
+  --color-glass-hover: rgba(255, 255, 255, 0.55);
+  --color-glass-active: rgba(255, 255, 255, 0.70);
 
   --breakpoint-xl: 81rem;
+  --breakpoint-xs: 25rem;
+
 
   /* --font-main: "Outfit", sans-serif;
   --font-display: "Baloo Bhaijaan 2", sans-serif; */
@@ -63,7 +140,7 @@
 }
 
 @utility ui-capsule-interactive {
-  @apply ui-capsule cursor-pointer active:border-b-0 active:translate-y-1.5 hover:scale-105;
+  @apply ui-capsule cursor-pointer active:border-b-0 active:translate-y-1.5;
 }
 
 @utility animate-entrance {

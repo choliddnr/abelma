@@ -192,14 +192,13 @@ onUnmounted(() => {
           @click="isUpperCase = !isUpperCase"
           variant="white"
           icon="lucide:case-sensitive"
-          class="px-3 py-2 h-10"
           ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isUpperCase ? "abc" : "ABC"
           }}</span></UiButton
         >
 
         <!-- Randomize -->
-        <UiButton @click="toggleRandomize" variant="white" icon="lucide:dices" class="px-3 py-2 h-10"
+        <UiButton @click="toggleRandomize" variant="white" icon="lucide:dices"
           ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isRandomized ? "Normal" : "Acak"
           }}</span></UiButton
@@ -210,7 +209,6 @@ onUnmounted(() => {
           @click="toggleAutoPlay"
           variant="white"
           :icon="isAutoPlaying ? 'lucide:square' : 'lucide:play'"
-          class="px-3 py-2 h-10"
           ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black">{{
             isAutoPlaying ? "Stop" : "Play"
           }}</span></UiButton
@@ -221,7 +219,6 @@ onUnmounted(() => {
           @click="emit('start-quiz')"
           variant="primary"
           icon="lucide:gamepad-2"
-          class="px-3 py-2 h-10"
           ><span class="text-lg md:text-xl xl:text-2xl hidden md:inline font-black"
             >Mulai Tantangan!</span
           ></UiButton

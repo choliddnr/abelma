@@ -221,21 +221,22 @@ const buildTargetCanvas = async (
     const text = textEl.textContent || "";
 
     // For debugging/hit-testing, we draw the shape solid
-    // Note: using 5px stroke to match the visible outline requested by user
-    tCtx.strokeStyle = "rgba(200, 200, 200, 0)";
-    tCtx.fillStyle = "rgba(200, 200, 200, 0)";
-    tCtx.lineWidth = 5;
+    tCtx.strokeStyle = "rgba(200, 200, 200, .9)";
+    tCtx.fillStyle = "rgba(200, 200, 200, .9)";
+    tCtx.lineWidth = 2;
     tCtx.lineCap = "round";
     tCtx.lineJoin = "round";
 
-    // if() isVertical ? 18 : 22;
-    tCtx.strokeText(text, x, y + (width < 500 ? 18 : width < 900 ? 24 : 30));
-    tCtx.fillText(text, x, y + (width < 500 ? 18 : width < 900 ? 24 : 30));
+    // Use a small offset to compensate for font baseline differences if needed, 
+    // but try to keep it minimal to match the SVG's 'central' baseline.
+    
+    tCtx.strokeText(text, x, y + 17);
+    tCtx.fillText(text, x, y + 17);
   });
 
-  // DEBUG: Append targetCanvas to the container so you can see it
+  // DEBUG: Append targetCanvas to the container for pixel reading and visual debugging
   targetCanvas.id = "debug-target-canvas";
-  targetCanvas.className = "absolute inset-0 pointer-events-none z-50";
+  targetCanvas.className = "absolute inset-0 pointer-events-none z-10 hidden";
   const existing = containerRef.value?.querySelector("#debug-target-canvas");
   if (existing) existing.remove();
   containerRef.value?.appendChild(targetCanvas);
@@ -245,16 +246,16 @@ const buildTargetCanvas = async (
 
 const calculateScore = async () => {
   if (!canvasRef.value || !ctx.value)
-    return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+    return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
 
   const width = canvasRef.value.width;
   const height = canvasRef.value.height;
 
   const targetCanvas = await buildTargetCanvas(width, height);
-  if (!targetCanvas) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+  if (!targetCanvas) return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
 
   const targetCtx = targetCanvas.getContext("2d", { willReadFrequently: true });
-  if (!targetCtx) return { score: 0, stars: 0, coverage: 0, accuracy: 0 };
+  if (!targetCtx) return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
 
   const targetData = targetCtx.getImageData(0, 0, width, height).data;
   const userData = ctx.value.getImageData(0, 0, width, height).data;
@@ -277,24 +278,24 @@ const calculateScore = async () => {
   const coverage = overlapPixels / targetPixels;
   const accuracy = overlapPixels / userPixels;
 
-  console.log(
-    "overlapPixels",
-    overlapPixels,
-    "userPixels",
-    userPixels,
-    coverage,
-    accuracy,
-  );
+  // console.log(
+  //   "overlapPixels",
+  //   overlapPixels,
+  //   "userPixels",
+  //   userPixels,
+  //   coverage,
+  //   accuracy,
+  // );
 
   if (targetPixels === 0 || userPixels === 0)
     return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
 
   // if user drew too much outside the target
-  if (userPixels - overlapPixels > targetPixels * 0.5) {
+  if (userPixels - overlapPixels > targetPixels * 0.8) {
     return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: true };
   }
 
-  if (coverage < 0.5) {
+  if (coverage < 0.2) {
     return { score: 0, stars: 0, coverage: 0, accuracy: 0, isScrambled: false };
   }
 
@@ -345,7 +346,7 @@ defineExpose({ clearCanvas, calculateScore });
           text-anchor="middle"
           font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
           font-weight="900"
-          font-size="min(45vw, 400px)"
+          font-size="200px"
           fill="transparent"
           stroke="#333333"
           stroke-width="5"
@@ -365,10 +366,10 @@ defineExpose({ clearCanvas, calculateScore });
           text-anchor="middle"
           font-family="Quicksand, Nunito, 'Comic Sans MS', sans-serif"
           font-weight="900"
-          font-size="min(60vw, 220px)"
+          font-size="180px"
           fill="transparent"
           stroke="#333333"
-          stroke-width="5"
+          stroke-width="3"
           stroke-dasharray="15,15"
           stroke-linecap="round"
           stroke-linejoin="round"

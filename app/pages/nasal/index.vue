@@ -39,17 +39,16 @@ onMounted(async () => {
     <div class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 md:gap-12 z-10">
       
       <!-- Header -->
-      <div class="text-center space-y-4 animate-entrance">
-        <div class="inline-flex items-center gap-4 bg-orange-100/60 backdrop-blur-md px-8 py-3 rounded-full border-2 border-white shadow-sm">
-          <span class="text-3xl md:text-5xl animate-bounce">👃</span>
-          <h1 class="text-4xl md:text-7xl font-black text-orange-600 drop-shadow-sm font-quicksand">
-            Bunyi Sengau
-          </h1>
-        </div>
-        <p class="text-xl md:text-3xl font-bold text-slate-500 max-w-2xl mx-auto">
+      <ModuleHeader 
+        title="Bunyi Sengau" 
+        subtitle="Mari belajar bunyi spesial NG dan NY!" 
+        icon="👃"
+        colorClass="text-orange-600"
+      >
+        <template #subtitle>
           Mari belajar bunyi spesial <span class="text-orange-500">NG</span> dan <span class="text-orange-500">NY</span>!
-        </p>
-      </div>
+        </template>
+      </ModuleHeader>
 
       <!-- Path View -->
       <div class="flex flex-wrap justify-center gap-6 md:gap-10 w-full">

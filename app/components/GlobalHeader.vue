@@ -33,114 +33,96 @@ onMounted(() => {
 <template>
   <header
     v-if="showHeader"
-    class="sticky top-0 z-50 w-full backdrop-blur-md border-b border-slate-200 max-w-7xl mx-auto px-3 sm:px-4 py-3 flex items-center justify-between font-quicksand"
+    class="sticky top-0 z-50 w-full px-4 py-4 pointer-events-none"
   >
-    <!-- LEFT -->
-    <div class="flex items-center gap-2 sm:gap-4">
-      <!-- Branding -->
-      <template v-if="isHome">
-        <div class="flex flex-col leading-tight">
-          <h1 class="text-lg sm:text-2xl md:text-4xl font-black text-indigo-600">Abelma</h1>
-          <span class="text-[8px] sm:text-[10px] md:text-sm font-bold text-slate-400 uppercase">
-            Belajar & Bermain
-          </span>
-        </div>
-      </template>
-
-      <!-- Back + Home -->
-      <template v-else>
-        <UiButton @click="router.back()" variant="white" icon="lucide:arrow-left" class="px-2 py-2 h-10" />
-        <UiButton @click="router.push('/')" variant="white" icon="lucide:house" class="px-2 py-2 h-10" />
-      </template>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="flex items-center gap-2">
-      <!-- Coins (ALWAYS visible) -->
-      <UiButton to="/rewards" variant="primary" icon="lucide:circle-dollar-sign" class="px-3 py-2 h-10 text-xs sm:text-sm">
-        <span class="font-black text-lg">
-          {{ profile?.coins }}
-          <span class="hidden sm:inline">Koin</span>
-        </span>
-      </UiButton>
-      <UiButton
-        @click="toggleFullscreen"
-        variant="white"
-        :icon="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'"
-        class="px-3 py-2 h-10"
-        title="Layar Penuh"
-      />
-
-      <!-- DESKTOP MENU -->
-      <div class="hidden sm:flex items-center gap-3">
-        <!-- Parent -->
-        <UiButton @click="router.push('/parent')" variant="white" icon="lucide:users" class="px-3 py-2 h-10">
-          <span class="font-black text-sm ml-1">Orang Tua</span>
-        </UiButton>
-
-        <!-- Profile -->
-        <div v-if="profile" class="flex items-center gap-2 border-l pl-3 border-slate-200">
-          <div class="text-right leading-tight">
-            <p class="text-xs font-bold text-slate-500">Halo,</p>
-            <p class="text-sm font-black text-indigo-600 truncate max-w-[100px]">
-              {{ profile?.name }}
-            </p>
+    <div class="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+      <!-- LEFT: Logo -->
+      <div class="flex items-center gap-4">
+        <template v-if="isHome">
+          <div class="flex flex-col leading-tight bg-white/40 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/50 shadow-lg">
+            <h1 class="text-xl md:text-3xl font-black text-indigo-600 drop-shadow-sm font-quicksand">Abelma</h1>
+            <span class="text-[8px] md:text-[10px] font-bold text-slate-500 uppercase tracking-wider font-quicksand">
+              Belajar & Bermain
+            </span>
           </div>
-
-          <div
-            class="w-10 h-10 flex items-center justify-center bg-white rounded-full border-2 border-indigo-400 shadow-md text-xl"
-          >
-            {{ profile?.avatar }}
+        </template>
+        <template v-else>
+          <div class="flex gap-2">
+            <UiButton @click="router.back()" variant="accent" icon="lucide:arrow-left"  />
+            <UiButton @click="router.push('/')" variant="secondary" icon="lucide:house" />
           </div>
-        </div>
+        </template>
       </div>
 
-      <!-- MOBILE BURGER -->
-      <div class="relative sm:hidden">
+      <!-- MIDDLE: Coins Capsule -->
+      <div class="hidden md:block">
+        <NuxtLink to="/rewards" class="coin-capsule flex items-center gap-3 px-6 py-2 rounded-full shadow-lg border-2 border-white/60 transition-transform hover:scale-105 active:scale-95">
+          <div class="size-8 rounded-full bg-yellow-400 flex items-center justify-center shadow-inner border border-yellow-200">
+            <Icon name="lucide:circle-dollar-sign" class="text-white text-xl" />
+          </div>
+          <span class="font-black text-2xl text-slate-700 font-quicksand">
+            {{ profile?.coins }} <span class="text-lg text-slate-500">Koin</span>
+          </span>
+        </NuxtLink>
+      </div>
+
+      <!-- RIGHT: Parent & Profile -->
+      <div class="flex items-center gap-3">
+        <!-- Fullscreen Button -->
         <UiButton
-          @click="isMenuOpen = !isMenuOpen"
+          @click="toggleFullscreen"
           variant="white"
-          icon="lucide:menu"
-          class="px-4 py-2 h-10"
-        />
-        <!-- <button
-          @click="isMenuOpen = !isMenuOpen"
-          class="w-9 h-10 flex items-center justify-center rounded-lg bg-white shadow"
-        >
-          ☰
-        </button> -->
-
-        <!-- DROPDOWN -->
-        <div
-          v-if="isMenuOpen"
-          class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg p-2 flex flex-col gap-2"
-        >
-          <!-- Parent -->
-          <button
-            @click="
-              router.push('/parent');
-              isMenuOpen = false;
-            "
-            class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100"
+          :icon="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'"
           >
-            <Icon name="lucide:users" /> <span class="font-bold text-sm">Orang Tua</span>
-          </button>
+          </UiButton>
 
-          <!-- Profile -->
-          <div
-            v-if="profile"
-            class="flex items-center gap-2 px-3 py-2 border-t-2 border-gray-200 pt-2"
+        <!-- Desktop: Parent & Profile -->
+        <div class="hidden sm:flex items-center gap-3">
+          <UiButton @click="router.push('/parent')" variant="primary" class="flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-slate-700 font-quicksand" >
+            <Icon name="lucide:users" class="text-xl" />
+            <span>Orang Tua</span>
+          </UiButton>
+          <!-- <button 
+            @click="router.push('/parent')" 
+            class="glass-button flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-slate-700 font-quicksand"
           >
-            <div
-              class="w-8 h-8 flex items-center justify-center bg-white rounded-full border-gray-200 border-2 text-lg"
-            >
-              {{ profile?.avatar }}
-            </div>
-            <div class="leading-tight">
-              <p class="text-xs text-slate-500">Halo,</p>
-              <p class="text-sm font-bold text-indigo-600 truncate max-w-[100px]">
+            <Icon name="lucide:users" class="text-xl" />
+            <span>Orang Tua</span>
+          </button> -->
+
+          <div v-if="profile" class="flex items-center gap-3 pl-3 border-l border-white/30">
+            <div class="text-right leading-tight">
+              <p class="text-[10px] font-bold text-slate-400">Halo,</p>
+              <p class="text-sm font-black text-indigo-600 font-quicksand truncate max-w-[100px]">
                 {{ profile?.name }}
               </p>
+            </div>
+            <div class="size-12 rounded-full bg-white border-2 border-indigo-300 shadow-md flex items-center justify-center text-2xl overflow-hidden relative group cursor-pointer hover:border-indigo-500 transition-colors">
+              {{ profile?.avatar }}
+              <div class="absolute inset-0 bg-gradient-to-tr from-white/0 to-white/40 pointer-events-none"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile: Burger/Menu -->
+        <div class="relative sm:hidden">
+          <UiButton
+            @click="isMenuOpen = !isMenuOpen"
+            variant="white"
+            icon="lucide:menu"
+            class="glass-button size-12 rounded-2xl"
+          />
+          <div
+            v-if="isMenuOpen"
+            class="absolute right-0 mt-3 w-48 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl p-2 flex flex-col gap-1 border border-white"
+          >
+            <!-- Mobile Menu Items -->
+            <button @click="router.push('/parent'); isMenuOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/50 transition-colors text-slate-700 font-bold">
+              <Icon name="lucide:users" /> <span>Orang Tua</span>
+            </button>
+            <div v-if="profile" class="px-4 py-3 border-t border-slate-200 mt-1 flex items-center gap-3">
+              <span class="size-8 rounded-full bg-white border border-indigo-200 flex items-center justify-center">{{ profile?.avatar }}</span>
+              <span class="font-black text-indigo-600 truncate">{{ profile?.name }}</span>
             </div>
           </div>
         </div>
@@ -148,3 +130,24 @@ onMounted(() => {
     </div>
   </header>
 </template>
+
+<style scoped>
+@reference "../assets/base.css";
+
+.glass-button {
+  @apply bg-white/40 backdrop-blur-md border border-white/50 shadow-md transition-all duration-300 hover:bg-white/60 hover:shadow-lg active:scale-95 flex items-center justify-center;
+}
+
+.coin-capsule {
+  background: linear-gradient(to bottom, #fff7ed, #ffedd5);
+  @apply border border-orange-200/50;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.coin-capsule::after {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/40 to-transparent rounded-full pointer-events-none;
+}
+</style>

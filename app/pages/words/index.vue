@@ -48,12 +48,13 @@ const menuItems = [
     <div
       class="flex-1 flex flex-col items-center justify-center  max-w-5xl mx-auto w-full gap-6 z-10"
     >
-      <div class="text-center space-y-4 animate-entrance mt-12 lg:-mt-24 xl:-mt-32 2xl:-mt-48">
-        <h1 class="text-4xl md:text-6xl xl:text-7xl font-black text-indigo-600 drop-shadow-sm">
-          Belajar Kata
-        </h1>
-        <p class="text-lg md:text-xl xl:text-2xl font-bold text-slate-500">Pilih mode bermainmu!</p>
-      </div>
+      <ModuleHeader 
+        title="Belajar Kata" 
+        subtitle="Pilih mode bermainmu!" 
+        icon="lucide:apple"
+        iconType="icon"
+        colorClass="text-indigo-600"
+      />
       <div class="flex flex-wrap justify-center gap-2  md:gap-4">
         <MenuCard
           v-for="(item, index) in menuItems"

@@ -30,14 +30,13 @@ onMounted(() => {
   <div class="flex flex-col min-h-[90vh] relative p-4 md:p-8">
     <!-- Main Content -->
     <div class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 z-10">
-      <div class="text-center space-y-4 animate-entrance">
-        <h1 class="text-5xl md:text-7xl font-black text-teal-600 drop-shadow-sm font-quicksand">
-          Vokal Rangkap
-        </h1>
-        <p class="text-xl md:text-2xl font-bold text-slate-500">
-          Pilih tingkat belajar yang kamu mau!
-        </p>
-      </div>
+      <ModuleHeader 
+        title="Vokal Rangkap" 
+        subtitle="Pilih tingkat belajar yang kamu mau!" 
+        icon="lucide:audio-lines"
+        iconType="icon"
+        colorClass="text-teal-600"
+      />
 
       <div class="flex flex-wrap justify-center gap-4 md:gap-8">
         <MenuCard
