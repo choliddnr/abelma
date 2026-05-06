@@ -43,6 +43,7 @@ onMounted(() => {
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
+          :index="index"
           class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-44 sm:size-56 md:size-64 lg:size-72 2xl:size-80"
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
