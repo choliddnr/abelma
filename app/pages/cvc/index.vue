@@ -45,7 +45,7 @@ onMounted(() => {
           :key="item.title"
           v-bind="item"
           :index="index"
-          class="transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl animate-entrance size-40 sm:size-52 md:size-60 lg:size-60 2xl:size-72"
+          class="animate-entrance w-44"
           :style="{ animationDelay: `${index * 0.15}s` }"
         />
       </div>

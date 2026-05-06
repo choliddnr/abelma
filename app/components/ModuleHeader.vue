@@ -37,22 +37,22 @@ const isEmoji = computed(() => props.iconType === 'emoji');
         <!-- Outer Glow/Halo -->
         <div class="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
         
-        <div class="relative inline-flex items-center gap-6 bg-white/40 backdrop-blur-2xl px-10 py-4 md:px-16 md:py-6 rounded-[3rem] border-4 border-white/60 shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_rgba(255,255,255,0.2)] transition-all duration-700 hover:-translate-y-2">
+        <div class="relative inline-flex items-center gap-6 bg-white/50 px-10 py-4 md:px-16 md:py-6 rounded-[3rem] border-4 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_rgba(255,255,255,0.2)] transition-all duration-700 hover:-translate-y-2">
           <!-- Icon Bubble -->
-          <div v-if="icon" class="flex items-center justify-center bg-white/50 size-16 md:size-24 rounded-full shadow-inner border-2 border-white/80">
+          <div v-if="icon" class="flex items-center justify-center bg-white/50 size-16 md:size-52 rounded-full shadow-inner border-2 border-white/80">
             <span v-if="isEmoji" class="text-4xl md:text-6xl animate-float-slow">
               {{ icon }}
             </span>
             <Icon 
               v-else 
               :name="icon" 
-              class="size-10 md:size-16 animate-float-slow"
+              class="text-9xl text-current animate-float-slow"
               :class="colorClass"
             />
           </div>
           
           <h1 
-            class="text-4xl md:text-7xl lg:text-8xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.1)] font-quicksand tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-current to-white/40"
+            class="text-4xl md:text-7xl lg:text-8xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.1)] font-quicksand tracking-tight text-current"
             :class="colorClass"
           >
             {{ title }}
@@ -63,7 +63,7 @@ const isEmoji = computed(() => props.iconType === 'emoji');
 
     <!-- Title Section for Home variant (Giant Vibrant Style) -->
     <div v-else class="relative mb-12">
-      <div class="absolute inset-0 bg-blue-400/20 blur-[100px] rounded-full scale-150"></div>
+      <div class="absolute inset-0 bg-blue-400/10 blur-[100px] rounded-full scale-150"></div>
       <h1 
         class="relative text-7xl md:text-[10rem] lg:text-[12rem] font-black text-white drop-shadow-[0_15px_0_rgba(79,70,229,1)] font-quicksand title-gradient tracking-tight leading-none animate-float-slow"
       >
@@ -75,16 +75,16 @@ const isEmoji = computed(() => props.iconType === 'emoji');
     <div class="flex justify-center px-4 relative z-10">
       <div 
         v-if="variant === 'home'"
-        class="text-2xl md:text-4xl font-black text-white drop-shadow-xl font-quicksand tracking-wide bg-gradient-to-r from-indigo-500/80 via-purple-500/80 to-pink-500/80 backdrop-blur-2xl inline-block px-12 py-6 md:px-20 md:py-8 rounded-[4rem] border-4 border-white shadow-[0_20px_60px_rgba(79,70,229,0.5)] hover:scale-110 transition-all duration-700 cursor-default animate-pulse-subtle"
+        class="text-2xl md:text-4xl font-black text-white drop-shadow-xl font-quicksand tracking-wide bg-gradient-to-r from-indigo-600/90 via-purple-600/90 to-pink-600/90 backdrop-blur-xl inline-block px-12 py-6 md:px-20 md:py-8 rounded-[4rem] border-4 border-white shadow-[0_20px_60px_rgba(79,70,229,0.5)] hover:scale-110 transition-all duration-700 cursor-default animate-pulse-subtle"
       >
         {{ subtitle }}
       </div>
       <div 
         v-else
-        class="bg-white/20 backdrop-blur-md px-10 py-4 rounded-3xl border-2 border-white/30 shadow-lg"
+        class="bg-white/50 backdrop-blur-md px-10 py-4 rounded-[2rem] border-4 border-white shadow-xl"
       >
         <p 
-          class="text-2xl md:text-4xl lg:text-5xl font-black leading-relaxed drop-shadow-md tracking-wide"
+          class="text-2xl md:text-4xl lg:text-5xl font-black leading-relaxed drop-shadow-sm tracking-wide text-slate-800"
           :class="subtitleColorClass"
         >
           <slot name="subtitle">
@@ -119,13 +119,12 @@ const isEmoji = computed(() => props.iconType === 'emoji');
 
 .animate-entrance {
   opacity: 0;
-  transform: scale(0.8) translateY(60px);
-  filter: blur(10px);
-  animation: entrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform: scale(0.9) translateY(40px);
+  animation: entrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 @keyframes entrance {
-  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .animate-pulse-subtle {
