@@ -46,7 +46,7 @@ const isEmoji = computed(() => props.iconType === 'emoji');
             <Icon 
               v-else 
               :name="icon" 
-              class="text-9xl text-current animate-float-slow"
+              class="text-4xl md:text-9xl text-current animate-float-slow"
               :class="colorClass"
             />
           </div>

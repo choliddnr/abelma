@@ -110,7 +110,6 @@ onMounted(() => {
             @click="isMenuOpen = !isMenuOpen"
             variant="white"
             icon="lucide:menu"
-            class="glass-button size-12 rounded-2xl"
           />
           <div
             v-if="isMenuOpen"
