@@ -10,7 +10,8 @@ members: 1
 **Members:** 1 nodes
 
 ## Members
-- [[MenuCard.vue]] - code - app/components/MenuCard.vue
+
+- [[MenuBubble.vue]] - code - app/components/MenuBubble.vue
 
 ## Live Query (requires Dataview plugin)
 

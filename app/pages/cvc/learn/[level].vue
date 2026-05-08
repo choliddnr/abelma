@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { cvcLevels, type CvcItem, type CvcWordItem } from "~/constants/cvcBlends";
+import {
+  cvcLevels,
+  type CvcItem,
+  type CvcWordItem,
+} from "~/constants/cvcBlends";
 import { useCvcStore } from "~/stores/cvcStore";
 import { useAudio } from "~/composables/useAudio";
 import confetti from "canvas-confetti";
@@ -37,17 +41,23 @@ const currentItem = computed(() => shuffledItems.value[currentIndex.value]);
 
 const part1 = computed(() => {
   if (!currentItem.value) return "";
-  return "cv" in currentItem.value ? currentItem.value.cv : currentItem.value.part1;
+  return "cv" in currentItem.value
+    ? currentItem.value.cv
+    : currentItem.value.part1;
 });
 
 const part2 = computed(() => {
   if (!currentItem.value) return "";
-  return "c" in currentItem.value ? currentItem.value.c : currentItem.value.part2;
+  return "c" in currentItem.value
+    ? currentItem.value.c
+    : currentItem.value.part2;
 });
 
 const resultText = computed(() => {
   if (!currentItem.value) return "";
-  return "blend" in currentItem.value ? currentItem.value.blend : currentItem.value.word;
+  return "blend" in currentItem.value
+    ? currentItem.value.blend
+    : currentItem.value.word;
 });
 
 // Actions
@@ -55,10 +65,10 @@ const handleMerge = async () => {
   if (isAnimating.value || isComplete.value) return;
 
   isAnimating.value = true;
-  
+
   // Animation duration matches CSS
   await new Promise((resolve) => setTimeout(resolve, 800));
-  
+
   isAnimating.value = false;
   isComplete.value = true;
   showResult.value = true;
@@ -94,7 +104,6 @@ const popConfetti = () => {
 };
 
 const hasNextLevel = computed(() => {
-  
   const currentIndex = cvcLevels.findIndex((l) => l.id === levelId.value);
   return currentIndex !== -1 && currentIndex < cvcLevels.length - 1;
 });
@@ -118,7 +127,7 @@ const goToNextLevel = () => {
 
 onMounted(async () => {
   await cvcStore.fetch();
-  if(!isPremium.value && levelId.value > 1) {
+  if (!isPremium.value && levelId.value > 1) {
     router.replace("/parent/premium");
   }
   if (level.value) {
@@ -141,36 +150,41 @@ onUnmounted(async () => {
 </script>
 
 <template>
-  <div v-if="level" class="flex flex-col h-[90vh] relative">
-    <!-- Celebration Modal -->
-    <UiCelebrationModal
-      v-model="levelFinished"
-      title="HEBAT!"
-      :message="`Kamu telah menyelesaikan ${level.name}!`"
-      main-emoji="🏆"
-    >
-      <div class="flex flex-col items-center gap-6">
-        <!-- Coins Reward Badge (Manually added back since we're using the slot) -->
-        <div
-          class="inline-flex items-center justify-center gap-4 bg-linear-to-br from-yellow-100 to-yellow-50 px-10 py-5 rounded-3xl border-4 border-white shadow-xl"
-        >
-          <div class="bg-yellow-400 p-2 rounded-full shadow-inner">
-            <Icon name="lucide:circle-dollar-sign" class="text-white text-3xl md:text-4xl" />
-          </div>
-          <span class="text-4xl md:text-5xl font-black text-yellow-700 tracking-tighter">+{{ cvcProgress.config.learningLevelUpReward }}</span>
+  <!-- Celebration Modal -->
+  <UiCelebrationModal
+    v-model="levelFinished"
+    title="HEBAT!"
+    :message="`Kamu telah menyelesaikan ${level!.name}!`"
+    main-emoji="🏆"
+  >
+    <div class="flex flex-col items-center gap-6">
+      <!-- Coins Reward Badge (Manually added back since we're using the slot) -->
+      <div
+        class="inline-flex items-center justify-center gap-4 bg-linear-to-br from-yellow-100 to-yellow-50 px-10 py-5 rounded-3xl border-4 border-white shadow-xl"
+      >
+        <div class="bg-yellow-400 p-2 rounded-full shadow-inner">
+          <Icon
+            name="lucide:circle-dollar-sign"
+            class="text-white text-3xl md:text-4xl"
+          />
         </div>
+        <span
+          class="text-4xl md:text-5xl font-black text-yellow-700 tracking-tighter"
+          >+{{ cvcProgress.config.learningLevelUpReward }}</span
+        >
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col gap-4 w-full">
-          <UiButton
-            @click="router.push('/cvc')"
-            variant="white"
-            icon="lucide:layout-grid"
-            class="flex-1 py-4 text-xl h-auto w-full"
-          >
-            <span class="font-black">MENU UTAMA</span>
-          </UiButton>
-          <div v-if="isPremium">
+      <!-- Action Buttons -->
+      <div class="flex flex-col gap-4 w-full">
+        <UiButton
+          @click="router.push('/cvc')"
+          variant="white"
+          icon="lucide:layout-grid"
+          class="flex-1 py-4 text-xl h-auto w-full"
+        >
+          <span class="font-black">MENU UTAMA</span>
+        </UiButton>
+        <div v-if="isPremium">
           <UiButton
             v-if="hasNextLevel"
             @click="goToNextLevel"
@@ -180,24 +194,25 @@ onUnmounted(async () => {
           >
             <span class="font-black">LEVEL BERIKUTNYA</span>
           </UiButton>
-          </div>
-          <div v-else>
-            <UiButton
-              @click="router.push('/parent/premium')"
-              variant="accent"
-              icon="lucide:crown"
-              class="flex-1 py-4 text-xl h-auto w-full"
-            >
-              <span class="font-black">UNLOCK LEVEL SELANJUTNYA</span>
-            </UiButton>
-          </div>
-
+        </div>
+        <div v-else>
+          <UiButton
+            @click="router.push('/parent/premium')"
+            variant="accent"
+            icon="lucide:crown"
+            class="flex-1 py-4 text-xl h-auto w-full"
+          >
+            <span class="font-black">UNLOCK LEVEL SELANJUTNYA</span>
+          </UiButton>
         </div>
       </div>
-    </UiCelebrationModal>
-
+    </div>
+  </UiCelebrationModal>
+  <div v-if="level" class="flex flex-col h-[85vh] relative justify-between">
     <!-- Top Bar -->
-    <div class="z-10 w-full max-w-5xl mx-auto px-4 pt-4 flex items-center justify-between">
+    <div
+      class="z-10 w-full max-w-5xl mx-auto px-4 pt-4 flex items-center justify-between"
+    >
       <UiButton
         @click="router.push('/cvc')"
         variant="white"
@@ -210,62 +225,72 @@ onUnmounted(async () => {
         :level-name="level.name"
         class="flex-1 max-w-lg mx-4"
       />
-      <div class="size-12"></div> <!-- Spacer -->
+      <div class="size-12"></div>
+      <!-- Spacer -->
+    </div>
+    <div
+      class="relative w-full max-w-4xl flex flex-col items-center justify-center mx-auto"
+    >
+      <!-- Animation Layer -->
+      <MergeAnimation
+        v-if="!showResult"
+        :part1="part1"
+        :part2="part2"
+        :is-animating="isAnimating"
+        :is-complete="isComplete"
+        :type="level.type"
+      />
+
+      <!-- Result Layer -->
+      <BlendResultDisplay
+        v-if="showResult"
+        :text="part1 + part2"
+        :result="resultText"
+        :emoji="currentItem?.emoji || '✨'"
+        :type="level.type"
+        :show="showResult"
+      />
+    </div>
+
+    <!-- Control Area -->
+    <div class="my-10 mx-auto z-20">
+      <Transition name="fade-up" mode="out-in">
+        <MergeButton
+          v-if="!isComplete"
+          @merge="handleMerge"
+          :is-animating="isAnimating"
+        />
+        <UiButton
+          v-else
+          @click="nextItem"
+          variant="accent"
+          class="px-16 py-6 text-3xl h-auto"
+        >
+          <span class="font-black">LANJUT</span>
+          <Icon name="lucide:arrow-right" class="size-8 ml-2" />
+        </UiButton>
+      </Transition>
     </div>
 
     <!-- Main Game Area -->
-    <main class="flex-1 flex flex-col items-center justify-center gap-8 py-8 px-4 overflow-hidden">
-      
-      <div class="relative w-full max-w-4xl flex flex-col items-center">
-        <!-- Animation Layer -->
-        <MergeAnimation
-          v-if="!showResult"
-          :part1="part1"
-          :part2="part2"
-          :is-animating="isAnimating"
-          :is-complete="isComplete"
-          :type="level.type"
-        />
-
-        <!-- Result Layer -->
-        <BlendResultDisplay
-          v-if="showResult"
-          :text="part1 + part2"
-          :result="resultText"
-          :emoji="currentItem?.emoji || '✨'"
-          :type="level.type"
-          :show="showResult"
-        />
-      </div>
-
-      <!-- Control Area -->
-      <div class="mt-8 z-20">
-        <Transition name="fade-up" mode="out-in">
-          <MergeButton
-            v-if="!isComplete"
-            @merge="handleMerge"
-            :is-animating="isAnimating"
-          />
-          <UiButton
-            v-else
-            @click="nextItem"
-            variant="accent"
-            class="px-16 py-6 text-3xl h-auto"
-          >
-            <span class="font-black">LANJUT</span>
-            <Icon name="lucide:arrow-right" class="size-8 ml-2" />
-          </UiButton>
-        </Transition>
-      </div>
-
-    </main>
+    <!-- <main
+      class="flex-1 flex flex-col items-center justify-center gap-2 py-8 px-4 overflow-hidden"
+    >
+    </main> -->
 
     <!-- Background Pattern -->
-    <div class="fixed inset-0 pointer-events-none opacity-[0.03] -z-10 overflow-hidden">
+    <!-- <div
+      class="fixed inset-0 pointer-events-none opacity-[0.03] -z-10 overflow-hidden"
+    >
       <div class="grid grid-cols-6 gap-20 transform rotate-12 -translate-y-20">
-        <Icon v-for="i in 24" :key="i" name="lucide:flask-conical" class="size-32" />
+        <Icon
+          v-for="i in 24"
+          :key="i"
+          name="lucide:flask-conical"
+          class="size-32"
+        />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -28,19 +28,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-[90vh] relative p-4 md:p-8">
+  <div class="relative h-[80vh] w-full overflow-hidden pb-32">
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 z-10">
-      <ModuleHeader 
-        title="Lab Kata" 
-        subtitle="Pilih tingkat belajar yang kamu mau!" 
+    <div
+      class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 z-10"
+    >
+      <ModuleHeader
+        title="Lab Kata"
+        subtitle="Pilih tingkat belajar yang kamu mau!"
         icon="lucide:flask-conical"
         iconType="icon"
         colorClass="text-indigo-600"
       />
 
-      <div class="flex flex-wrap justify-center gap-2 md:gap-4">
-        <MenuCard
+      <div class="flex flex-wrap justify-center gap-2 md:gap-8 lg:gap-16">
+        <MenuBubble
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"
@@ -52,7 +54,9 @@ onMounted(() => {
     </div>
 
     <!-- Decorative Elements -->
-    <div class="fixed bottom-0 right-0 p-8 opacity-20 pointer-events-none -z-10">
+    <div
+      class="fixed bottom-0 right-0 p-8 opacity-20 pointer-events-none -z-10"
+    >
       <Icon name="lucide:flask-conical" class="size-64 text-indigo-400" />
     </div>
   </div>

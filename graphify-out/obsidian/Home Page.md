@@ -11,8 +11,9 @@ tags:
 # Home Page
 
 ## Connections
-- [[MenuCard Component]] - `uses` [EXTRACTED]
+
+- [[MenuBubble Component]] - `uses` [EXTRACTED]
 - [[mentorStore]] - `references` [EXTRACTED]
 - [[profileStore]] - `references` [EXTRACTED]
 
-#graphify/code #graphify/EXTRACTED #community/App_Dashboards_&_Navigation
+#graphify/code #graphify/EXTRACTED #community/App*Dashboards*&\_Navigation

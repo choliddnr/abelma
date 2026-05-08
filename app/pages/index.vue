@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuCard from "~/components/MenuCard.vue";
+import MenuBubble from "~/components/MenuBubble.vue";
 
 const { profile } = storeToRefs(useProfileStore());
 
@@ -88,7 +88,7 @@ const menuItems = [
 
       <!-- Menu Section with Pipe Background -->
        <div class="flex flex-wrap max-w-7xl mx-auto flex-row items-center justify-center gap-0 md:gap-7 lg:gap-10 relative">
-         <MenuCard
+         <MenuBubble
             v-for="(item, index) in menuItems"
             :key="item.title"
             v-bind="item"
@@ -114,7 +114,7 @@ const menuItems = [
 
             <!-- <div class="menu-scroll overflow-x-auto pb-4 md:overflow-visible md:pb-0">
               <div class="flex gap-4 min-w-max md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:min-w-0">
-                <MenuCard
+                <MenuBubble
                   v-for="(item, index) in menuItems"
                   :key="item.title"
                   v-bind="item"

@@ -48,8 +48,8 @@ onMounted(() => {
         </template>
         <template v-else>
           <div class="flex gap-2">
-            <UiButton @click="router.back()" variant="accent" icon="lucide:arrow-left"  />
-            <UiButton @click="router.push('/')" variant="secondary" icon="lucide:house" />
+            <UiButton @click="router.back()" variant="glass" icon="lucide:arrow-left"  />
+            <UiButton @click="router.push('/')" variant="glass" icon="lucide:house" />
           </div>
         </template>
       </div>
@@ -71,14 +71,14 @@ onMounted(() => {
         <!-- Fullscreen Button -->
         <UiButton
           @click="toggleFullscreen"
-          variant="white"
+          variant="glass"
           :icon="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'"
           >
           </UiButton>
 
         <!-- Desktop: Parent & Profile -->
         <div class="hidden sm:flex items-center gap-3">
-          <UiButton @click="router.push('/parent')" variant="primary" class="flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-slate-700 font-quicksand" >
+          <UiButton @click="router.push('/parent')" variant="glass" class="flex items-center gap-2 px-4 py-2 rounded-2xl font-black text-slate-700 font-quicksand" >
             <Icon name="lucide:users" class="text-xl" />
             <span>Orang Tua</span>
           </UiButton>
@@ -108,7 +108,7 @@ onMounted(() => {
         <div class="relative sm:hidden">
           <UiButton
             @click="isMenuOpen = !isMenuOpen"
-            variant="white"
+            variant="glass"
             icon="lucide:menu"
           />
           <div

@@ -242,9 +242,9 @@
     },
     {
       "id": "comp_menucard",
-      "label": "MenuCard Component",
+      "label": "MenuBubble Component",
       "file_type": "code",
-      "source_file": "app/components/MenuCard.vue"
+      "source_file": "app/components/MenuBubble.vue"
     },
     {
       "id": "page_alphabet_index",

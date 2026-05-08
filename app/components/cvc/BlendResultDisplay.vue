@@ -22,7 +22,7 @@ const splitResult = computed(() => {
     if (props.result.length > 3) {
       return {
         prefix: props.result.slice(0, props.result.length - 3),
-        highlight: props.result.slice(-3)
+        highlight: props.result.slice(-3),
       };
     }
     return { prefix: "", highlight: props.result };
@@ -35,7 +35,7 @@ const splitResult = computed(() => {
     <div v-if="show" class="flex flex-col items-center gap-6 py-4">
       <!-- Big Emoji -->
       <div
-        class="size-40 md:size-56 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-4 border-white flex items-center justify-center text-7xl md:text-9xl animate-pop-in"
+        class="size-32 md:size-44 bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-4 border-white flex items-center justify-center text-7xl md:text-9xl animate-pop-in"
       >
         <span class="drop-shadow-xl">{{ emoji }}</span>
       </div>
@@ -51,7 +51,9 @@ const splitResult = computed(() => {
           >
             {{ splitResult.prefix }}
           </span>
-          <span class="text-5xl md:text-8xl font-black text-indigo-600 tracking-tighter">
+          <span
+            class="text-5xl md:text-8xl font-black text-indigo-600 tracking-tighter"
+          >
             {{ splitResult.highlight }}
           </span>
         </div>
@@ -79,12 +81,22 @@ const splitResult = computed(() => {
 }
 
 @keyframes pop-in {
-  0% { transform: scale(0); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes slide-up {
-  0% { transform: translateY(30px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 </style>

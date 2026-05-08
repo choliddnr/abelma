@@ -21,7 +21,7 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="flex flex-col h-[70vh] relative p-4 md:p-8">
+  <div class="relative h-[80vh] w-full overflow-hidden pb-32">
     <!-- Full-screen Frosted Overlay -->
     <div class="fixed inset-0 bg-white/20 pointer-events-none -z-10"></div>
 
@@ -45,9 +45,7 @@ const menuItems = [
     </div> -->
 
     <!-- Main Content -->
-    <div
-      class="flex-1 flex flex-col items-center justify-center  max-w-5xl mx-auto w-full gap-6 z-10"
-    >
+    <div class="relative z-10 pt-10 md:pt-24">
       <ModuleHeader 
         title="Belajar Kata" 
         subtitle="Pilih mode bermainmu!" 
@@ -55,15 +53,15 @@ const menuItems = [
         iconType="icon"
         colorClass="text-indigo-600"
       />
-      <div class="flex flex-wrap justify-center gap-2  md:gap-4">
-        <MenuCard
-          v-for="(item, index) in menuItems"
-          :key="item.title"
-          v-bind="item"
-          :index="index"
-          class="animate-entrance w-44"
-          :style="{ animationDelay: `${index * 0.15}s` }"
-        />
+      <div class="flex flex-wrap max-w-7xl mx-auto flex-row items-center justify-center gap-0 md:gap-7 lg:gap-10 relative">
+         <MenuBubble
+            v-for="(item, index) in menuItems"
+            :key="item.title"
+            v-bind="item"
+            :index="index"
+            class="animate-entrance w-44"
+            :style="{ animationDelay: `${index * 0.08}s` }"
+          />
       </div>
     </div>
   </div>

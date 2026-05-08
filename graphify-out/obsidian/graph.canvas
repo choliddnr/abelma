@@ -49,7 +49,7 @@
     {
       "id": "n_comp_menucard",
       "type": "file",
-      "file": "MenuCard Component.md",
+      "file": "MenuBubble Component.md",
       "x": 220,
       "y": 160,
       "width": 180,
@@ -1722,7 +1722,7 @@
     {
       "id": "n_app_components_menucard_vue",
       "type": "file",
-      "file": "MenuCard.vue.md",
+      "file": "MenuBubble.vue.md",
       "x": 6520,
       "y": 1360,
       "width": 180,

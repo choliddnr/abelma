@@ -6,7 +6,7 @@ D:\Project\abelma\app\components\GlobalHeader.vue
 D:\Project\abelma\app\components\InteractionZone.vue
 D:\Project\abelma\app\components\LoadingSkeleton.vue
 D:\Project\abelma\app\components\LoadingSpinner.vue
-D:\Project\abelma\app\components\MenuCard.vue
+D:\Project\abelma\app\components\MenuBubble.vue
 D:\Project\abelma\app\components\TracingCanvas.vue
 D:\Project\abelma\app\components\alphabet\AlphabetLearningMode.vue
 D:\Project\abelma\app\components\alphabet\AlphabetQuizMode.vue

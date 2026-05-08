@@ -27,9 +27,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col min-h-[90vh] relative p-4 md:p-8">
+  <div class="relative h-[80vh] w-full overflow-hidden pb-32">
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center max-w-6xl mx-auto w-full gap-8 z-10">
+    <div class="relative z-10 pt-10 md:pt-24">
       <ModuleHeader 
         title="Vokal Rangkap" 
         subtitle="Pilih tingkat belajar yang kamu mau!" 
@@ -38,8 +38,8 @@ onMounted(() => {
         colorClass="text-teal-600"
       />
 
-      <div class="flex flex-wrap justify-center gap-4 md:gap-8">
-        <MenuCard
+      <div class="flex flex-wrap max-w-7xl mx-auto flex-row items-center justify-center gap-0 md:gap-7 lg:gap-10 relative">
+        <MenuBubble
           v-for="(item, index) in menuItems"
           :key="item.title"
           v-bind="item"

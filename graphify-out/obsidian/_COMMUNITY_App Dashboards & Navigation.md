@@ -10,11 +10,12 @@ members: 17
 **Members:** 17 nodes
 
 ## Members
+
 - [[Alphabet Dashboard]] - code - app/pages/alphabet/index.vue
 - [[Cvc Dashboard]] - code - app/pages/cvc/index.vue
 - [[Ddv Dashboard]] - code - app/pages/ddv/index.vue
 - [[Home Page]] - code - app/pages/index.vue
-- [[MenuCard Component]] - code - app/components/MenuCard.vue
+- [[MenuBubble Component]] - code - app/components/MenuBubble.vue
 - [[Nasal Dashboard]] - code - app/pages/nasal/index.vue
 - [[alphabetStore]] - code - app/stores/alphabetStore.ts
 - [[analyticsStore]] - code - app/stores/analyticsStore.ts

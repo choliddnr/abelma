@@ -37,35 +37,49 @@ const isEmoji = computed(() => props.iconType === 'emoji');
         <!-- Outer Glow/Halo -->
         <div class="absolute -inset-1 bg-gradient-to-r from-white/30 to-white/10 rounded-full blur-xl opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
         
-        <div class="relative inline-flex items-center gap-6 bg-white/50 px-10 py-4 md:px-16 md:py-6 rounded-[3rem] border-4 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_rgba(255,255,255,0.2)] transition-all duration-700 hover:-translate-y-2">
+        <div class="relative flex flex-col items-center gap-4 bg-white/50 px-10 py-2 md:px-16 md:py-4 rounded-[3rem] border-4 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] hover:shadow-[0_25px_60px_rgba(255,255,255,0.2)] transition-all duration-700 hover:-translate-y-2">
           <!-- Icon Bubble -->
-          <div v-if="icon" class="flex items-center justify-center bg-white/50 size-16 md:size-52 rounded-full shadow-inner border-2 border-white/80">
-            <span v-if="isEmoji" class="text-4xl md:text-6xl animate-float-slow">
-              {{ icon }}
-            </span>
-            <Icon 
-              v-else 
-              :name="icon" 
-              class="text-4xl md:text-9xl text-current animate-float-slow"
-              :class="colorClass"
-            />
-          </div>
-          
-          <h1 
-            class="text-4xl md:text-7xl lg:text-8xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.1)] font-quicksand tracking-tight text-current"
-            :class="colorClass"
-          >
-            {{ title }}
-          </h1>
+           <div class="inline-flex items-center gap-6">
+             <div v-if="icon" class="flex items-center justify-center bg-white/50 size-12 md:size-16 rounded-full shadow-inner border-2 border-white/80">
+               <span v-if="isEmoji" class="text-xl md:text-4xl">
+                 {{ icon }}
+               </span>
+               <Icon 
+                 v-else 
+                 :name="icon" 
+                 class="text-xl md:text-4xl text-current"
+                 :class="colorClass"
+               />
+             </div>
+             
+             <h1 
+               class="text-2xl md:text-3xl lg:text-6xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.1)] font-quicksand tracking-tight text-current"
+               :class="colorClass"
+             >
+               {{ title }}
+             </h1>
+
+           </div>
+               <p 
+          class="text-lg md:text-xl lg:text-2xl font-black leading-relaxed drop-shadow-sm tracking-wide text-slate-800"
+          :class="subtitleColorClass"
+        >
+          <slot name="subtitle">
+            {{ subtitle }}
+          </slot>
+        </p>
+
+         
         </div>
+    
       </div>
-    </div>
+    </div> 
 
     <!-- Title Section for Home variant (Giant Vibrant Style) -->
     <div v-else class="relative mb-12">
       <div class="absolute inset-0 bg-blue-400/10 blur-[100px] rounded-full scale-150"></div>
       <h1 
-        class="relative text-7xl md:text-[10rem] lg:text-[12rem] font-black text-white drop-shadow-[0_15px_0_rgba(79,70,229,1)] font-quicksand title-gradient tracking-tight leading-none animate-float-slow"
+        class="relative text-7xl md:text-[10rem] lg:text-[12rem] font-black text-white drop-shadow-[0_5px_0_rgba(79,70,229,1)] font-quicksand title-gradient tracking-tight leading-none animate-float-slow"
       >
         {{ title }}
       </h1>
@@ -79,19 +93,7 @@ const isEmoji = computed(() => props.iconType === 'emoji');
       >
         {{ subtitle }}
       </div>
-      <div 
-        v-else
-        class="bg-white/50 backdrop-blur-md px-10 py-4 rounded-[2rem] border-4 border-white shadow-xl"
-      >
-        <p 
-          class="text-2xl md:text-4xl lg:text-5xl font-black leading-relaxed drop-shadow-sm tracking-wide text-slate-800"
-          :class="subtitleColorClass"
-        >
-          <slot name="subtitle">
-            {{ subtitle }}
-          </slot>
-        </p>
-      </div>
+     
     </div>
   </div>
 </template>

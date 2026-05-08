@@ -100,9 +100,9 @@
     },
     {
       "id": "app_components_menucard_vue",
-      "label": "MenuCard.vue",
+      "label": "MenuBubble.vue",
       "file_type": "code",
-      "source_file": "app\\components\\MenuCard.vue",
+      "source_file": "app\\components\\MenuBubble.vue",
       "source_location": "L1"
     },
     {
@@ -2027,9 +2027,9 @@
     },
     {
       "id": "comp_menucard",
-      "label": "MenuCard Component",
+      "label": "MenuBubble Component",
       "file_type": "code",
-      "source_file": "app/components/MenuCard.vue"
+      "source_file": "app/components/MenuBubble.vue"
     },
     {
       "id": "page_alphabet_index",
