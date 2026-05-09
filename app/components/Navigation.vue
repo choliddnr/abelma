@@ -11,25 +11,30 @@ const router = useRouter();
 // const computedSize = computed(() => props.size || (isMobile.value ? "md" : "xl"));
 </script>
 <template>
-  <div
-    class="flex items-center justify-between"
-    :class="gap ? gap : 'gap-6 md:gap-14 lg:gap-20 '"
-  >
-    <UiButton
-      @click="backTo ? router.push(backTo) : router.back()"
-      variant="white"
-      icon="fluent-emoji-flat:back-arrow"
-      icon-class="text-3xl"
-      :size="size"
-    />
-    <UiButton
-      @click="router.push('/')"
-      variant="white"
-      icon="fluent-emoji-flat:house"
-      iconClass="text-3xl"
-      :size="size"
-    />
-  </div>
+  <footer class="sticky bottom-0 left-0 w-full h-24 z-50 content-end">
+    <div
+      v-if="!$route.fullPath.includes('parent')"
+      class="flex items-center justify-center mb-1"
+      :class="gap ? gap : 'gap-6 md:gap-14 lg:gap-20 '"
+    >
+      <UiButton
+        @click="backTo ? router.push(backTo) : router.back()"
+        variant="accent"
+        icon="fluent-emoji-flat:back-arrow"
+        icon-class="text-3xl"
+        :size="size"
+        class="grow"
+      />
+      <UiButton
+        @click="router.push('/')"
+        variant="primary"
+        icon="fluent-emoji-flat:house"
+        iconClass="text-3xl"
+        :size="size"
+        class="grow"
+      />
+    </div>
+  </footer>
 </template>
 
 <style></style>

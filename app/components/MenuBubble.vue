@@ -94,9 +94,9 @@ const play = () => {
         </div>
 
         <!-- Bottom Glow -->
-        <div
-          class="absolute -bottom-4 w-[60%] h-4 bg-black/10 rounded-full group-hover:scale-110 transition-transform duration-500"
-        ></div>
+        <!-- <div
+          class="absolute -bottom-4 w-[60%] h-10 bg-black/10 rounded-full group-hover:scale-110 transition-transform duration-500"
+        ></div> -->
 
         <!-- Pearl/Bubble Highlight (Top Left) -->
       </div>

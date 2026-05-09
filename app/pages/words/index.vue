@@ -22,7 +22,7 @@ const menuItems = [
 
 <template>
   <div
-    class="flex flex-col items-center justify-between h-[80vh] w-full overflow-hidden"
+    class="flex flex-col items-center justify-center h-[70vh] w-full overflow-hidden"
   >
     <!-- Full-screen Frosted Overlay -->
     <div class="fixed inset-0 pointer-events-none -z-10"></div>
@@ -67,7 +67,7 @@ const menuItems = [
         :style="{ animationDelay: `${index * 0.08}s` }"
       />
     </div>
-    <Navigation />
+    <!-- <Navigation /> -->
     <!-- </div> -->
   </div>
 </template>

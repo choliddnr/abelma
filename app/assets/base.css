@@ -35,57 +35,56 @@
   --color-primary-hover: #3C55A5;
   --color-primary-active: #2E418C; */
 
-  --color-primary: #4DA6FF;
-  --color-primary-hover: #1E8EED;
-  --color-primary-active: #0F6FBF;
-  
+  --color-primary: #4da6ff;
+  --color-primary-hover: #1e8eed;
+  --color-primary-active: #0f6fbf;
+
   /* Secondary: Bright Aqua */
-  --color-secondary: #00CEC9;
-  --color-secondary-hover: #00B5B0;
-  --color-secondary-active: #009C97;
+  --color-secondary: #00cec9;
+  --color-secondary-hover: #00b5b0;
+  --color-secondary-active: #009c97;
 
   /* Accent: Tangy Orange */
   /* --color-accent: #FF9F43;
   --color-accent-hover: #EE8A26;
   --color-accent-active: #D37A21; */
 
-  --color-accent: #FFD700;
-  --color-accent-hover: #EBC400;
-  --color-accent-active: #D9A800;
+  --color-accent: #ffd700;
+  --color-accent-hover: #ebc400;
+  --color-accent-active: #d9a800;
 
   /* Danger: Deep Red/Coral variant for this palette */
-  --color-danger: #EB4D4B;
-  --color-danger-hover: #D43F3D;
-  --color-danger-active: #BC312F;
+  --color-danger: #eb4d4b;
+  --color-danger-hover: #d43f3d;
+  --color-danger-active: #bc312f;
 
   /* Success: Clean Science Green */
-  --color-success: #2ECC71;
-  --color-success-hover: #27AD60;
-  --color-success-active: #1F8C4D;
+  --color-success: #2ecc71;
+  --color-success-hover: #27ad60;
+  --color-success-active: #1f8c4d;
 
   /* Soft: Modern cool gray/blue background tint */
-  --color-soft: #F1F2F6;
-  --color-soft-hover: #E1E2E7;
-  --color-soft-active: #CED0D9;
+  --color-soft: #f1f2f6;
+  --color-soft-hover: #e1e2e7;
+  --color-soft-active: #ced0d9;
 
   /* White: Pure paper white */
-  --color-white: #FFFFFF;
-  --color-white-hover: #F9F9FB;
-  --color-white-active: #F1F2F6;
+  --color-white: #ffffff;
+  --color-white-hover: #f9f9fb;
+  --color-white-active: #f1f2f6;
 
   /* Ghost: Deep Slate Blue (Text-based tints) */
-  --color-ghost: #2F3640;
+  --color-ghost: #2f3640;
   --color-ghost-hover: rgba(47, 54, 64, 0.08);
   --color-ghost-active: rgba(47, 54, 64, 0.15);
 
   /* Glass: Crystal clear frosted effects */
-  --color-glass: rgba(255, 255, 255, 0.40);
+  --color-glass: rgba(255, 255, 255, 0.4);
   --color-glass-hover: rgba(255, 255, 255, 0.55);
-  --color-glass-active: rgba(255, 255, 255, 0.70);
+  --color-glass-active: rgba(255, 255, 255, 0.7);
 
   --breakpoint-xl: 81rem;
   --breakpoint-xs: 25rem;
-
 
   /* --font-main: "Outfit", sans-serif;
   --font-display: "Baloo Bhaijaan 2", sans-serif; */
@@ -140,7 +139,7 @@
 }
 
 @utility ui-capsule-interactive {
-  @apply ui-capsule cursor-pointer active:border-b-0 active:translate-y-1.5;
+  @apply ui-capsule cursor-pointer active:border-b-0 active:translate-y-0.5;
 }
 
 @utility animate-entrance {
@@ -168,7 +167,6 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0);
@@ -194,7 +192,6 @@
 }
 
 @keyframes bounce-subtle {
-
   0%,
   100% {
     transform: translateY(0);
@@ -214,7 +211,8 @@ body {
   overflow-x: hidden;
   /* Default Cursor: Large Yellow Circle with Dot */
   cursor:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='18' fill='%23FFD93D' opacity='0.7'/%3E%3Ccircle cx='24' cy='24' r='6' fill='%23FF6B6B'/%3E%3Ccircle cx='24' cy='24' r='20' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E") 24 24,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='18' fill='%23FFD93D' opacity='0.7'/%3E%3Ccircle cx='24' cy='24' r='6' fill='%23FF6B6B'/%3E%3Ccircle cx='24' cy='24' r='20' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E")
+      24 24,
     auto;
 }
 
@@ -228,7 +226,8 @@ select,
 .RouterLink,
 .NuxtLink {
   cursor:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M16 32 L16 56 C16 60 20 64 24 64 L40 64 C48 64 56 56 56 48 L56 32 C56 28 52 24 48 24 C44 24 40 28 40 32 L40 16 C40 12 36 8 32 8 C28 8 24 12 24 16 L24 32 L24 8 C24 4 20 0 16 0 C12 0 8 4 8 8 L8 40 L16 32 Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") 16 8,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cpath d='M16 32 L16 56 C16 60 20 64 24 64 L40 64 C48 64 56 56 56 48 L56 32 C56 28 52 24 48 24 C44 24 40 28 40 32 L40 16 C40 12 36 8 32 8 C28 8 24 12 24 16 L24 32 L24 8 C24 4 20 0 16 0 C12 0 8 4 8 8 L8 40 L16 32 Z' fill='white' stroke='black' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E")
+      16 8,
     pointer !important;
 }
 
