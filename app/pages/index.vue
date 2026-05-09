@@ -70,40 +70,41 @@ const menuItems = [
 <template>
   <div class="relative min-h-screen w-full overflow-hidden pb-32">
     <!-- Underwater Background -->
-    <div 
+    <div
       class="fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
-      style="background-image: url('/bg_underwater.png')"
+      style="background-image: url(&quot;/bg_underwater.png&quot;)"
     >
       <div class="absolute inset-0 bg-blue-400/20 mix-blend-overlay"></div>
     </div>
-    
 
     <!-- Main Content Container -->
-    <div class="relative z-10 pt-10 md:pt-24">
-      <ModuleHeader 
-        variant="home" 
-        :title="`Halo ${profile?.name}!`" 
-        subtitle="Ayo kita belajar sambil bermain!" 
+    <div class="relative z-10 pt-6 md:pt-12">
+      <ModuleHeader
+        variant="home"
+        :title="`Halo ${profile?.name}!`"
+        subtitle="Ayo kita belajar sambil bermain!"
       />
 
       <!-- Menu Section with Pipe Background -->
-       <div class="flex flex-wrap max-w-7xl mx-auto flex-row items-center justify-center gap-0 md:gap-7 lg:gap-10 relative">
-         <MenuBubble
-            v-for="(item, index) in menuItems"
-            :key="item.title"
-            v-bind="item"
-            :index="index"
-            class="animate-entrance w-44"
-            :style="{ animationDelay: `${index * 0.08}s` }"
-          />
-        </div>
-       </div>
-      <!-- <div class="relative pb-32">
+      <div
+        class="flex flex-wrap max-w-6xl mx-auto flex-row items-center justify-center gap-0 md:gap-9 lg:gap-10 relative"
+      >
+        <MenuBubble
+          v-for="(item, index) in menuItems"
+          :key="item.title"
+          v-bind="item"
+          :index="index"
+          class="animate-entrance w-44"
+          :style="{ animationDelay: `${index * 0.08}s` }"
+        />
+      </div>
+    </div>
+    <!-- <div class="relative pb-32">
         <div class="relative overflow-hidden rounded-[32px] border border-white/15 bg-cover bg-center bg-no-repeat p-4 md:p-6"
              style="background-image: url('/menu_pipes_bg.png');"> -->
-          <!-- <div class="absolute inset-0 bg-slate-950/20"></div> -->
-          <!-- <div class="relative"> -->
-            <!-- <div class="mb-6 text-center">
+    <!-- <div class="absolute inset-0 bg-slate-950/20"></div> -->
+    <!-- <div class="relative"> -->
+    <!-- <div class="mb-6 text-center">
               <p class="text-sm uppercase tracking-[0.3em] text-white/80 font-semibold md:text-base">
                 Pilih Petualanganmu
               </p>
@@ -112,7 +113,7 @@ const menuItems = [
               </h2>
             </div> -->
 
-            <!-- <div class="menu-scroll overflow-x-auto pb-4 md:overflow-visible md:pb-0">
+    <!-- <div class="menu-scroll overflow-x-auto pb-4 md:overflow-visible md:pb-0">
               <div class="flex gap-4 min-w-max md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:min-w-0">
                 <MenuBubble
                   v-for="(item, index) in menuItems"
@@ -123,9 +124,9 @@ const menuItems = [
                 />
               </div>
             </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div>
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div>
     </div> -->
   </div>
 </template>
@@ -146,7 +147,9 @@ const menuItems = [
 }
 
 @keyframes drawPath {
-  to { stroke-dashoffset: 0; }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .animate-entrance {
@@ -156,7 +159,10 @@ const menuItems = [
 }
 
 @keyframes entrance {
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .animate-float {
@@ -168,8 +174,13 @@ const menuItems = [
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-20px) translateX(10px); }
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
 }
 
 .animate-bounce-subtle {
@@ -177,7 +188,12 @@ const menuItems = [
 }
 
 @keyframes bounceSubtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 </style>

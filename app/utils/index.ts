@@ -8,3 +8,4 @@ export const formatDate = (dateStr?: string) => {
   });
 };
 
+export const formatter = new Intl.NumberFormat("id-ID");

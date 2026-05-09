@@ -45,7 +45,9 @@ const loginWithUsername = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-[70vh] px-4 py-12">
+  <div
+    class="flex flex-col items-center justify-center min-h-[70vh] px-4 py-12"
+  >
     <div
       class="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-4xl shadow-2xl p-8 md:p-12 border border-white/50 flex flex-col items-center gap-8 relative overflow-hidden"
     >
@@ -59,7 +61,9 @@ const loginWithUsername = async () => {
 
       <div class="z-10 text-center space-y-2">
         <h2 class="text-4xl font-black text-[#5C4D00]">Selamat Datang!</h2>
-        <p class="text-lg font-bold text-[#8B7700]">Masuk untuk menyimpan kemajuan belajarmu</p>
+        <p class="text-lg font-bold text-[#8B7700]">
+          Masuk untuk menyimpan kemajuan belajarmu
+        </p>
       </div>
 
       <div class="z-10 w-full space-y-6">
@@ -100,7 +104,9 @@ const loginWithUsername = async () => {
           </button>
         </div>
 
-        <div class="relative py-2 flex items-center gap-4 text-gray-300 font-bold">
+        <div
+          class="relative py-2 flex items-center gap-4 text-gray-300 font-bold"
+        >
           <div class="flex-1 border-t-2 border-gray-100"></div>
           <span class="text-xs uppercase">atau</span>
           <div class="flex-1 border-t-2 border-gray-100"></div>
@@ -111,7 +117,10 @@ const loginWithUsername = async () => {
           :disabled="session.isPending"
           class="w-full bg-white hover:bg-gray-50 text-gray-700 font-bold py-4 px-6 rounded-2xl shadow-md border border-gray-200 flex items-center justify-center gap-4 transform hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed group"
         >
-          <svg class="w-6 h-6 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+          <svg
+            class="w-6 h-6 group-hover:scale-110 transition-transform"
+            viewBox="0 0 24 24"
+          >
             <path
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
               fill="#4285F4"
@@ -140,18 +149,13 @@ const loginWithUsername = async () => {
               >Daftar petualang baru</NuxtLink
             >
           </p>
-
-          <NuxtLink
-            to="/"
-            class="block text-center text-[#8B7700] font-bold hover:text-[#5C4D00] transition-colors"
-          >
-            Nanti saja, lanjut bermain
-          </NuxtLink>
         </div>
       </div>
 
       <div class="z-10 pt-4 text-center">
-        <p class="text-xs text-gray-400 font-medium">Dibuat dengan ❤️ untuk anak-anak Indonesia</p>
+        <p class="text-xs text-gray-400 font-medium">
+          Dibuat dengan ❤️ untuk anak-anak Indonesia
+        </p>
       </div>
     </div>
   </div>

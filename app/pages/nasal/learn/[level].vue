@@ -112,53 +112,13 @@ onUnmounted(async () => {
     </UiCelebrationModal>
 
 
-    <!-- Top Bar -->
-    <div class="z-10 w-full max-w-5xl mx-auto px-4 pt-4 flex items-center justify-between">
-      <UiButton
-        @click="router.push('/nasal')"
-        variant="danger"
-        icon="lucide:x"
-        class="size-12 rounded-full p-0 flex items-center justify-center shadow-sm"
-      />
-       <!-- Progress Bar -->
-        <div class="w-full max-w-2xl mx-auto px-4 py-2 md:py-6">
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex flex-col">
-        <span class="text-xs font-black text-orange-600 uppercase tracking-widest">Level</span>
-        <h2 class="text-2xl font-bold text-orange-600">{{ level.description }}</h2>
-      </div>
-      <div class="flex flex-col items-end">
-        <span class="text-sm font-black text-orange-600 uppercase tracking-widest">Kemajuan</span>
-       <div class="px-4 py-2 bg-orange-100 text-orange-700 rounded-2xl font-black text-lg md:text-xl border-2 border-orange-200">
-        {{ currentIndex + 1 }} / {{ items.length }}
-      </div>
-      </div>
-    </div>
-
-    <!-- Progress Bar Container -->
-    <div class="relative h-6 bg-slate-200/50 backdrop-blur-sm rounded-full border-2 border-white shadow-inner p-1">
-      <!-- Animated Progress Fill -->
-      <div
-        class="h-full bg-linear-to-r from-orange-400 to-orange-600 rounded-full transition-all duration-500 shadow-lg relative overflow-hidden"
-        :style="{ width: `${((currentIndex + 1) / items.length) * 100}%` }"
-      >
-        <!-- Shine effect -->
-        <div class="absolute inset-0 bg-linear-to-b from-white/30 to-transparent"></div>
-        <div class="absolute inset-0 animate-shimmer bg-linear-to-r from-transparent via-white/20 to-transparent"></div>
-      </div>
-
-      <!-- Segment markers -->
-      <div class="absolute inset-0 flex justify-evenly items-center pointer-events-none">
-        <div
-          v-for="i in items.length - 1"
-          :key="i"
-          class="w-1 h-2 bg-white/20 rounded-full"
-        ></div>
-      </div>
-    </div>
-  </div>
-      <div class="size-12"></div>
-    </div>
+    <!-- Standardized Quiz Header -->
+    <QuizHeader
+      :current="currentIndex + 1"
+      :total="items.length"
+      :level-description="level.description"
+      back-path="/nasal"
+    />
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col items-center justify-center relative py-4 px-4">

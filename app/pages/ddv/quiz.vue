@@ -24,7 +24,8 @@ const phase = ref<QuizPhase>("diphthong");
 
 const diphthongItems = ddvDiphthongQuizItems;
 const clusterItems = ddvClusterQuizItems;
-const connectPairs = (ddvLevels.find((l) => l.id === 5)?.items || []) as DdvConnectPair[];
+const connectPairs = (ddvLevels.find((l) => l.id === 5)?.items ||
+  []) as DdvConnectPair[];
 
 // Per-phase item index (diphthong & cluster); connect handles itself
 const currentDiphthongIndex = ref(0);
@@ -41,7 +42,9 @@ const connectChunks = computed(() => {
   }
   return chunks;
 });
-const currentConnectPairs = computed(() => connectChunks.value[connectChunkIndex.value] || []);
+const currentConnectPairs = computed(
+  () => connectChunks.value[connectChunkIndex.value] || [],
+);
 
 const gameFinished = ref(false);
 const connectKey = ref(0);
@@ -51,29 +54,37 @@ const streak = ref(0);
 
 // ---- Progress bar ----
 const totalQuestions = computed(
-  () => diphthongItems.length + clusterItems.length + connectPairs.length
+  () => diphthongItems.length + clusterItems.length + connectPairs.length,
 );
 const answeredCount = computed(
-  () => currentDiphthongIndex.value + currentClusterIndex.value + connectMatchCount.value
+  () =>
+    currentDiphthongIndex.value +
+    currentClusterIndex.value +
+    connectMatchCount.value,
 );
 
 // ---- Handlers ----
 const popConfetti = () =>
-  confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 }, colors: ["#14B8A6", "#FFD93D", "#6BCB77"] });
+  confetti({
+    particleCount: 80,
+    spread: 60,
+    origin: { y: 0.6 },
+    colors: ["#14B8A6", "#FFD93D", "#6BCB77"],
+  });
 
 const handleCorrect = (points = 5) => {
   const config = ddvProgress.value.config;
   streak.value++;
-  
+
   // Base reward for correct answer
   changeCoins(config.coinReward);
-  
+
   // Streak reward
   if (streak.value > 0 && streak.value % config.streakThreshold === 0) {
     changeCoins(config.streakReward);
     play(`Luar biasa! Streak ${streak.value}!`);
   }
-  
+
   popConfetti();
   ddvStore.updateScore(5, points);
 };
@@ -151,7 +162,7 @@ onUnmounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen relative overflow-hidden bg-teal-50/30">
+  <div class="flex flex-col h-screen relative overflow-hidden">
     <!-- Celebration Modal -->
     <UiCelebrationModal
       v-model="gameFinished"
@@ -188,40 +199,27 @@ onUnmounted(async () => {
       </div>
     </UiCelebrationModal>
 
-    <!-- Top Bar -->
-    <div class="shrink-0 p-4 z-20">
-      <div class="max-w-4xl mx-auto glass-card p-4 flex items-center gap-4">
-        <UiButton
-          @click="router.push('/ddv')"
-          variant="white"
-          icon="lucide:x"
-          class="size-12 rounded-full p-0 flex items-center justify-center shadow-sm shrink-0"
-        />
-        <DdvProgressTracker
-          :current="answeredCount"
-          :total="totalQuestions"
-          :level-name="phaseLabel"
-          class="flex-1 !py-0"
-        />
-        <!-- <div class="text-3xl shrink-0">{{ phaseEmoji }}</div> -->
-      </div>
-    </div>
+    <!-- Standardized Quiz Header -->
+    <QuizHeader
+      :current="answeredCount"
+      :total="totalQuestions"
+      :level-description="phaseLabel"
+      :streak="streak"
+      back-path="/ddv"
+    />
 
     <!-- Phase Pill Indicator -->
     <div class="flex justify-center gap-3 py-2">
       <div
-        v-for="(p, i) in (['diphthong', 'cluster', 'connect'] as QuizPhase[])"
+        v-for="(p, i) in ['diphthong', 'cluster', 'connect'] as QuizPhase[]"
         :key="p"
         class="h-2 rounded-full transition-all duration-500"
-        :class="[
-          phase === p ? 'w-12 bg-teal-500' : 'w-4 bg-teal-200'
-        ]"
+        :class="[phase === p ? 'w-12 bg-teal-500' : 'w-4 bg-teal-200']"
       />
     </div>
 
     <!-- Quiz Area -->
     <main class="flex-1 flex flex-col items-center justify-center p-4">
-
       <!-- Round 1: Diphthong MCQ -->
       <Transition name="slide-fade" mode="out-in">
         <div v-if="phase === 'diphthong'" key="diphthong" class="w-full">
@@ -242,7 +240,11 @@ onUnmounted(async () => {
         </div>
 
         <!-- Round 3: Connect Match -->
-        <div v-else key="connect" class="w-full max-w-4xl mx-auto bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-[3.5rem] shadow-xl border-4 border-white">
+        <div
+          v-else
+          key="connect"
+          class="w-full max-w-4xl mx-auto bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-[3.5rem] shadow-xl border-4 border-white"
+        >
           <VowelConnectQuiz
             :key="connectKey"
             :pairs="currentConnectPairs"
@@ -256,7 +258,12 @@ onUnmounted(async () => {
     <!-- Background Pattern -->
     <div class="fixed inset-0 pointer-events-none opacity-[0.03] -z-10">
       <div class="grid grid-cols-6 gap-20 transform rotate-12 -translate-y-20">
-        <Icon v-for="i in 24" :key="i" name="lucide:gamepad-2" class="size-32" />
+        <Icon
+          v-for="i in 24"
+          :key="i"
+          name="lucide:gamepad-2"
+          class="size-32"
+        />
       </div>
     </div>
   </div>

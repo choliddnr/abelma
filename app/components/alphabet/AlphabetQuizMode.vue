@@ -414,112 +414,16 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col gap-4 animate-entrance" :data-speaking="speaking">
-    <!-- Quiz Dashboard (Single Row) -->
-    <div class="shrink-0 px-4 flex flex-col items-center justify-center min-h-[80px]">
-      <div class="w-full max-w-4xl mx-auto flex flex-col gap-4">
-        <div
-          :data-target-letter="targetLetter"
-          class="bg-white/30 backdrop-blur-lg p-4 md:p-6 rounded-4xl border-4 border-white/50 shadow-2xl relative overflow-hidden"
-        >
-          <div
-            class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-400/20 rounded-full blur-3xl"
-          ></div>
-          <div
-            class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-400/20 rounded-full blur-3xl"
-          ></div>
-
-          <div
-            class="flex flex-wrap items-center justify-between gap-3 md:gap-6 relative z-10 w-full px-2"
-          >
-            <!-- Progress -->
-            <div
-              class="relative w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0"
-            >
-              <div
-                class="absolute inset-0 bg-indigo-500/10 rounded-full blur-xl animate-pulse"
-              ></div>
-              <svg class="w-full h-full transform -rotate-90 drop-shadow-sm" viewBox="0 0 80 80">
-                <circle
-                  cx="40"
-                  cy="40"
-                  r="34"
-                  class="text-indigo-100/50"
-                  stroke-width="8"
-                  stroke="currentColor"
-                  fill="transparent"
-                />
-                <circle
-                  cx="40"
-                  cy="40"
-                  r="34"
-                  class="text-indigo-500 transition-all duration-1000 ease-out"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                  stroke="currentColor"
-                  fill="transparent"
-                  :stroke-dasharray="213.63"
-                  :stroke-dashoffset="213.63 * (1 - progressPercentage / 100)"
-                />
-              </svg>
-              <div class="absolute flex flex-col items-center justify-center leading-tight">
-                <span class="text-[10px] md:text-sm font-black text-indigo-600"
-                  >{{ Math.round(progressPercentage) }}%</span
-                >
-              </div>
-            </div>
-
-            <!-- Stats -->
-            <div class="flex-1 flex flex-wrap items-center justify-center gap-2 md:gap-4">
-              <div
-                v-if="currentConfig.timer > 0"
-                class="ui-capsule bg-rose-50 border-rose-200 px-3 md:px-4 h-10 md:h-12 transition-all duration-300"
-                :class="{
-                  'animate-pulse bg-rose-100 border-rose-400 shadow-lg': timeLeft <= 3,
-                }"
-              >
-                <span class="text-sm md:text-base xl:text-xl animate-bounce">⏱️</span>
-                <span class="text-sm md:text-base xl:text-xl font-black text-rose-600 ml-1"
-                  >{{ timeLeft }}s</span
-                >
-              </div>
-              <div
-                v-if="streak >= 2"
-                class="ui-capsule bg-orange-50 border-orange-200 px-3 md:px-4 h-10 md:h-12 animate-float"
-              >
-                <span class="text-sm md:text-base xl:text-xl">🔥</span>
-                <span class="text-sm md:text-base xl:text-xl font-black text-orange-600 ml-1">{{
-                  streak
-                }}</span>
-              </div>
-              <div
-                v-if="currentConfig.streak > 0"
-                class="ui-capsule bg-amber-50 border-amber-200 px-3 md:px-4 h-10 md:h-12 border-dashed"
-              >
-                <span class="text-[10px] md:text-xs xl:text-sm font-black text-amber-700"
-                  >Target: {{ currentConfig.streak }} 🔥</span
-                >
-              </div>
-              <div class="ui-capsule bg-sky-50 border-sky-200 px-3 md:px-5 h-10 md:h-12">
-                <span class="text-xs md:text-base xl:text-lg font-black text-sky-700">Lvl {{ level }}</span>
-              </div>
-              <div class="ui-capsule bg-indigo-50 border-indigo-200 px-3 md:px-5 h-10 md:h-12">
-                <span class="text-xs md:text-base xl:text-lg font-black text-indigo-700">🏆 {{ score }}</span>
-              </div>
-            </div>
-
-            <!-- Stop -->
-            <div class="shrink-0">
-              <button
-                @click="emit('stop-quiz')"
-                class="ui-capsule-interactive bg-rose-500 border-rose-600 text-white w-10 md:w-12 h-10 md:h-12 p-0 flex items-center justify-center shadow-lg hover:bg-rose-400 active:scale-95 transition-all"
-              >
-                <span class="text-xl md:text-2xl">⏹️</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Standardized Quiz Header -->
+    <QuizHeader
+      :score="score"
+      :streak="streak"
+      :time-left="timeLeft"
+      :timer-max="currentConfig.timer"
+      :level="level"
+      :progress-percentage="progressPercentage"
+      @stop="emit('stop-quiz')"
+    />
 
     <!-- Feedback -->
     <div class="shrink-0 text-center h-14 md:h-16 flex items-center justify-center my-2 px-4">

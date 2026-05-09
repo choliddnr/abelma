@@ -22,7 +22,11 @@ const speaking = ref(false);
 const activeSyllableIndex = ref<number | null>(null);
 let autoPlayTimeout: number | null = null;
 
-const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void) => {
+const fallbackToSpeech = async (
+  text: string,
+  path?: string,
+  onEnd?: () => void,
+) => {
   speaking.value = true;
   await playWordAudio(text, path);
   speaking.value = false;
@@ -32,13 +36,19 @@ const fallbackToSpeech = async (text: string, path?: string, onEnd?: () => void)
 const playSyllable = async (syllable: string, index: number) => {
   if (speaking.value) return;
   activeSyllableIndex.value = index;
-  await playSyllableAudio(syllable, `/audio/syllables/${syllable.toLowerCase()}.mp3`);
+  await playSyllableAudio(
+    syllable,
+    `/audio/syllables/${syllable.toLowerCase()}.mp3`,
+  );
   activeSyllableIndex.value = null;
 };
 
 const playFullWord = () => {
   if (speaking.value || !wordData.value) return;
-  fallbackToSpeech(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`);
+  fallbackToSpeech(
+    wordData.value.word,
+    `/audio/words/${wordData.value.id}.mp3`,
+  );
 };
 
 const playAuto = async () => {
@@ -55,7 +65,10 @@ const playAuto = async () => {
 
     for (let i = 0; i < syllables.length; i++) {
       activeSyllableIndex.value = i;
-      await playSyllableAudio(syllables[i]!, `/audio/syllables/${syllables[i]!.toLowerCase()}.mp3`);
+      await playSyllableAudio(
+        syllables[i]!,
+        `/audio/syllables/${syllables[i]!.toLowerCase()}.mp3`,
+      );
 
       if (i < syllables.length - 1) {
         await new Promise((resolve) => {
@@ -69,7 +82,10 @@ const playAuto = async () => {
       autoPlayTimeout = window.setTimeout(resolve, 800);
     });
 
-    await playWordAudio(wordData.value.word, `/audio/words/${wordData.value.id}.mp3`);
+    await playWordAudio(
+      wordData.value.word,
+      `/audio/words/${wordData.value.id}.mp3`,
+    );
     popConfettiCenter();
   } finally {
     speaking.value = false;
@@ -103,12 +119,18 @@ onMounted(() => {
 });
 
 // Colors for alternating syllables
-const syllableColors = ["bg-[#FFD93D]", "bg-[#4D96FF]", "bg-[#6BCB77]", "bg-[#ff9a9a]"];
-const getSyllableColor = (index: number) => syllableColors[index % syllableColors.length];
+const syllableColors = [
+  "bg-[#FFD93D]",
+  "bg-[#4D96FF]",
+  "bg-[#6BCB77]",
+  "bg-[#ff9a9a]",
+];
+const getSyllableColor = (index: number) =>
+  syllableColors[index % syllableColors.length];
 </script>
 
 <template>
-  <div v-if="wordData" class="flex flex-col gap-4 min-h-screen">
+  <div v-if="wordData" class="flex flex-col gap-4 h-[calc(100vh-150px)]">
     <!-- Main Content -->
     <div
       class="flex-1 px-4 flex flex-col items-center justify-center max-w-4xl mx-auto w-full gap-6 md:gap-12 py-4 xl:py-8"
@@ -118,6 +140,7 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
         class="flex flex-col items-center gap-6 w-full relative animate-entrance"
         style="animation-delay: 0.2s"
       >
+        <Navigation />
         <!-- Giant Emoji -->
         <UiButton
           @click="playFullWord"
@@ -147,7 +170,9 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
             class="w-auto px-4 md:px-6 h-10 md:h-12"
             icon="lucide:book-open"
           >
-            <span class="text-base md:text-lg font-semibold hidden sm:inline">Daftar Kata</span>
+            <span class="text-base md:text-lg font-semibold hidden sm:inline"
+              >Daftar Kata</span
+            >
           </UiButton>
           <UiButton
             @click="playAuto"
@@ -156,10 +181,19 @@ const getSyllableColor = (index: number) => syllableColors[index % syllableColor
             class="w-auto px-4 md:px-6 h-10 md:h-12"
             icon="lucide:play"
           >
-            <span class="text-base md:text-lg font-semibold hidden sm:inline">Ucapkan</span>
+            <span class="text-base md:text-lg font-semibold hidden sm:inline"
+              >Ucapkan</span
+            >
           </UiButton>
-          <UiButton @click="goExercise" variant="accent" class="w-auto px-4 md:px-6 h-10 md:h-12" icon="lucide:puzzle">
-            <span class="text-base md:text-lg font-semibold hidden sm:inline">Latihan</span>
+          <UiButton
+            @click="goExercise"
+            variant="accent"
+            class="w-auto px-4 md:px-6 h-10 md:h-12"
+            icon="lucide:puzzle"
+          >
+            <span class="text-base md:text-lg font-semibold hidden sm:inline"
+              >Latihan</span
+            >
           </UiButton>
         </div>
 

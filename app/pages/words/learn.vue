@@ -26,6 +26,7 @@ const navigateToWord = (wordId: string, index: number) => {
   }
 };
 
+const { isMobile } = useBreakpoints();
 const handleParentGateSuccess = () => {
   showParentGate.value = false;
   navigateTo("/parent/premium");
@@ -35,7 +36,10 @@ const handleParentGateSuccess = () => {
 <template>
   <div class="flex flex-col gap-4 h-auto">
     <!-- Header -->
-    <div class="flex items-center justify-center shrink-0 px-4 pt-4 pb-2 z-10">
+    <div
+      class="inline-flex gap-2 md:gap-4 lg:gap-10 glass-card mx-auto backdrop-blur-sm items-center justify-center shrink-0 px-5 py-2 md:px-10 md:py-5 z-10"
+    >
+      <Navigation :size="isMobile ? 'sm' : 'md'" gap="gap-1 md:gap-2 " />
       <h1
         class="text-2xl md:text-3xl font-black text-indigo-600 drop-shadow-sm"
       >
@@ -62,7 +66,6 @@ const handleParentGateSuccess = () => {
           <span class="font-black text-sm md:text-base">{{
             category.name
           }}</span>
-          
         </UiButton>
       </div>
     </div>
@@ -121,18 +124,22 @@ const handleParentGateSuccess = () => {
             </div>
           </div> -->
           <div
-               v-if="!isPremium && index >= 2"
-                class="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gray-500  backdrop-blur-md rounded-full p-1.5 sm:p-2 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
-              >
-                <Icon
-                  name="lucide:lock-keyhole"
-                  class="text-white font-bold text-xl sm:text-2xl md:text-3xl"
-                />
-              </div>
+            v-if="!isPremium && index >= 2"
+            class="absolute top-2 right-2 sm:top-3 sm:right-3 bg-gray-500 backdrop-blur-md rounded-full p-1.5 sm:p-2 shadow-sm border-white border-2 flex items-center justify-center hover:scale-110 active:scale-95 transition-transform cursor-pointer"
+          >
+            <Icon
+              name="lucide:lock-keyhole"
+              class="text-white font-bold text-xl sm:text-2xl md:text-3xl"
+            />
+          </div>
         </UiButton>
       </div>
     </div>
-    <ParentGate :isOpen="showParentGate" @success="handleParentGateSuccess" @close="showParentGate = false" />
+    <ParentGate
+      :isOpen="showParentGate"
+      @success="handleParentGateSuccess"
+      @close="showParentGate = false"
+    />
   </div>
 </template>
 

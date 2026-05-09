@@ -20,6 +20,7 @@ interface Props {
   loading?: boolean;
   type?: "button" | "submit" | "reset";
   class?: any;
+  iconClass?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,32 +33,40 @@ const props = withDefaults(defineProps<Props>(), {
 
 const variantClasses = {
   // Primary: Sky Blue with a darker blue bottom border for a 3D effect
-  primary: "bg-primary border-b-4 border-primary-active hover:bg-primary-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
+  primary:
+    "bg-primary border-b-4 border-primary-active hover:bg-primary-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
 
   // Secondary: Kelly Green with a tactile bottom border
-  secondary: "bg-secondary border-b-4 border-secondary-active hover:bg-secondary-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
+  secondary:
+    "bg-secondary border-b-4 border-secondary-active hover:bg-secondary-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
 
   // Accent: Sunny Yellow with high-contrast dark text for readability
-  accent: "bg-accent border-b-4 border-accent-active hover:bg-accent-hover active:border-b-0 active:translate-y-[2px] text-[#1A2B3C] font-bold rounded-2xl transition-all",
+  accent:
+    "bg-accent border-b-4 border-accent-active hover:bg-accent-hover active:border-b-0 active:translate-y-[2px] text-[#1A2B3C] font-bold rounded-2xl transition-all",
 
   // Danger: Standard Red for "Stop" or "Delete" actions
-  danger: "bg-danger border-b-4 border-danger-active hover:bg-danger-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
+  danger:
+    "bg-danger border-b-4 border-danger-active hover:bg-danger-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
 
   // Success: Reusing the successful Green tones for positive reinforcement
-  success: "bg-success border-b-4 border-success-active hover:bg-success-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
+  success:
+    "bg-success border-b-4 border-success-active hover:bg-success-hover active:border-b-0 active:translate-y-[2px] text-white font-bold rounded-2xl transition-all",
 
   // Soft: A gentle, light-colored button for less important actions
   soft: "bg-soft border-2 border-soft-active hover:bg-soft-hover text-[#1A2B3C] font-medium rounded-2xl transition-colors",
 
   // White: Clean card-style button
-  white: "bg-white border-2 border-soft-active hover:border-primary text-[#1A2B3C] font-medium rounded-2xl shadow-sm transition-all",
+  white:
+    "bg-white border-2 border-soft-active hover:border-primary text-[#1A2B3C] font-medium rounded-2xl shadow-sm transition-all",
 
   // Ghost: Transparent background for subtle navigation
-  ghost: "bg-transparent hover:bg-ghost-hover/20 border-none active:bg-ghost-active/20 text-[#1A2B3C] font-medium rounded-2xl transition-colors shadow-none",
+  ghost:
+    "bg-transparent hover:bg-ghost-hover/20 border-none active:bg-ghost-active/20 text-[#1A2B3C] font-medium rounded-2xl transition-colors shadow-none",
 
   // Glass: Frosted look for overlays or high-end UI elements
-  glass: "bg-glass backdrop-blur-md border border-white/40 hover:bg-glass-hover text-[#1A2B3C] font-semibold rounded-2xl shadow-lg transition-all",
-  
+  glass:
+    "bg-glass backdrop-blur-md border border-white/40 hover:bg-glass-hover text-[#1A2B3C] font-semibold rounded-2xl shadow-lg transition-all",
+
   none: "",
 };
 
@@ -90,7 +99,9 @@ const componentClass = computed(() =>
     .join(" "),
 );
 
-const componentType = computed(() => (props.to ? defineNuxtLink({}) : "button"));
+const componentType = computed(() =>
+  props.to ? defineNuxtLink({}) : "button",
+);
 </script>
 
 <template>
@@ -106,10 +117,11 @@ const componentType = computed(() => (props.to ? defineNuxtLink({}) : "button"))
     </div>
 
     <template v-else>
+      <slot name="prefix"> </slot>
       <Icon
         v-if="icon && iconPosition === 'left'"
         :name="icon"
-        :class="iconSizeClasses[size]"
+        :class="[iconSizeClasses[size], iconClass]"
       />
 
       <slot>
@@ -119,7 +131,7 @@ const componentType = computed(() => (props.to ? defineNuxtLink({}) : "button"))
       <Icon
         v-if="icon && iconPosition === 'right'"
         :name="icon"
-        :class="iconSizeClasses[size]"
+        :class="[iconSizeClasses[size], iconClass]"
       />
     </template>
   </component>

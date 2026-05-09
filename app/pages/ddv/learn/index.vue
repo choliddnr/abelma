@@ -6,9 +6,11 @@ const ddvStore = useDdvStore();
 const { ddvProgress } = storeToRefs(ddvStore);
 const { isPremium } = useSubscription();
 
-const isUnlocked = (levelId: number) => ddvProgress.value.learningLevel >= levelId;
+const isUnlocked = (levelId: number) =>
+  ddvProgress.value.learningLevel >= levelId;
 const isPremiumLocked = (levelId: number) => !isPremium.value && levelId > 1;
-const getScore = (levelId: number) => ddvProgress.value.levelScores[levelId] || 0;
+const getScore = (levelId: number) =>
+  ddvProgress.value.levelScores[levelId] || 0;
 
 const getLink = (levelId: number) => {
   if (isPremiumLocked(levelId)) return "/parent/premium";
@@ -24,17 +26,53 @@ onMounted(() => {
   <div class="p-4 md:p-8 min-h-screen">
     <div class="max-w-6xl mx-auto flex flex-col gap-8">
       <div class="text-center space-y-2">
-        <h1 class="text-4xl md:text-5xl font-black text-slate-800">Pilih Level</h1>
-        <p class="text-lg font-bold text-slate-500">Ayo selesaikan semua tantangan!</p>
+        <h1 class="text-4xl md:text-5xl font-black text-slate-800">
+          Pilih Level
+        </h1>
+        <p class="text-lg font-bold text-slate-500">
+          Ayo selesaikan semua tantangan!
+        </p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
-        <div
-          v-for="level in ddvLevels"
-          :key="level.id"
-          class="relative group"
-        >
-          <NuxtLink
+        <div v-for="level in ddvLevels" :key="level.id" class="relative group">
+          <MenuCard
+            :to="getLink(level.id)"
+            :data="level"
+            :index="level.id"
+            :isUnlocked="isUnlocked(level.id)"
+            :isPremium="isPremiumLocked(level.id)"
+            class="bg-white/10"
+          >
+            <template #footer>
+              <div
+                v-if="isUnlocked(level.id) && !isPremiumLocked(level.id)"
+                class="mt-auto w-full"
+              >
+                <div class="flex items-center justify-between mb-1">
+                  <span
+                    class="text-xs font-black text-indigo-500 uppercase tracking-widest"
+                    >Skor</span
+                  >
+                  <span class="text-lg font-black text-indigo-600">{{
+                    getScore(level.id)
+                  }}</span>
+                </div>
+                <div
+                  class="w-full h-3 bg-indigo-100 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="h-full bg-indigo-500 transition-all duration-1000"
+                    :style="{
+                      width: `${Math.min(100, (getScore(level.id) / 50) * 100)}%`,
+                    }"
+                  ></div>
+                </div>
+              </div>
+            </template>
+          </MenuCard>
+
+          <!-- <NuxtLink
             :to="getLink(level.id)"
             class="block h-full"
             :class="{ 'pointer-events-none': !isUnlocked(level.id) && !isPremiumLocked(level.id) }"
@@ -47,20 +85,17 @@ onMounted(() => {
                   : 'opacity-70 grayscale'
               ]"
             >
-              <!-- Level Icon -->
               <div
                 class="size-24 rounded-full bg-linear-to-br from-teal-50 to-white shadow-inner flex items-center justify-center text-6xl group-hover:scale-110 transition-transform"
               >
                 {{ level.emoji }}
               </div>
 
-              <!-- Level Info -->
               <div class="text-center">
                 <h3 class="text-2xl font-black text-slate-800">{{ level.name }}</h3>
                 <p class="text-slate-500 font-bold mt-1 leading-tight">{{ level.description }}</p>
               </div>
 
-              <!-- Progress Info -->
               <div v-if="isUnlocked(level.id) && !isPremiumLocked(level.id)" class="mt-auto w-full">
                 <div class="flex items-center justify-between mb-1">
                   <span class="text-xs font-black text-teal-500 uppercase tracking-widest">Skor</span>
@@ -74,7 +109,6 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Premium Locked Overlay -->
               <div
                 v-if="isPremiumLocked(level.id)"
                 class="absolute inset-0 bg-slate-900/30 flex flex-col items-center justify-center gap-2 backdrop-blur-[4px] rounded-[inherit] hover:bg-slate-900/40 transition-colors"
@@ -85,7 +119,6 @@ onMounted(() => {
                 <span class="text-sm font-black text-white uppercase tracking-widest drop-shadow-md">Premium</span>
               </div>
 
-              <!-- Locked Overlay -->
               <div
                 v-else-if="!isUnlocked(level.id)"
                 class="absolute inset-0 bg-slate-900/10 flex flex-col items-center justify-center gap-2 backdrop-blur-[2px] rounded-[inherit]"
@@ -96,7 +129,7 @@ onMounted(() => {
                 <span class="text-xs font-black text-slate-700 uppercase tracking-tighter">Terkunci</span>
               </div>
             </div>
-          </NuxtLink>
+          </NuxtLink> -->
         </div>
       </div>
     </div>
