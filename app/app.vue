@@ -64,17 +64,18 @@ onMounted(() => {
       </p>
     </div>
 
+    <GlobalHeader />
     <main
-      class="relative z-20 flex-1 h-screen w-full overflow-y-auto overflow-x-hidden custom-scrollbar"
+      class="relative z-20 flex-1 w-full overflow-y-auto overflow-x-hidden custom-scrollbar"
     >
-      <GlobalHeader />
       <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
-      <Navigation gap="gap-1 mx-1" />
-      <UiConfirmModal />
-      <UiNotificationToast />
-      <UiPwaUpdatePrompt />
       <UiFloatingMentor />
     </main>
+    <Navigation gap="gap-1 mx-1" />
+
+    <UiConfirmModal />
+    <UiNotificationToast />
+    <UiPwaUpdatePrompt />
   </div>
 </template>
 

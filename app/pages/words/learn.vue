@@ -39,7 +39,7 @@ const handleParentGateSuccess = () => {
     <div
       class="inline-flex gap-2 md:gap-4 lg:gap-10 glass-card mx-auto backdrop-blur-sm items-center justify-center shrink-0 px-5 py-2 md:px-10 md:py-5 z-10"
     >
-      <Navigation :size="isMobile ? 'sm' : 'md'" gap="gap-1 md:gap-2 " />
+      <!-- <Navigation :size="isMobile ? 'sm' : 'md'" gap="gap-1 md:gap-2 " /> -->
       <h1
         class="text-2xl md:text-3xl font-black text-indigo-600 drop-shadow-sm"
       >

@@ -11,9 +11,11 @@ const router = useRouter();
 // const computedSize = computed(() => props.size || (isMobile.value ? "md" : "xl"));
 </script>
 <template>
-  <footer class="sticky bottom-0 left-0 w-full h-24 z-50 content-end">
+  <footer
+    v-if="!$route.fullPath.includes('parent')"
+    class="relative w-full h-24 z-50 flex items-center justify-center"
+  >
     <div
-      v-if="!$route.fullPath.includes('parent')"
       class="flex items-center justify-center mb-1"
       :class="gap ? gap : 'gap-6 md:gap-14 lg:gap-20 '"
     >

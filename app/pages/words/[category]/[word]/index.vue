@@ -140,7 +140,7 @@ const getSyllableColor = (index: number) =>
         class="flex flex-col items-center gap-6 w-full relative animate-entrance"
         style="animation-delay: 0.2s"
       >
-        <Navigation />
+        <!-- <Navigation /> -->
         <!-- Giant Emoji -->
         <UiButton
           @click="playFullWord"
